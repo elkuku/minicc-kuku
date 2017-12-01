@@ -8,8 +8,12 @@ composer req security
 composer req twig
 composer req form
 composer req doctrine
+composer req doctrine/doctrine-fixtures-bundle
 composer req debug
 composer req encore
+composer req validator
+composer req expressionlanguage
+composer req oro/doctrine-extensions
 
 yarn add jquery --dev
 yarn add bootstrap-sass --dev
