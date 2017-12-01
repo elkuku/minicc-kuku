@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ parent() }} - Stores{% endblock %}
+
+{% block body %}
+    <div style="float: right">
+        <a href="{{ path('stores-add') }}" class="btn btn-success">Nuevo Local</a>
+    </div>
+
+    <h2>Locales</h2>
+
+    {% set total, totalIva = 0, 0 %}
+    {% if stores is empty %}
+        <div class="alert alert-warning">No hay locales!</div>
+    {% else %}
+        <table class="table table-bordered table-condensed table-hover table-striped">
+            <tr>
+                <th class="text-center">Numero</th>
+                <th>Destino</th>
+                <th>Inquilino</th>
+                <th>Alquiler</th>
+                <th>Alquiler + IVA</th>
+            </tr>
+            {% for store in stores %}
+                <tr>
+                    <td class="text-center">
+                        <a href="{{ path('stores-edit', {'id': store.id}) }}"
+                           title="Editar Local {{ store.id }}">
+                            {{ store.id }}
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{{ path('store-transactions', {'id': store.id}) }}"
+                        title="Transaciones del local {{ store.id }}">
+                            {{ store.destination }}
+                        </a>
+                    </td>
+                    <td>{{ store.user ? store.user.name : '** Desocupado **' }}</td>
+                    <td class="text-right">{{ store.valAlq|price|raw }}</td>
+                    <td class="text-right">{{ store.valAlq|conIva|price|raw }}</td>
+                </tr>
+                {% set total = total + store.valAlq %}
+                {% set totalIva = totalIva + store.valAlq|conIva %}
+            {% endfor %}
+            <tr>
+                <td colspan="3"></td>
+                <td class="text-right">{{ total|price|raw }}</td>
+                <td class="text-right">{{ totalIva|price|raw }}</td>
+            </tr>
+        </table>
+    {% endif %}
+{% endblock %}

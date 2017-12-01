@@ -1,0 +1,13 @@
+{% block breadcrumbs %}
+    <ol class="breadcrumb">
+        {% for text, link in breadcrumbs %}
+            <li>
+                {% if link %}
+                    <a href="{{ path(link) }}">{{ text }}</a>
+                {% else %}
+                    {{ text }}
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ol>
+{% endblock %}

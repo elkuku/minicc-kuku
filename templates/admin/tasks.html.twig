@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ parent() }} - Admin Tasks{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-xs-4">
+            <h3>Admin Tasks</h3>
+            <ul>
+                <li><a href="{{ path('planillas') }}">Download Planillas</a></li>
+                <li><a href="{{ path('backup') }}">Send Backup per e-mail</a></li>
+            </ul>
+        </div>
+        <div class="col-xs-4">
+            <h3>Sync</h3>
+
+            <h4>Export</h4>
+
+            <ul>
+                <li>
+                    <a href="{{ path('export-table', {'name': 'transaction'}) }}">Export Transactions</a>
+                </li>
+                <li>
+                    <a href="{{ path('export-table', {'name': 'deposit'}) }}">Export Depositos</a>
+                </li>
+            </ul>
+
+            <h4>Import</h4>
+
+            <form enctype="multipart/form-data" method="post" class="form form-inline"
+                  action="{{ path('import-table') }}">
+                <div class="form-group">
+                    <input name="file" type="file" class="form-control"/>
+                    <button type="submit" class="btn btn-primary">Upload Export</button>
+                </div>
+            </form>
+        </div>
+        <div class="col-xs-4">
+            <h3>View</h3>
+
+            <ul>
+                <li><a href="{{ path('console-view', {'item': 'routes'}) }}">Routes</a></li>
+                <li><a href="{{ path('console-view', {'item': 'migrations'}) }}">Migrations</a></li>
+                <li><a href="{{ path('console-view', {'item': 'security'}) }}">Security check</a></li>
+            </ul>
+        </div>
+    </div>
+
+    {% if consoleOutput is defined %}
+        <h4>Console output</h4>
+        <ul>
+        {% for name, value in consoleCommand %}
+            <li><b>{{ name }}</b> - <code>{{ value }}</code></li>
+        {% endfor %}
+        </ul>
+        <pre class="console">{{ consoleOutput }}</pre>
+    {% endif %}
+
+{% endblock %}

@@ -1,0 +1,65 @@
+{% extends 'base-pdf.html.twig' %}
+
+{% block title %} {{ parent() }} - Transactions{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        body {
+            font-size: 12px;
+        }
+
+        tr.filler td {
+            border-top: 1px solid silver;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    {% set saldo = saldoAnterior %}
+    <h2>Movimientos del Local {{ store.id }} Periodo {{ year }}</h2>
+
+    <h4>{{ store.user.name }} - {{ store.destination }}</h4>
+
+    <table>
+        <tr>
+            <th>Fecha</th>
+            <th>Detalle</th>
+            <th class="text-right">Monto</th>
+            <th class="text-right">Saldo</th>
+        </tr>
+        <tr class="saldo">
+            <td>enero 1</td>
+            <td>Saldo Anterior</td>
+            <td class="text-right">{{ saldoAnterior|price|raw }}</td>
+            <td class="text-right">{{ saldoAnterior|price|raw }}</td>
+        </tr>
+        {% for transaction in transactions %}
+            {% if transaction.id %}
+                {% set saldo = saldo + transaction.amount %}
+                {% if transaction.type.name == 'Ajuste' %}
+                    {% set style = ' class="ajuste"' %}
+                {% elseif transaction.type.name == 'Alquiler' %}
+                    {% set style = ' class="alquiler"' %}
+                {% elseif transaction.type.name == 'Saldo Anterior' %}
+                    {% set style = ' class="saldo"' %}
+                {% else %}
+                    {% set style = '' %}
+                {% endif %}
+                <tr{{ style|raw }}>
+                    <td>{{ intlDate(transaction.date, 'MMMM d') }}</td>
+                    <td>{{ transaction.type.name }}</td>
+                    <td class="text-right">{{ transaction.amount|price|raw }}</td>
+                    <td class="text-right">{{ saldo|price|raw }}</td>
+                </tr>
+            {% else %}
+                {# FILLER#}
+                <tr class="filler">
+                    <td>&nbsp;</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+    </table>
+{% endblock %}

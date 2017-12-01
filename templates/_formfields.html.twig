@@ -1,0 +1,8 @@
+{% macro selectYear(selected = 0, name = 'year') %}
+    <select name="{{ name }}" onchange="form.submit()">
+        <option value="0">Año ...</option>
+        {% for y in "now"|date("Y")..2005 %}
+            <option{{ y == selected ? ' selected="selected"' : '' }}>{{ y }}</option>
+        {% endfor %}
+    </select>
+{% endmacro %}

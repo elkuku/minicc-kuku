@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>{% block title %} MiniCC KuKu {% endblock %}</title>
+
+    <style>
+        table {
+            width: 100%;
+        }
+
+        .table-list {
+            border-collapse: collapse;
+            border: 1px solid silver;
+        }
+
+        .table-list th {
+            background-color: #d4d4d4;
+            border: 1px solid silver;
+        }
+
+        .table-list td {
+            border-bottom: 1px solid silver;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        tr.ajuste {
+            background-color: #e3efad;
+        }
+
+        tr.alquiler {
+            background-color: #adef9b;
+        }
+
+        tr.saldo {
+            background-color: #8de3ef;
+        }
+
+        .amount {
+            font-family: monospace;
+        }
+
+        .amount-red {
+            color: red;
+        }
+
+        .footer {
+            margin-top: 20px;
+            background-color: #f5f5f5;
+            font-size: 0.8em;
+        }
+    </style>
+
+    {% block stylesheets %}
+    {% endblock %}
+</head>
+
+<body id="app-layout">
+
+<div class="container">
+    {% block body %}{% endblock %}
+</div>
+
+{% block footer %}
+    <footer class="footer">
+        <div class="container">
+            <p class="text-muted">
+                &copy; {{ "now"|date("Y") }} MiniCC KuKu - Atacames &bull; Fecha de
+                impresion: {{ intlDate('now', "d 'de' MMMM 'del' YYYY") }}
+            </p>
+        </div>
+    </footer>
+{% endblock %}
+
+</body>
+</html>

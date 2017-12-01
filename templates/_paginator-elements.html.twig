@@ -1,0 +1,109 @@
+{% macro formFields(paginatorOptions) %}
+    {% for name, value in paginatorOptions|cast_to_array %}
+        {% if name not in ['criteria', 'limit'] %}
+            <input type="hidden" name="paginatorOptions[{{ name }}]" value="{{ value }}"/>
+        {% endif %}
+    {% endfor %}
+{% endmacro %}
+
+{% macro pagination(paginatorOptions) %}
+    {% set page, maxPages = paginatorOptions.page, paginatorOptions.maxPages %}
+    {% if maxPages > 1 %}
+        {% if page <= 6 %}
+            {% set startPage, startString = 1, '' %}
+            {% if maxPages > 11 %}
+                {% set endPage, endString = 11, '...' %}
+            {% else %}
+                {% set endPage, endString = maxPages, '' %}
+            {% endif %}
+        {% elseif page + 5 >= maxPages %}
+            {% if maxPages < 10 %}
+                {% set startPage, startString = 1, '' %}
+            {% else %}
+                {% set startPage, startString = maxPages - 10, '...' %}
+            {% endif %}
+
+            {% set endPage, endString = maxPages, '' %}
+        {% else %}
+            {% set startPage, endPage, startString, endString = page - 5, page + 5, '...', '...' %}
+        {% endif %}
+
+        <ul class="pagination pagination-sm">
+            <li {{ page == 1 ? 'class="disabled"' }}>
+                <a href="javascript:"
+                   onclick="paginator.goToPage($(this), {{ page - 1 < 1 ? 1 : page - 1 }})">&lArr;</a>
+            </li>
+            {% if startString %}
+                <li class="disabled"><a href="#">{{ startString }}</a></li>
+            {% endif %}
+            {% for i in startPage..endPage %}
+                <li {{ page == i ? 'class="active"' }}>
+                    <a href="javascript:"
+                       onclick="paginator.goToPage($(this), {{ i }})">{{ i }}</a>
+                </li>
+            {% endfor %}
+            {% if endString %}
+                <li class="disabled"><a href="#">{{ endString }}</a></li>
+            {% endif %}
+            <li {{ page == maxPages ? 'class="disabled"' }}>
+                <a href="javascript:"
+                   onclick="paginator.goToPage($(this), {{ page + 1 <= maxPages ? page + 1 : page }})">&rArr;</a>
+            </li>
+            <li> of {{ maxPages }} Pages</li>
+        </ul>
+
+    {% endif %}
+{% endmacro %}
+
+{% macro listLimit(paginatorOptions) %}
+    <select name="paginatorOptions[limit]" onchange="paginator.resetAndSubmit($(this))" class="form-control"
+            style="margin: 20px 0">
+        {% for num in [5, 10, 20, 50, 100] %}
+            <option{{ num == paginatorOptions.limit ? ' selected="selected"' : '' }}>{{ num }}</option>
+        {% endfor %}
+    </select>
+{% endmacro %}
+
+{% macro ordering(order, paginatorOptions) %}
+    {% set selected = order == paginatorOptions.order %}
+    <a
+            onclick="paginator.setOrdering($(this), '{{ order }}', 'ASC')"
+            class="btn btn-{{ selected and 'ASC' == paginatorOptions.orderDir ? 'primary' : 'default' }} btn-xs">
+        &dArr;
+    </a>
+    <a
+            onclick="paginator.setOrdering($(this), '{{ order }}', 'DESC')"
+            class="btn btn-{{ selected and 'DESC' == paginatorOptions.orderDir ? 'primary' : 'default' }} btn-xs">
+        &uArr;
+    </a>
+{% endmacro %}
+
+{% macro criteria(name, paginatorOptions) %}
+    <input name="paginatorOptions[criteria][{{ name }}]" size="6"
+           value="{{ paginatorOptions.searchCriteria(name) }}">
+    <div class="btn-group" role="group" aria-label="Opciones de busqueda">
+        <button class="btn btn-default btn-xs" aria-label="Borrar"
+                onclick="$(this).parent().prev().val('');paginator.resetAndSubmit($(this))">
+            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+        </button>
+        <button class="btn btn-default btn-xs" aria-label="Buscar"
+                onclick="paginator.resetAndSubmit($(this))">
+            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+        </button>
+    </div>
+{% endmacro %}
+
+{% macro date(name, paginatorOptions) %}
+    <input name="paginatorOptions[criteria][{{ name }}]" type="text" class="js-datepicker" size="9"
+           value="{{ paginatorOptions.searchCriteria(name) }}">
+    <div class="btn-group" role="group" aria-label="Opciones de busqueda">
+        <button class="btn btn-default btn-xs" aria-label="Borrar"
+                onclick="$(this).parent().prev().val('');paginator.resetAndSubmit($(this))">
+            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+        </button>
+        <button class="btn btn-default btn-xs" aria-label="Buscar"
+                onclick="paginator.resetAndSubmit($(this))">
+            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+        </button>
+    </div>
+{% endmacro %}

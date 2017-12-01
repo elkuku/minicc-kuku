@@ -1,0 +1,146 @@
+{% extends 'base.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% set headerString, valueString, valueString2 = '', '', '' %}
+    {% if app.user and app.user.role == 'ROLE_ADMIN' %}
+        {% for saldo in saldos %}
+            {% if saldo.data.store.user %}
+                {% set mesesDebt = (saldo.amount / (saldo.data.store.valAlq|conIva))|invert|round(1) %}
+                {% set saldoAmount = saldo.amount|invert %}
+                {% set headerString = headerString ? headerString~', "Local '~saldo.data.store.id~'"' : '"Local '~saldo.data.store.id~'"' %}
+                {% set valueString = valueString ? valueString~', '~mesesDebt : mesesDebt %}
+                {% set valueString2 = valueString2 ? valueString2~', '~saldoAmount : saldoAmount %}
+            {% endif %}
+        {% endfor %}
+
+        <script>
+            jQuery(document).ready(function () {
+                var chart1 = document.getElementById("chart1");
+                var chart2 = document.getElementById("chart2");
+                var bgColors = [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)'
+                ];
+                var borderColors = [
+                    'rgba(255,99,132,1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255,99,132,1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)'
+                ];
+                var myChart = new Chart(chart1, {
+                    type: 'bar',
+                    data: {
+                        labels: [{{ headerString|raw }}],
+                        datasets: [{
+                            label: 'Meses de deuda',
+                            data: [{{ valueString }}],
+                            backgroundColor: bgColors,
+                            borderColor: borderColors,
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {scales: {yAxes: [{ticks: {beginAtZero: true}}]}}
+                });
+                var myChart2 = new Chart(chart2, {
+                    type: 'bar',
+                    data: {
+                        labels: [{{ headerString|raw }}],
+                        datasets: [{
+                            label: 'Saldo en $',
+                            data: [{{ valueString2 }}],
+                            backgroundColor: bgColors,
+                            borderColor: borderColors,
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {scales: {yAxes: [{ticks: {beginAtZero: true}}]}}
+                });
+            });
+        </script>
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+    {% if app.user == null %}
+        <img class="img-responsive" src="images/atacames-sunset-4711.jpg"/>
+    {% else %}
+        <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+        <div class="panel panel-success">
+        {% if app.user.role == 'ROLE_ADMIN' %}
+            {% set theyOweYou = 0 %}
+            <div class="panel-heading">Bienvenido Admin</div>
+            <table class="table table-condensed table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th class="text-center">Local</th>
+                    <th>Destino</th>
+                    <th>Inquilino</th>
+                    <th class="text-right">Saldo</th>
+                    <th class="text-center">Meses</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for saldo in saldos %}
+                    {% if saldo.data.store.user %}
+                        {% set mesesDebt = saldo.amount / saldo.data.store.valAlq|conIva %}
+                        <tr>
+                            <td class="text-center">{{ saldo.data.store.id }}</td>
+                            <td>
+                                <a href="{{ path('store-transactions', {'id': saldo.data.store.id}) }}">{{ saldo.data.store.destination }}</a>
+                            </td>
+                            <td>{{ saldo.data.store.user.name }}</td>
+                            <td class="text-right">{{ saldo.amount|price|raw }}</td>
+                            <td class="text-center">{{ mesesDebt|invert|round(1, 'ceil') }}</td>
+                        </tr>
+                        {% set theyOweYou = theyOweYou + saldo.amount %}
+                    {% endif %}
+                {% endfor %}
+                </tbody>
+            </table>
+            <div class="panel-footer">
+                <h3 class="text-right">Sie schulden dir: $ {{ theyOweYou|price|raw }}</h3>
+            </div>
+            <div class="row">
+                <div class="col-xs-6"><canvas id="chart1" width="200" height="150"></canvas></div>
+                <div class="col-xs-6"><canvas id="chart2" width="200" height="150"></canvas></div>
+            </div>
+        {% else %}
+            <div class="panel-heading">Bienvenido {{ app.user.name }}</div>
+            {% if stores.count() %}
+                <table class="table">
+                    <tr>
+                        <th>Numero</th>
+                        <th>Destino</th>
+                        <th>Saldo</th>
+                    </tr>
+                    {% for store in stores %}
+                        <tr>
+                            <td>{{ store.id }}</td>
+                            <td>{{ store.destination }}</td>
+                            <td></td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% else %}
+                <h4>Usted no tiene ningun local asignado!</h4>
+            {% endif %}
+        {% endif %}
+    {% endif %}
+    </div>
+    </div>
+    </div>
+{% endblock %}

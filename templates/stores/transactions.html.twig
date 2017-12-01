@@ -1,0 +1,129 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ parent() }} - Transactions{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% set headerString = '' %}
+    {% for i in range(1, 12) %}
+        {% set month = intlDate('1966-'~i~'-1', 'MMMM') %}
+        {% set headerString = headerString ? headerString~', "'~month~'"' : '"'~month~'"' %}
+    {% endfor %}
+
+        <script type="text/javascript" src="{{ asset('assets/vendor/chart.js/dist/Chart.bundle.min.js') }}"></script>
+        <script>
+            jQuery(document).ready(function () {
+                var chart1 = document.getElementById("chart1");
+                var myChart = new Chart(chart1, {
+                    type: 'line',
+                    data: {
+                        labels: [{{ headerString|raw }}],
+                        datasets: [
+                            {
+                                label: "Pagos",
+                                fill: false,
+                                lineTension: 0.1,
+                                backgroundColor: "rgba(75,192,192,0.4)",
+                                borderColor: "rgba(75,192,192,1)",
+                                borderCapStyle: 'butt',
+                                borderDash: [],
+                                borderDashOffset: 0.0,
+                                borderJoinStyle: 'miter',
+                                pointBorderColor: "rgba(75,192,192,1)",
+                                pointBackgroundColor: "#fff",
+                                pointBorderWidth: 1,
+                                pointHoverRadius: 5,
+                                pointHoverBackgroundColor: "rgba(75,192,192,1)",
+                                pointHoverBorderColor: "rgba(220,220,220,1)",
+                                pointHoverBorderWidth: 2,
+                                pointRadius: 1,
+                                pointHitRadius: 10,
+                                data: [{{ monthPayments }}],
+                                spanGaps: false
+                            }
+                        ]
+                    },
+                    options: {scales: {yAxes: [{ticks: {beginAtZero: true}}]}}
+                });
+            });
+        </script>
+{% endblock %}
+
+{% block body %}
+    {% set saldo = saldoAnterior %}
+    {% include('_breadcrumbs.html.twig') %}
+
+    <div style="float: right">
+        <a href="{{ path('stores-edit', {'id': store.id}) }}" class="btn btn-default">Edit Local</a>
+        <a href="{{ path('store-transaction-pdf', {'id': store.id, 'year': year}) }}" class="btn btn-default">Export</a>
+        {% if store.id > 1 %}
+        <a title="Local anterior" href="{{ path('store-transactions', {'id': store.id - 1}) }}" class="btn btn-default">&lArr;</a>
+        {% else %}
+        <div title="Este es el primer local" class="btn btn-disabled">&lArr;</div>
+        {% endif %}
+        {% if store.id < stores|length %}
+        <a title="Local siguiente" href="{{ path('store-transactions', {'id': store.id + 1}) }}" class="btn btn-default">&rArr;</a>
+        {% else %}
+        <div title="Este es el ultimo local" class="btn btn-disabled">&rArr;</div>
+        {% endif %}
+    </div>
+
+    <h2>Transacciones</h2>
+
+    <h4>Local {{ store.id }} - {{ store.destination }} - {{ store.user ? store.user.name : 'Desocupado' }}</h4>
+
+    <form method="post">
+        <table class="table table-bordered table-condensed table-hover table-striped">
+            <tr>
+                <th>Fecha
+                    <select name="year" onchange="form.submit()">
+                        {% for y in "now"|date("Y")..2005 %}
+                            <option{{ y == year ? ' selected="selected"' : '' }}>{{ y }}</option>
+                        {% endfor %}
+                    </select>
+                </th>
+                <th>Inquilino</th>
+                <th>Detalle</th>
+                <th class="text-right">Monto</th>
+                <th class="text-right">Saldo</th>
+                <th class="text-center">Actions</th>
+            </tr>
+            <tr>
+                <td>{{ intlDate(year~'-01-01', 'MMMM d') }}</td>
+                <td></td>
+                <td>Saldo Anterior</td>
+                <td class="text-right">{{ saldoAnterior|price|raw }}</td>
+                <td class="text-right">{{ saldoAnterior|price|raw }}</td>
+                <td></td>
+            </tr>
+            {% for transaction in transactions %}
+                {% set saldo = saldo + transaction.amount %}
+                {% if transaction.type.name == 'Ajuste' %}
+                    {% set style = ' class="warning"' %}
+                {% elseif transaction.type.name == 'Alquiler' %}
+                    {% set style = ' class="success"' %}
+                {% else %}
+                    {% set style = '' %}
+                {% endif %}
+                <tr{{ style|raw }}>
+                    <td>{{ intlDate(transaction.date, 'MMMM d') }}</td>
+                    <td>{{ transaction.user.name }}</td>
+                    <td>{{ transaction.type.name }}</td>
+                    <td class="text-right">{{ transaction.amount|price|raw }}</td>
+                    <td class="text-right">{{ saldo|price|raw }}</td>
+                    <td>
+                        <a href="{{ path('transaction-edit', {'id': transaction.id, 'view': 'store-transactions'}) }}">Edit</a>
+                        <a href="{{ path('transaction-delete', {'id': transaction.id, 'view': 'store-transactions'}) }}">Delete</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6" class="alert-warning text-center">No Transactions found</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </form>
+
+    <canvas id="chart1" width="200" height="50"></canvas>
+
+{% endblock %}

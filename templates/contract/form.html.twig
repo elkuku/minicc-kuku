@@ -1,0 +1,137 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ parent() }} - About{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('assets/vendor/tinymce/tinymce.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/app/js/taxCalculator.js') }}"></script>
+    <script>
+        tinymce.init({
+            selector: 'textarea',
+            height: 500,
+            menubar: false,
+            plugins: [
+                'advlist autolink lists link image charmap print preview anchor',
+                'searchreplace visualblocks code fullscreen',
+                'insertdatetime media table contextmenu paste code'
+            ],
+            toolbar: 'undo redo | insert | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent',
+            content_css: '//www.tinymce.com/css/codepen.min.css'
+        });
+
+        var taxCalculator = new taxCalculator({{ ivaMultiplier }})
+
+    </script>
+{% endblock %}
+{% block body %}
+
+    {{ form_start(form) }}
+
+    <div class="pull-right">
+        <button type="submit" class="btn btn-default btn-success">Guardar</button>
+        <a class="btn btn-default" href="{{ path('contract-list') }}">Cancelar</a>
+    </div>
+
+    <h2>Contrato</h2>
+
+    {# Check if this is the template - only display the text #}
+    <div {{ form.vars.data.id == 1 ? ' style="display: none"' : '' }}>
+        <table>
+            <tr>
+                <th>Fecha</th><th>Local</th><th>Destination</th>
+            </tr>
+            <tr>
+                <td>{{ form_widget(form.date) }}</td>
+                <td>{{ form_widget(form.storeNumber) }}</td>
+                <td>{{ form_widget(form.destination) }}</td>
+            </tr>
+        </table>
+
+        <table>
+            <tr>
+                <th class="alert-warning">Alquiler</th><th>Garantia</th>
+            </tr>
+            <tr valign="top">
+                <td class="alert-warning">
+                    ConIVA: <input id="val_alq_coniva"/><br/>
+                    <a class="btn btn-default btn-xs" onclick="$('#contract_valAlq').val(taxCalculator.sinIva($('#val_alq_coniva').val()))">&dArr; Recalc &dArr;</a>
+                    <a class="btn btn-default btn-xs" onclick="$('#val_alq_coniva').val(taxCalculator.conIva($('#contract_valAlq').val()))">&uArr; Recalc &uArr;</a>
+                    <br/>
+                    Sin IVA{{ form_widget(form.valAlq) }}</td>
+                <td>{{ form_widget(form.valGarantia) }}</td>
+            </tr>
+        </table>
+        <h4>Inquilino</h4>
+        <table>
+            <tr>
+                <th>Genero</th><th>Nombre</th><th>C.I.</th>
+            </tr>
+            <tr>
+                <td>{{ form_widget(form.gender) }}</td>
+                <td>{{ form_widget(form.inqNombreApellido) }}</td>
+                <td>{{ form_widget(form.inqCi) }}</td>
+            </tr>
+        </table>
+
+    <h4>Assesorios</h4>
+
+    <div class="row">
+        <div class="col-sm-2">{{ form_label(form.cntLanfort) }}
+            {{ form_widget(form.cntLanfort) }}
+        </div>
+        <div class="col-sm-2">{{ form_label(form.cntNeon) }}
+            {{ form_widget(form.cntNeon) }}
+        </div>
+        <div class="col-sm-2">{{ form_label(form.cntSwitch) }}
+            {{ form_widget(form.cntSwitch) }}
+        </div>
+        <div class="col-sm-2">{{ form_label(form.cntToma) }}
+            {{ form_widget(form.cntToma) }}
+        </div>
+        <div class="col-sm-2">{{ form_label(form.cntVentana) }}
+            {{ form_widget(form.cntVentana) }}
+        </div>
+        <div class="col-sm-2">{{ form_label(form.cntLlaves) }}
+            {{ form_widget(form.cntLlaves) }}
+        </div>
+    </div>
+
+    <h4>Medidores</h4>
+
+    <div class="row">
+        <div class="col-sm-2">{{ form_label(form.cntMedElec) }}
+            {{ form_widget(form.cntMedElec) }}
+        </div>
+        <div class="col-sm-5">{{ form_label(form.medElectrico) }}
+            {{ form_widget(form.medElectrico) }}
+        </div>
+        <div class="col-sm-5"></div>
+        <div class="row">
+        </div>
+        <div class="col-sm-2">{{ form_label(form.cntMedAgua) }}
+            {{ form_widget(form.cntMedAgua) }}
+        </div>
+        <div class="col-sm-5">{{ form_label(form.medAgua) }}
+            {{ form_widget(form.medAgua) }}
+        </div>
+        <div class="col-sm-5">
+        </div>
+    </div>
+
+    </div><!-- container -->
+
+    <h4>Contrato</h4>
+
+    {{ form_errors(form.text) }}
+    {{ form_widget(form.text) }}
+
+    <div class="pull-right">
+        <button type="submit" class="btn btn-default btn-success">Guardar</button>
+        <a class="btn btn-default" href="{{ path('contract-list') }}">Cancelar</a>
+    </div>
+
+    {{ form_end(form) }}
+
+{% endblock %}
+

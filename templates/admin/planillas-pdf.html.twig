@@ -1,0 +1,97 @@
+{% extends 'base-pdf.html.twig' %}
+
+{% block stylesheets %}
+    <style>
+        body {
+            font-size: 12px;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    {% for store in stores %}
+        {% if store.user %}
+            {% set saldoIni = storeData[store.id].saldoIni - store.valAlq|conIva %}
+            <div style="page-break-inside: avoid;">
+            <hr/>
+            <table>
+                <tr>
+                    <td>
+                        Local {{ store.id }} - {{ store.destination }}<br/>
+                        Alquiler mensual: $ {{ store.valAlq|conIva|price|raw }}
+                    </td>
+                    <th style="font-size: 1.2em">Planilla</th>
+                    <td class="text-right">
+                        MiniCC KuKu - Atacames<br/>
+                        {{ intlDate(factDate, "d 'de' MMMM YYYY") }}</td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        Inquilino: {{ store.user.name }}
+                    </td>
+                </tr>
+            </table>
+            <hr/>
+            <table>
+                <tr valign="top">
+                    <td width="50%">
+                        <table>
+                            <tr>
+                                <th>Movimientos de {{ intlDate(prevDate, 'MMMM') }}</th>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Saldo al {{ intlDate(prevDate, "d 'de' MMMM") }}</td>
+                                <td class="text-right">{{ saldoIni|invert|price|raw }}</td>
+                            </tr>
+                            {% for transaction in storeData[store.id].transactions %}
+                                {% set saldoIni = saldoIni + transaction.amount %}
+                                <tr>
+                                    <td>{{ intlDate(transaction.date, "d 'de' MMMM") }}</td>
+                                    <td>{{ transaction.type.name }}</td>
+                                    <td class="text-right">{{ transaction.amount|invert|price|raw }}</td>
+                                </tr>
+
+                            {% else %}
+                                <tr>
+                                    <td colspan="3" align="center">No hubo pagos!</td>
+                                </tr>
+                            {% endfor %}
+                            <tr>
+                                <td colspan="2">Saldo de {{ intlDate(prevDate, 'MMMM') }}</td>
+                                <td class="text-right"
+                                    style="border-top: 1px solid silver">{{ saldoIni|invert|price|raw }}</td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td width="50%" style="padding-left: 10px">
+                        <table>
+                            <tr>
+                                <td>Saldo de {{ intlDate(prevDate, 'MMMM') }}</td>
+                                <td class="text-right">{{ saldoIni|invert|price|raw }}</td>
+                            </tr>
+                            <tr>
+                                <td>Alquiler de {{ intlDate(factDate, 'MMMM') }}</td>
+                                <td class="text-right">{{ store.valAlq|conIva|price|raw }}</td>
+                            </tr>
+                            <tr>
+                                <td>Saldo a pagar</td>
+                                <td class="text-right" style="font-size: 1.2em; border-top: 1px solid silver">
+                                    $ {{ (saldoIni - store.valAlq|conIva)|invert|price|raw }}</td>
+                            </tr>
+                            <tr>
+                                <th colspan="2">Meses de
+                                    deuda: {{ (-(saldoIni - store.valAlq|conIva) / store.valAlq|conIva)|round(1) }}</th>
+                            </tr>
+                        </table>
+
+                    </td>
+                </tr>
+            </table>
+            <hr/>
+            Para depositos utilice la cuenta de ahorros del Banco del Pichincha No. 390 356 3900 a nombre de Nikolai Plath.
+            <hr/>
+        {% endif %}
+        </div>
+    {% endfor %}
+
+{% endblock %}

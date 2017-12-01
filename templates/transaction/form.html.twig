@@ -1,0 +1,143 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ parent() }} - Edit Transaction{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css') }}"/>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
+    <script>
+        jQuery(document).ready(function () {
+            $('.js-datepicker').datepicker({
+                format: 'yyyy-mm-dd'
+            });
+        });
+
+        function searchDepId(e) {
+            var prefix = 'transaction_';
+            var documentIdElement = $('#'+prefix+'document');
+            var destElement = $('#'+prefix+'depId');
+            var dateElement = $('#'+prefix+'date');
+            var methodElement = $('#'+prefix+'method');
+            var amountElement = $('#'+prefix+'amount');
+
+            var messageElement = $('#messageContainer');
+
+            var documentId = documentIdElement.val();
+
+            if(!documentId) {
+                messageElement.html('<div class="alert alert-warning">Introduzca el documento</div>');
+                documentIdElement.focus();
+                return false;
+            }
+
+            $.ajax({
+                type: 'POST',
+                url: '{{ path('lookup-depo') }}',
+                data: 'document_id=' + documentId,
+                beforeSend: function() {
+                    messageElement.html(
+                        '<div class="progress"><div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar"' +
+                        ' style="width:100%">Procesando...</div></div>');
+                },
+                success: function (response) {
+                    if (response.error) {
+                        messageElement.html('<div class="alert alert-danger">'+response.error+'</div>');
+                        documentIdElement.focus();
+                    }
+                    else {
+                        messageElement.html('<div class="alert alert-success">Depósito encontrado.</div>');
+                        console.log(response.data);
+                        var depo = response.data[0];
+                        documentIdElement.val(depo.document);
+                        destElement.val(depo.id);
+                        dateElement.val(depo.date);
+                        amountElement.val(depo.amount);
+                        methodElement.val(2);
+                    }
+                }
+            });
+
+            return false;
+        }
+    </script>
+{% endblock %}
+
+{% block body %}
+
+    {{ form_start(form) }}
+
+    <div class="pull-right">
+        <button type="submit" class="btn btn-default btn-success">Guardar</button>
+        <a class="btn btn-default" href="/{{ redirect }}">Cancelar</a>
+    </div>
+
+    <h3>Editar Transacion</h3>
+
+    <div class="row">
+        <div class="col-sm-3">
+            {{ form_label(form.date) }}
+            {{ form_widget(form.date) }}
+        </div>
+        <div class="col-sm-3">
+            {{ form_label(form.type) }}
+            {{ form_widget(form.type) }}
+        </div>
+        <div class="col-sm-3">
+            {{ form_label(form.amount) }}
+            {{ form_widget(form.amount) }}
+        </div>
+        <div class="col-sm-3">
+            {{ form_label(form.recipeNo) }}
+            {{ form_widget(form.recipeNo) }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6">
+            {{ form_label(form.store) }}
+            {{ form_widget(form.store) }}
+        </div>
+        <div class="col-sm-6">
+            {{ form_label(form.user) }}
+            {{ form_widget(form.user) }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-3">
+            {{ form_label(form.method) }}
+            {{ form_widget(form.method) }}
+        </div>
+        <div class="col-sm-3">
+            {{ form_label(form.document) }}
+            {{ form_widget(form.document) }}
+        </div>
+        <div class="col-sm-3">
+            <label class="col-sm-2 control-label">Lookup</label><br />
+            <a href="javascript:" onclick="searchDepId()" class="btn btn-default btn-info form-control">&raquo; &raquo; &raquo;</a>
+            <div id="messageContainer"></div>
+        </div>
+        <div class="col-sm-3">
+            {{ form_label(form.depId) }}
+            {{ form_widget(form.depId) }}
+        </div>
+    </div>
+
+    {{ form_widget(form) }}
+
+    <input type="hidden" name="redirect" value="{{ redirect }}" />
+
+    <div class="pull-right">
+        <button type="submit" class="btn btn-default btn-success">Guardar</button>
+        <a class="btn btn-default" href="/{{ redirect }}">Cancelar</a>
+    </div>
+
+    {{ form_end(form) }}
+
+{% endblock %}
+

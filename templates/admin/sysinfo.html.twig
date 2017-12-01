@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ parent() }} - System Info{% endblock %}
+
+{% block body %}
+
+    <h2>System Info</h2>
+
+    <ul>
+        <li>PHP Version: {{ info.phpVersion }}</li>
+        <li>Mailer Password: {{ info.mailerPassword }}</li>
+    </ul>
+{% endblock %}

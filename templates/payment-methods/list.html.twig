@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ parent() }} - Payment methods{% endblock %}
+
+{% block body %}
+    <div style="float: right">
+        <a href="{{ path('payment-methods-new') }}" class="btn btn-info">Nuevo</a>
+    </div>
+
+    <h2>Payment methods</h2>
+
+    <table class="table table-bordered table-condensed table-hover table-striped">
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Action</th>
+        </tr>
+        {% for method in paymentMethods %}
+            <tr>
+                <td>{{ method.id }}</td>
+                <td>{{ method.name }}</td>
+                <td>
+                    <a href="{{ path('payment-methods-edit', {'id': method.id}) }}">Edit</a>
+                    <a href="{{ path('payment-methods-delete', {'id': method.id}) }}">Delete</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="2">No Methods Defined!!</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

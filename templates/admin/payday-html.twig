@@ -1,0 +1,141 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ parent() }} - Pay Day{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css') }}"/>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('assets/vendor/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
+    <script>
+        jQuery(document).ready(function () {
+            $('.js-datepicker').datepicker();
+        });
+        function addRow(e) {
+            $('#paymentsTable tbody').append('<tr>' + $(e).parent().parent().html() + '</tr>');
+            $('.js-datepicker').datepicker();
+            e.remove();
+        }
+        function searchDepId(e) {
+            var documentIdElement = e.prev();
+            var destElement = e.next();
+            var dateElement = e.closest('td').prev().prev().prev().find('input');
+            var methodElement = e.closest('td').prev().find('select');
+            var amountElement = e.closest('td').next().next().find('input');
+
+            var messageElement = $('#messageContainer');
+
+            var documentId = documentIdElement.val();
+
+            if (!documentId) {
+                messageElement.html('<div class="alert alert-warning">Introduzca el documento</div>');
+                documentIdElement.focus();
+                return false;
+            }
+
+            $.ajax({
+                type: 'POST',
+                url: '{{ path('lookup-depo') }}',
+                data: 'document_id=' + documentId,
+                beforeSend: function () {
+                    messageElement.html(
+                        '<div class="progress"><div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar"' +
+                        ' style="width:100%">Procesando...</div></div>');
+                },
+                success: function (response) {
+                    if (response.error) {
+                        messageElement.html('<div class="alert alert-danger">' + response.error + '</div>');
+                        documentIdElement.focus();
+                    }
+                    else {
+                        messageElement.html('<div class="alert alert-success">Depósito encontrado.</div>');
+                        console.log(response.data);
+                        var depo = response.data[0];
+                        documentIdElement.val(depo.document);
+                        destElement.val(depo.id);
+                        dateElement.val(depo.date);
+                        amountElement.val(depo.amount);
+                        methodElement.val(2);
+                    }
+                }
+            });
+
+            return false;
+        }
+    </script>
+{% endblock %}
+
+{% block body %}
+
+    <div class="row">
+        <div class="col-xs-4">
+            <h3>Pay Day</h3>
+        </div>
+        <div class="col-xs-8" id="messageContainer">
+        </div>
+    </div>
+
+    <form method="post" action="{{ path('pay-day') }}">
+        <table id="paymentsTable">
+            <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Local</th>
+                <th>Forma</th>
+                <th>Documento</th>
+                <th>Factura</th>
+                <th>Monto</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>
+                    <input name="payments[date_cobro][]" type="text" class="js-datepicker" size="9">
+                </td>
+                <td>
+                    <select name="payments[store][]">
+                        <option>Local</option>
+                        {% for store in stores %}
+                            <option value="{{ store.id }}">
+                                {{ store.id }}
+                                - {{ store.destination }}
+                                - {{ store.user.name|short_name }}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+                <td>
+                    <select name="payments[method][]">
+                        {% for method in paymentMethods %}
+                            <option value="{{ method.id }}">{{ method.name }}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+                <td>
+                    <input name="payments[document][]" type="text" size="7">
+                    <span class="btn btn-default btn-xs" onclick="searchDepId($(this))">&rArr;</span>
+                    <input name="payments[depId][]" type="text" size="7">
+                </td>
+                <td>
+                    <input name="payments[recipe][]" type="text" size="7">
+                </td>
+                <td>
+                    <input name="payments[amount][]" type="text" size="7">
+                </td>
+                <td>
+                    <a class="btn btn-xs btn-info" onclick="addRow(this)">ADD</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="well">
+            <button type="submit" class="btn btn-success">A Cobrar</button>
+
+        </div>
+
+    </form>
+{% endblock %}

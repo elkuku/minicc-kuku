@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% import '_formfields.html.twig' as field %}
+
+{% block title %} {{ parent() }} - About{% endblock %}
+
+{% block body %}
+    <div style="float: right;">
+        <a class="btn btn-default" href="{{ path('contracts-template') }}">Plantilla</a>
+        <form action="{{ path('contracts-new') }}" method="post" class="form-inline">
+            <select name="store">
+                <option value="0">Local ...</option>
+                {% for store in stores %}
+                    <option value="{{ store.id }}">{{ store.id }} - {{ store.destination }}</option>
+                {% endfor %}
+            </select>
+            <select name="user">
+                <option value="0">Usuario ...</option>
+                {% for user in users %}
+                    <option value="{{ user.id }}">{{ user.name }}</option>
+                {% endfor %}
+            </select>
+            <button class="btn btn-success" type="submit">Nuevo Contrato</button>
+        </form>
+    </div>
+    <h2>Contratos</h2>
+
+    <form method="post">
+        <table class="table table-bordered table-condensed table-hover table-striped">
+            <tr>
+                <th>Local
+                    <select name="store_id" onchange="form.submit()">
+                        <option value="0">Local ...</option>
+                        {% for store in stores %}
+                            <option value="{{ store.id }}"{{ store.id == storeId ? ' selected="selected"' : '' }}>
+                                {{ store.id }} - {{ store.destination }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </th>
+                <th>Fecha
+                    {{ field.selectYear(year) }}
+                </th>
+                <th>Inquilino</th>
+                <th>Action</th>
+            </tr>
+            {% for contract in contracts %}
+                <tr>
+                    <td>{{ contract.storeNumber }}</td>
+                    <td>{{ intlDate(contract.date) }}</td>
+                    <td>{{ contract.inqNombreapellido }}</td>
+                    <td>
+                        <a href="{{ path('contracts-edit', {'id': contract.id}) }}">Edit</a>
+                        <a href="{{ path('contract-generate', {'id': contract.id}) }}">Generate</a>
+                        <a href="{{ path('payment-methods-delete', {'id': contract.id}) }}">Delete</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4" class="alert-warning text-center">No hay contractos definidos!!</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </form>
+
+{% endblock %}

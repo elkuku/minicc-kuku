@@ -1,0 +1,54 @@
+{% extends 'base-pdf.html.twig' %}
+
+{% block body %}
+<div style="float: right">
+    Fecha de impresion: {{ 'now'|date('d m Y') }}
+
+</div>
+<h2>Lista de Inquilinos</h2>
+{% for user in users %}
+    <table>
+        <tr>
+            <td width="100">Local</td>
+            <td>{% for store in user.stores %}{{ store.id }}&nbsp;{% endfor %}</td>
+        </tr>
+        <tr>
+            <td>{{ 2 == user.gender.id ? 'Sra.' : 'Sr.' }}:</td>
+            <td>
+                {{ user.name }}
+            </td>
+        </tr>
+        <tr>
+            <td>C.I.:</td>
+            <td>{{ user.inqRuc }}</td>
+        </tr>
+        {% if user.telefono %}
+        <tr>
+            <td>Telefono:</td>
+            <td>{{ user.telefono }}</td>
+        </tr>
+        {% endif %}
+        {% if user.telefono2 %}
+        <tr>
+            <td>Telefono:</td>
+            <td>{{ user.telefono2 }}</td>
+        </tr>
+        {% endif %}
+        {% if user.direccion %}
+        <tr>
+            <td>Direccion:</td>
+            <td>{{ user.direccion }}</td>
+        </tr>
+        {% endif %}
+        {% if user.email %}
+        <tr>
+            <td>e-mail:</td>
+            <td>{{ user.email }}</td>
+        </tr>
+        {% endif %}
+    </table>
+    <hr />
+
+{% endfor %}
+
+{% endblock %}

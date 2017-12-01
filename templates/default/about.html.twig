@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ parent() }} - About{% endblock %}
+
+{% block body %}
+    <h3>About</h3>
+    <div class="well text-center">
+        <p>Este sitio es para los clientes del MiniCC KuKu - Atacames - Ecuador</p>
+        <p>This site is for the clients of the MiniCC KuKu - Atacames - Ecuador</p>
+        {% if not user %}
+            <a class="btn btn-default btn-success" href="{{ path('login') }}">Ingreso para Inquilinos</a>
+        {% endif %}
+    </div>
+{% endblock %}

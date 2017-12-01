@@ -1,0 +1,147 @@
+{% extends 'base.html.twig' %}
+
+{% import '_formfields.html.twig' as field %}
+
+{% block title %} {{ parent() }} - Pagos por Año{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(function () {
+            $('table').delegate('td', 'mouseover mouseleave', function (e) {
+                if (e.type == 'mouseover') {
+                    $(this).parent().addClass('tableHover');
+                    $('colgroup').eq($(this).index()).addClass('tableHover');
+                } else {
+                    $(this).parent().removeClass('tableHover');
+                    $('colgroup').eq($(this).index()).removeClass('tableHover');
+                }
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block body %}
+
+    <form method="get">
+        <h3>Pagos por Año {{ field.selectYear(year) }}</h3>
+    </form>
+
+    {% set maxLoc, newRow, totalLocal = 10, false, [] %}
+    {% set totalDia, totalTotal, totalAnoTotal = 0, 0, 0 %}
+
+    {% for loc in range(1, maxLoc) %}
+        {% set totalLocal = totalLocal|merge({('local'~loc): 0}) %}
+    {% endfor %}
+
+    {#
+$total_IVA = 0;
+$total_ano_total = 0;
+$total_ano_IVA = 0;
+#}
+    <table class="table table-bordered table-condensed0">
+        <colgroup></colgroup>
+        {% for loc in range(1, maxLoc) %}
+            <colgroup></colgroup>
+        {% endfor %}
+        <colgroup></colgroup>
+        <colgroup></colgroup>
+        <colgroup></colgroup>
+        <colgroup></colgroup>
+
+        {% for mes in range(1, 12) %}
+            <tr>
+                <th colspan="15" class="text-center alert-info">
+                    {{ intlDate(year~'-'~mes~'-1', 'MMMM')|capitalize }}
+                </th>
+            </tr>
+            <tr>
+                <th class="text-center">Dia</th>
+                {% for loc in range(1, maxLoc) %}
+                    <th class="text-center">{{ loc }}</th>
+                {% endfor %}
+                <th class="text-right">TOTAL</th>
+                <th class="text-right">IVA</th>
+                <th class="text-right">10%</th>
+                <th class="text-right">Deposito</th>
+            </tr>
+            {% for dia in range(1, 31) %}
+                {% for loc in range(1, maxLoc) %}
+                    {% if transactions[loc][mes][dia] is defined %}
+                        {% set newRow = true %}
+                    {% endif %}
+                {% endfor %}
+                {% if newRow %}
+                    <tr>
+                    <td class="text-center" title="{{ dia~'.'~mes~'.'~year }}">{{ dia }}</td>
+                    {% for loc in range(1, maxLoc) %}
+                        {% if transactions[loc][mes][dia] is defined %}
+                            <td class="text-right">
+                                {% for t in transactions[loc][mes][dia] %}
+                                    {% set totalDia = totalDia + t.amount %}
+                                    {% set totalLocal = totalLocal|merge({('local'~loc): totalLocal['local'~loc]+t.amount}) %}
+                                    <a href="{{ path('transaction-edit', {'id': t.id, 'view': 'pagos-por-ano'}) }}">{{ t.amount|price|raw }}</a>
+                                {% endfor %}
+                            </td>
+                        {% else %}
+                            <td>&nbsp;</td>
+                        {% endif %}
+                    {% endfor %}
+
+                    {#
+                        $IVA = ($total_dia / 100) * $valIVA;
+
+                        $total_IVA += $IVA;
+                        #}
+                    {% set totalTotal = totalTotal + totalDia %}
+                    <td class="text-right">{{ totalDia|price|raw }}</td>
+                    <td class="text-right"><?= number_format($IVA, 2, ",", "."); ?></td>
+                    <td class="text-right"><?= number_format($diezproz, 2, ",", "."); ?></td>
+                    <td class="text-right"><?= number_format($deposito, 2, ",", "."); ?></td>
+                {% endif %}
+                {% set newRow, totalDia = false, 0 %}
+
+                </tr>
+            {% endfor %}
+            <tr>
+                <th>TOTALES</th>
+                {% for loc in range(1, maxLoc) %}
+                    <th class="text-right">
+                        <strong>
+                            {{ totalLocal['local'~loc] ? totalLocal['local'~loc]|price|raw : '' }}
+                            {% set totalLocal = totalLocal|merge({('local'~loc): 0}) %}
+                        </strong>
+                    </th>
+                {% endfor %}
+                <th class="text-right">{{ totalTotal|price|raw }}</th>
+                <td class="text-right"><strong><?= number_format($total_IVA, 2, ",", "."); ?></strong>
+                </td>
+                <td class="text-right">
+                    <strong><?= number_format($total_diezproz, 2, ",", "."); ?></strong></td>
+                <td class="text-right">
+                    <strong><?= number_format($total_deposito, 2, ",", "."); ?></strong></td>
+            </tr>
+            {% set totalAnoTotal = totalAnoTotal + totalTotal %}
+            {% set totalTotal = 0 %}
+            {#
+        $total_ano_IVA += $total_IVA;
+        $total_IVA = 0;
+        #}
+        {% endfor %}
+        <tr>
+            <th>Totales del A&ntilde;o:</th>
+            <td colspan="{{ maxLoc }}"></td>
+            <td class="text-right">{{ totalAnoTotal|price|raw }}</td>
+            <td class="text-right">Total IVA :
+                <?= number_format($total_ano_IVA, 2, ",", "."); ?>
+            </td>
+            <td class="text-right">Total 10% :
+                <?= number_format($total_ano_diezproz, 2, ",", "."); ?>
+            </td>
+            <td class="text-right">Total deposito :
+                <?= number_format($total_ano_deposito, 2, ",", "."); ?>
+            </td>
+        </tr>
+    </table>
+
+{% endblock %}
