@@ -10,7 +10,6 @@
         {% set headerString = headerString ? headerString~', "'~month~'"' : '"'~month~'"' %}
     {% endfor %}
 
-        <script type="text/javascript" src="{{ asset('assets/vendor/chart.js/dist/Chart.bundle.min.js') }}"></script>
         <script>
             jQuery(document).ready(function () {
                 var chart1 = document.getElementById("chart1");
