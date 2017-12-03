@@ -7,10 +7,9 @@
 
     <title>{% block title %}MiniCC KuKu{% endblock %}</title>
 
-    <link rel="icon" type="image/x-icon" href="favicon.ico"/>
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
 
-    <link rel="stylesheet" type="text/css" media="screen"
-          href="build/css/app.css"/>
+    <link rel="stylesheet" type="text/css" media="screen" href="{{ asset('build/css/app.css') }}"/>
 
     {% block stylesheets %}{% endblock %}
 
@@ -35,7 +34,7 @@
 {% include ('_footer.html.twig') %}
 
 {% block javascripts %}
-    <script type="text/javascript" src="build/js/app.js"></script>
+    <script type="text/javascript" src="{{ asset('build/js/app.js') }}"></script>
 {% endblock %}
 
 </body>

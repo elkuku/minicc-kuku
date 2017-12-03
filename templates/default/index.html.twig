@@ -75,7 +75,7 @@
 
 {% block body %}
     {% if app.user == null %}
-        <img class="img-responsive" src="images/atacames-sunset-4711.jpg"/>
+        <img class="img-responsive" src="{{ asset('images/atacames-sunset-4711.jpg') }}"/>
     {% else %}
         <div class="row">
         <div class="col-md-10 col-md-offset-1">
