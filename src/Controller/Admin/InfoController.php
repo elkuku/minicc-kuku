@@ -25,7 +25,7 @@ class InfoController extends Controller
             [
                 'info' => [
                     'phpVersion'     => PHP_VERSION,
-                    'mailerPassword' => $this->getParameter('mailer_password') ? 'set' : 'NOT SET',
+                    'mailerPassword' => getenv('mailer_password') ? 'set' : 'NOT SET',
                 ],
             ]
         );
