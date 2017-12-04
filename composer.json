@@ -18,6 +18,7 @@
         "symfony/framework-bundle": "^4.0",
         "symfony/lts": "^4@dev",
         "symfony/security-bundle": "^4.0@RC",
+        "symfony/swiftmailer-bundle": "^3.1",
         "symfony/twig-bundle": "^4.0@RC",
         "symfony/validator": "^4.0",
         "symfony/webpack-encore-pack": "^1.0",
