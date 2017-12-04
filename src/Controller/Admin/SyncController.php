@@ -180,23 +180,31 @@ class SyncController extends Controller
      */
     public function backupAction()
     {
-        $dbUser = $this->getParameter('database_user');
-        $dbPass = $this->getParameter('database_password');
-        $dbName = $this->getParameter('database_name');
+	    $pattern = '#mysql://(.+)\:(.+)@127.0.0.1:3306/(.+)#';
 
-        $fileName = date('Y-m-d').'_backup.gz';
+	    preg_match($pattern, getenv('DATABASE_URL'), $matches);
 
-        $cmd = sprintf('mysqldump -u%s -p%s %s|gzip 2>&1', $dbUser, $dbPass, $dbName);
+	    if (4 != count($matches))
+	    {
+		    throw new \UnexpectedValueException('Error parsing the database URL.');
+	    }
 
-        ob_start();
-        passthru($cmd, $retVal);
-        $gzip = ob_get_clean();
+        $dbUser = $matches[1]; //$this->getParameter('database_user');
+        $dbPass = $matches[1]; //$this->getParameter('database_password');
+        $dbName = $matches[1]; //$this->getParameter('database_name');
 
-        if ($retVal) {
-            throw new \RuntimeException('Error creating DB backup: '.$gzip);
-        }
+	    $cmd = sprintf('mysqldump -u%s -p%s %s|gzip 2>&1', $dbUser, $dbPass, $dbName);
 
-        $mime = 'application/x-gzip';
+	    ob_start();
+	    passthru($cmd, $retVal);
+	    $gzip = ob_get_clean();
+
+	    if ($retVal) {
+		    throw new \RuntimeException('Error creating DB backup: '.$gzip);
+	    }
+
+	    $fileName = date('Y-m-d').'_backup.gz';
+	    $mime = 'application/x-gzip';
 
         $message = (new \Swift_Message('Backup', '<h3>Backup</h3>Date: '.date('Y-m-d'), 'text/html'))
             ->attach(new \Swift_Attachment($gzip, $fileName, $mime))
