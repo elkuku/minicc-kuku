@@ -24,8 +24,7 @@ class InfoController extends Controller
             'admin/sysinfo.html.twig',
             [
                 'info' => [
-                    'phpVersion'     => PHP_VERSION,
-                    'mailerPassword' => getenv('mailer_password') ? 'set' : 'NOT SET',
+                    'phpVersion' => PHP_VERSION,
                 ],
             ]
         );
