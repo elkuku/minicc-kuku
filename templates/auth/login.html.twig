@@ -4,9 +4,7 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <script>
-        $('#username').focus();
-    </script>
+        <script type="text/javascript" src="{{ asset('build/js/login.js') }}"></script>
 {% endblock %}
 
 {% block body %}

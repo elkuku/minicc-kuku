@@ -1,8 +1,8 @@
-var $ = require('jquery');
+//var $ = require('jquery');
 
 // This seems legacy stuff...
 window.$ = $;
-window.jQuery = $;
+//window.jQuery = $;
 
 require('bootstrap-sass');
 
