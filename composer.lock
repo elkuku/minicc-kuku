@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "45daec1c6ff90d540e30ca70b59ea5f0",
+    "content-hash": "3401deb86e2d1b975494fad2ed13cf61",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -959,6 +959,42 @@
                 "validator"
             ],
             "time": "2017-11-15T23:40:40+00:00"
+        },
+        {
+            "name": "elkuku/intl-numbers-to-words",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/elkuku/IntlNumbersToWords.git",
+                "reference": "ab6a1a8844b1239f01bb18ee9e29c80743baf7e6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/elkuku/IntlNumbersToWords/zipball/ab6a1a8844b1239f01bb18ee9e29c80743baf7e6",
+                "reference": "ab6a1a8844b1239f01bb18ee9e29c80743baf7e6",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^6.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "IntlNumbersToWords": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Nikolai Plath",
+                    "email": "der.el.kuku@gmail.com"
+                }
+            ],
+            "description": "Convert numbers to words in many languages",
+            "time": "2017-03-17T23:31:33+00:00"
         },
         {
             "name": "h4cc/wkhtmltopdf-amd64",
@@ -4262,6 +4298,7 @@
     "aliases": [],
     "minimum-stability": "RC",
     "stability-flags": {
+        "elkuku/intl-numbers-to-words": 20,
         "knplabs/knp-snappy-bundle": 20,
         "symfony/debug-bundle": 5,
         "symfony/lts": 20,

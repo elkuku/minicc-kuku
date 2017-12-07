@@ -59,6 +59,9 @@
     "egulias/email-validator": {
         "version": "2.1.3"
     },
+    "elkuku/intl-numbers-to-words": {
+        "version": "dev-master"
+    },
     "h4cc/wkhtmltopdf-amd64": {
         "version": "0.12.3"
     },
