@@ -62,7 +62,7 @@ class StoreController extends AbstractController
             [
                 'form'          => $form->createView(),
                 'store'         => $store,
-                'ivaMultiplier' => 1 + getenv('value_iva') / 100,
+                'ivaMultiplier' => getenv('value_iva'),
             ]
         );
     }
@@ -99,7 +99,7 @@ class StoreController extends AbstractController
             [
                 'form'          => $form->createView(),
                 'store'         => $store,
-                'ivaMultiplier' => 1 + getenv('value_iva') / 100,
+                'ivaMultiplier' => getenv('value_iva'),
             ]
         );
     }

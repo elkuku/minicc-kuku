@@ -4,9 +4,8 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <script type="text/javascript" src="{{ asset('bundles/app/js/taxCalculator.js') }}"></script>
     <script>
-        var taxCalculator = new taxCalculator({{ ivaMultiplier }})
+        var taxCalculator = new tax({{ ivaMultiplier }})
     </script>
 {% endblock %}
 
