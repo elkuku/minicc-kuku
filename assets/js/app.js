@@ -16,6 +16,8 @@ window.tax = require('./taxcalc.js');
 var pag = require('./pagination.js');
 window.paginator = new pag();
 
+window.PayDay = require('./payday');
+
 $(document).ready(function() {
-    $('[data-toggle="popover"]').popover();
+    $('.js-datepicker').datepicker();
 });

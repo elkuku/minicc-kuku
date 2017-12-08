@@ -4,13 +4,7 @@
 
 {% block javascripts %}
     {{ parent() }}
-        <script type="text/javascript" src="{{ asset('build/js/login.js') }}"></script>
-    <script>
-
-        var taxcalc = new tax(12);
-        console.log(taxcalc.sinIva(100));
-        console.log(taxcalc.conIva(100));
-    </script>
+    <script type="text/javascript" src="{{ asset('build/js/login.js') }}"></script>
 {% endblock %}
 
 {% block body %}

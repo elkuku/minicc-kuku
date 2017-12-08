@@ -23,6 +23,7 @@ Encore
     .createSharedEntry('js/common', ['jquery'])
     .addEntry('js/app', './assets/js/app.js')
     .addEntry('js/login', './assets/js/login.js')
+    .addEntry('js/pagos-por-ano', './assets/js/pagos-por-ano.js')
 
     .addStyleEntry('css/app', './assets/css/app.scss')
 

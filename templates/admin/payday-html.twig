@@ -4,61 +4,8 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <script>
-        $(document).ready(function () {
-            $('.js-datepicker').datepicker();
-        });
-        function addRow(e) {
-            $('#paymentsTable tbody').append('<tr>' + $(e).parent().parent().html() + '</tr>');
-            $('.js-datepicker').datepicker();
-            e.remove();
-        }
-        function searchDepId(e) {
-            var documentIdElement = e.prev();
-            var destElement = e.next();
-            var dateElement = e.closest('td').prev().prev().prev().find('input');
-            var methodElement = e.closest('td').prev().find('select');
-            var amountElement = e.closest('td').next().next().find('input');
-
-            var messageElement = $('#messageContainer');
-
-            var documentId = documentIdElement.val();
-
-            if (!documentId) {
-                messageElement.html('<div class="alert alert-warning">Introduzca el documento</div>');
-                documentIdElement.focus();
-                return false;
-            }
-
-            $.ajax({
-                type: 'POST',
-                url: '{{ path('lookup-depo') }}',
-                data: 'document_id=' + documentId,
-                beforeSend: function () {
-                    messageElement.html(
-                        '<div class="progress"><div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar"' +
-                        ' style="width:100%">Procesando...</div></div>');
-                },
-                success: function (response) {
-                    if (response.error) {
-                        messageElement.html('<div class="alert alert-danger">' + response.error + '</div>');
-                        documentIdElement.focus();
-                    }
-                    else {
-                        messageElement.html('<div class="alert alert-success">Depósito encontrado.</div>');
-                        console.log(response.data);
-                        var depo = response.data[0];
-                        documentIdElement.val(depo.document);
-                        destElement.val(depo.id);
-                        dateElement.val(depo.date);
-                        amountElement.val(depo.amount);
-                        methodElement.val(2);
-                    }
-                }
-            });
-
-            return false;
-        }
+    <script type="text/javascript">
+        var payday = new PayDay();
     </script>
 {% endblock %}
 
@@ -110,7 +57,7 @@
                 </td>
                 <td>
                     <input name="payments[document][]" type="text" size="7">
-                    <span class="btn btn-default btn-xs" onclick="searchDepId($(this))">&rArr;</span>
+                    <span class="btn btn-default btn-xs" onclick="payday.searchDepId($(this), '{{ path('lookup-depo') }}')">&rArr;</span>
                     <input name="payments[depId][]" type="text" size="7">
                 </td>
                 <td>
@@ -120,7 +67,7 @@
                     <input name="payments[amount][]" type="text" size="7">
                 </td>
                 <td>
-                    <a class="btn btn-xs btn-info" onclick="addRow(this)">ADD</a>
+                    <a class="btn btn-xs btn-info" onclick="payday.addRow(this)">ADD</a>
                 </td>
             </tr>
             </tbody>

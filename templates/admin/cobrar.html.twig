@@ -2,15 +2,6 @@
 
 {% block title %} {{ parent() }} - Cobrar alquileres{% endblock %}
 
-{% block javascripts %}
-    {{ parent() }}
-    <script>
-        $(document).ready(function () {
-            $('.js-datepicker').datepicker();
-        });
-    </script>
-{% endblock %}
-
 {% block body %}
     <h3>Cobrar Alquileres</h3>
     {% if stores is empty %}
