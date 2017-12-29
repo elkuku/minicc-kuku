@@ -189,9 +189,9 @@ class SyncController extends Controller
 		    throw new \UnexpectedValueException('Error parsing the database URL.');
 	    }
 
-        $dbUser = $matches[1]; //$this->getParameter('database_user');
-        $dbPass = $matches[1]; //$this->getParameter('database_password');
-        $dbName = $matches[1]; //$this->getParameter('database_name');
+        $dbUser = $matches[1];
+        $dbPass = $matches[2];
+        $dbName = $matches[3];
 
 	    $cmd = sprintf('mysqldump -u%s -p%s %s|gzip 2>&1', $dbUser, $dbPass, $dbName);
 
