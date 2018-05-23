@@ -8,8 +8,14 @@ Encore
     .setOutputPath('public/build/')
 
     // the public path used by the web server to access the previous directory
-    //.setPublicPath('/build')
-    .setPublicPath(Encore.isProduction() ? '/build' : '/minicc-kuku-4/public/build')
+    .setPublicPath('/build')
+
+    // show OS notifications when builds finish/fail
+    //.enableBuildNotifications()
+
+    //-- A sub directory...
+    //.setPublicPath(Encore.isProduction() ? '/build' : '/minicc-kuku-4/public/build')
+
     .cleanupOutputBeforeBuild()
     //.enableSourceMaps(!Encore.isProduction())
 

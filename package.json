@@ -1,15 +1,15 @@
 {
   "license": "WTFPL",
   "devDependencies": {
-    "@symfony/webpack-encore": "^0.17.0",
-    "bootstrap-datepicker": "^1.7.1",
+    "@symfony/webpack-encore": "^0.20.1",
+    "bootstrap-datepicker": "1.7.1",
     "bootstrap-sass": "^3.3.7",
-    "chart.js": "^2.7.1",
+    "chart.js": "^2.7.2",
     "copy-webpack-plugin": "^4.5.1",
-    "jquery": "^3.2.1",
+    "jquery": "^3.3.1",
     "node-sass": "^4.7.2",
     "sass-loader": "^6.0.6",
-    "tinymce": "^4.7.4"
+    "tinymce": "^4.7.13"
   },
   "scripts": {
     "dev-server": "./node_modules/.bin/encore dev-server",
