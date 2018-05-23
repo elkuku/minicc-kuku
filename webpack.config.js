@@ -1,11 +1,15 @@
 var Encore = require('@symfony/webpack-encore');
 
+var CopyWebpackPlugin = require('copy-webpack-plugin');
+
 Encore
+
     // the project directory where compiled assets will be stored
     .setOutputPath('public/build/')
 
     // the public path used by the web server to access the previous directory
-    .setPublicPath('/build')
+    //.setPublicPath('/build')
+    .setPublicPath(Encore.isProduction() ? '/build' : '/minicc-kuku-4/public/build')
     .cleanupOutputBeforeBuild()
     //.enableSourceMaps(!Encore.isProduction())
 
@@ -13,7 +17,10 @@ Encore
     .autoProvidejQuery()
 
     // uncomment if you use Sass/SCSS files
-    .enableSassLoader()
+    //.enableSassLoader()
+    .enableSassLoader(function(sassOptions) {}, {
+        resolveUrlLoader: false
+    })
 
     // uncomment to create hashed filenames (e.g. app.abc123.css)
     //.enableVersioning(Encore.isProduction())
@@ -26,6 +33,11 @@ Encore
     .addEntry('js/pagos-por-ano', './assets/js/pagos-por-ano.js')
 
     .addStyleEntry('css/app', './assets/css/app.scss')
+
+    .addPlugin(new CopyWebpackPlugin([
+        // Copy the skins from tinymce to the build/skins directory
+        { from: 'node_modules/tinymce/skins', to: 'js/skins' },
+    ]))
 
 ;
 
