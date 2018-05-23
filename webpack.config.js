@@ -1,6 +1,7 @@
 var Encore = require('@symfony/webpack-encore');
 
 var CopyWebpackPlugin = require('copy-webpack-plugin');
+var ImageminPlugin = require('imagemin-webpack-plugin').default;
 
 Encore
 
@@ -34,6 +35,7 @@ Encore
 
     // uncomment to define the assets of the project
     .createSharedEntry('js/common', ['jquery'])
+
     .addEntry('js/app', './assets/js/app.js')
     .addEntry('js/login', './assets/js/login.js')
     .addEntry('js/pagos-por-ano', './assets/js/pagos-por-ano.js')
@@ -41,9 +43,17 @@ Encore
     .addStyleEntry('css/app', './assets/css/app.scss')
 
     .addPlugin(new CopyWebpackPlugin([
-        // Copy the skins from tinymce to the build/skins directory
-        { from: 'node_modules/tinymce/skins', to: 'js/skins' },
+        {
+            from: 'node_modules/tinymce/skins',
+            to: 'js/skins'
+        },
+        {
+            from: 'assets/images/',
+            to: 'images/'
+        }
     ]))
+
+    .addPlugin(new ImageminPlugin({ test: /\.(jpe?g|png|gif|svg)$/i }))
 
 ;
 
