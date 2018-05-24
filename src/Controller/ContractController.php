@@ -199,14 +199,15 @@ class ContractController extends Controller
         );
     }
 
-    /**
-     * @Route("contract-generate/{id}", name="contract-generate")
-     * @Security("has_role('ROLE_ADMIN')")
-     *
-     * @param Contract $contract
-     *
-     * @return Response
-     */
+	/**
+	 * @Route("contract-generate/{id}", name="contract-generate")
+	 * @Security("has_role('ROLE_ADMIN')")
+	 *
+	 * @param Contract $contract
+	 *
+	 * @return Response
+	 * @throws \Throwable
+	 */
     public function generateAction(Contract $contract)
     {
         if (!$contract) {
@@ -219,7 +220,7 @@ class ContractController extends Controller
             '[local_no]'     => $contract->getStoreNumber(),
             '[destination]'  => $contract->getDestination(),
             '[val_alq]'      => number_format($contract->getValAlq(), 2),
-            '[txt_alq]'      => $numberToWord->toCurrency(12.34, 'es_EC', 'USD'),
+            '[txt_alq]'      => $numberToWord->toCurrency($contract->getValAlq(), 'es_EC', 'USD'),
             '[val_garantia]' => number_format($contract->getValGarantia(), 2),
             '[txt_garantia]' => $numberToWord->toCurrency($contract->getValGarantia(), 'es_EC', 'USD'),
             //      '[fecha_inicio]' => $contract->getDate(),
