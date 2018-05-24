@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Store;
 use App\Entity\Transaction;
 use App\Form\StoreType;
+use App\Service\TaxService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
@@ -104,16 +105,17 @@ class StoreController extends AbstractController
         );
     }
 
-    /**
-     * @Route("/store/{id}", name="store-transactions")
-     * @Security("has_role('ROLE_ADMIN')")
-     *
-     * @param Store   $store
-     * @param Request $request
-     *
-     * @return Response
-     */
-    public function listTransactionsAction(Store $store, Request $request)
+	/**
+	 * @Route("/store/{id}", name="store-transactions")
+	 * @Security("has_role('ROLE_ADMIN')")
+	 *
+	 * @param Store      $store
+	 * @param Request    $request
+	 * @param TaxService $taxService
+	 *
+	 * @return Response
+	 */
+    public function listTransactionsAction(Store $store, Request $request, TaxService $taxService)
     {
         $year = (int) $request->get('year', date('Y'));
 
@@ -126,8 +128,12 @@ class StoreController extends AbstractController
         $transactions = $transactionRepo->findByStoreAndYear($store, $year);
 
         $monthPayments = [];
+	    $rentalValues = [];
+	    $rentalValue = $taxService->getValueConTax($store->getValAlq());
+
         for ($i = 1; $i < 13; $i++) {
             $monthPayments[$i] = 0;
+	        $rentalValues[$i] = $rentalValue;
         }
 
         /* @type Transaction $transaction */
@@ -145,6 +151,7 @@ class StoreController extends AbstractController
                 'transactions'  => $transactions,
                 'saldoAnterior' => $transactionRepo->getSaldoAnterior($store, $year),
                 'monthPayments' => $monthPayments,
+                'rentalValStr'  => implode(', ', $rentalValues),
                 'store'         => $store,
                 'stores'        => $this->getDoctrine()->getRepository(Store::class)->findAll(),
                 'year'          => $year,

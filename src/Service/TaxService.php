@@ -35,4 +35,16 @@ class TaxService
     {
         return $this->taxValue;
     }
+
+	/**
+	 * Add the tax value to a given amount.
+	 *
+	 * @param float $value
+	 *
+	 * @return float
+	 */
+	public function getValueConTax(float $value): float
+	{
+		return round($value * (1 + $this->getTaxValue() / 100), 2);
+	}
 }

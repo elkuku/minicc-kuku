@@ -143,7 +143,7 @@ class AppExtension extends \Twig_Extension implements Twig_Extension_GlobalsInte
      *
      * @return string
      */
-    public function shortName($longName)
+    public function shortName(string $longName): string
     {
         // E.g. Juan José Perez Pillo
         $parts = explode(' ', $longName);
@@ -165,12 +165,12 @@ class AppExtension extends \Twig_Extension implements Twig_Extension_GlobalsInte
     /**
      * Add the tax value to a given amount.
      *
-     * @param integer $value
+     * @param float $value
      *
      * @return float
      */
-    public function conIvaFilter($value)
+    public function conIvaFilter(float $value): float
     {
-        return $value * (1 + $this->taxService->getTaxValue() / 100);
+        return $this->taxService->getValueConTax($value);
     }
 }
