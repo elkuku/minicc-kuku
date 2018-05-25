@@ -257,7 +257,7 @@ class SyncController extends Controller
 	}
 
 	/**
-	 * @param $tableName
+	 * @param string $tableName
 	 *
 	 * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
 	 */

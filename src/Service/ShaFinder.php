@@ -13,6 +13,9 @@ namespace App\Service;
  */
 class ShaFinder
 {
+	/**
+	 * @var string
+	 */
 	private $sha = 'n/a';
 
 	/**
@@ -24,11 +27,11 @@ class ShaFinder
 	{
 		if (file_exists($root . '/sha.txt'))
 		{
-			$this->sha = file_get_contents($root . '/sha.txt');
+			$this->sha = file_get_contents($root . '/sha.txt') ?: 'n/a';
 		}
 		elseif (file_exists($root . '/.git/refs/heads/master'))
 		{
-			$this->sha = file_get_contents($root . '/.git/refs/heads/master');
+			$this->sha = file_get_contents($root . '/.git/refs/heads/master') ?: 'n/a';
 		}
 	}
 

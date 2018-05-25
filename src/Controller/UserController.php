@@ -136,30 +136,36 @@ class UserController extends Controller
 		);
 	}
 
+	/**
+	 * @return array
+	 */
 	private function getSortedUsers()
 	{
 		$users = $this->getDoctrine()
 			->getRepository('App:User')
 			->findActiveUsers();
 
-		usort($users, function ($a, $b) {
-			$aId = 0;
-			$bId = 0;
+		usort(
+			$users,
+			function ($a, $b) {
+				$aId = 0;
+				$bId = 0;
 
-			/* @type \App\Entity\User $a */
-			foreach ($a->getStores() as $store)
-			{
-				$aId = $store->getId();
+				/** @type \App\Entity\User $a */
+				foreach ($a->getStores() as $store)
+				{
+					$aId = $store->getId();
+				}
+
+				/** @type \App\Entity\User $b */
+				foreach ($b->getStores() as $store)
+				{
+					$bId = $store->getId();
+				}
+
+				return ($aId < $bId) ? -1 : 1;
 			}
-
-			/* @type \App\Entity\User $b */
-			foreach ($b->getStores() as $store)
-			{
-				$bId = $store->getId();
-			}
-
-			return ($aId < $bId) ? -1 : 1;
-		});
+		);
 
 		return $users;
 	}
