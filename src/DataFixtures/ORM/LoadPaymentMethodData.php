@@ -26,7 +26,7 @@ class LoadPaymentMethodData implements FixtureInterface
 
 		foreach ($names as $name)
 		{
-			$paymentMethod = new PaymentMethod();
+			$paymentMethod = new PaymentMethod;
 
 			$paymentMethod->setName($name);
 

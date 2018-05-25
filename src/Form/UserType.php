@@ -34,7 +34,8 @@ class UserType extends AbstractType
 				'type'           => PasswordType::class,
 				'first_options'  => ['label' => 'Password'],
 				'second_options' => ['label' => 'Confirm Password'],
-			]);
+				]
+			);
 	}
 
 	/**
@@ -44,6 +45,7 @@ class UserType extends AbstractType
 	{
 		$resolver->setDefaults([
 			'data_class' => 'App\Entity\User',
-		]);
+			]
+		);
 	}
 }

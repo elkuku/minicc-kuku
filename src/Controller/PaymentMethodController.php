@@ -45,7 +45,7 @@ class PaymentMethodController extends Controller
 	 */
 	public function newAction(Request $request)
 	{
-		$data = new PaymentMethod();
+		$data = new PaymentMethod;
 		$form = $this->createForm(PaymentMethodType::class, $data);
 
 		$form->handleRequest($request);

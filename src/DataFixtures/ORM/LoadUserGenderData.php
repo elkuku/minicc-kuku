@@ -26,7 +26,7 @@ class LoadUserGenderData implements FixtureInterface
 
 		foreach ($names as $name)
 		{
-			$userGender = new UserGender();
+			$userGender = new UserGender;
 
 			$userGender->setName($name);
 

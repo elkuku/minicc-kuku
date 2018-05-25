@@ -26,7 +26,7 @@ class LoadTransactionTypeData implements FixtureInterface
 
 		foreach ($names as $name)
 		{
-			$transactionType = new TransactionType();
+			$transactionType = new TransactionType;
 
 			$transactionType->setName($name);
 

@@ -37,7 +37,7 @@ class LoadUserData implements FixtureInterface, ContainerAwareInterface
 	 */
 	public function load(ObjectManager $manager)
 	{
-		$user = new User();
+		$user = new User;
 
 		$user->setName('admin')
 			->setEmail('admin@a.b')

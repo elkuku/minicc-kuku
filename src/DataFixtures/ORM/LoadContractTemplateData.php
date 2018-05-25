@@ -22,7 +22,7 @@ class LoadContractTemplateData implements FixtureInterface
 	 */
 	public function load(ObjectManager $manager)
 	{
-		$contract = new Contract();
+		$contract = new Contract;
 
 		$contract->setText(file_get_contents(__DIR__ . '/../contract-template.html'));
 

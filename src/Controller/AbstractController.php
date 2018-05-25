@@ -56,7 +56,7 @@ abstract class AbstractController extends Controller
 	{
 		$options = $request->get('paginatorOptions');
 
-		$paginatorOptions = (new PaginatorOptions())
+		$paginatorOptions = (new PaginatorOptions)
 			->setPage(isset($options['page']) && $options['page'] ? (int) $options['page'] : 1)
 			->setLimit(isset($options['limit']) && $options['limit'] ? (int) $options['limit'] : getenv('list_limit'))
 			->setOrder(isset($options['order']) && $options['order'] ? $options['order'] : 'id')

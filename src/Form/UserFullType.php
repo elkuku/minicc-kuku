@@ -56,7 +56,8 @@ class UserFullType extends AbstractType
 				'first_options'  => ['label' => 'Password'],
 				'second_options' => ['label' => 'Confirm Password'],
 				'required'       => false,
-			]);
+				]
+			);
 	}
 
 	/**
@@ -66,6 +67,7 @@ class UserFullType extends AbstractType
 	{
 		$resolver->setDefaults([
 			'data_class' => 'App\Entity\User',
-		]);
+			]
+		);
 	}
 }

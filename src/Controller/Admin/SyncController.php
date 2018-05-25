@@ -134,6 +134,7 @@ class SyncController extends Controller
 							throw new \UnexpectedValueException('Data inconsistency.');
 						}
 					}
+
 					unset($newData[$i]);
 					continue 2;
 				}
@@ -162,9 +163,11 @@ class SyncController extends Controller
 		$queryLines[] = "VALUES\n";
 
 		$values = [];
+
 		foreach ($newData as $item)
 		{
 			$valueLine = '';
+
 			foreach ($item as $prop => $value)
 			{
 				if (is_null($value))
@@ -180,6 +183,7 @@ class SyncController extends Controller
 					$valueLine .= $value . ', ';
 				}
 			}
+
 			$values[] = sprintf('(%s)', trim($valueLine, ', '));
 		}
 

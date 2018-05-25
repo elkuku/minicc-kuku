@@ -47,7 +47,7 @@ class StoreController extends AbstractController
 	 */
 	public function addAction(Request $request)
 	{
-		$store = new Store();
+		$store = new Store;
 		$form  = $this->createForm(StoreType::class, $store);
 
 		$form->handleRequest($request);

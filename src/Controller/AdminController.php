@@ -59,7 +59,7 @@ class AdminController extends Controller
 					continue;
 				}
 
-				$transaction = (new Transaction())
+				$transaction = (new Transaction)
 					->setDate(new \DateTime($request->request->get('date_cobro')))
 					->setStore($storeRepo->find((int) $storeId))
 					->setUser($userRepo->find((int) $users[$storeId]))
@@ -128,7 +128,7 @@ class AdminController extends Controller
 
 			$method = $paymentMethodRepo->find((int) $payments['method'][$i]);
 
-			$transaction = (new Transaction())
+			$transaction = (new Transaction)
 				->setDate(new \DateTime($dateCobro))
 				->setStore($store)
 				->setUser($store->getUser())

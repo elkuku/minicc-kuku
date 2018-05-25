@@ -26,7 +26,7 @@ class LoadUserStateData implements FixtureInterface
 
 		foreach ($names as $name)
 		{
-			$userState = new UserState();
+			$userState = new UserState;
 
 			$userState->setName($name);
 

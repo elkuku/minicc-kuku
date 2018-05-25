@@ -53,7 +53,7 @@ class ViewController extends Controller
 		$application->setAutoExit(false);
 
 		$input  = new ArrayInput($command);
-		$output = new BufferedOutput();
+		$output = new BufferedOutput;
 
 		$application->run($input, $output);
 

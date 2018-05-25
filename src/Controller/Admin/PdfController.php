@@ -102,7 +102,7 @@ class PdfController extends Controller
 
 		for ($i = 1; $i < $fillers; $i++)
 		{
-			$transaction    = new Transaction();
+			$transaction    = new Transaction;
 			$transactions[] = $transaction;
 		}
 
