@@ -12,16 +12,20 @@ use App\Entity\Store;
 use App\Entity\Transaction;
 use App\Entity\TransactionType;
 use App\Form\TransactionTypeType;
+use App\Helper\PaginatorTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class TransactionController
  */
-class TransactionController extends AbstractController
+class TransactionController extends Controller
 {
+	use PaginatorTrait;
+
 	/**
 	 * @Route("/transaction-delete/{id}", name="transaction-delete")
 	 * @Security("has_role('ROLE_ADMIN')")

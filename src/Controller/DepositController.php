@@ -11,7 +11,9 @@ namespace App\Controller;
 use App\Entity\Deposit;
 use App\Entity\PaymentMethod;
 use App\Helper\CsvParser\CsvParser;
+use App\Helper\PaginatorTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,8 +23,10 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class DepositController
  */
-class DepositController extends AbstractController
+class DepositController extends Controller
 {
+	use PaginatorTrait;
+
 	/**
 	 * @Route("/deposits", name="deposits")
 	 * @Security("has_role('ROLE_ADMIN')")

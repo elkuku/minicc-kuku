@@ -11,7 +11,9 @@ namespace App\Controller;
 use App\Entity\Store;
 use App\Entity\Transaction;
 use App\Form\StoreType;
+use App\Helper\BreadcrumbTrait;
 use App\Service\TaxService;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,8 +22,10 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Class StoreController
  */
-class StoreController extends AbstractController
+class StoreController extends Controller
 {
+	use BreadcrumbTrait;
+
 	/**
 	 * @Route("/stores", name="stores-list")
 	 * @Security("has_role('ROLE_ADMIN')")

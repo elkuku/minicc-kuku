@@ -1,50 +1,21 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: elkuku
- * Date: 19.03.17
- * Time: 12:40
+ * User: test
+ * Date: 25.05.18
+ * Time: 15:08
  */
 
-namespace App\Controller;
+namespace App\Helper;
 
 use App\Helper\Paginator\PaginatorOptions;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Class BaseController
+ * Class PaginatorTrait
  */
-abstract class AbstractController extends Controller
+trait PaginatorTrait
 {
-	/**
-	 * @var array
-	 */
-	private $breadcrumbs = [];
-
-	/**
-	 * @param string $text
-	 * @param string $link
-	 *
-	 * @return $this
-	 */
-	protected function addBreadcrumb($text, $link = '')
-	{
-		$this->initBreadcrumbs();
-
-		$this->breadcrumbs[$text] = $link;
-
-		return $this;
-	}
-
-	/**
-	 * @return array
-	 */
-	protected function getBreadcrumbs()
-	{
-		return $this->initBreadcrumbs()->breadcrumbs;
-	}
-
 	/**
 	 * Get pagination options from request
 	 *
@@ -52,7 +23,7 @@ abstract class AbstractController extends Controller
 	 *
 	 * @return PaginatorOptions
 	 */
-	protected function getPaginatorOptions(Request $request)
+	protected function getPaginatorOptions(Request $request): PaginatorOptions
 	{
 		$options = $request->get('paginatorOptions');
 
@@ -64,18 +35,5 @@ abstract class AbstractController extends Controller
 			->setCriteria(isset($options['criteria']) ? $options['criteria'] : []);
 
 		return $paginatorOptions;
-	}
-
-	/**
-	 * @return $this
-	 */
-	private function initBreadcrumbs()
-	{
-		if (!$this->breadcrumbs)
-		{
-			$this->breadcrumbs = ['Inicio' => 'welcome'];
-		}
-
-		return $this;
 	}
 }
