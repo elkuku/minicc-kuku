@@ -77,6 +77,9 @@
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
     },
+    "joomla/coding-standards": {
+        "version": "2.0.0-rc"
+    },
     "knplabs/knp-snappy": {
         "version": "v1.0.2"
     },
@@ -115,6 +118,9 @@
             "version": "4.0",
             "ref": "aaddfdf43cdecd4cf91f992052d76c2cadc04543"
         }
+    },
+    "squizlabs/php_codesniffer": {
+        "version": "2.9.1"
     },
     "swiftmailer/swiftmailer": {
         "version": "v6.0.2"
