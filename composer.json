@@ -1,4 +1,6 @@
 {
+    "name": "MiniCC KuKu",
+    "description": "Mini CC Manager",
     "type": "project",
     "license": "proprietary",
     "require": {
