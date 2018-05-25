@@ -1,7 +1,8 @@
-var Encore = require('@symfony/webpack-encore');
+const fs = require("fs");
+const Encore = require('@symfony/webpack-encore');
 
-var CopyWebpackPlugin = require('copy-webpack-plugin');
-var ImageminPlugin = require('imagemin-webpack-plugin').default;
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const ImageminPlugin = require('imagemin-webpack-plugin').default;
 
 Encore
 
@@ -57,4 +58,15 @@ Encore
 
 ;
 
-module.exports = Encore.getWebpackConfig();
+let config = Encore.getWebpackConfig();
+
+if(!Encore.isProduction()) {
+    fs.writeFile("fakewebpack.config.js", "module.exports = "+JSON.stringify(config), function(err) {
+        if(err) {
+            return console.log(err);
+        }
+        console.log("fakewebpack.config.js written");
+    });
+}
+
+module.exports = config;
