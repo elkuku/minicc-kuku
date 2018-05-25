@@ -1,4 +1,10 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: elkuku
+ * Date: 19.03.17
+ * Time: 12:40
+ */
 
 namespace App\Controller\Admin;
 
@@ -68,7 +74,7 @@ class PdfController extends Controller
 			$htmlPages[] = $this->getTransactionsHtml($store, $year);
 		}
 
-		$filename = sprintf('movimientos-%d-%s.pdf', $year,  date('Y-m-d'));
+		$filename = sprintf('movimientos-%d-%s.pdf', $year, date('Y-m-d'));
 
 		return new PdfResponse(
 			$this->get('knp_snappy.pdf')->getOutputFromHtml($htmlPages),
@@ -91,11 +97,12 @@ class PdfController extends Controller
 
 		$transactions = $transactionRepo->findByStoreAndYear($store, $year);
 
-		$pages = intval(count($transactions) / $transactionsPerPage) + 1;
+		$pages   = intval(count($transactions) / $transactionsPerPage) + 1;
 		$fillers = $transactionsPerPage - (count($transactions) - ($pages - 1) * $transactionsPerPage);
 
-		for ($i = 1; $i < $fillers; $i++) {
-			$transaction = new Transaction();
+		for ($i = 1; $i < $fillers; $i++)
+		{
+			$transaction    = new Transaction();
 			$transactions[] = $transaction;
 		}
 

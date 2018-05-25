@@ -1,4 +1,10 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: elkuku
+ * Date: 19.03.17
+ * Time: 12:40
+ */
 
 namespace App\DataFixtures\ORM;
 
@@ -11,21 +17,22 @@ use Doctrine\Common\Persistence\ObjectManager;
  */
 class LoadUserGenderData implements FixtureInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function load(ObjectManager $manager)
-    {
-        $names = ['Sr', 'Sra'];
+	/**
+	 * {@inheritdoc}
+	 */
+	public function load(ObjectManager $manager)
+	{
+		$names = ['Sr', 'Sra'];
 
-        foreach ($names as $name) {
-            $userGender = new UserGender();
+		foreach ($names as $name)
+		{
+			$userGender = new UserGender();
 
-            $userGender->setName($name);
+			$userGender->setName($name);
 
-            $manager->persist($userGender);
-        }
+			$manager->persist($userGender);
+		}
 
-        $manager->flush();
-    }
+		$manager->flush();
+	}
 }

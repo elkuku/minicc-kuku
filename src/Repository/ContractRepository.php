@@ -1,4 +1,10 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: elkuku
+ * Date: 19.03.17
+ * Time: 12:40
+ */
 
 namespace App\Repository;
 
@@ -13,47 +19,49 @@ use Doctrine\ORM\EntityRepository;
  */
 class ContractRepository extends EntityRepository
 {
-    /**
-     * @param int $storeId
-     * @param int $year
-     *
-     * @return array
-     */
-    public function findContracts($storeId = 0, $year = 0)
-    {
-        $query = $this->createQueryBuilder('c');
+	/**
+	 * @param int $storeId
+	 * @param int $year
+	 *
+	 * @return array
+	 */
+	public function findContracts($storeId = 0, $year = 0)
+	{
+		$query = $this->createQueryBuilder('c');
 
-        $query->where('c.id > 1');
+		$query->where('c.id > 1');
 
-        if ($storeId) {
-            $query->andWhere('c.storeNumber = :storeId')
-                ->setParameter('storeId', $storeId);
-        }
+		if ($storeId)
+		{
+			$query->andWhere('c.storeNumber = :storeId')
+				->setParameter('storeId', $storeId);
+		}
 
-        if ($year) {
-            $query->andWhere('YEAR(c.date) = :year')
-                ->setParameter('year', $year);
-        }
+		if ($year)
+		{
+			$query->andWhere('YEAR(c.date) = :year')
+				->setParameter('year', $year);
+		}
 
-        $query->addOrderBy('c.date', 'DESC');
-        $query->addOrderBy('c.storeNumber', 'ASC');
+		$query->addOrderBy('c.date', 'DESC');
+		$query->addOrderBy('c.storeNumber', 'ASC');
 
-        return $query
-            ->getQuery()
-            ->getResult();
-    }
+		return $query
+			->getQuery()
+			->getResult();
+	}
 
-    /**
-     * @return mixed
-     */
-    public function findPlantilla()
-    {
-        $data = $this->matching(
-            Criteria::create()->where(
-                Criteria::expr()->eq('id', 1)
-            )
-        );
+	/**
+	 * @return mixed
+	 */
+	public function findPlantilla()
+	{
+		$data = $this->matching(
+			Criteria::create()->where(
+				Criteria::expr()->eq('id', 1)
+			)
+		);
 
-        return $data[0];
-    }
+		return $data[0];
+	}
 }

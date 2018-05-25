@@ -1,4 +1,10 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: elkuku
+ * Date: 19.03.17
+ * Time: 12:40
+ */
 
 namespace App\Form;
 
@@ -10,11 +16,11 @@ use Symfony\Component\Form\FormBuilderInterface;
  */
 class PaymentMethodType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder->add('name');
-    }
+	/**
+	 * {@inheritdoc}
+	 */
+	public function buildForm(FormBuilderInterface $builder, array $options)
+	{
+		$builder->add('name');
+	}
 }

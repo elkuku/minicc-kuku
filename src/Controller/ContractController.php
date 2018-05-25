@@ -1,4 +1,10 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: elkuku
+ * Date: 19.03.17
+ * Time: 12:40
+ */
 
 namespace App\Controller;
 
@@ -19,185 +25,190 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ContractController extends Controller
 {
-    /**
-     * @Route("contracts", name="contract-list")
-     * @Security("has_role('ROLE_ADMIN')")
-     *
-     * @param Request $request
-     *
-     * @return Response
-     */
-    public function listAction(Request $request)
-    {
-        $storeId = $request->request->getInt('store_id');
-        $year    = $request->request->getInt('year');
+	/**
+	 * @Route("contracts", name="contract-list")
+	 * @Security("has_role('ROLE_ADMIN')")
+	 *
+	 * @param Request $request
+	 *
+	 * @return Response
+	 */
+	public function listAction(Request $request)
+	{
+		$storeId = $request->request->getInt('store_id');
+		$year    = $request->request->getInt('year');
 
-        $stores = $this->getDoctrine()
-            ->getRepository(Store::class)
-            ->getActive();
+		$stores = $this->getDoctrine()
+			->getRepository(Store::class)
+			->getActive();
 
-        $users = $this->getDoctrine()
-            ->getRepository(User::class)
-            ->findActiveUsers();
+		$users = $this->getDoctrine()
+			->getRepository(User::class)
+			->findActiveUsers();
 
-        $data = $this->getDoctrine()
-            ->getRepository(Contract::class)
-            ->findContracts($storeId, $year);
+		$data = $this->getDoctrine()
+			->getRepository(Contract::class)
+			->findContracts($storeId, $year);
 
-        return $this->render(
-            'contract/list.html.twig',
-            [
-                'contracts' => $data,
-                'stores'    => $stores,
-                'users'     => $users,
-                'year'      => $year,
-                'storeId'   => $storeId,
-            ]
-        );
-    }
+		return $this->render(
+			'contract/list.html.twig',
+			[
+				'contracts' => $data,
+				'stores'    => $stores,
+				'users'     => $users,
+				'year'      => $year,
+				'storeId'   => $storeId,
+			]
+		);
+	}
 
-    /**
-     * @Route("contracts-new", name="contracts-new")
-     * @Security("has_role('ROLE_ADMIN')")
-     *
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function addAction(Request $request)
-    {
-        $store = $this->getDoctrine()
-            ->getRepository(Store::class)
-            ->find($request->request->getInt('store'));
+	/**
+	 * @Route("contracts-new", name="contracts-new")
+	 * @Security("has_role('ROLE_ADMIN')")
+	 *
+	 * @param Request $request
+	 *
+	 * @return \Symfony\Component\HttpFoundation\Response
+	 */
+	public function addAction(Request $request)
+	{
+		$store = $this->getDoctrine()
+			->getRepository(Store::class)
+			->find($request->request->getInt('store'));
 
-        $user = $this->getDoctrine()
-            ->getRepository(User::class)
-            ->find($request->request->getInt('user'));
+		$user = $this->getDoctrine()
+			->getRepository(User::class)
+			->find($request->request->getInt('user'));
 
-        $plantilla = $this->getDoctrine()
-            ->getRepository(Contract::class)
-            ->findPlantilla();
+		$plantilla = $this->getDoctrine()
+			->getRepository(Contract::class)
+			->findPlantilla();
 
-        $contract = new Contract();
+		$contract = new Contract;
 
-        $contract->setText($plantilla->getText());
+		$contract->setText($plantilla->getText());
 
-        if ($store) {
-            $contract->setValuesFromStore($store);
-        }
+		if ($store)
+		{
+			$contract->setValuesFromStore($store);
+		}
 
-        if ($user) {
-            $contract
-                ->setInqNombreapellido($user->getName())
-                ->setInqCi($user->getInqCi());
-        }
+		if ($user)
+		{
+			$contract
+				->setInqNombreapellido($user->getName())
+				->setInqCi($user->getInqCi());
+		}
 
-        $form = $this->createForm(ContractType::class, $contract);
+		$form = $this->createForm(ContractType::class, $contract);
 
-        $form->handleRequest($request);
+		$form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $contract = $form->getData();
+		if ($form->isSubmitted() && $form->isValid())
+		{
+			$contract = $form->getData();
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($contract);
-            $em->flush();
+			$em = $this->getDoctrine()->getManager();
+			$em->persist($contract);
+			$em->flush();
 
-            $this->addFlash('success', 'El contrato fue guardado.');
+			$this->addFlash('success', 'El contrato fue guardado.');
 
-            return $this->redirectToRoute('contract-list');
-        }
+			return $this->redirectToRoute('contract-list');
+		}
 
-        return $this->render(
-            'contract/form.html.twig',
-            [
-                'form'          => $form->createView(),
-                'data'          => $contract,
-                'ivaMultiplier' => getenv('value_iva'),
-            ]
-        );
-    }
+		return $this->render(
+			'contract/form.html.twig',
+			[
+				'form'          => $form->createView(),
+				'data'          => $contract,
+				'ivaMultiplier' => getenv('value_iva'),
+			]
+		);
+	}
 
-    /**
-     * @Route("contract/{id}", name="contracts-edit")
-     * @Security("has_role('ROLE_ADMIN')")
-     *
-     * @param Request $request
-     * @param integer $id
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function editAction(Request $request, $id)
-    {
-        $data = $this->getDoctrine()
-            ->getRepository(Contract::class)
-            ->find($id);
+	/**
+	 * @Route("contract/{id}", name="contracts-edit")
+	 * @Security("has_role('ROLE_ADMIN')")
+	 *
+	 * @param Request $request
+	 * @param integer $id
+	 *
+	 * @return \Symfony\Component\HttpFoundation\Response
+	 */
+	public function editAction(Request $request, $id)
+	{
+		$data = $this->getDoctrine()
+			->getRepository(Contract::class)
+			->find($id);
 
-        $form = $this->createForm(ContractType::class, $data);
+		$form = $this->createForm(ContractType::class, $data);
 
-        $form->handleRequest($request);
+		$form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
+		if ($form->isSubmitted() && $form->isValid())
+		{
+			$data = $form->getData();
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($data);
-            $em->flush();
+			$em = $this->getDoctrine()->getManager();
+			$em->persist($data);
+			$em->flush();
 
-            $this->addFlash('success', 'Contrato has been saved');
+			$this->addFlash('success', 'Contrato has been saved');
 
-            return $this->redirectToRoute('contract-list');
-        }
+			return $this->redirectToRoute('contract-list');
+		}
 
-        return $this->render(
-            'contract/form.html.twig',
-            [
-                'form'          => $form->createView(),
-                'data'          => $data,
-                'ivaMultiplier' => getenv('value_iva'),
-            ]
-        );
-    }
+		return $this->render(
+			'contract/form.html.twig',
+			[
+				'form'          => $form->createView(),
+				'data'          => $data,
+				'ivaMultiplier' => getenv('value_iva'),
+			]
+		);
+	}
 
-    /**
-     * @Route("contracts-template", name="contracts-template")
-     * @Security("has_role('ROLE_ADMIN')")
-     *
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function templateAction(Request $request)
-    {
-        $data = $this->getDoctrine()
-            ->getRepository(Contract::class)
-            ->findPlantilla();
+	/**
+	 * @Route("contracts-template", name="contracts-template")
+	 * @Security("has_role('ROLE_ADMIN')")
+	 *
+	 * @param Request $request
+	 *
+	 * @return \Symfony\Component\HttpFoundation\Response
+	 */
+	public function templateAction(Request $request)
+	{
+		$data = $this->getDoctrine()
+			->getRepository(Contract::class)
+			->findPlantilla();
 
-        $form = $this->createForm(ContractType::class, $data);
+		$form = $this->createForm(ContractType::class, $data);
 
-        $form->handleRequest($request);
+		$form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
+		if ($form->isSubmitted() && $form->isValid())
+		{
+			$data = $form->getData();
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($data);
-            $em->flush();
+			$em = $this->getDoctrine()->getManager();
+			$em->persist($data);
+			$em->flush();
 
-            $this->addFlash('success', 'Contrato has been saved');
+			$this->addFlash('success', 'Contrato has been saved');
 
-            return $this->redirectToRoute('contract-list');
-        }
+			return $this->redirectToRoute('contract-list');
+		}
 
-        return $this->render(
-            'contract/form.html.twig',
-            [
-                'form' => $form->createView(),
-                'data' => $data,
-                'ivaMultiplier' => getenv('value_iva'),
-            ]
-        );
-    }
+		return $this->render(
+			'contract/form.html.twig',
+			[
+				'form'          => $form->createView(),
+				'data'          => $data,
+				'ivaMultiplier' => getenv('value_iva'),
+			]
+		);
+	}
 
 	/**
 	 * @Route("contract-generate/{id}", name="contract-generate")
@@ -208,62 +219,63 @@ class ContractController extends Controller
 	 * @return Response
 	 * @throws \Throwable
 	 */
-    public function generateAction(Contract $contract)
-    {
-        if (!$contract) {
-            throw $this->createNotFoundException('No contract found');
-        }
+	public function generateAction(Contract $contract)
+	{
+		if (!$contract)
+		{
+			throw $this->createNotFoundException('No contract found');
+		}
 
-        $numberToWord = new Numbers();
+		$numberToWord = new Numbers;
 
-        $searchReplace = [
-            '[local_no]'     => $contract->getStoreNumber(),
-            '[destination]'  => $contract->getDestination(),
-            '[val_alq]'      => number_format($contract->getValAlq(), 2),
-            '[txt_alq]'      => $numberToWord->toCurrency($contract->getValAlq(), 'es_EC', 'USD'),
-            '[val_garantia]' => number_format($contract->getValGarantia(), 2),
-            '[txt_garantia]' => $numberToWord->toCurrency($contract->getValGarantia(), 'es_EC', 'USD'),
-            //      '[fecha_inicio]' => $contract->getDate(),
-            '[fecha_long]'   => IntlConverter::formatDate($contract->getDate()),
+		$searchReplace = [
+			'[local_no]'     => $contract->getStoreNumber(),
+			'[destination]'  => $contract->getDestination(),
+			'[val_alq]'      => number_format($contract->getValAlq(), 2),
+			'[txt_alq]'      => $numberToWord->toCurrency($contract->getValAlq(), 'es_EC', 'USD'),
+			'[val_garantia]' => number_format($contract->getValGarantia(), 2),
+			'[txt_garantia]' => $numberToWord->toCurrency($contract->getValGarantia(), 'es_EC', 'USD'),
+			//      '[fecha_inicio]' => $contract->getDate(),
+			'[fecha_long]'   => IntlConverter::formatDate($contract->getDate()),
 
-            '[inq_nombreapellido]' => $contract->getInqNombreapellido(),
-            '[inq_ci]'             => $contract->getInqCi(),
+			'[inq_nombreapellido]' => $contract->getInqNombreapellido(),
+			'[inq_ci]'             => $contract->getInqCi(),
 
-            '[el_la]'   => $contract->getGender()->getId() == 1 ? 'el' : 'la',
-            '[del_la]'  => $contract->getGender()->getId() == 1 ? 'del' : 'de la',
-            '[senor_a]' => $contract->getGender()->getId() == 1 ? 'señor' : 'señora',
+			'[el_la]'   => $contract->getGender()->getId() == 1 ? 'el' : 'la',
+			'[del_la]'  => $contract->getGender()->getId() == 1 ? 'del' : 'de la',
+			'[senor_a]' => $contract->getGender()->getId() == 1 ? 'señor' : 'señora',
 
-            '[cnt_lanfort]'  => $contract->getCntLanfort(),
-            '[cnt_neon]'     => $contract->getCntNeon(),
-            '[cnt_switch]'   => $contract->getCntSwitch(),
-            '[cnt_toma]'     => $contract->getCntToma(),
-            '[cnt_ventana]'  => $contract->getCntVentana(),
-            '[cnt_llaves]'   => $contract->getCntLlaves(),
-            '[cnt_med_agua]' => $contract->getCntMedAgua(),
-            '[cnt_med_elec]' => $contract->getCntMedElec(),
+			'[cnt_lanfort]'  => $contract->getCntLanfort(),
+			'[cnt_neon]'     => $contract->getCntNeon(),
+			'[cnt_switch]'   => $contract->getCntSwitch(),
+			'[cnt_toma]'     => $contract->getCntToma(),
+			'[cnt_ventana]'  => $contract->getCntVentana(),
+			'[cnt_llaves]'   => $contract->getCntLlaves(),
+			'[cnt_med_agua]' => $contract->getCntMedAgua(),
+			'[cnt_med_elec]' => $contract->getCntMedElec(),
 
-            '[med_electrico]' => $contract->getMedElectrico(),
-            '[med_agua]'      => $contract->getMedAgua(),
-        ];
+			'[med_electrico]' => $contract->getMedElectrico(),
+			'[med_agua]'      => $contract->getMedAgua(),
+		];
 
-        $html = str_replace(array_keys($searchReplace), $searchReplace, $contract->getText());
+		$html = str_replace(array_keys($searchReplace), $searchReplace, $contract->getText());
 
-        $twig = clone $this->get('twig');
+		$twig = clone $this->get('twig');
 
-        $template = $twig->createTemplate($html);
+		$template = $twig->createTemplate($html);
 
-        $html = $template->render($searchReplace);
+		$html = $template->render($searchReplace);
 
-        $filename = sprintf('contrato-local-%d-%s.pdf', $contract->getStoreNumber(), date('Y-m-d'));
+		$filename = sprintf('contrato-local-%d-%s.pdf', $contract->getStoreNumber(), date('Y-m-d'));
 
-        return new Response(
-            $this->get('knp_snappy.pdf')
-                ->getOutputFromHtml($html, ['encoding' => 'utf-8']),
-            200,
-            [
-                'Content-Type'        => 'application/pdf',
-                'Content-Disposition' => sprintf('attachment; filename="%s"', $filename),
-            ]
-        );
-    }
+		return new Response(
+			$this->get('knp_snappy.pdf')
+				->getOutputFromHtml($html, ['encoding' => 'utf-8']),
+			200,
+			[
+				'Content-Type'        => 'application/pdf',
+				'Content-Disposition' => sprintf('attachment; filename="%s"', $filename),
+			]
+		);
+	}
 }

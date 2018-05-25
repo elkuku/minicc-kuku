@@ -1,4 +1,10 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: elkuku
+ * Date: 19.03.17
+ * Time: 12:40
+ */
 
 namespace App\Controller;
 
@@ -16,141 +22,145 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class UserController extends Controller
 {
-    /**
-     * @Route("/users", name="users-list")
-     * @Security("has_role('ROLE_ADMIN')")
-     *
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function listAction(Request $request)
-    {
-        $userState = (int) $request->get('user_state');
+	/**
+	 * @Route("/users", name="users-list")
+	 * @Security("has_role('ROLE_ADMIN')")
+	 *
+	 * @param Request $request
+	 *
+	 * @return \Symfony\Component\HttpFoundation\Response
+	 */
+	public function listAction(Request $request)
+	{
+		$userState = (int) $request->get('user_state');
 
-        $criteria = ['role' => 'ROLE_USER'];
+		$criteria = ['role' => 'ROLE_USER'];
 
-        if ($userState) {
-            $criteria['state'] = $this->getDoctrine()
-                ->getRepository(UserState::class)
-                ->find($userState);
-        }
+		if ($userState)
+		{
+			$criteria['state'] = $this->getDoctrine()
+				->getRepository(UserState::class)
+				->find($userState);
+		}
 
-        $users = $this->getDoctrine()
-            ->getRepository(User::class)
-            ->findBy($criteria);
+		$users = $this->getDoctrine()
+			->getRepository(User::class)
+			->findBy($criteria);
 
-        $states = $this->getDoctrine()
-            ->getRepository(UserState::class)
-            ->findAll();
+		$states = $this->getDoctrine()
+			->getRepository(UserState::class)
+			->findAll();
 
-        return $this->render(
-            'user/list.html.twig',
-            [
-                'users'     => $users,
-                'userState' => $userState,
-                'states'    => $states,
-            ]
-        );
-    }
+		return $this->render(
+			'user/list.html.twig',
+			[
+				'users'     => $users,
+				'userState' => $userState,
+				'states'    => $states,
+			]
+		);
+	}
 
-    /**
-     * @Route("/users-pdf", name="pdf-users")
-     * @Security("has_role('ROLE_ADMIN')")
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function pdfListAction()
-    {
-        return $this->render(
-            'user/user-pdf-list.html.twig',
-            [
-                'users'     => $this->getSortedUsers(),
-            ]
-        );
-    }
+	/**
+	 * @Route("/users-pdf", name="pdf-users")
+	 * @Security("has_role('ROLE_ADMIN')")
+	 *
+	 * @return \Symfony\Component\HttpFoundation\Response
+	 */
+	public function pdfListAction()
+	{
+		return $this->render(
+			'user/user-pdf-list.html.twig',
+			[
+				'users' => $this->getSortedUsers(),
+			]
+		);
+	}
 
-    /**
-     * @Route("/user-edit/{id}", name="user-edit")
-     * @Security("has_role('ROLE_ADMIN')")
-     *
-     * @param User    $user
-     * @param Request $request
-     *
-     * @return Response
-     */
-    public function editAction(User $user, Request $request)
-    {
-        $form = $this->createForm(UserFullType::class, $user);
+	/**
+	 * @Route("/user-edit/{id}", name="user-edit")
+	 * @Security("has_role('ROLE_ADMIN')")
+	 *
+	 * @param User    $user
+	 * @param Request $request
+	 *
+	 * @return Response
+	 */
+	public function editAction(User $user, Request $request)
+	{
+		$form = $this->createForm(UserFullType::class, $user);
 
-        $form->handleRequest($request);
+		$form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $user = $form->getData();
+		if ($form->isSubmitted() && $form->isValid())
+		{
+			$user = $form->getData();
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->flush();
+			$em = $this->getDoctrine()->getManager();
+			$em->persist($user);
+			$em->flush();
 
-            $this->addFlash('success', 'El usuario ha sido guardado');
+			$this->addFlash('success', 'El usuario ha sido guardado');
 
-            return $this->redirectToRoute('users-list');
-        }
+			return $this->redirectToRoute('users-list');
+		}
 
-        return $this->render(
-            'user/form.html.twig',
-            [
-                'form' => $form->createView(),
-                'data' => $user,
-            ]
-        );
-    }
+		return $this->render(
+			'user/form.html.twig',
+			[
+				'form' => $form->createView(),
+				'data' => $user,
+			]
+		);
+	}
 
-    /**
-     * @Route("/users-ruclist", name="users-ruclist")
-     * @Security("has_role('ROLE_ADMIN')")
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function rucListAction()
-    {
-        $html = $this->renderView('user/ruclist.html.twig', ['users' => $this->getSortedUsers()]);
+	/**
+	 * @Route("/users-ruclist", name="users-ruclist")
+	 * @Security("has_role('ROLE_ADMIN')")
+	 *
+	 * @return \Symfony\Component\HttpFoundation\Response
+	 */
+	public function rucListAction()
+	{
+		$html = $this->renderView('user/ruclist.html.twig', ['users' => $this->getSortedUsers()]);
 
-        $filename = sprintf('test-%s.pdf', date('Y-m-d'));
+		$filename = sprintf('test-%s.pdf', date('Y-m-d'));
 
-        return new Response(
-            $this->get('knp_snappy.pdf')->getOutputFromHtml($html),
-            200,
-            [
-                'Content-Type'        => 'application/pdf',
-                'Content-Disposition' => sprintf('attachment; filename="%s"', $filename),
-            ]
-        );
-    }
+		return new Response(
+			$this->get('knp_snappy.pdf')->getOutputFromHtml($html),
+			200,
+			[
+				'Content-Type'        => 'application/pdf',
+				'Content-Disposition' => sprintf('attachment; filename="%s"', $filename),
+			]
+		);
+	}
 
-    private function getSortedUsers()
-    {
-        $users = $this->getDoctrine()
-            ->getRepository('App:User')
-            ->findActiveUsers();
+	private function getSortedUsers()
+	{
+		$users = $this->getDoctrine()
+			->getRepository('App:User')
+			->findActiveUsers();
 
-        usort($users, function ($a, $b) {
-            $aId = 0;
-            $bId = 0;
+		usort($users, function ($a, $b) {
+			$aId = 0;
+			$bId = 0;
 
-            /* @type \App\Entity\User $a */
-            foreach ($a->getStores() as $store) {
-                $aId = $store->getId();
-            }
+			/* @type \App\Entity\User $a */
+			foreach ($a->getStores() as $store)
+			{
+				$aId = $store->getId();
+			}
 
-            /* @type \App\Entity\User $b */
-            foreach ($b->getStores() as $store) {
-                $bId = $store->getId();
-            }
+			/* @type \App\Entity\User $b */
+			foreach ($b->getStores() as $store)
+			{
+				$bId = $store->getId();
+			}
 
-            return ($aId < $bId) ? -1 : 1;
-        });
+			return ($aId < $bId) ? -1 : 1;
+		});
 
-        return $users;
-    }
+		return $users;
+	}
 }

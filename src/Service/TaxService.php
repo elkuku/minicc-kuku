@@ -13,28 +13,28 @@ namespace App\Service;
  */
 class TaxService
 {
-    /**
-     * @var integer
-     */
-    private $taxValue;
+	/**
+	 * @var integer
+	 */
+	private $taxValue;
 
-    /**
-     * TaxService constructor.
-     *
-     * @param integer $taxValue
-     */
-    public function __construct($taxValue)
-    {
-        $this->taxValue = $taxValue;
-    }
+	/**
+	 * TaxService constructor.
+	 *
+	 * @param integer $taxValue
+	 */
+	public function __construct($taxValue)
+	{
+		$this->taxValue = $taxValue;
+	}
 
-    /**
-     * @return int
-     */
-    public function getTaxValue()
-    {
-        return $this->taxValue;
-    }
+	/**
+	 * @return int
+	 */
+	public function getTaxValue()
+	{
+		return $this->taxValue;
+	}
 
 	/**
 	 * Add the tax value to a given amount.

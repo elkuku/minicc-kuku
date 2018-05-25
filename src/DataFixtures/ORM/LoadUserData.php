@@ -19,37 +19,36 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class LoadUserData implements FixtureInterface, ContainerAwareInterface
 {
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
+	/**
+	 * @var ContainerInterface
+	 */
+	private $container;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setContainer(ContainerInterface $container = null)
-    {
-        $this->container = $container;
-    }
+	/**
+	 * {@inheritdoc}
+	 */
+	public function setContainer(ContainerInterface $container = null)
+	{
+		$this->container = $container;
+	}
 
-    /**
-     * {@inheritdoc}
-     */
-    public function load(ObjectManager $manager)
-    {
-        $user = new User();
+	/**
+	 * {@inheritdoc}
+	 */
+	public function load(ObjectManager $manager)
+	{
+		$user = new User();
 
-        $user->setName('admin')
-            ->setEmail('admin@a.b')
-            ->setPlainPassword('test')
-            ->setRole('ROLE_ADMIN')
-            ->setPassword(
-                $this->container->get('security.password_encoder')
-                    ->encodePassword($user, $user->getPlainPassword())
-            )
-        ;
+		$user->setName('admin')
+			->setEmail('admin@a.b')
+			->setPlainPassword('test')
+			->setRole('ROLE_ADMIN')
+			->setPassword(
+				$this->container->get('security.password_encoder')
+					->encodePassword($user, $user->getPlainPassword())
+			);
 
-        $manager->persist($user);
-        $manager->flush();
-    }
+		$manager->persist($user);
+		$manager->flush();
+	}
 }

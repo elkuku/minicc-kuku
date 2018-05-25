@@ -1,4 +1,10 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: elkuku
+ * Date: 19.03.17
+ * Time: 12:40
+ */
 
 namespace App\DataFixtures\ORM;
 
@@ -11,21 +17,22 @@ use Doctrine\Common\Persistence\ObjectManager;
  */
 class LoadTransactionTypeData implements FixtureInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function load(ObjectManager $manager)
-    {
-        $names = ['Alquiler', 'Pago', 'Saldo Inicial', 'Ajuste'];
+	/**
+	 * {@inheritdoc}
+	 */
+	public function load(ObjectManager $manager)
+	{
+		$names = ['Alquiler', 'Pago', 'Saldo Inicial', 'Ajuste'];
 
-        foreach ($names as $name) {
-            $transactionType = new TransactionType();
+		foreach ($names as $name)
+		{
+			$transactionType = new TransactionType();
 
-            $transactionType->setName($name);
+			$transactionType->setName($name);
 
-            $manager->persist($transactionType);
-        }
+			$manager->persist($transactionType);
+		}
 
-        $manager->flush();
-    }
+		$manager->flush();
+	}
 }

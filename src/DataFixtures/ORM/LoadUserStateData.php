@@ -1,4 +1,10 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: elkuku
+ * Date: 19.03.17
+ * Time: 12:40
+ */
 
 namespace App\DataFixtures\ORM;
 
@@ -11,21 +17,22 @@ use Doctrine\Common\Persistence\ObjectManager;
  */
 class LoadUserStateData implements FixtureInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function load(ObjectManager $manager)
-    {
-        $names = ['Activo', 'Inactivo'];
+	/**
+	 * {@inheritdoc}
+	 */
+	public function load(ObjectManager $manager)
+	{
+		$names = ['Activo', 'Inactivo'];
 
-        foreach ($names as $name) {
-            $userState = new UserState();
+		foreach ($names as $name)
+		{
+			$userState = new UserState();
 
-            $userState->setName($name);
+			$userState->setName($name);
 
-            $manager->persist($userState);
-        }
+			$manager->persist($userState);
+		}
 
-        $manager->flush();
-    }
+		$manager->flush();
+	}
 }

@@ -1,4 +1,10 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: elkuku
+ * Date: 19.03.17
+ * Time: 12:40
+ */
 
 namespace App\Controller;
 
@@ -12,46 +18,49 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class DefaultController extends Controller
 {
-    /**
-     * @Route("/", name="welcome")
-     * @return Response
-     */
-    public function index()
-    {
-        $user = $this->getUser();
+	/**
+	 * @Route("/", name="welcome")
+	 * @return Response
+	 */
+	public function index()
+	{
+		$user = $this->getUser();
 
-        if ($user) {
-            $stores = $user->getStores();
-            $saldos = $this->getDoctrine()->getRepository(Transaction::class)->getSaldos();
-        } else {
-            $saldos = null;
-            $stores = null;
-        }
+		if ($user)
+		{
+			$stores = $user->getStores();
+			$saldos = $this->getDoctrine()->getRepository(Transaction::class)->getSaldos();
+		}
+		else
+		{
+			$saldos = null;
+			$stores = null;
+		}
 
-        return $this->render(
-            'default/index.html.twig',
-            [
-                'stores' => $stores,
-                'saldos' => $saldos,
-            ]
-        );
-    }
+		return $this->render(
+			'default/index.html.twig',
+			[
+				'stores' => $stores,
+				'saldos' => $saldos,
+			]
+		);
+	}
 
-    /**
-     * @Route("/about", name="about")
-     * @return Response
-     */
-    public function aboutAction()
-    {
-        return $this->render('default/about.html.twig', ['user' => $this->getUser()]);
-    }
+	/**
+	 * @Route("/about", name="about")
+	 * @return Response
+	 */
+	public function aboutAction()
+	{
+		return $this->render('default/about.html.twig', ['user' => $this->getUser()]);
+	}
 
-    /**
-     * @Route("/contact", name="contact")
-     * @return Response
-     */
-    public function contactAction()
-    {
-        return $this->render('default/contact.html.twig');
-    }
+	/**
+	 * @Route("/contact", name="contact")
+	 * @return Response
+	 */
+	public function contactAction()
+	{
+		return $this->render('default/contact.html.twig');
+	}
 }

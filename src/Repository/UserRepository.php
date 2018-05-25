@@ -1,4 +1,10 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: elkuku
+ * Date: 19.03.17
+ * Time: 12:40
+ */
 
 namespace App\Repository;
 
@@ -10,14 +16,14 @@ namespace App\Repository;
  */
 class UserRepository extends AbstractRepository
 {
-    /**
-     * @return array
-     */
-    public function findActiveUsers()
-    {
-        return $this->findBy(
-            ['role' => 'ROLE_USER', 'state' => 1],
-            ['name' => 'ASC']
-        );
-    }
+	/**
+	 * @return array
+	 */
+	public function findActiveUsers()
+	{
+		return $this->findBy(
+			['role' => 'ROLE_USER', 'state' => 1],
+			['name' => 'ASC']
+		);
+	}
 }

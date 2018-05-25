@@ -1,4 +1,10 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: elkuku
+ * Date: 19.03.17
+ * Time: 12:40
+ */
 
 namespace App\Controller\Admin;
 
@@ -34,7 +40,7 @@ class PlanillasController extends Controller
 				$this->getPlanillasHtml($year, $month)
 			);
 
-		$message = (new \Swift_Message())
+		$message = (new \Swift_Message)
 			->setSubject("Planillas $year-$month")
 			->setFrom('minicckuku@gmail.com')
 			->setTo('minicckuku@gmail.com')
@@ -77,8 +83,8 @@ class PlanillasController extends Controller
 	}
 
 	/**
-	 * @param $year
-	 * @param $month
+	 * @param integer $year
+	 * @param integer $month
 	 *
 	 * @return string
 	 */
@@ -108,7 +114,7 @@ class PlanillasController extends Controller
 
 		$storeData = [];
 
-		/* @type Store $store */
+		/** @type Store $store */
 		foreach ($stores as $store)
 		{
 			$storeData[$store->getId()]['saldoIni']     = $repo->getSaldoALaFecha(
