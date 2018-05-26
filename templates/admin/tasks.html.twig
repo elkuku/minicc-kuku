@@ -42,6 +42,17 @@
 
             <ul>
                 <li><a href="{{ path('console-view', {'item': 'routes'}) }}">Routes</a></li>
+                <li>
+                    <form enctype="multipart/form-data" method="post" class="form form-inline"
+                          action="{{ path('console-view', {'item': 'route-match'}) }}">
+                        <div class="form-group">
+                            <label>Route</label>
+                            <input name="route" type="text" class="form-control"/>
+                            <button type="submit" class="btn btn-primary">Check</button>
+                        </div>
+                    </form>
+
+                </li>
                 <li><a href="{{ path('console-view', {'item': 'migrations'}) }}">Migrations</a></li>
                 <li><a href="{{ path('console-view', {'item': 'security'}) }}">Security check</a></li>
             </ul>

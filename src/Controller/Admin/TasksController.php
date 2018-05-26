@@ -1,9 +1,9 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: elkuku
- * Date: 19.03.17
- * Time: 12:40
+ * User: test
+ * Date: 26.05.18
+ * Time: 10:21
  */
 
 namespace App\Controller\Admin;
@@ -14,22 +14,36 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Class ViewController
+ * Class TasksController
  */
-class ViewController extends Controller
+class TasksController extends Controller
 {
+	/**
+	 * @Route("/admin-tasks", name="admin-tasks")
+	 * @Security("has_role('ROLE_ADMIN')")
+	 *
+	 * @return Response
+	 */
+	public function indexAction(): Response
+	{
+		return $this->render('admin/tasks.html.twig');
+	}
+
 	/**
 	 * @Route("/console-view/{item}", name="console-view")
 	 * @Security("has_role('ROLE_ADMIN')")
 	 *
-	 * @param string $item
+	 * @param string  $item
+	 * @param Request $request
 	 *
 	 * @return Response
+	 * @throws \Exception
 	 */
-	public function consoleViewAction($item)
+	public function consoleViewAction(string $item, Request $request): Response
 	{
 		$command = [];
 
@@ -37,6 +51,10 @@ class ViewController extends Controller
 		{
 			case 'routes':
 				$command['command'] = 'debug:router';
+				break;
+			case 'route-match':
+				$command['command']   = 'router:match';
+				$command['path_info'] = $request->request->get('route');
 				break;
 			case 'migrations':
 				$command['command'] = 'doctrine:migrations:status';
@@ -62,6 +80,24 @@ class ViewController extends Controller
 			[
 				'consoleCommand' => $command,
 				'consoleOutput'  => $output->fetch(),
+			]
+		);
+	}
+
+	/**
+	 * @Route("/sysinfo", name="sysinfo")
+	 * @Security("has_role('ROLE_ADMIN')")
+	 *
+	 * @return Response
+	 */
+	public function sysInfoAction(): Response
+	{
+		return $this->render(
+			'admin/sysinfo.html.twig',
+			[
+				'info' => [
+					'phpVersion' => PHP_VERSION,
+				],
 			]
 		);
 	}

@@ -173,15 +173,4 @@ class AdminController extends Controller
 			]
 		);
 	}
-
-	/**
-	 * @Route("/admin-tasks", name="admin-tasks")
-	 * @Security("has_role('ROLE_ADMIN')")
-	 *
-	 * @return Response
-	 */
-	public function tasksAction()
-	{
-		return $this->render('admin/tasks.html.twig');
-	}
 }

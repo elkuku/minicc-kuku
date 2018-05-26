@@ -37,6 +37,9 @@
                             <li><a href="{{ path('pagos-por-ano') }}">Pagos por Año</a></li>
                             <li><a href="{{ path('transaction-rawlist') }}">Transactions RAW</a></li>
                             <li><a href="{{ path('deposits') }}">Depositos</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li class="dropdown-header">System</li>
+                            <li><a href="{{ path('sysinfo') }}">Info</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">
@@ -49,9 +52,6 @@
                             <li role="separator" class="divider"></li>
                             <li class="dropdown-header">Params</li>
                             <li><a href="{{ path('payment-methods') }}">Payment Methods</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li class="dropdown-header">/etc</li>
-                            <li><a href="{{ path('sysinfo') }}">System Info</a></li>
                         </ul>
                     </li>
                 {% endif %}
