@@ -48,7 +48,7 @@ class PaginatorOptions
 	 *
 	 * @return PaginatorOptions
 	 */
-	public function setPage($page)
+	public function setPage(int $page): PaginatorOptions
 	{
 		$this->page = (int) $page;
 
@@ -58,7 +58,7 @@ class PaginatorOptions
 	/**
 	 * @return int
 	 */
-	public function getPage()
+	public function getPage(): int
 	{
 		return $this->page;
 	}
@@ -68,7 +68,7 @@ class PaginatorOptions
 	 *
 	 * @return PaginatorOptions
 	 */
-	public function setOrder($order)
+	public function setOrder(string $order): PaginatorOptions
 	{
 		$this->order = $order;
 
@@ -78,7 +78,7 @@ class PaginatorOptions
 	/**
 	 * @return string
 	 */
-	public function getOrder()
+	public function getOrder(): string
 	{
 		return $this->order;
 	}
@@ -88,7 +88,7 @@ class PaginatorOptions
 	 *
 	 * @return PaginatorOptions
 	 */
-	public function setOrderDir($orderDir)
+	public function setOrderDir(string $orderDir): PaginatorOptions
 	{
 		$dirs = ['ASC', 'DESC'];
 		$dir  = strtoupper($orderDir);
@@ -106,7 +106,7 @@ class PaginatorOptions
 	/**
 	 * @return string
 	 */
-	public function getOrderDir()
+	public function getOrderDir(): string
 	{
 		return $this->orderDir;
 	}
@@ -116,7 +116,7 @@ class PaginatorOptions
 	 *
 	 * @return PaginatorOptions
 	 */
-	public function setCriteria($criteria)
+	public function setCriteria(array $criteria): PaginatorOptions
 	{
 		$this->criteria = $criteria;
 
@@ -126,7 +126,7 @@ class PaginatorOptions
 	/**
 	 * @return array
 	 */
-	public function getCriteria()
+	public function getCriteria(): array
 	{
 		return $this->criteria;
 	}
@@ -136,7 +136,7 @@ class PaginatorOptions
 	 *
 	 * @return PaginatorOptions
 	 */
-	public function setMaxPages($maxPages)
+	public function setMaxPages(int $maxPages): PaginatorOptions
 	{
 		$this->maxPages = (int) $maxPages;
 
@@ -146,7 +146,7 @@ class PaginatorOptions
 	/**
 	 * @return int
 	 */
-	public function getMaxPages()
+	public function getMaxPages(): int
 	{
 		return $this->maxPages;
 	}
@@ -156,7 +156,7 @@ class PaginatorOptions
 	 *
 	 * @return PaginatorOptions
 	 */
-	public function setLimit($limit)
+	public function setLimit(int $limit): PaginatorOptions
 	{
 		$this->limit = (int) $limit;
 
@@ -166,7 +166,7 @@ class PaginatorOptions
 	/**
 	 * @return int
 	 */
-	public function getLimit()
+	public function getLimit(): int
 	{
 		return $this->limit;
 	}
@@ -176,7 +176,7 @@ class PaginatorOptions
 	 *
 	 * @return string Criteria value or empty string
 	 */
-	public function searchCriteria($name)
+	public function searchCriteria(string $name): string
 	{
 		return array_key_exists($name, $this->criteria) ? $this->criteria[$name] : '';
 	}
