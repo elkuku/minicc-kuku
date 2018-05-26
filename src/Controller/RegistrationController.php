@@ -14,6 +14,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class RegistrationController
@@ -28,9 +29,9 @@ class RegistrationController extends Controller
 	 *
 	 * @param Request $request
 	 *
-	 * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+	 * @return Response
 	 */
-	public function registerAction(Request $request)
+	public function registerAction(Request $request): Response
 	{
 		// Create a new blank user and process the form
 		$user = new User;

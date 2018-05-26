@@ -30,9 +30,9 @@ class StoreController extends Controller
 	 * @Route("/stores", name="stores-list")
 	 * @Security("has_role('ROLE_ADMIN')")
 	 *
-	 * @return \Symfony\Component\HttpFoundation\Response
+	 * @return Response
 	 */
-	public function listAction()
+	public function listAction(): Response
 	{
 		$stores = $this->getDoctrine()
 			->getRepository(Store::class)
@@ -47,9 +47,9 @@ class StoreController extends Controller
 	 *
 	 * @param Request $request
 	 *
-	 * @return \Symfony\Component\HttpFoundation\Response
+	 * @return Response
 	 */
-	public function addAction(Request $request)
+	public function addAction(Request $request): Response
 	{
 		$store = new Store;
 		$form  = $this->createForm(StoreType::class, $store);
@@ -88,7 +88,7 @@ class StoreController extends Controller
 	 *
 	 * @return Response
 	 */
-	public function editAction(Store $store, Request $request)
+	public function editAction(Store $store, Request $request): Response
 	{
 		$form = $this->createForm(StoreType::class, $store);
 
@@ -127,7 +127,7 @@ class StoreController extends Controller
 	 *
 	 * @return Response
 	 */
-	public function listTransactionsAction(Store $store, Request $request, TaxService $taxService)
+	public function listTransactionsAction(Store $store, Request $request, TaxService $taxService): Response
 	{
 		$year = (int) $request->get('year', date('Y'));
 

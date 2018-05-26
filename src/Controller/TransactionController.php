@@ -35,7 +35,7 @@ class TransactionController extends Controller
 	 *
 	 * @return Response
 	 */
-	public function deleteTransactionAction(Request $request, Transaction $transaction)
+	public function deleteTransactionAction(Request $request, Transaction $transaction): Response
 	{
 		if (!$transaction)
 		{
@@ -61,7 +61,7 @@ class TransactionController extends Controller
 	 *
 	 * @return Response
 	 */
-	public function editAction(Request $request)
+	public function editAction(Request $request): Response
 	{
 		$view = $request->query->get('view');
 		$id   = (int) $request->get('id');
@@ -105,7 +105,7 @@ class TransactionController extends Controller
 	 *
 	 * @return Response
 	 */
-	public function rawListAction(Request $request)
+	public function rawListAction(Request $request): Response
 	{
 		$paginatorOptions = $this->getPaginatorOptions($request);
 

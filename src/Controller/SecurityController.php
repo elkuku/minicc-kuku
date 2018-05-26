@@ -10,6 +10,7 @@ namespace App\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class SecurityController
@@ -19,9 +20,9 @@ class SecurityController extends Controller
 	/**
 	 * @Route("/login", name="login")
 	 *
-	 * @return \Symfony\Component\HttpFoundation\Response
+	 * @return Response
 	 */
-	public function loginAction()
+	public function loginAction(): Response
 	{
 		$helper = $this->get('security.authentication_utils');
 

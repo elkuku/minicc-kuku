@@ -14,6 +14,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class ListController
@@ -24,9 +25,9 @@ class PaymentMethodController extends Controller
 	 * @Route("/payment-methods", name="payment-methods")
 	 * @Security("has_role('ROLE_ADMIN')")
 	 *
-	 * @return \Symfony\Component\HttpFoundation\Response
+	 * @return Response
 	 */
-	public function listAction()
+	public function listAction(): Response
 	{
 		$data = $this->getDoctrine()
 			->getRepository(PaymentMethod::class)
@@ -41,9 +42,9 @@ class PaymentMethodController extends Controller
 	 *
 	 * @param Request $request
 	 *
-	 * @return \Symfony\Component\HttpFoundation\Response
+	 * @return Response
 	 */
-	public function newAction(Request $request)
+	public function newAction(Request $request): Response
 	{
 		$data = new PaymentMethod;
 		$form = $this->createForm(PaymentMethodType::class, $data);
@@ -79,9 +80,9 @@ class PaymentMethodController extends Controller
 	 * @param PaymentMethod $data
 	 * @param Request       $request
 	 *
-	 * @return \Symfony\Component\HttpFoundation\Response
+	 * @return Response
 	 */
-	public function editAction(PaymentMethod $data, Request $request)
+	public function editAction(PaymentMethod $data, Request $request): Response
 	{
 		if (!$data)
 		{
@@ -120,9 +121,9 @@ class PaymentMethodController extends Controller
 	 *
 	 * @param PaymentMethod $paymentMethod
 	 *
-	 * @return \Symfony\Component\HttpFoundation\Response
+	 * @return Response
 	 */
-	public function deletePaymentMethodAction(PaymentMethod $paymentMethod)
+	public function deletePaymentMethodAction(PaymentMethod $paymentMethod): Response
 	{
 		if (!$paymentMethod)
 		{

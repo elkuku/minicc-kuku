@@ -33,7 +33,7 @@ class ContractController extends Controller
 	 *
 	 * @return Response
 	 */
-	public function listAction(Request $request)
+	public function listAction(Request $request): Response
 	{
 		$storeId = $request->request->getInt('store_id');
 		$year    = $request->request->getInt('year');
@@ -68,9 +68,9 @@ class ContractController extends Controller
 	 *
 	 * @param Request $request
 	 *
-	 * @return \Symfony\Component\HttpFoundation\Response
+	 * @return Response
 	 */
-	public function addAction(Request $request)
+	public function addAction(Request $request): Response
 	{
 		$store = $this->getDoctrine()
 			->getRepository(Store::class)
@@ -134,9 +134,9 @@ class ContractController extends Controller
 	 * @param Request $request
 	 * @param integer $id
 	 *
-	 * @return \Symfony\Component\HttpFoundation\Response
+	 * @return Response
 	 */
-	public function editAction(Request $request, $id)
+	public function editAction(Request $request, int $id): Response
 	{
 		$data = $this->getDoctrine()
 			->getRepository(Contract::class)
@@ -175,9 +175,9 @@ class ContractController extends Controller
 	 *
 	 * @param Request $request
 	 *
-	 * @return \Symfony\Component\HttpFoundation\Response
+	 * @return Response
 	 */
-	public function templateAction(Request $request)
+	public function templateAction(Request $request): Response
 	{
 		$data = $this->getDoctrine()
 			->getRepository(Contract::class)
@@ -219,7 +219,7 @@ class ContractController extends Controller
 	 * @return Response
 	 * @throws \Throwable
 	 */
-	public function generateAction(Contract $contract)
+	public function generateAction(Contract $contract): Response
 	{
 		if (!$contract)
 		{

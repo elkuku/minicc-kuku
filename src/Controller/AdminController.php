@@ -32,7 +32,7 @@ class AdminController extends Controller
 	 *
 	 * @return Response
 	 */
-	public function cobrarAction(Request $request)
+	public function cobrarAction(Request $request): Response
 	{
 		$values = $request->request->get('values');
 		$users  = $request->request->get('users');
@@ -86,9 +86,9 @@ class AdminController extends Controller
 	 *
 	 * @param Request $request
 	 *
-	 * @return \Symfony\Component\HttpFoundation\Response
+	 * @return Response
 	 */
-	public function payDayAction(Request $request)
+	public function payDayAction(Request $request): Response
 	{
 		$payments = $request->request->get('payments');
 
@@ -157,7 +157,7 @@ class AdminController extends Controller
 	 *
 	 * @return Response
 	 */
-	public function pagosPorAnoAction(Request $request)
+	public function pagosPorAnoAction(Request $request): Response
 	{
 		$year = $request->query->getInt('year') ?: date('Y');
 

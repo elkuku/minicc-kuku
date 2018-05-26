@@ -28,9 +28,9 @@ class UserController extends Controller
 	 *
 	 * @param Request $request
 	 *
-	 * @return \Symfony\Component\HttpFoundation\Response
+	 * @return Response
 	 */
-	public function listAction(Request $request)
+	public function listAction(Request $request): Response
 	{
 		$userState = (int) $request->get('user_state');
 
@@ -65,9 +65,9 @@ class UserController extends Controller
 	 * @Route("/users-pdf", name="pdf-users")
 	 * @Security("has_role('ROLE_ADMIN')")
 	 *
-	 * @return \Symfony\Component\HttpFoundation\Response
+	 * @return Response
 	 */
-	public function pdfListAction()
+	public function pdfListAction(): Response
 	{
 		return $this->render(
 			'user/user-pdf-list.html.twig',
@@ -86,7 +86,7 @@ class UserController extends Controller
 	 *
 	 * @return Response
 	 */
-	public function editAction(User $user, Request $request)
+	public function editAction(User $user, Request $request): Response
 	{
 		$form = $this->createForm(UserFullType::class, $user);
 
@@ -118,9 +118,9 @@ class UserController extends Controller
 	 * @Route("/users-ruclist", name="users-ruclist")
 	 * @Security("has_role('ROLE_ADMIN')")
 	 *
-	 * @return \Symfony\Component\HttpFoundation\Response
+	 * @return Response
 	 */
-	public function rucListAction()
+	public function rucListAction(): Response
 	{
 		$html = $this->renderView('user/ruclist.html.twig', ['users' => $this->getSortedUsers()]);
 
@@ -139,7 +139,7 @@ class UserController extends Controller
 	/**
 	 * @return array
 	 */
-	private function getSortedUsers()
+	private function getSortedUsers(): array
 	{
 		$users = $this->getDoctrine()
 			->getRepository('App:User')

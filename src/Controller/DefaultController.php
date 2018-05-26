@@ -22,7 +22,7 @@ class DefaultController extends Controller
 	 * @Route("/", name="welcome")
 	 * @return Response
 	 */
-	public function index()
+	public function index(): Response
 	{
 		$user = $this->getUser();
 
@@ -50,7 +50,7 @@ class DefaultController extends Controller
 	 * @Route("/about", name="about")
 	 * @return Response
 	 */
-	public function aboutAction()
+	public function aboutAction(): Response
 	{
 		return $this->render('default/about.html.twig', ['user' => $this->getUser()]);
 	}
@@ -59,7 +59,7 @@ class DefaultController extends Controller
 	 * @Route("/contact", name="contact")
 	 * @return Response
 	 */
-	public function contactAction()
+	public function contactAction(): Response
 	{
 		return $this->render('default/contact.html.twig');
 	}

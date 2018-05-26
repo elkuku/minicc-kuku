@@ -34,7 +34,7 @@ class DepositController extends Controller
 	 *
 	 * @return Response
 	 */
-	public function listAction(Request $request)
+	public function listAction(Request $request): Response
 	{
 		$paginatorOptions = $this->getPaginatorOptions($request);
 
@@ -60,7 +60,7 @@ class DepositController extends Controller
 	 *
 	 * @return RedirectResponse
 	 */
-	public function uploadCSVAction(Request $request)
+	public function uploadCSVAction(Request $request): RedirectResponse
 	{
 		$csvFile = $request->files->get('csv_file');
 
@@ -125,7 +125,7 @@ class DepositController extends Controller
 	 *
 	 * @return JsonResponse
 	 */
-	public function lookupAction(Request $request)
+	public function lookupAction(Request $request): JsonResponse
 	{
 		$documentId = $request->get('document_id');
 

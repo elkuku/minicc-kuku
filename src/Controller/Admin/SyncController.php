@@ -27,7 +27,7 @@ class SyncController extends Controller
 	 *
 	 * @return Response
 	 */
-	public function OLDexportAction($name)
+	public function OLDexportAction(string $name): Response
 	{
 		try
 		{
@@ -63,7 +63,7 @@ class SyncController extends Controller
 	 *
 	 * @return Response
 	 */
-	public function exportAction($name)
+	public function exportAction(string $name): Response
 	{
 		$content  = json_encode($this->getTableData($name));
 		$filename = sprintf('export-%s-%s.json', $name, date('Y-m-d'));
@@ -86,7 +86,7 @@ class SyncController extends Controller
 	 *
 	 * @return Response
 	 */
-	public function importAction(Request $request)
+	public function importAction(Request $request): Response
 	{
 		$file = $request->files->get('file');
 
@@ -208,7 +208,7 @@ class SyncController extends Controller
 	 *
 	 * @return Response
 	 */
-	public function backupAction()
+	public function backupAction(): Response
 	{
 		$pattern = '#mysql://(.+)\:(.+)@127.0.0.1:3306/(.+)#';
 
