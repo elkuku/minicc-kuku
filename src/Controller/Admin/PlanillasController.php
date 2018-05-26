@@ -27,7 +27,7 @@ class PlanillasController extends Controller
 	 *
 	 * @return Response
 	 */
-	public function mailAction()
+	public function mailAction(): Response
 	{
 		$year  = date('Y');
 		$month = date('m');
@@ -67,16 +67,15 @@ class PlanillasController extends Controller
 	 *
 	 * @return PdfResponse
 	 */
-	public function downloadAction()
+	public function downloadAction(): PdfResponse
 	{
-
 		$year  = date('Y');
 		$month = date('m');
 
 		$filename = sprintf('planillas-%d-%d.pdf', $year, $month);
 		$html     = $this->getPlanillasHtml($year, $month);
 
-		Return new PdfResponse(
+		return new PdfResponse(
 			$this->get('knp_snappy.pdf')->getOutputFromHtml($html),
 			$filename
 		);
@@ -88,7 +87,7 @@ class PlanillasController extends Controller
 	 *
 	 * @return string
 	 */
-	private function getPlanillasHtml($year, $month)
+	private function getPlanillasHtml(int $year, int $month): string
 	{
 		$stores = $this->getDoctrine()
 			->getRepository(Store::class)
