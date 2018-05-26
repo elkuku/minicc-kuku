@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * Class PdfController
  */
-class PdfController extends Controller
+class TransactionController extends Controller
 {
 	/**
 	 * @Route("/store-transaction-pdf/{id}/{year}", name="store-transaction-pdf")
@@ -29,7 +29,7 @@ class PdfController extends Controller
 	 *
 	 * @return PdfResponse
 	 */
-	public function transactionPdfAction(Request $request)
+	public function getStore(Request $request): PdfResponse
 	{
 		$storeId = (int) $request->get('id');
 		$year    = (int) $request->get('year', date('Y'));
@@ -54,7 +54,7 @@ class PdfController extends Controller
 	 *
 	 * @return PdfResponse
 	 */
-	public function transactionAllPdfAction()
+	public function getStores(): PdfResponse
 	{
 		$htmlPages = [];
 
@@ -66,12 +66,10 @@ class PdfController extends Controller
 
 		foreach ($stores as $store)
 		{
-			if (!$store->getUserId())
+			if ($store->getUserId())
 			{
-				continue;
+				$htmlPages[] = $this->getTransactionsHtml($store, $year);
 			}
-
-			$htmlPages[] = $this->getTransactionsHtml($store, $year);
 		}
 
 		$filename = sprintf('movimientos-%d-%s.pdf', $year, date('Y-m-d'));
@@ -89,7 +87,7 @@ class PdfController extends Controller
 	 *
 	 * @return string
 	 */
-	private function getTransactionsHtml(Store $store, int $year, int $transactionsPerPage = 42)
+	private function getTransactionsHtml(Store $store, int $year, int $transactionsPerPage = 42): string
 	{
 
 		$transactionRepo = $this->getDoctrine()
