@@ -81,23 +81,23 @@ class UserController extends Controller
 	 * @Route("/user-edit/{id}", name="user-edit")
 	 * @Security("has_role('ROLE_ADMIN')")
 	 *
-	 * @param User    $user
+	 * @param User    $client
 	 * @param Request $request
 	 *
 	 * @return Response
 	 */
-	public function editAction(User $user, Request $request): Response
+	public function editAction(User $client, Request $request): Response
 	{
-		$form = $this->createForm(UserFullType::class, $user);
+		$form = $this->createForm(UserFullType::class, $client);
 
 		$form->handleRequest($request);
 
 		if ($form->isSubmitted() && $form->isValid())
 		{
-			$user = $form->getData();
+			$client = $form->getData();
 
 			$em = $this->getDoctrine()->getManager();
-			$em->persist($user);
+			$em->persist($client);
 			$em->flush();
 
 			$this->addFlash('success', 'El usuario ha sido guardado');
@@ -109,7 +109,7 @@ class UserController extends Controller
 			'user/form.html.twig',
 			[
 				'form' => $form->createView(),
-				'data' => $user,
+				'data' => $client,
 			]
 		);
 	}
