@@ -11,21 +11,36 @@ namespace App\Repository;
 use App\Entity\Store;
 use App\Entity\Transaction;
 use App\Helper\Paginator\PaginatorOptions;
+use App\Helper\Paginator\PaginatorRepoTrait;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * TransactionRepository
  *
  * @ORM\Entity
+ *
+ * @method Transaction|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Transaction|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Transaction[]    findAll()
+ * @method Transaction[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class TransactionRepository extends AbstractRepository
+class TransactionRepository extends ServiceEntityRepository
 {
+	use PaginatorRepoTrait;
+
+	public function __construct(RegistryInterface $registry)
+	{
+		parent::__construct($registry, Transaction::class);
+	}
+
 	/**
 	 * @param Store   $store
 	 * @param integer $year
 	 *
-	 * @return array
+	 * @return Transaction[]
 	 */
 	public function findByStoreAndYear(Store $store, $year)
 	{
