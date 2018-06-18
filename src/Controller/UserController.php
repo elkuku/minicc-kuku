@@ -9,8 +9,10 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Entity\UserState;
 use App\Form\UserFullType;
+use App\Form\UserType;
+use App\Repository\UserRepository;
+use App\Repository\UserStateRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -18,138 +20,115 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Class UserController
+ * @Route("/users")
  */
 class UserController extends Controller
 {
 	/**
-	 * @Route("/users", name="users-list")
+	 * @Route("/", name="users-list")
+	 *
 	 * @Security("has_role('ROLE_ADMIN')")
-	 *
-	 * @param Request $request
-	 *
-	 * @return Response
 	 */
-	public function listAction(Request $request): Response
+	public function list(UserRepository $userRepository, UserStateRepository $userStateRepository,
+	                     Request $request): Response
 	{
-		$userState = (int) $request->get('user_state');
+		$userState = (int) $request->get('user_state', 1);
 
-        $criteria = ['role' => 'ROLE_USER'];
+		$criteria = ['role' => 'ROLE_USER'];
 
 		if ($userState)
 		{
-			$criteria['state'] = $this->getDoctrine()
-				->getRepository(UserState::class)
-				->find($userState);
+			$criteria['state'] = $userStateRepository->find($userState);
 		}
 
-        $users = $this->getDoctrine()
-            ->getRepository(User::class)
-            ->findBy($criteria);
-
-        $states = $this->getDoctrine()
-            ->getRepository(UserState::class)
-            ->findAll();
-
-        return $this->render(
-            'user/list.html.twig',
-            [
-                'users'     => $users,
-                'userState' => $userState,
-                'states'    => $states,
-            ]
-        );
-    }
-
-	/**
-	 * @Route("/users-pdf", name="pdf-users")
-	 * @Security("has_role('ROLE_ADMIN')")
-	 *
-	 * @return Response
-	 */
-	public function pdfListAction(): Response
-	{
 		return $this->render(
-			'user/user-pdf-list.html.twig',
+			'user/list.html.twig',
 			[
-				'users' => $this->getSortedUsers(),
+				'users'     => $userRepository->findBy($criteria),
+				'userState' => $userState,
+				'states'    => $userStateRepository->findAll(),
 			]
 		);
 	}
 
 	/**
-	 * @Route("/user-edit/{id}", name="user-edit")
+	 * @Route("/pdf", name="pdf-users")
 	 * @Security("has_role('ROLE_ADMIN')")
-	 *
-	 * @param User    $client
-	 * @param Request $request
-	 *
-	 * @return Response
 	 */
-	public function editAction(User $client, Request $request): Response
+	public function pdfList(UserRepository $userRepository): Response
+	{
+		return $this->render(
+			'user/user-pdf-list.html.twig',
+			[
+				'users' => $this->getSortedUsers($userRepository),
+			]
+		);
+	}
+
+	/**
+	 * @Route("/edit/{id}", name="user-edit")
+	 * @Security("has_role('ROLE_ADMIN')")
+	 */
+	public function edit(User $client, Request $request): Response
 	{
 		$form = $this->createForm(UserFullType::class, $client);
 
-        $form->handleRequest($request);
+		$form->handleRequest($request);
 
 		if ($form->isSubmitted() && $form->isValid())
 		{
 			$client = $form->getData();
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($client);
-            $em->flush();
+			$em = $this->getDoctrine()->getManager();
+			$em->persist($client);
+			$em->flush();
 
-            $this->addFlash('success', 'El usuario ha sido guardado');
+			$this->addFlash('success', 'El usuario ha sido guardado');
 
-            return $this->redirectToRoute('users-list');
-        }
+			return $this->redirectToRoute('users-list');
+		}
 
-        return $this->render(
-            'user/form.html.twig',
-            [
-                'form' => $form->createView(),
-                'data' => $client,
-            ]
-        );
-    }
+		return $this->render(
+			'user/form.html.twig',
+			[
+				'form' => $form->createView(),
+				'data' => $client,
+			]
+		);
+	}
 
 	/**
-	 * @Route("/users-ruclist", name="users-ruclist")
+	 * @Route("/ruclist", name="users-ruclist")
 	 * @Security("has_role('ROLE_ADMIN')")
-	 *
-	 * @return Response
 	 */
-	public function rucListAction(): Response
+	public function rucList(UserRepository $userRepository): Response
 	{
-		$html = $this->renderView('user/ruclist.html.twig', ['users' => $this->getSortedUsers()]);
+		$html = $this->renderView('user/ruclist.html.twig', ['users' => $this->getSortedUsers($userRepository)]);
 
-        $filename = sprintf('test-%s.pdf', date('Y-m-d'));
+		$filename = sprintf('test-%s.pdf', date('Y-m-d'));
 
-        return new Response(
-            $this->get('knp_snappy.pdf')->getOutputFromHtml($html),
-            200,
-            [
-                'Content-Type'        => 'application/pdf',
-                'Content-Disposition' => sprintf('attachment; filename="%s"', $filename),
-            ]
-        );
-    }
+		return new Response(
+			$this->get('knp_snappy.pdf')->getOutputFromHtml($html),
+			200,
+			[
+				'Content-Type'        => 'application/pdf',
+				'Content-Disposition' => sprintf('attachment; filename="%s"', $filename),
+			]
+		);
+	}
 
-    /**
-     * @return array
-     */
-    private function getSortedUsers(): array
-    {
-        $users = $this->getDoctrine()
-            ->getRepository('App:User')
-            ->findActiveUsers();
+	/**
+	 * Sort users by their store number(s).
+	 */
+	private function getSortedUsers(UserRepository $userRepository): array
+	{
+		$users = $userRepository->findActiveUsers();
 
-        usort(
-            $users,
-            function ($a, $b) {
-                $aId = 0;
-                $bId = 0;
+		usort(
+			$users,
+			function ($a, $b) {
+				$aId = 0;
+				$bId = 0;
 
 				/** @type \App\Entity\User $a */
 				foreach ($a->getStores() as $store)
@@ -163,48 +142,49 @@ class UserController extends Controller
 					$bId = $store->getId();
 				}
 
-                return ($aId < $bId) ? -1 : 1;
-            }
-        );
+				return ($aId < $bId) ? -1 : 1;
+			}
+		);
 
-        return $users;
-    }
+		return $users;
+	}
 
-    /**
-     * @Route("/new", name="register")
-     *
-     * // NOTE: Only admin can register new users !
-     * @Security("has_role('ROLE_ADMIN')")
-     */
-    public function new(Request $request): Response
-    {
-        // Create a new blank user and process the form
-        $user = new User;
-        $form = $this->createForm(UserType::class, $user);
-        $form->handleRequest($request);
+	/**
+	 * @Route("/new", name="register")
+	 *
+	 * // NOTE: Only admin can register new users !
+	 * @Security("has_role('ROLE_ADMIN')")
+	 */
+	public function new(Request $request): Response
+	{
+		// Create a new blank user and process the form
+		$user = new User;
+		$form = $this->createForm(UserType::class, $user);
+		$form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            // Encode the new users password
-            $encoder  = $this->get('security.password_encoder');
-            $password = $encoder->encodePassword($user, $user->getPlainPassword());
-            $user->setPassword($password);
+		if ($form->isSubmitted() && $form->isValid())
+		{
+			// Encode the new users password
+			$encoder  = $this->get('security.password_encoder');
+			$password = $encoder->encodePassword($user, $user->getPlainPassword());
+			$user->setPassword($password);
 
-            // Set their role
-            $user->setRole('ROLE_USER');
+			// Set their role
+			$user->setRole('ROLE_USER');
 
-            // Save
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->flush();
+			// Save
+			$em = $this->getDoctrine()->getManager();
+			$em->persist($user);
+			$em->flush();
 
-            return $this->redirectToRoute('login');
-        }
+			return $this->redirectToRoute('login');
+		}
 
-        return $this->render(
-            'auth/register.html.twig',
-            [
-                'form' => $form->createView(),
-            ]
-        );
-    }
+		return $this->render(
+			'auth/register.html.twig',
+			[
+				'form' => $form->createView(),
+			]
+		);
+	}
 }

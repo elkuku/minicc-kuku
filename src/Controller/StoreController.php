@@ -9,9 +9,10 @@
 namespace App\Controller;
 
 use App\Entity\Store;
-use App\Entity\Transaction;
 use App\Form\StoreType;
 use App\Helper\BreadcrumbTrait;
+use App\Repository\StoreRepository;
+use App\Repository\TransactionRepository;
 use App\Service\TaxService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -21,157 +22,128 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class StoreController
+ * @Route("/stores")
  */
 class StoreController extends Controller
 {
-	use BreadcrumbTrait;
+    use BreadcrumbTrait;
 
-	/**
-	 * @Route("/stores", name="stores-list")
-	 * @Security("has_role('ROLE_ADMIN')")
-	 *
-	 * @return Response
-	 */
-	public function listAction(): Response
-	{
-		$stores = $this->getDoctrine()
-			->getRepository(Store::class)
-			->findAll();
+    /**
+     * @Route("/", name="stores-list")
+     * @Security("has_role('ROLE_ADMIN')")
+     */
+    public function index(StoreRepository $storeRepository): Response
+    {
+        return $this->render('stores/list.html.twig', ['stores' => $storeRepository->findAll()]);
+    }
 
-		return $this->render('stores/list.html.twig', ['stores' => $stores]);
-	}
+    /**
+     * @Route("/new", name="stores-add")
+     * @Security("has_role('ROLE_ADMIN')")
+     */
+    public function new(Request $request): Response
+    {
+        $store = new Store;
+        $form  = $this->createForm(StoreType::class, $store);
 
-	/**
-	 * @Route("/store-add", name="stores-add")
-	 * @Security("has_role('ROLE_ADMIN')")
-	 *
-	 * @param Request $request
-	 *
-	 * @return Response
-	 */
-	public function addAction(Request $request): Response
-	{
-		$store = new Store;
-		$form  = $this->createForm(StoreType::class, $store);
+        $form->handleRequest($request);
 
-		$form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $store = $form->getData();
 
-		if ($form->isSubmitted() && $form->isValid())
-		{
-			$store = $form->getData();
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($store);
+            $em->flush();
 
-			$em = $this->getDoctrine()->getManager();
-			$em->persist($store);
-			$em->flush();
+            $this->addFlash('success', 'Store has been saved');
 
-			$this->addFlash('success', 'Store has been saved');
+            return $this->redirectToRoute('stores-list');
+        }
 
-			return $this->redirectToRoute('stores-list');
-		}
+        return $this->render(
+            'stores/form.html.twig',
+            [
+                'form'          => $form->createView(),
+                'store'         => $store,
+                'ivaMultiplier' => getenv('value_iva'),
+            ]
+        );
+    }
 
-		return $this->render(
-			'stores/form.html.twig',
-			[
-				'form'          => $form->createView(),
-				'store'         => $store,
-				'ivaMultiplier' => getenv('value_iva'),
-			]
-		);
-	}
+    /**
+     * @Route("/edit/{id}", name="stores-edit")
+     * @Security("has_role('ROLE_ADMIN')")
+     */
+    public function edit(Store $store, Request $request): Response
+    {
+        $form = $this->createForm(StoreType::class, $store);
 
-	/**
-	 * @Route("/store-edit/{id}", name="stores-edit")
-	 * @Security("has_role('ROLE_ADMIN')")
-	 *
-	 * @param Store   $store
-	 * @param Request $request
-	 *
-	 * @return Response
-	 */
-	public function editAction(Store $store, Request $request): Response
-	{
-		$form = $this->createForm(StoreType::class, $store);
+        $form->handleRequest($request);
 
-		$form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $store = $form->getData();
 
-		if ($form->isSubmitted() && $form->isValid())
-		{
-			$store = $form->getData();
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($store);
+            $em->flush();
 
-			$em = $this->getDoctrine()->getManager();
-			$em->persist($store);
-			$em->flush();
+            $this->addFlash('success', 'El local ha sido guardado.');
 
-			$this->addFlash('success', 'El local ha sido guardado.');
+            return $this->redirectToRoute('stores-list');
+        }
 
-			return $this->redirectToRoute('stores-list');
-		}
+        return $this->render(
+            'stores/form.html.twig',
+            [
+                'form'          => $form->createView(),
+                'store'         => $store,
+                'ivaMultiplier' => getenv('value_iva'),
+            ]
+        );
+    }
 
-		return $this->render(
-			'stores/form.html.twig',
-			[
-				'form'          => $form->createView(),
-				'store'         => $store,
-				'ivaMultiplier' => getenv('value_iva'),
-			]
-		);
-	}
+    /**
+     * @Route("/{id}", name="store-transactions")
+     * @Security("has_role('ROLE_ADMIN')")
+     */
+    public function show(TransactionRepository $transactionRepository, Store $store, Request $request, TaxService $taxService): Response
+    {
+        $year = (int) $request->get('year', date('Y'));
 
-	/**
-	 * @Route("/store/{id}", name="store-transactions")
-	 * @Security("has_role('ROLE_ADMIN')")
-	 *
-	 * @param Store      $store
-	 * @param Request    $request
-	 * @param TaxService $taxService
-	 *
-	 * @return Response
-	 */
-	public function listTransactionsAction(Store $store, Request $request, TaxService $taxService): Response
-	{
-		$year = (int) $request->get('year', date('Y'));
+        $this->addBreadcrumb('Locales', 'stores-list')
+            ->addBreadcrumb('Local ' . $store->getId());
 
-		$this->addBreadcrumb('Locales', 'stores-list')
-			->addBreadcrumb('Local ' . $store->getId());
+        $transactions = $transactionRepository->findByStoreAndYear($store, $year);
 
-		$transactionRepo = $this->getDoctrine()
-			->getRepository(Transaction::class);
+        $monthPayments = [];
+        $rentalValues  = [];
+        $rentalValue   = $taxService->getValueConTax($store->getValAlq());
 
-		$transactions = $transactionRepo->findByStoreAndYear($store, $year);
+        for ($i = 1; $i < 13; $i++) {
+            $monthPayments[$i] = 0;
+            $rentalValues[$i]  = $rentalValue;
+        }
 
-		$monthPayments = [];
-		$rentalValues  = [];
-		$rentalValue   = $taxService->getValueConTax($store->getValAlq());
+        foreach ($transactions as $transaction) {
+            if ($transaction->getType()->getName() == 'Pago') {
+                $monthPayments[$transaction->getDate()->format('n')] += $transaction->getAmount();
+            }
+        }
 
-		for ($i = 1; $i < 13; $i++)
-		{
-			$monthPayments[$i] = 0;
-			$rentalValues[$i]  = $rentalValue;
-		}
+        $monthPayments = implode(', ', $monthPayments);
 
-		/** @type Transaction $transaction */
-		foreach ($transactions as $transaction)
-		{
-			if ($transaction->getType()->getName() == 'Pago')
-			{
-				$monthPayments[$transaction->getDate()->format('n')] += $transaction->getAmount();
-			}
-		}
-
-		$monthPayments = implode(', ', $monthPayments);
-
-		return $this->render(
-			'stores/transactions.html.twig',
-			[
-				'transactions'  => $transactions,
-				'saldoAnterior' => $transactionRepo->getSaldoAnterior($store, $year),
-				'monthPayments' => $monthPayments,
-				'rentalValStr'  => implode(', ', $rentalValues),
-				'store'         => $store,
-				'stores'        => $this->getDoctrine()->getRepository(Store::class)->findAll(),
-				'year'          => $year,
-				'breadcrumbs'   => $this->getBreadcrumbs(),
-			]
-		);
-	}
+        return $this->render(
+            'stores/transactions.html.twig',
+            [
+                'transactions'  => $transactions,
+                'saldoAnterior' => $transactionRepository->getSaldoAnterior($store, $year),
+                'monthPayments' => $monthPayments,
+                'rentalValStr'  => implode(', ', $rentalValues),
+                'store'         => $store,
+                'stores'        => $this->getDoctrine()->getRepository(Store::class)->findAll(),
+                'year'          => $year,
+                'breadcrumbs'   => $this->getBreadcrumbs(),
+            ]
+        );
+    }
 }

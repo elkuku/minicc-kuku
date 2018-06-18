@@ -10,6 +10,8 @@ namespace App\Controller\Admin;
 
 use App\Entity\Store;
 use App\Entity\Transaction;
+use App\Repository\StoreRepository;
+use App\Repository\TransactionRepository;
 use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -17,101 +19,82 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Class PdfController
+ * Class TransactionController
  */
 class TransactionController extends Controller
 {
-	/**
-	 * @Route("/store-transaction-pdf/{id}/{year}", name="store-transaction-pdf")
-	 * @Security("has_role('ROLE_ADMIN')")
-	 *
-	 * @param Request $request
-	 *
-	 * @return PdfResponse
-	 */
-	public function getStore(Request $request): PdfResponse
-	{
-		$storeId = (int) $request->get('id');
-		$year    = (int) $request->get('year', date('Y'));
+    /**
+     * @Route("/store-transaction-pdf/{id}/{year}", name="store-transaction-pdf")
+     *
+     * @Security("has_role('ROLE_ADMIN')")
+     */
+    public function getStore(TransactionRepository $transactionRepository, StoreRepository $storeRepository, Request $request): PdfResponse
+    {
+        $storeId = (int) $request->get('id');
+        $year    = (int) $request->get('year', date('Y'));
 
-		$store = $this->getDoctrine()
-			->getRepository(Store::class)
-			->find($storeId);
+        $store = $storeRepository->find($storeId);
 
-		$html = $this->getTransactionsHtml($store, $year);
+        $html = $this->getTransactionsHtml($transactionRepository,$store, $year);
 
-		$filename = sprintf('movimientos-%d-local-%d-%s.pdf', $year, $storeId, date('Y-m-d'));
+        $filename = sprintf('movimientos-%d-local-%d-%s.pdf', $year, $storeId, date('Y-m-d'));
 
-		return new PdfResponse(
-			$this->get('knp_snappy.pdf')->getOutputFromHtml($html),
-			$filename
-		);
-	}
+        return new PdfResponse(
+            $this->get('knp_snappy.pdf')->getOutputFromHtml($html),
+            $filename
+        );
+    }
 
-	/**
-	 * @Route("/stores-transactions-pdf", name="stores-transactions-pdf")
-	 * @Security("has_role('ROLE_ADMIN')")
-	 *
-	 * @return PdfResponse
-	 */
-	public function getStores(): PdfResponse
-	{
-		$htmlPages = [];
+    /**
+     * @Route("/stores-transactions-pdf", name="stores-transactions-pdf")
+     *
+     * @Security("has_role('ROLE_ADMIN')")
+     */
+    public function getStores(TransactionRepository $transactionRepository, StoreRepository $storeRepository): PdfResponse
+    {
+        $htmlPages = [];
 
-		$year = date('Y');
+        $year = date('Y');
 
-		$stores = $this->getDoctrine()
-			->getRepository(Store::class)
-			->findAll();
+        $stores = $storeRepository->findAll();
 
-		foreach ($stores as $store)
-		{
-			if ($store->getUserId())
-			{
-				$htmlPages[] = $this->getTransactionsHtml($store, $year);
-			}
-		}
+        foreach ($stores as $store) {
+            if ($store->getUserId()) {
+                $htmlPages[] = $this->getTransactionsHtml($transactionRepository, $store, $year);
+            }
+        }
 
-		$filename = sprintf('movimientos-%d-%s.pdf', $year, date('Y-m-d'));
+        $filename = sprintf('movimientos-%d-%s.pdf', $year, date('Y-m-d'));
 
-		return new PdfResponse(
-			$this->get('knp_snappy.pdf')->getOutputFromHtml($htmlPages),
-			$filename
-		);
-	}
+        return new PdfResponse(
+            $this->get('knp_snappy.pdf')->getOutputFromHtml($htmlPages),
+            $filename
+        );
+    }
 
 	/**
-	 * @param Store $store
-	 * @param int   $year
-	 * @param int   $transactionsPerPage
-	 *
-	 * @return string
+	 * Get HTML.
 	 */
-	private function getTransactionsHtml(Store $store, int $year, int $transactionsPerPage = 42): string
-	{
+    private function getTransactionsHtml(TransactionRepository $transactionRepository, Store $store, int $year, int $transactionsPerPage = 42): string
+    {
+        $transactions = $transactionRepository->findByStoreAndYear($store, $year);
 
-		$transactionRepo = $this->getDoctrine()
-			->getRepository(Transaction::class);
+        $pages   = intval(count($transactions) / $transactionsPerPage) + 1;
+        $fillers = $transactionsPerPage - (count($transactions) - ($pages - 1) * $transactionsPerPage);
 
-		$transactions = $transactionRepo->findByStoreAndYear($store, $year);
+        for ($i = 1; $i < $fillers; $i++) {
+            $transaction    = new Transaction;
+            $transactions[] = $transaction;
+        }
 
-		$pages   = intval(count($transactions) / $transactionsPerPage) + 1;
-		$fillers = $transactionsPerPage - (count($transactions) - ($pages - 1) * $transactionsPerPage);
-
-		for ($i = 1; $i < $fillers; $i++)
-		{
-			$transaction    = new Transaction;
-			$transactions[] = $transaction;
-		}
-
-		return $this->renderView(
-			'stores/transactions-pdf.html.twig',
-			[
-				'saldoAnterior' => $transactionRepo->getSaldoAnterior($store, $year),
-				'transactions'  => $transactions,
-				'store'         => $store,
-				'year'          => $year,
-			]
-		);
-	}
+        return $this->renderView(
+            'stores/transactions-pdf.html.twig',
+            [
+                'saldoAnterior' => $transactionRepository->getSaldoAnterior($store, $year),
+                'transactions'  => $transactions,
+                'store'         => $store,
+                'year'          => $year,
+            ]
+        );
+    }
 }

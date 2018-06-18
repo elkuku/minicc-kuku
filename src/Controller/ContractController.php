@@ -9,10 +9,11 @@
 namespace App\Controller;
 
 use App\Entity\Contract;
-use App\Entity\Store;
-use App\Entity\User;
 use App\Form\ContractType;
 use App\Helper\IntlConverter;
+use App\Repository\ContractRepository;
+use App\Repository\StoreRepository;
+use App\Repository\UserRepository;
 use IntlNumbersToWords\Numbers;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -27,35 +28,21 @@ class ContractController extends Controller
 {
 	/**
 	 * @Route("contracts", name="contract-list")
+	 *
 	 * @Security("has_role('ROLE_ADMIN')")
-	 *
-	 * @param Request $request
-	 *
-	 * @return Response
 	 */
-	public function listAction(Request $request): Response
+	public function list(StoreRepository $storeRepository, UserRepository $userRepository,
+	                     ContractRepository $contractRepository, Request $request): Response
 	{
 		$storeId = $request->request->getInt('store_id');
 		$year    = $request->request->getInt('year');
 
-		$stores = $this->getDoctrine()
-			->getRepository(Store::class)
-			->getActive();
-
-		$users = $this->getDoctrine()
-			->getRepository(User::class)
-			->findActiveUsers();
-
-		$data = $this->getDoctrine()
-			->getRepository(Contract::class)
-			->findContracts($storeId, $year);
-
 		return $this->render(
 			'contract/list.html.twig',
 			[
-				'contracts' => $data,
-				'stores'    => $stores,
-				'users'     => $users,
+				'stores'    => $storeRepository->getActive(),
+				'users'     => $userRepository->findActiveUsers(),
+				'contracts' => $contractRepository->findContracts($storeId, $year),
 				'year'      => $year,
 				'storeId'   => $storeId,
 			]
@@ -64,25 +51,15 @@ class ContractController extends Controller
 
 	/**
 	 * @Route("contracts-new", name="contracts-new")
+	 *
 	 * @Security("has_role('ROLE_ADMIN')")
-	 *
-	 * @param Request $request
-	 *
-	 * @return Response
 	 */
-	public function addAction(Request $request): Response
+	public function new(StoreRepository $storeRepository, UserRepository $userRepository,
+	                    ContractRepository $contractRepository, Request $request): Response
 	{
-		$store = $this->getDoctrine()
-			->getRepository(Store::class)
-			->find($request->request->getInt('store'));
-
-		$user = $this->getDoctrine()
-			->getRepository(User::class)
-			->find($request->request->getInt('user'));
-
-		$plantilla = $this->getDoctrine()
-			->getRepository(Contract::class)
-			->findPlantilla();
+		$store     = $storeRepository->find($request->request->getInt('store'));
+		$user      = $userRepository->find($request->request->getInt('user'));
+		$plantilla = $contractRepository->findPlantilla();
 
 		$contract = new Contract;
 
@@ -129,18 +106,12 @@ class ContractController extends Controller
 
 	/**
 	 * @Route("contract/{id}", name="contracts-edit")
+	 *
 	 * @Security("has_role('ROLE_ADMIN')")
-	 *
-	 * @param Request $request
-	 * @param integer $id
-	 *
-	 * @return Response
 	 */
-	public function editAction(Request $request, int $id): Response
+	public function edit(ContractRepository $contractRepository, Request $request, int $id): Response
 	{
-		$data = $this->getDoctrine()
-			->getRepository(Contract::class)
-			->find($id);
+		$data = $contractRepository->find($id);
 
 		$form = $this->createForm(ContractType::class, $data);
 
@@ -171,17 +142,12 @@ class ContractController extends Controller
 
 	/**
 	 * @Route("contracts-template", name="contracts-template")
+	 *
 	 * @Security("has_role('ROLE_ADMIN')")
-	 *
-	 * @param Request $request
-	 *
-	 * @return Response
 	 */
-	public function templateAction(Request $request): Response
+	public function template(ContractRepository $contractRepository, Request $request): Response
 	{
-		$data = $this->getDoctrine()
-			->getRepository(Contract::class)
-			->findPlantilla();
+		$data = $contractRepository->findPlantilla();
 
 		$form = $this->createForm(ContractType::class, $data);
 
@@ -195,7 +161,7 @@ class ContractController extends Controller
 			$em->persist($data);
 			$em->flush();
 
-			$this->addFlash('success', 'Contrato has been saved');
+			$this->addFlash('success', 'Template has been saved');
 
 			return $this->redirectToRoute('contract-list');
 		}
@@ -212,14 +178,10 @@ class ContractController extends Controller
 
 	/**
 	 * @Route("contract-generate/{id}", name="contract-generate")
+	 *
 	 * @Security("has_role('ROLE_ADMIN')")
-	 *
-	 * @param Contract $contract
-	 *
-	 * @return Response
-	 * @throws \Throwable
 	 */
-	public function generateAction(Contract $contract): Response
+	public function generate(Contract $contract): Response
 	{
 		if (!$contract)
 		{
@@ -260,6 +222,7 @@ class ContractController extends Controller
 
 		$html = str_replace(array_keys($searchReplace), $searchReplace, $contract->getText());
 
+		/** @var \Twig_Environment $twig */
 		$twig = clone $this->get('twig');
 
 		$template = $twig->createTemplate($html);

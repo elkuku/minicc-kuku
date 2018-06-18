@@ -8,11 +8,12 @@
 
 namespace App\Controller;
 
-use App\Entity\PaymentMethod;
-use App\Entity\Store;
 use App\Entity\Transaction;
-use App\Entity\TransactionType;
-use App\Entity\User;
+use App\Repository\PaymentMethodRepository;
+use App\Repository\StoreRepository;
+use App\Repository\TransactionRepository;
+use App\Repository\TransactionTypeRepository;
+use App\Repository\UserRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -20,157 +21,127 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Class ListController
+ * Class AdminController
  */
 class AdminController extends Controller
 {
-	/**
-	 * @Route("/cobrar", name="cobrar")
-	 * @Security("has_role('ROLE_ADMIN')")
-	 *
-	 * @param Request $request
-	 *
-	 * @return Response
-	 */
-	public function cobrarAction(Request $request): Response
-	{
-		$values = $request->request->get('values');
-		$users  = $request->request->get('users');
+    /**
+     * @Route("/cobrar", name="cobrar")
+     *
+     * @Security("has_role('ROLE_ADMIN')")
+     */
+    public function cobrar(StoreRepository $storeRepository, UserRepository $userRepository,
+                           TransactionTypeRepository $transactionTypeRepository, Request $request): Response
+    {
+        $values = $request->request->get('values');
+        $users  = $request->request->get('users');
 
-		$storeRepo = $this->getDoctrine()->getRepository(Store::class);
+        if ($values) {
+            $em = $this->getDoctrine()->getManager();
 
-		if ($values)
-		{
-			$em = $this->getDoctrine()->getManager();
+	        // Type "Alquiler"
+	        $type = $transactionTypeRepository->find(1);
 
-			$type = $this->getDoctrine()
-				->getRepository(TransactionType::class)
-				// Type "Alquiler"
-				->find(1);
+            foreach ($values as $storeId => $value) {
+                if (0 == $value) {
+                    // No value
+                    continue;
+                }
 
-			$userRepo = $this->getDoctrine()
-				->getRepository(User::class);
+                $transaction = (new Transaction)
+                    ->setDate(new \DateTime($request->request->get('date_cobro')))
+                    ->setStore($storeRepository->find((int) $storeId))
+                    ->setUser($userRepository->find((int) $users[$storeId]))
+                    ->setType($type)
+                    // Set negative value (!)
+                    ->setAmount(-$value);
 
-			foreach ($values as $storeId => $value)
-			{
-				if (0 == $value)
-				{
-					// No value
-					continue;
-				}
+                $em->persist($transaction);
+            }
 
-				$transaction = (new Transaction)
-					->setDate(new \DateTime($request->request->get('date_cobro')))
-					->setStore($storeRepo->find((int) $storeId))
-					->setUser($userRepo->find((int) $users[$storeId]))
-					->setType($type)
-					// Set negative value (!)
-					->setAmount(-$value);
+            $em->flush();
 
-				$em->persist($transaction);
-			}
+            $this->addFlash('success', 'A cobrar...');
 
-			$em->flush();
+            return $this->redirectToRoute('welcome');
+        }
 
-			$this->addFlash('success', 'A cobrar...');
+        return $this->render('admin/cobrar.html.twig', ['stores' => $storeRepository->getActive()]);
+    }
 
-			return $this->redirectToRoute('welcome');
-		}
+    /**
+     * @Route("/pay-day", name="pay-day")
+     *
+     * @Security("has_role('ROLE_ADMIN')")
+     */
+    public function payDay(StoreRepository $storeRepository, PaymentMethodRepository $paymentMethodRepository,
+                           TransactionTypeRepository $transactionTypeRepository, Request $request): Response
+    {
+        $payments = $request->request->get('payments');
 
-		return $this->render('admin/cobrar.html.twig', ['stores' => $storeRepo->getActive()]);
-	}
+        if (!$payments) {
+            return $this->render(
+                'admin/payday-html.twig',
+                [
+                    'stores'         => $storeRepository->getActive(),
+                    'paymentMethods' => $paymentMethodRepository->findAll(),
+                ]
+            );
+        }
 
-	/**
-	 * @Route("/pay-day", name="pay-day")
-	 * @Security("has_role('ROLE_ADMIN')")
-	 *
-	 * @param Request $request
-	 *
-	 * @return Response
-	 */
-	public function payDayAction(Request $request): Response
-	{
-		$payments = $request->request->get('payments');
+        $em = $this->getDoctrine()->getManager();
 
-		$storeRepo         = $this->getDoctrine()->getRepository(Store::class);
-		$paymentMethodRepo = $this->getDoctrine()->getRepository(PaymentMethod::class);
+        $type = $transactionTypeRepository->findOneBy(['name' => 'Pago']);
 
-		if (!$payments)
-		{
-			return $this->render(
-				'admin/payday-html.twig',
-				[
-					'stores'         => $storeRepo->getActive(),
-					'paymentMethods' => $paymentMethodRepo->findAll(),
-				]
-			);
-		}
+        foreach ($payments['date_cobro'] as $i => $dateCobro) {
+            if (!$dateCobro) {
+                continue;
+            }
 
-		$em = $this->getDoctrine()->getManager();
+            $store = $storeRepository->find((int) $payments['store'][$i]);
 
-		$type = $this->getDoctrine()
-			->getRepository(TransactionType::class)
-			->findOneBy(['name' => 'Pago']);
+            if (!$store) {
+                continue;
+            }
 
-		foreach ($payments['date_cobro'] as $i => $dateCobro)
-		{
-			if (!$dateCobro)
-			{
-				continue;
-			}
+            $method = $paymentMethodRepository->find((int) $payments['method'][$i]);
 
-			$store = $storeRepo->find((int) $payments['store'][$i]);
+            $transaction = (new Transaction)
+                ->setDate(new \DateTime($dateCobro))
+                ->setStore($store)
+                ->setUser($store->getUser())
+                ->setType($type)
+                ->setMethod($method)
+                ->setRecipeNo((int) $payments['recipe'][$i])
+                ->setDocument((int) $payments['document'][$i])
+                ->setDepId((int) $payments['depId'][$i])
+                ->setAmount($payments['amount'][$i]);
 
-			if (!$store)
-			{
-				continue;
-			}
+            $em->persist($transaction);
+        }
 
-			$method = $paymentMethodRepo->find((int) $payments['method'][$i]);
+        $em->flush();
 
-			$transaction = (new Transaction)
-				->setDate(new \DateTime($dateCobro))
-				->setStore($store)
-				->setUser($store->getUser())
-				->setType($type)
-				->setMethod($method)
-				->setRecipeNo((int) $payments['recipe'][$i])
-				->setDocument((int) $payments['document'][$i])
-				->setDepId((int) $payments['depId'][$i])
-				->setAmount($payments['amount'][$i]);
+        $this->addFlash('success', 'Sa ha pagado...');
 
-			$em->persist($transaction);
-		}
+        return $this->redirectToRoute('welcome');
+    }
 
-		$em->flush();
+    /**
+     * @Route("/pagos-por-ano", name="pagos-por-ano")
+     *
+     * @Security("has_role('ROLE_ADMIN')")
+     */
+    public function pagosPorAno(Request $request, TransactionRepository $repository): Response
+    {
+	    $year = $request->query->getInt('year', date('Y'));
 
-		$this->addFlash('success', 'Sa ha pagado...');
-
-		return $this->redirectToRoute('welcome');
-	}
-
-	/**
-	 * @Route("/pagos-por-ano", name="pagos-por-ano")
-	 * @Security("has_role('ROLE_ADMIN')")
-	 *
-	 * @param Request $request
-	 *
-	 * @return Response
-	 */
-	public function pagosPorAnoAction(Request $request): Response
-	{
-		$year = $request->query->getInt('year') ?: date('Y');
-
-		$transactions = $this->getDoctrine()
-			->getRepository(Transaction::class)
-			->getPagosPorAno($year);
-
-		return $this->render(
-			'admin/pagos-por-ano.html.twig',
-			[
-				'year'         => $year,
-				'transactions' => $transactions,
-			]
-		);
-	}
+        return $this->render(
+            'admin/pagos-por-ano.html.twig',
+            [
+                'year'         => $year,
+                'transactions' => $repository->getPagosPorAno($year),
+            ]
+        );
+    }
 }

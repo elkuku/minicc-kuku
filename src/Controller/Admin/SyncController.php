@@ -19,269 +19,208 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class SyncController extends Controller
 {
-	/**
-	 * @Route("/old-export-table/{name}", name="old-export-table")
-	 * @Security("has_role('ROLE_ADMIN')")
-	 *
-	 * @param string $name
-	 *
-	 * @return Response
-	 */
-	public function OLDexportAction(string $name): Response
-	{
-		try
-		{
-			$items = $this->getDoctrine()
-				->getRepository('App:' . $name)
-				->findAll();
-		}
-		catch (\Exception $exception)
-		{
-			$this->addFlash('danger', 'There was an error...');
+    /**
+     * @Route("/export-table/{name}", name="export-table")
+     * @Security("has_role('ROLE_ADMIN')")
+     *
+     * @param string $name
+     *
+     * @return Response
+     */
+    public function export(string $name): Response
+    {
+        $content  = json_encode($this->getTableData($name));
+        $filename = sprintf('export-%s-%s.json', $name, date('Y-m-d'));
 
-			return $this->redirectToRoute('admin-tasks');
-		}
+        return new Response(
+            $content,
+            200,
+            [
+                'Content-Type'        => 'application/txt',
+                'Content-Disposition' => sprintf('attachment; filename="%s"', $filename),
+            ]
+        );
+    }
 
-		$content  = json_encode($items);
-		$filename = sprintf('export-%s-%s.json', $name, date('Y-m-d'));
+    /**
+     * @Route("/import-table", name="import-table")
+     * @Security("has_role('ROLE_ADMIN')")
+     *
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function import(Request $request): Response
+    {
+        $file = $request->files->get('file');
 
-		return new Response(
-			$content,
-			200,
-			[
-				'Content-Type'        => 'application/txt',
-				'Content-Disposition' => sprintf('attachment; filename="%s"', $filename),
-			]
-		);
-	}
+        if (!$file) {
+            $this->addFlash('danger', 'No file received.');
 
-	/**
-	 * @Route("/export-table/{name}", name="export-table")
-	 * @Security("has_role('ROLE_ADMIN')")
-	 *
-	 * @param string $name
-	 *
-	 * @return Response
-	 */
-	public function exportAction(string $name): Response
-	{
-		$content  = json_encode($this->getTableData($name));
-		$filename = sprintf('export-%s-%s.json', $name, date('Y-m-d'));
+            return $this->redirectToRoute('admin-tasks');
+        }
 
-		return new Response(
-			$content,
-			200,
-			[
-				'Content-Type'        => 'application/txt',
-				'Content-Disposition' => sprintf('attachment; filename="%s"', $filename),
-			]
-		);
-	}
+        $path = $file->getRealPath();
 
-	/**
-	 * @Route("/import-table", name="import-table")
-	 * @Security("has_role('ROLE_ADMIN')")
-	 *
-	 * @param Request $request
-	 *
-	 * @return Response
-	 */
-	public function importAction(Request $request): Response
-	{
-		$file = $request->files->get('file');
+        if (!$path) {
+            $this->addFlash('danger', 'Invalid file.');
 
-		if (!$file)
-		{
-			$this->addFlash('danger', 'No file received.');
+            return $this->redirectToRoute('admin-tasks');
+        }
 
-			return $this->redirectToRoute('admin-tasks');
-		}
+        $parts = explode('-', $file->getClientOriginalName());
 
-		$path = $file->getRealPath();
+        if (count($parts) < 2) {
+            $this->addFlash('danger', 'Invalid filename should be "export-{TABLE_NAME}-{DATE}.json".');
 
-		if (!$path)
-		{
-			$this->addFlash('danger', 'Invalid file.');
+            return $this->redirectToRoute('admin-tasks');
+        }
 
-			return $this->redirectToRoute('admin-tasks');
-		}
+        $tableName = $parts[1];
 
-		$parts = explode('-', $file->getClientOriginalName());
+        $newData = json_decode(file_get_contents($path));
 
-		if (count($parts) < 2)
-		{
-			$this->addFlash('danger', 'Invalid filename should be "export-{TABLE_NAME}-{DATE}.json".');
+        $oldData = $this->getTableData($tableName);
 
-			return $this->redirectToRoute('admin-tasks');
-		}
+        foreach ($newData as $i => $newItem) {
+            foreach ($oldData as $io => $oldItem) {
+                if ($oldItem['id'] == $newItem->id) {
+                    foreach ($newItem as $prop => $value) {
+                        if ($oldItem[$prop] != $value) {
+                            throw new \UnexpectedValueException('Data inconsistency.');
+                        }
+                    }
 
-		$tableName = $parts[1];
+                    unset($newData[$i]);
+                    continue 2;
+                }
+            }
+        }
 
-		$newData = json_decode(file_get_contents($path));
+        if (!count($newData)) {
+            $this->addFlash('success', 'Everything is in Sync :)');
 
-		$oldData = $this->getTableData($tableName);
+            return $this->redirectToRoute('admin-tasks');
+        }
 
-		foreach ($newData as $i => $newItem)
-		{
-			foreach ($oldData as $io => $oldItem)
-			{
-				if ($oldItem['id'] == $newItem->id)
-				{
-					foreach ($newItem as $prop => $value)
-					{
-						if ($oldItem[$prop] != $value)
-						{
-							throw new \UnexpectedValueException('Data inconsistency.');
-						}
-					}
+        $queryLines   = [];
+        $queryLines[] = "INSERT INTO $tableName\n";
 
-					unset($newData[$i]);
-					continue 2;
-				}
-			}
-		}
+        $keys = [];
 
-		if (!count($newData))
-		{
-			$this->addFlash('success', 'Everything is in Sync :)');
+        foreach (reset($newData) as $prop => $value) {
+            $keys[] = $prop;
+        }
 
-			return $this->redirectToRoute('admin-tasks');
-		}
+        $queryLines[] = '(' . implode(', ', $keys) . ")\n";
 
-		$queryLines   = [];
-		$queryLines[] = "INSERT INTO $tableName\n";
+        $queryLines[] = "VALUES\n";
 
-		$keys = [];
+        $values = [];
 
-		foreach (reset($newData) as $prop => $value)
-		{
-			$keys[] = $prop;
-		}
+        foreach ($newData as $item) {
+            $valueLine = '';
 
-		$queryLines[] = '(' . implode(', ', $keys) . ")\n";
+            foreach ($item as $prop => $value) {
+                if (is_null($value)) {
+                    $valueLine .= 'null, ';
+                } elseif (strpos($value, '-') || strpos($value, '.')) {
+                    $valueLine .= "'$value', ";
+                } else {
+                    $valueLine .= $value . ', ';
+                }
+            }
 
-		$queryLines[] = "VALUES\n";
+            $values[] = sprintf('(%s)', trim($valueLine, ', '));
+        }
 
-		$values = [];
+        $queryLines[] = implode(",\n", $values) . ';';
 
-		foreach ($newData as $item)
-		{
-			$valueLine = '';
+        $query = implode('', $queryLines);
 
-			foreach ($item as $prop => $value)
-			{
-				if (is_null($value))
-				{
-					$valueLine .= 'null, ';
-				}
-				elseif (strpos($value, '-') || strpos($value, '.'))
-				{
-					$valueLine .= "'$value', ";
-				}
-				else
-				{
-					$valueLine .= $value . ', ';
-				}
-			}
+        $em = $this->getDoctrine()->getManager();
 
-			$values[] = sprintf('(%s)', trim($valueLine, ', '));
-		}
+        /** @type \Doctrine\DBAL\Statement $statement */
+        $statement = $em->getConnection()->prepare($query);
+        $statement->execute();
 
-		$queryLines[] = implode(",\n", $values) . ';';
+        $this->addFlash('success', count($newData) . ' lines inserted');
 
-		$query = implode('', $queryLines);
+        return $this->redirectToRoute('admin-tasks');
+    }
 
-		$em = $this->getDoctrine()->getManager();
+    /**
+     * @Route("/backup", name="backup")
+     * @Security("has_role('ROLE_ADMIN')")
+     *
+     * @return Response
+     */
+    public function backup(): Response
+    {
+        $pattern = '#mysql://(.+)\:(.+)@127.0.0.1:3306/(.+)#';
 
-		/** @type \Doctrine\DBAL\Statement $statement */
-		$statement = $em->getConnection()->prepare($query);
-		$statement->execute();
+        preg_match($pattern, getenv('DATABASE_URL'), $matches);
 
-		$this->addFlash('success', count($newData) . ' lines inserted');
+        if (4 != count($matches)) {
+            throw new \UnexpectedValueException('Error parsing the database URL.');
+        }
 
-		return $this->redirectToRoute('admin-tasks');
-	}
+        $dbUser = $matches[1];
+        $dbPass = $matches[2];
+        $dbName = $matches[3];
 
-	/**
-	 * @Route("/backup", name="backup")
-	 * @Security("has_role('ROLE_ADMIN')")
-	 *
-	 * @return Response
-	 */
-	public function backupAction(): Response
-	{
-		$pattern = '#mysql://(.+)\:(.+)@127.0.0.1:3306/(.+)#';
+        $cmd = sprintf('mysqldump -u%s -p%s %s|gzip 2>&1', $dbUser, $dbPass, $dbName);
 
-		preg_match($pattern, getenv('DATABASE_URL'), $matches);
+        ob_start();
+        passthru($cmd, $retVal);
+        $gzip = ob_get_clean();
 
-		if (4 != count($matches))
-		{
-			throw new \UnexpectedValueException('Error parsing the database URL.');
-		}
+        if ($retVal) {
+            throw new \RuntimeException('Error creating DB backup: ' . $gzip);
+        }
 
-		$dbUser = $matches[1];
-		$dbPass = $matches[2];
-		$dbName = $matches[3];
+        $fileName = date('Y-m-d') . '_backup.gz';
+        $mime     = 'application/x-gzip';
 
-		$cmd = sprintf('mysqldump -u%s -p%s %s|gzip 2>&1', $dbUser, $dbPass, $dbName);
+        $message = (new \Swift_Message('Backup', '<h3>Backup</h3>Date: ' . date('Y-m-d'), 'text/html'))
+            ->attach(new \Swift_Attachment($gzip, $fileName, $mime))
+            ->setFrom('minicckuku@gmail.com')
+            ->setTo('minicckuku@gmail.com');
 
-		ob_start();
-		passthru($cmd, $retVal);
-		$gzip = ob_get_clean();
+        $count = $this->get('mailer')->send($message);
 
-		if ($retVal)
-		{
-			throw new \RuntimeException('Error creating DB backup: ' . $gzip);
-		}
+        if (!$count) {
+            $this->addFlash('danger', 'There was an error sending the message...');
+        } else {
+            $this->addFlash('success', 'Backup has been sent to your inbox.');
+        }
 
-		$fileName = date('Y-m-d') . '_backup.gz';
-		$mime     = 'application/x-gzip';
+        return $this->redirectToRoute('admin-tasks');
+    }
 
-		$message = (new \Swift_Message('Backup', '<h3>Backup</h3>Date: ' . date('Y-m-d'), 'text/html'))
-			->attach(new \Swift_Attachment($gzip, $fileName, $mime))
-			->setFrom('minicckuku@gmail.com')
-			->setTo('minicckuku@gmail.com');
+    /**
+     * @param string $tableName
+     *
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    private function getTableData($tableName)
+    {
+        try {
+            $em = $this->getDoctrine()->getManager();
 
-		$count = $this->get('mailer')->send($message);
+            $query = 'SELECT * FROM ' . $tableName . ';';
 
-		if (!$count)
-		{
-			$this->addFlash('danger', 'There was an error sending the message...');
-		}
-		else
-		{
-			$this->addFlash('success', 'Backup has been sent to your inbox.');
-		}
+            /** @type \Doctrine\DBAL\Statement $statement */
+            $statement = $em->getConnection()->prepare($query);
+            $statement->execute();
 
-		return $this->redirectToRoute('admin-tasks');
-	}
+            $result = $statement->fetchAll();
+        } catch (\Exception $exception) {
+            $this->addFlash('danger', 'There was an error...');
 
-	/**
-	 * @param string $tableName
-	 *
-	 * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
-	 */
-	private function getTableData($tableName)
-	{
-		try
-		{
-			$em = $this->getDoctrine()->getManager();
+            return $this->redirectToRoute('admin-tasks');
+        }
 
-			$query = 'SELECT * FROM ' . $tableName . ';';
-
-			/** @type \Doctrine\DBAL\Statement $statement */
-			$statement = $em->getConnection()->prepare($query);
-			$statement->execute();
-
-			$result = $statement->fetchAll();
-		}
-		catch (\Exception $exception)
-		{
-			$this->addFlash('danger', 'There was an error...');
-
-			return $this->redirectToRoute('admin-tasks');
-		}
-
-		return $result;
-	}
+        return $result;
+    }
 }
