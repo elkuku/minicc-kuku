@@ -1,21 +1,18 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: elkuku
- * Date: 19.03.17
- * Time: 12:40
+ * User: test
+ * Date: 18.06.18
+ * Time: 07:54
  */
 
-namespace App\Repository;
+namespace App\Helper\Paginator;
 
-use Doctrine\ORM\EntityRepository;
+
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
-/**
- * Class AbstractRepository
- */
-class AbstractRepository extends EntityRepository
+trait PaginatorRepoTrait
 {
 	/**
 	 * @param Query   $dql
