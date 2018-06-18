@@ -20,7 +20,7 @@ class IntlConverter
 	 *
 	 * @return string
 	 */
-	public static function formatDate(string $date, string $format = "d 'de' MMMM YYYY", string $lang = 'es_ES'): string
+	public static function formatDate($date, string $format = "d 'de' MMMM YYYY", string $lang = 'es_ES'): string
 	{
 		$formatter = new \IntlDateFormatter('ES_es', \IntlDateFormatter::LONG, \IntlDateFormatter::NONE);
 
