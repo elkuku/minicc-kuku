@@ -18,11 +18,9 @@ use JsonSerializable;
 class Deposit implements JsonSerializable
 {
     /**
-     * @var integer
-     *
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 

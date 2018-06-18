@@ -23,11 +23,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 class User implements UserInterface, \Serializable
 {
 	/**
-	 * @var integer
-	 *
-	 * @ORM\Id;
+	 * @ORM\Id()
+	 * @ORM\GeneratedValue()
 	 * @ORM\Column(type="integer")
-	 * @ORM\GeneratedValue(strategy="AUTO")
 	 */
 	private $id;
 

@@ -19,9 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
 class PaymentMethod
 {
     /**
-     * @var integer
-     *
-     * @ORM\Id
+     * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */

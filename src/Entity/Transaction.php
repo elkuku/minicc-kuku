@@ -18,11 +18,9 @@ use JsonSerializable;
 class Transaction implements JsonSerializable
 {
 	/**
-	 * @var integer
-	 *
-	 * @ORM\Id;
+	 * @ORM\Id()
+	 * @ORM\GeneratedValue()
 	 * @ORM\Column(type="integer")
-	 * @ORM\GeneratedValue(strategy="AUTO")
 	 */
 	protected $id;
 

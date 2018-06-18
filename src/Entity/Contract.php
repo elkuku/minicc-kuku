@@ -19,11 +19,9 @@ use Doctrine\ORM\Mapping\ManyToOne;
 class Contract
 {
 	/**
-	 * @var integer
-	 *
+	 * @ORM\Id()
+	 * @ORM\GeneratedValue()
 	 * @ORM\Column(type="integer")
-	 * @ORM\Id
-	 * @ORM\GeneratedValue(strategy="IDENTITY")
 	 */
 	private $id;
 

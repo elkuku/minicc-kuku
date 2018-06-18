@@ -19,11 +19,9 @@ use Doctrine\ORM\Mapping as ORM;
 class Store
 {
 	/**
-	 * @var integer
-	 *
-	 * @ORM\Column(name="id", type="integer")
-	 * @ORM\Id
-	 * @ORM\GeneratedValue(strategy="IDENTITY")
+	 * @ORM\Id()
+	 * @ORM\GeneratedValue()
+	 * @ORM\Column(type="integer")
 	 */
 	private $id;
 
