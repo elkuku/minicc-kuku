@@ -12,8 +12,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\ManyToOne;
 
 /**
- * Contract
- *
  * @ORM\Entity(repositoryClass="App\Repository\ContractRepository")
  */
 class Contract
@@ -26,16 +24,12 @@ class Contract
 	private $id;
 
 	/**
-     * @var integer
-     *
      * @ORM\Column(type="integer")
      */
     protected $storeNumber = 0;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="inq_nombreapellido", type="string", length=150)
+     * @ORM\Column(type="string", length=150)
      */
     private $inqNombreapellido = '';
 
@@ -47,114 +41,84 @@ class Contract
     private $gender;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="inq_ci", type="string", length=11)
+     * @ORM\Column(type="string", length=11)
      */
     private $inqCi = '000000000-0';
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="destination", type="string", length=50)
+     * @ORM\Column(type="string", length=50)
      */
     private $destination = '';
 
     /**
-     * @var float
-     *
-     * @ORM\Column(name="val_alq", type="float", precision=10, scale=0)
+     * @ORM\Column(type="float", precision=10, scale=0)
      */
     private $valAlq = 0;
 
     /**
-     * @var float
-     *
-     * @ORM\Column(name="val_garantia", type="float", precision=10, scale=0)
+     * @ORM\Column(type="float", precision=10, scale=0)
      */
     private $valGarantia = 0;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date", type="date")
+     * @ORM\Column(type="date")
      */
     private $date = '0000-00-00 00:00:00';
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="cnt_lanfort", type="integer")
+     * @ORM\Column(type="integer")
      */
     private $cntLanfort = 0;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="cnt_neon", type="integer")
+     * @ORM\Column(type="integer")
      */
     private $cntNeon = 0;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="cnt_switch", type="integer")
+     * @ORM\Column(type="integer")
      */
     private $cntSwitch = 0;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="cnt_toma", type="integer")
+     * @ORM\Column(type="integer")
      */
     private $cntToma = 0;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="cnt_ventana", type="integer")
+     * @ORM\Column(type="integer")
      */
     private $cntVentana = 0;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="cnt_llaves", type="integer")
+     * @ORM\Column(type="integer")
      */
     private $cntLlaves = 0;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="cnt_med_agua", type="integer")
+     * @ORM\Column(type="integer")
      */
     private $cntMedAgua = 0;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="cnt_med_elec", type="integer")
+     * @ORM\Column(type="integer")
      */
     private $cntMedElec = 0;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="med_electrico", type="string", length=50)
+     * @ORM\Column(type="string", length=50)
      */
     private $medElectrico = '';
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="med_agua", type="string", length=50)
+     * @ORM\Column(type="string", length=50)
      */
     private $medAgua = '';
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="text", type="text", length=65535, nullable=false)
+     * @ORM\Column(type="text", length=65535, nullable=false)
      */
     private $text;
 
