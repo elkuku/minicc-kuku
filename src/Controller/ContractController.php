@@ -23,11 +23,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class ContractController
+ *
+ * @Route("contracts")
  */
 class ContractController extends Controller
 {
 	/**
-	 * @Route("contracts", name="contract-list")
+	 * @Route("/", name="contract-list")
 	 *
 	 * @Security("has_role('ROLE_ADMIN')")
 	 */
@@ -50,7 +52,7 @@ class ContractController extends Controller
 	}
 
 	/**
-	 * @Route("contracts-new", name="contracts-new")
+	 * @Route("/new", name="contracts-new")
 	 *
 	 * @Security("has_role('ROLE_ADMIN')")
 	 */
@@ -105,24 +107,22 @@ class ContractController extends Controller
 	}
 
 	/**
-	 * @Route("contract/{id}", name="contracts-edit")
+	 * @Route("/{id}", name="contracts-edit")
 	 *
 	 * @Security("has_role('ROLE_ADMIN')")
 	 */
-	public function edit(ContractRepository $contractRepository, Request $request, int $id): Response
+	public function edit(Contract $contract, Request $request): Response
 	{
-		$data = $contractRepository->find($id);
-
-		$form = $this->createForm(ContractType::class, $data);
+		$form = $this->createForm(ContractType::class, $contract);
 
 		$form->handleRequest($request);
 
 		if ($form->isSubmitted() && $form->isValid())
 		{
-			$data = $form->getData();
+			$contract = $form->getData();
 
 			$em = $this->getDoctrine()->getManager();
-			$em->persist($data);
+			$em->persist($contract);
 			$em->flush();
 
 			$this->addFlash('success', 'Contrato has been saved');
@@ -134,14 +134,14 @@ class ContractController extends Controller
 			'contract/form.html.twig',
 			[
 				'form'          => $form->createView(),
-				'data'          => $data,
+				'data'          => $contract,
 				'ivaMultiplier' => getenv('value_iva'),
 			]
 		);
 	}
 
 	/**
-	 * @Route("contracts-template", name="contracts-template")
+	 * @Route("/template", name="contracts-template")
 	 *
 	 * @Security("has_role('ROLE_ADMIN')")
 	 */
@@ -177,17 +177,12 @@ class ContractController extends Controller
 	}
 
 	/**
-	 * @Route("contract-generate/{id}", name="contract-generate")
+	 * @Route("/generate/{id}", name="contract-generate")
 	 *
 	 * @Security("has_role('ROLE_ADMIN')")
 	 */
 	public function generate(Contract $contract): Response
 	{
-		if (!$contract)
-		{
-			throw $this->createNotFoundException('No contract found');
-		}
-
 		$numberToWord = new Numbers;
 
 		$searchReplace = [

@@ -22,13 +22,15 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class TransactionController
+ *
+ * @Route("/transactions")
  */
 class TransactionController extends Controller
 {
     use PaginatorTrait;
 
     /**
-     * @Route("/transaction-delete/{id}", name="transaction-delete")
+     * @Route("/delete/{id}", name="transaction-delete")
      *
      * @Security("has_role('ROLE_ADMIN')")
      */
@@ -50,7 +52,7 @@ class TransactionController extends Controller
     }
 
     /**
-     * @Route("/transaction-edit/{id}", name="transaction-edit")
+     * @Route("/edit/{id}", name="transaction-edit")
      *
      * @Security("has_role('ROLE_ADMIN')")
      */
@@ -90,7 +92,7 @@ class TransactionController extends Controller
     }
 
     /**
-     * @Route("/transaction-rawlist", name="transaction-rawlist")
+     * @Route("/", name="transaction-rawlist")
      *
      * @Security("has_role('ROLE_ADMIN')")
      */
@@ -99,8 +101,6 @@ class TransactionController extends Controller
     {
         $paginatorOptions = $this->getPaginatorOptions($request);
 
-        $stores = $storeRepository->findAll();
-        $transactionTypes = $transactionTypeRepository->findAll();
         $transactions = $transactionRepository->getRawList($paginatorOptions);
 
         $paginatorOptions->setMaxPages(ceil($transactions->count() / $paginatorOptions->getLimit()));
@@ -110,8 +110,8 @@ class TransactionController extends Controller
             [
                 'transactions'     => $transactions,
                 'paginatorOptions' => $paginatorOptions,
-                'transactionTypes' => $transactionTypes,
-                'stores'           => $stores,
+                'transactionTypes' => $transactionTypeRepository->findAll(),
+                'stores'           => $storeRepository->findAll(),
             ]
         );
     }
