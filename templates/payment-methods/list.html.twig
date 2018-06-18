@@ -10,11 +10,14 @@
     <h2>Payment methods</h2>
 
     <table class="table table-bordered table-condensed table-hover table-striped">
+        <thead>
         <tr>
             <th>Id</th>
             <th>Name</th>
             <th>Action</th>
         </tr>
+        </thead>
+        <tbody>
         {% for method in paymentMethods %}
             <tr>
                 <td>{{ method.id }}</td>
@@ -29,5 +32,6 @@
                 <td colspan="2">No Methods Defined!!</td>
             </tr>
         {% endfor %}
+        </tbody>
     </table>
 {% endblock %}
