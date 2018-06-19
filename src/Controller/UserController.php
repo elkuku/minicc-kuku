@@ -13,6 +13,7 @@ use App\Form\UserFullType;
 use App\Form\UserType;
 use App\Repository\UserRepository;
 use App\Repository\UserStateRepository;
+use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -99,21 +100,16 @@ class UserController extends Controller
 
 	/**
 	 * @Route("/ruclist", name="users-ruclist")
+	 *
 	 * @Security("has_role('ROLE_ADMIN')")
 	 */
-	public function rucList(UserRepository $userRepository): Response
+	public function rucList(UserRepository $userRepository): PdfResponse
 	{
 		$html = $this->renderView('user/ruclist.html.twig', ['users' => $this->getSortedUsers($userRepository)]);
 
-		$filename = sprintf('user-list-%s.pdf', date('Y-m-d'));
-
-		return new Response(
+		return new PdfResponse(
 			$this->get('knp_snappy.pdf')->getOutputFromHtml($html),
-			200,
-			[
-				'Content-Type'        => 'application/pdf',
-				'Content-Disposition' => sprintf('attachment; filename="%s"', $filename),
-			]
+			sprintf('user-list-%s.pdf', date('Y-m-d'))
 		);
 	}
 
