@@ -23,78 +23,87 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class TransactionController extends Controller
 {
-    /**
-     * @Route("/store-transaction-pdf/{id}/{year}", name="store-transaction-pdf")
-     *
-     * @Security("has_role('ROLE_ADMIN')")
-     */
-    public function getStore(TransactionRepository $transactionRepository, StoreRepository $storeRepository, Request $request): PdfResponse
-    {
-        $storeId = (int) $request->get('id');
-        $year    = (int) $request->get('year', date('Y'));
+	/**
+	 * @Route("/store-transaction-pdf/{id}/{year}", name="store-transaction-pdf")
+	 *
+	 * @Security("has_role('ROLE_ADMIN')")
+	 */
+	public function getStore(TransactionRepository $transactionRepository, StoreRepository $storeRepository, Request $request): PdfResponse
+	{
+		$storeId = (int) $request->get('id');
+		$year    = (int) $request->get('year', date('Y'));
 
-        $store = $storeRepository->find($storeId);
+		$store = $storeRepository->find($storeId);
 
-        $html = $this->getTransactionsHtml($transactionRepository,$store, $year);
+		$html = $this->getTransactionsHtml($transactionRepository, $store, $year);
 
-        $filename = sprintf('movimientos-%d-local-%d-%s.pdf', $year, $storeId, date('Y-m-d'));
+		$filename = sprintf('movimientos-%d-local-%d-%s.pdf', $year, $storeId, date('Y-m-d'));
 
-        return new PdfResponse(
-            $this->get('knp_snappy.pdf')->getOutputFromHtml($html),
-            $filename
-        );
-    }
+		return new PdfResponse(
+			$this->get('knp_snappy.pdf')->getOutputFromHtml(
+				$html,
+				[
+					'footer-right' => utf8_decode('Pagina [page] de [topage] - ' . date('d.m.Y')),
+					'footer-left'  => utf8_decode(' (C) ' . date('Y') . ' MiniCC KuKu - Atacames')
+				]
+			),
+			$filename
+		);
+	}
 
-    /**
-     * @Route("/stores-transactions-pdf", name="stores-transactions-pdf")
-     *
-     * @Security("has_role('ROLE_ADMIN')")
-     */
-    public function getStores(TransactionRepository $transactionRepository, StoreRepository $storeRepository): PdfResponse
-    {
-        $htmlPages = [];
+	/**
+	 * @Route("/stores-transactions-pdf", name="stores-transactions-pdf")
+	 *
+	 * @Security("has_role('ROLE_ADMIN')")
+	 */
+	public function getStores(TransactionRepository $transactionRepository, StoreRepository $storeRepository): PdfResponse
+	{
+		$htmlPages = [];
 
-        $year = date('Y');
+		$year = date('Y');
 
-        $stores = $storeRepository->findAll();
+		$stores = $storeRepository->findAll();
 
-        foreach ($stores as $store) {
-            if ($store->getUserId()) {
-                $htmlPages[] = $this->getTransactionsHtml($transactionRepository, $store, $year);
-            }
-        }
+		foreach ($stores as $store)
+		{
+			if ($store->getUserId())
+			{
+				$htmlPages[] = $this->getTransactionsHtml($transactionRepository, $store, $year);
+			}
+		}
 
-        $filename = sprintf('movimientos-%d-%s.pdf', $year, date('Y-m-d'));
+		$filename = sprintf('movimientos-%d-%s.pdf', $year, date('Y-m-d'));
 
-        return new PdfResponse(
-            $this->get('knp_snappy.pdf')->getOutputFromHtml($htmlPages),
-            $filename
-        );
-    }
+		return new PdfResponse(
+			$this->get('knp_snappy.pdf')->getOutputFromHtml($htmlPages),
+			$filename
+		);
+	}
 
 	/**
 	 * Get HTML.
 	 */
-    private function getTransactionsHtml(TransactionRepository $transactionRepository, Store $store, int $year, int $transactionsPerPage = 42): string
-    {
-        $transactions = $transactionRepository->findByStoreAndYear($store, $year);
+	private function getTransactionsHtml(TransactionRepository $transactionRepository, Store $store, int $year, int $transactionsPerPage = 42): string
+	{
+		$transactions = $transactionRepository->findByStoreAndYear($store, $year);
 
-        $pages   = intval(count($transactions) / $transactionsPerPage) + 1;
-        $fillers = $transactionsPerPage - (count($transactions) - ($pages - 1) * $transactionsPerPage);
+		$pages   = intval(count($transactions) / $transactionsPerPage) + 1;
+		$fillers = $transactionsPerPage - (count($transactions) - ($pages - 1) * $transactionsPerPage);
 
-        for ($i = 1; $i < $fillers; $i++) {
-            $transaction    = new Transaction;
-            $transactions[] = $transaction;
-        }
+		for ($i = 1; $i < $fillers; $i++)
+		{
+			$transaction    = new Transaction;
+			$transactions[] = $transaction;
+		}
 
-        return $this->renderView(
-            'stores/transactions-pdf.html.twig',
-            [
-                'saldoAnterior' => $transactionRepository->getSaldoAnterior($store, $year),
-                'transactions'  => $transactions,
-                'store'         => $store,
-                'year'          => $year,
-            ]
-        );
-    }
+		return $this->renderView(
+			'stores/transactions-pdf.html.twig',
+			[
+				'saldoAnterior' => $transactionRepository->getSaldoAnterior($store, $year),
+				'transactions'  => $transactions,
+				'store'         => $store,
+				'year'          => $year,
+			]
+		);
+	}
 }

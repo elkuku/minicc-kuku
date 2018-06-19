@@ -11,6 +11,10 @@
         tr.filler td {
             border-top: 1px solid silver;
         }
+
+        thead { display: table-header-group }
+        tfoot { display: table-row-group }
+        tr { page-break-inside: avoid }
     </style>
 {% endblock %}
 
@@ -21,12 +25,15 @@
     <h4>{{ store.user.name }} - {{ store.destination }}</h4>
 
     <table>
+        <thead>
         <tr>
             <th>Fecha</th>
             <th>Detalle</th>
             <th class="text-right">Monto</th>
             <th class="text-right">Saldo</th>
         </tr>
+        </thead>
+        <tbody>
         <tr class="saldo">
             <td>enero 1</td>
             <td>Saldo Anterior</td>
@@ -61,5 +68,6 @@
                 </tr>
             {% endif %}
         {% endfor %}
+        </tbody>
     </table>
 {% endblock %}
