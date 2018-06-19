@@ -1,30 +1,41 @@
 {% extends 'base-pdf.html.twig' %}
 
+    {% block stylesheets %}
+        <style>
+            .ruc {
+                font-family: monospace;
+                font-size: 1.6em;
+            }
+            td {
+                border-bottom: 1px solid silver;
+            }
+        </style>
+    {% endblock %}
+
 {% block body %}
-<div style="float: right">
-    Fecha de impresion: {{ 'now'|date('d m Y') }}
+    <h2>Lista de Inquilinos</h2>
 
-</div>
-<h2>Lista de Inquilinos</h2>
-{% for user in users %}
     <table style="width: 100%">
+        <thead>
         <tr>
-            <td width="100">Local</td>
-            <td>{% for store in user.stores %}{{ store.id }}&nbsp;{% endfor %}</td>
+            <th>Local</th>
+            <th>Inquilino</th>
+            <th>RUC</th>
         </tr>
-        <tr>
-            <td>{{ 2 == user.gender.id ? 'Sra.' : 'Sr.' }}:</td>
-            <td>
-                {{ user.name }}
-            </td>
-        </tr>
-        <tr>
-            <td>RUC:</td>
-            <td>{{ user.inqRuc ? user.inqRuc : user.inqCi ? user.inqCi : '?' }}</td>
-        </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+                <th>
+                    {% for store in user.stores %}{{ store.id }}&nbsp;{% endfor %}
+                </th>
+                <td>
+                    {{ 2 == user.gender.id ? 'Sra.' : 'Sr.' }}
+                    {{ user.name }}
+                </td>
+                <td class="ruc">{{ formatRUC(user) }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
     </table>
-    <hr />
-
-{% endfor %}
-
 {% endblock %}

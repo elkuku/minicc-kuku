@@ -8,6 +8,7 @@
 
 namespace App\Twig;
 
+use App\Entity\User;
 use App\Service\ShaFinder;
 use App\Service\TaxService;
 use Twig_Extension_GlobalsInterface;
@@ -70,6 +71,7 @@ class AppExtension extends \Twig_Extension implements Twig_Extension_GlobalsInte
 	{
 		return [
 			new \Twig_SimpleFunction('intlDate', [$this, 'intlDate']),
+			new \Twig_SimpleFunction('formatRUC', [$this, 'formatRUC']),
 		];
 	}
 
@@ -176,13 +178,41 @@ class AppExtension extends \Twig_Extension implements Twig_Extension_GlobalsInte
 
 	/**
 	 * Add the tax value to a given amount.
-	 *
-	 * @param float $value
-	 *
-	 * @return float
 	 */
 	public function conIvaFilter(float $value): float
 	{
 		return $this->taxService->getValueConTax($value);
+	}
+
+	/**
+	 * Cleanup a long number and make it readable.
+	 */
+	public function formatRUC(User $user): string
+	{
+		$ruc = '?';
+
+		if ($user->getInqRuc())
+		{
+			$ruc = $user->getInqRuc();
+
+			if (13 === strlen($ruc))
+			{
+				$rucs = str_split($ruc, 10);
+
+				$ruc = chunk_split($rucs[0], 3, ' ') . ' ' . $rucs[1];
+			}
+			else
+			{
+				$ruc = chunk_split($ruc, 3, ' ');
+			}
+
+		}
+		elseif ($user->getInqCi())
+		{
+			$ruc = str_replace('-', '', $user->getInqCi());
+			$ruc = chunk_split($ruc, 3, ' ');
+		}
+
+		return $ruc;
 	}
 }

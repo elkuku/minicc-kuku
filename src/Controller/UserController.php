@@ -52,20 +52,6 @@ class UserController extends Controller
 	}
 
 	/**
-	 * @Route("/pdf", name="pdf-users")
-	 * @Security("has_role('ROLE_ADMIN')")
-	 */
-	public function pdfList(UserRepository $userRepository): Response
-	{
-		return $this->render(
-			'user/user-pdf-list.html.twig',
-			[
-				'users' => $this->getSortedUsers($userRepository),
-			]
-		);
-	}
-
-	/**
 	 * @Route("/edit/{id}", name="user-edit")
 	 * @Security("has_role('ROLE_ADMIN')")
 	 */
@@ -98,6 +84,20 @@ class UserController extends Controller
 	}
 
 	/**
+	 * @Route("/pdf", name="pdf-users")
+	 * @Security("has_role('ROLE_ADMIN')")
+	 */
+	public function pdfList(UserRepository $userRepository): Response
+	{
+		return $this->render(
+			'user/user-pdf-list.html.twig',
+			[
+				'users' => $this->getSortedUsers($userRepository),
+			]
+		);
+	}
+
+	/**
 	 * @Route("/ruclist", name="users-ruclist")
 	 * @Security("has_role('ROLE_ADMIN')")
 	 */
@@ -105,7 +105,7 @@ class UserController extends Controller
 	{
 		$html = $this->renderView('user/ruclist.html.twig', ['users' => $this->getSortedUsers($userRepository)]);
 
-		$filename = sprintf('test-%s.pdf', date('Y-m-d'));
+		$filename = sprintf('user-list-%s.pdf', date('Y-m-d'));
 
 		return new Response(
 			$this->get('knp_snappy.pdf')->getOutputFromHtml($html),
