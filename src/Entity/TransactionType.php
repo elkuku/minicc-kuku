@@ -11,9 +11,6 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Entity
- *
- * @ORM\Table(name="transaction_type")
  * @ORM\Entity
  */
 class TransactionType
@@ -26,9 +23,7 @@ class TransactionType
 	private $id;
 
 	/**
-	 * @var string
-	 *
-	 * @ORM\Column(name="name", type="string", length=150, nullable=false)
+	 * @ORM\Column(type="string", length=150, nullable=false)
 	 */
 	private $name;
 

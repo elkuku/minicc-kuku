@@ -17,7 +17,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
- * @ORM\Table(name="user")
  * @UniqueEntity(fields="email", message="This email address is already in use")
  */
 class User implements UserInterface, \Serializable
@@ -37,29 +36,21 @@ class User implements UserInterface, \Serializable
 	private $stores;
 
 	/**
-	 * @var string
-	 *
 	 * @ORM\Column(type="string", length=255, unique=true)
 	 */
 	private $email;
 
 	/**
-	 * @var string
-	 *
 	 * @ORM\Column(type="string", length=20, unique=true)
 	 */
 	private $username;
 
 	/**
-	 * @var string
-	 *
 	 * @ORM\Column(type="string", length=40)
 	 */
 	private $name;
 
 	/**
-	 * @var string
-	 *
 	 * @ORM\Column(type="string", length=50)
 	 */
 	private $role = 'ROLE_USER';
@@ -72,8 +63,6 @@ class User implements UserInterface, \Serializable
 	private $plainPassword;
 
 	/**
-	 * @var string
-	 *
 	 * @ORM\Column(type="string", length=64)
 	 */
 	private $password;
@@ -96,43 +85,32 @@ class User implements UserInterface, \Serializable
 	private $state;
 
 	/**
-	 * @var boolean
 	 * @ORM\Column(type="boolean")
 	 */
 	private $isEnabled = true;
 
 	/**
-	 * @var string
-	 *
-	 * @ORM\Column(name="inq_ci", type="string", length=50, nullable=false)
+	 * @ORM\Column(type="string", length=50, nullable=false)
 	 */
 	private $inqCi = '';
 
 	/**
-	 * @var string
-	 *
-	 * @ORM\Column(name="inq_ruc", type="string", length=13, nullable=false)
+	 * @ORM\Column(type="string", length=13, nullable=false)
 	 */
 	private $inqRuc = '';
 
 	/**
-	 * @var string
-	 *
-	 * @ORM\Column(name="telefono", type="string", length=25, nullable=false)
+	 * @ORM\Column(type="string", length=25, nullable=false)
 	 */
 	private $telefono = '';
 
 	/**
-	 * @var string
-	 *
-	 * @ORM\Column(name="telefono2", type="string", length=25, nullable=false)
+	 * @ORM\Column(type="string", length=25, nullable=false)
 	 */
 	private $telefono2 = '';
 
 	/**
-	 * @var string
-	 *
-	 * @ORM\Column(name="direccion", type="string", length=250, nullable=false)
+	 * @ORM\Column(type="string", length=250, nullable=false)
 	 */
 	private $direccion = '';
 

@@ -59,35 +59,29 @@ class Transaction implements JsonSerializable
 	/**
 	 * @var \DateTime
 	 *
-	 * @ORM\Column(name="date", type="date", nullable=false)
+	 * @ORM\Column(type="date", nullable=false)
 	 */
 	private $date = '0000-00-00';
 
 	/**
 	 * @var float
 	 *
-	 * @ORM\Column(name="amount", type="decimal", precision=13, scale=2, nullable=false)
+	 * @ORM\Column(type="decimal", precision=13, scale=2, nullable=false)
 	 */
 	private $amount = '0.00';
 
 	/**
-	 * @var integer
-	 *
-	 * @ORM\Column(name="document", type="integer", length=20, nullable=true)
+	 * @ORM\Column(type="integer", length=20, nullable=true)
 	 */
 	private $document;
 
 	/**
-	 * @var integer
-	 *
-	 * @ORM\Column(name="dep_id", type="integer", nullable=true)
+	 * @ORM\Column(type="integer", nullable=true)
 	 */
 	private $depId;
 
 	/**
-	 * @var integer
-	 *
-	 * @ORM\Column(name="recipe_no", type="integer", nullable=true)
+	 * @ORM\Column(type="integer", nullable=true)
 	 */
 	private $recipeNo;
 

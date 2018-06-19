@@ -11,9 +11,6 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Entity
- *
- * @ORM\Table(name="payment_method")
  * @ORM\Entity(repositoryClass="App\Repository\PaymentMethodRepository")
  */
 class PaymentMethod

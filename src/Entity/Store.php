@@ -11,9 +11,6 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Store
- *
- * @ORM\Table(name="store")
  * @ORM\Entity(repositoryClass="App\Repository\StoreRepository")
  */
 class Store
@@ -28,91 +25,91 @@ class Store
 	/**
 	 * @var integer
 	 *
-	 * @ORM\Column(name="user_id", type="integer", nullable=true)
+	 * @ORM\Column(type="integer", nullable=true)
 	 */
 	private $userId = 0;
 
 	/**
 	 * @var string
 	 *
-	 * @ORM\Column(name="destination", type="string", length=50, nullable=false)
+	 * @ORM\Column(type="string", length=50, nullable=false)
 	 */
 	private $destination = '';
 
 	/**
 	 * @var float
 	 *
-	 * @ORM\Column(name="val_alq", type="float", precision=10, scale=0, nullable=false)
+	 * @ORM\Column(type="float", precision=10, scale=0, nullable=false)
 	 */
 	private $valAlq = 0;
 
 	/**
 	 * @var integer
 	 *
-	 * @ORM\Column(name="cnt_lanfort", type="integer", nullable=false)
+	 * @ORM\Column(type="integer", nullable=false)
 	 */
 	private $cntLanfort = 0;
 
 	/**
 	 * @var integer
 	 *
-	 * @ORM\Column(name="cnt_neon", type="integer", nullable=false)
+	 * @ORM\Column(type="integer", nullable=false)
 	 */
 	private $cntNeon = 0;
 
 	/**
 	 * @var integer
 	 *
-	 * @ORM\Column(name="cnt_switch", type="integer", nullable=false)
+	 * @ORM\Column(type="integer", nullable=false)
 	 */
 	private $cntSwitch = 0;
 
 	/**
 	 * @var integer
 	 *
-	 * @ORM\Column(name="cnt_toma", type="integer", nullable=false)
+	 * @ORM\Column(type="integer", nullable=false)
 	 */
 	private $cntToma = 0;
 
 	/**
 	 * @var integer
 	 *
-	 * @ORM\Column(name="cnt_ventana", type="integer", nullable=false)
+	 * @ORM\Column(type="integer", nullable=false)
 	 */
 	private $cntVentana = 0;
 
 	/**
 	 * @var integer
 	 *
-	 * @ORM\Column(name="cnt_llaves", type="integer", nullable=false)
+	 * @ORM\Column(type="integer", nullable=false)
 	 */
 	private $cntLlaves = 0;
 
 	/**
 	 * @var integer
 	 *
-	 * @ORM\Column(name="cnt_med_agua", type="integer", nullable=false)
+	 * @ORM\Column(type="integer", nullable=false)
 	 */
 	private $cntMedAgua = 0;
 
 	/**
 	 * @var integer
 	 *
-	 * @ORM\Column(name="cnt_med_elec", type="integer", nullable=false)
+	 * @ORM\Column(type="integer", nullable=false)
 	 */
 	private $cntMedElec = 0;
 
 	/**
 	 * @var string
 	 *
-	 * @ORM\Column(name="med_electrico", type="string", length=50)
+	 * @ORM\Column(type="string", length=50)
 	 */
 	private $medElectrico;
 
 	/**
 	 * @var string
 	 *
-	 * @ORM\Column(name="med_agua", type="string", length=50)
+	 * @ORM\Column(type="string", length=50)
 	 */
 	private $medAgua = 0;
 

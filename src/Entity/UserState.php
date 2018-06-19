@@ -11,9 +11,6 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Entity
- *
- * @ORM\Table(name="user_state")
  * @ORM\Entity
  */
 class UserState
@@ -26,9 +23,7 @@ class UserState
 	private $id;
 
 	/**
-	 * @var string
-	 *
-	 * @ORM\Column(name="name", type="string", length=150, nullable=false)
+	 * @ORM\Column(type="string", length=150, nullable=false)
 	 */
 	private $name;
 

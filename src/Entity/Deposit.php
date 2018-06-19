@@ -33,7 +33,7 @@ class Deposit implements JsonSerializable
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date", type="date", nullable=false)
+     * @ORM\Column(type="date", nullable=false)
      */
     private $date;
 
