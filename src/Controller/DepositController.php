@@ -10,7 +10,7 @@ namespace App\Controller;
 
 use App\Entity\Deposit;
 use App\Helper\CsvParser\CsvParser;
-use App\Helper\PaginatorTrait;
+use App\Helper\Paginator\PaginatorTrait;
 use App\Repository\DepositRepository;
 use App\Repository\PaymentMethodRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;

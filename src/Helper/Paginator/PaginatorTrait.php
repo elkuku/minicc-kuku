@@ -6,9 +6,8 @@
  * Time: 15:08
  */
 
-namespace App\Helper;
+namespace App\Helper\Paginator;
 
-use App\Helper\Paginator\PaginatorOptions;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -27,13 +26,11 @@ trait PaginatorTrait
 	{
 		$options = $request->get('paginatorOptions');
 
-		$paginatorOptions = (new PaginatorOptions)
+		return (new PaginatorOptions)
 			->setPage(isset($options['page']) && $options['page'] ? (int) $options['page'] : 1)
 			->setLimit(isset($options['limit']) && $options['limit'] ? (int) $options['limit'] : getenv('list_limit'))
 			->setOrder(isset($options['order']) && $options['order'] ? $options['order'] : 'id')
 			->setOrderDir(isset($options['orderDir']) && $options['orderDir'] ? $options['orderDir'] : 'ASC')
 			->setCriteria(isset($options['criteria']) ? $options['criteria'] : []);
-
-		return $paginatorOptions;
 	}
 }

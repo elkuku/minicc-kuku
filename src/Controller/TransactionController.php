@@ -10,7 +10,7 @@ namespace App\Controller;
 
 use App\Entity\Transaction;
 use App\Form\TransactionTypeType;
-use App\Helper\PaginatorTrait;
+use App\Helper\Paginator\PaginatorTrait;
 use App\Repository\StoreRepository;
 use App\Repository\TransactionRepository;
 use App\Repository\TransactionTypeRepository;
