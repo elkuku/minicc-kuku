@@ -12,3 +12,4 @@
 
 /yarn-error.log
 /fakewebpack.config.js
+/public/build/
