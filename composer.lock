@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "68b670285d409c5feaf433d691ad41ac",
+    "content-hash": "d4f29d0a9f1fd54ce082b025f46a4183",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -1170,7 +1170,7 @@
         },
         {
             "name": "knplabs/knp-snappy-bundle",
-            "version": "dev-master",
+            "version": "v1.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/KnpLabs/KnpSnappyBundle.git",
@@ -4001,16 +4001,16 @@
     "packages-dev": [
         {
             "name": "easycorp/easy-log-handler",
-            "version": "v1.0.4",
+            "version": "v1.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/EasyCorp/easy-log-handler.git",
-                "reference": "1a617a37ab9389eac4e2e1d14cb70ee0087d724d"
+                "reference": "21c442f5d08b6761a6fa7653e08a5525fb4ccd2b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/EasyCorp/easy-log-handler/zipball/1a617a37ab9389eac4e2e1d14cb70ee0087d724d",
-                "reference": "1a617a37ab9389eac4e2e1d14cb70ee0087d724d",
+                "url": "https://api.github.com/repos/EasyCorp/easy-log-handler/zipball/21c442f5d08b6761a6fa7653e08a5525fb4ccd2b",
+                "reference": "21c442f5d08b6761a6fa7653e08a5525fb4ccd2b",
                 "shasum": ""
             },
             "require": {
@@ -4047,7 +4047,7 @@
                 "monolog",
                 "productivity"
             ],
-            "time": "2018-01-10T08:34:20+00:00"
+            "time": "2018-06-12T06:27:09+00:00"
         },
         {
             "name": "joomla/coding-standards",
@@ -4588,30 +4588,30 @@
         },
         {
             "name": "symfony/monolog-bundle",
-            "version": "v3.2.0",
+            "version": "v3.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/monolog-bundle.git",
-                "reference": "8781649349fe418d51d194f8c9d212c0b97c40dd"
+                "reference": "8204f3cd7c1bd6a6e2955c0a34475243a7bd9802"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/monolog-bundle/zipball/8781649349fe418d51d194f8c9d212c0b97c40dd",
-                "reference": "8781649349fe418d51d194f8c9d212c0b97c40dd",
+                "url": "https://api.github.com/repos/symfony/monolog-bundle/zipball/8204f3cd7c1bd6a6e2955c0a34475243a7bd9802",
+                "reference": "8204f3cd7c1bd6a6e2955c0a34475243a7bd9802",
                 "shasum": ""
             },
             "require": {
                 "monolog/monolog": "~1.22",
-                "php": ">=5.3.2",
-                "symfony/config": "~2.7|~3.0|~4.0",
-                "symfony/dependency-injection": "~2.7|~3.0|~4.0",
-                "symfony/http-kernel": "~2.7|~3.0|~4.0",
-                "symfony/monolog-bridge": "~2.7|~3.0|~4.0"
+                "php": ">=5.6",
+                "symfony/config": "~2.7|~3.3|~4.0",
+                "symfony/dependency-injection": "~2.7|~3.4.10|^4.0.10",
+                "symfony/http-kernel": "~2.7|~3.3|~4.0",
+                "symfony/monolog-bridge": "~2.7|~3.3|~4.0"
             },
             "require-dev": {
-                "symfony/console": "~2.3|~3.0|~4.0",
+                "symfony/console": "~2.7|~3.3|~4.0",
                 "symfony/phpunit-bridge": "^3.3|^4.0",
-                "symfony/yaml": "~2.3|~3.0|~4.0"
+                "symfony/yaml": "~2.7|~3.3|~4.0"
             },
             "type": "symfony-bundle",
             "extra": {
@@ -4647,7 +4647,7 @@
                 "log",
                 "logging"
             ],
-            "time": "2018-03-05T14:51:36+00:00"
+            "time": "2018-06-04T05:55:43+00:00"
         },
         {
             "name": "symfony/polyfill-php72",
@@ -4927,7 +4927,6 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "elkuku/intl-numbers-to-words": 20,
-        "knplabs/knp-snappy-bundle": 20,
         "symfony/lts": 20,
         "joomla/coding-standards": 15
     },
