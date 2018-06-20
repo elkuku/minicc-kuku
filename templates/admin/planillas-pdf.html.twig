@@ -9,6 +9,15 @@
         padding: 4px;
         font-size: 1.4em;
     }
+    .planilla {
+        border: 1px solid silver;
+        margin-bottom: 30px;
+        padding-right: 5px;
+        padding-left: 5px;
+    }
+    .number {
+        font-family: monospace;
+    }
 </style>
 {% endblock %}
 
@@ -16,19 +25,18 @@
     {% for store in stores %}
         {% if store.user %}
             {% set saldoIni = storeData[store.id].saldoIni - store.valAlq|conIva %}
-            <div style="page-break-inside: avoid;">
-            <hr/>
-            <table>
+            <div class="planilla" style="page-break-inside: avoid;">
+            <table style="padding-top: 5px">
                 <tr>
                     <td style="width: 33%; white-space: nowrap;">
                         Local {{ store.id }} - {{ store.destination }}<br/>
-                        Inquilino: {{ store.user.name }}<br/>
+                        {{ store.user.name }}
                     </td>
                     <td style="text-align: center; width: 34%">
                         <span style="font-size: 2em;">Planilla</span><br/>
-                        {{ intlDate(factDate, "MMMM YYYY") }}
+                        {{ intlDate(factDate, "MMMM YYYY")|capitalize }}
                     </td>
-                    <td style="text-align: right; width: 33%; white-space: nowrap;">
+                    <td style="text-align: right; width: 33%;">
                         <img src="{{ rootPath ~ asset('build/images/minicc-logo.gif') }}" alt="Logo" height="50px"/><br/>
                     </td>
                 </tr>
@@ -39,20 +47,19 @@
                     <td width="40%">
                         <table>
                             <tr>
-                                <th>Movimientos de {{ intlDate(prevDate, 'MMMM') }}</th>
+                                <th colspan="3">Movimientos de {{ intlDate(prevDate, 'MMMM')|capitalize }}</th>
                             </tr>
                             <tr>
                                 <td colspan="2">Saldo al {{ intlDate(prevDate, "d 'de' MMMM") }}</td>
-                                <td class="text-right">{{ saldoIni|invert|price|raw }}</td>
+                                <td class="text-right number">{{ saldoIni|invert|price|raw }}</td>
                             </tr>
                             {% for transaction in storeData[store.id].transactions %}
                                 {% set saldoIni = saldoIni + transaction.amount %}
                                 <tr>
                                     <td>{{ intlDate(transaction.date, "d 'de' MMMM") }}</td>
                                     <td>{{ transaction.type.name }}</td>
-                                    <td class="text-right">{{ transaction.amount|invert|price|raw }}</td>
+                                    <td class="text-right number">{{ transaction.amount|invert|price|raw }}</td>
                                 </tr>
-
                             {% else %}
                                 <tr>
                                     <td colspan="3" align="center">No hubo pagos!</td>
@@ -60,21 +67,22 @@
                             {% endfor %}
                             <tr>
                                 <td colspan="2">Saldo de {{ intlDate(prevDate, 'MMMM') }} (1)</td>
-                                <td class="text-right"
+                                <td class="text-right number"
                                     style="border-top: 1px solid silver">{{ saldoIni|invert|price|raw }}</td>
                             </tr>
                         </table>
                     </td>
+                    <td style="border-right: 1px solid silver"></td>
                     <td></td>
                     <td width="50%" style="padding-left: 10px">
                         <table>
                             <tr>
                                 <td>Saldo de {{ intlDate(prevDate, 'MMMM') }} (1)</td>
-                                <td class="text-right">{{ saldoIni|invert|price|raw }}</td>
+                                <td class="text-right number">{{ saldoIni|invert|price|raw }}</td>
                             </tr>
                             <tr>
                                 <td>Alquiler de {{ intlDate(factDate, 'MMMM') }}</td>
-                                <td class="text-right">{{ store.valAlq|conIva|price|raw }}</td>
+                                <td class="text-right number">{{ store.valAlq|conIva|price|raw }}</td>
                             </tr>
                             <tr>
                                 <td>Saldo a pagar</td>
@@ -93,8 +101,6 @@
             </table>
             <hr/>
             Para depositos utilice la cuenta de ahorros del Banco del Pichincha No. 390 356 3900 a nombre de Nikolai Plath.
-            <hr/>
-            <br/>
         {% endif %}
         </div>
     {% endfor %}
