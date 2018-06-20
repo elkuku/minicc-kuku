@@ -28,23 +28,27 @@ class TransactionController extends Controller
 	 *
 	 * @Security("has_role('ROLE_ADMIN')")
 	 */
-	public function getStore(TransactionRepository $transactionRepository, StoreRepository $storeRepository, Request $request): PdfResponse
+	public function getStore(Store $store, int $year, TransactionRepository $transactionRepository): PdfResponse
 	{
-		$storeId = (int) $request->get('id');
-		$year    = (int) $request->get('year', date('Y'));
-
-		$store = $storeRepository->find($storeId);
-
 		$html = $this->getTransactionsHtml($transactionRepository, $store, $year);
 
-		$filename = sprintf('movimientos-%d-local-%d-%s.pdf', $year, $storeId, date('Y-m-d'));
+		$filename = sprintf('movimientos-%d-local-%d-%s.pdf', $year, $store->getId(), date('Y-m-d'));
+
+		$header = $this->renderView(
+			'_header-pdf.html.twig',
+			[
+				'rootPath' => $this->get('kernel')->getProjectDir() . '/public',
+			]
+		);
+
+		$footer = $this->renderView('_footer-pdf.html.twig');
 
 		return new PdfResponse(
 			$this->get('knp_snappy.pdf')->getOutputFromHtml(
 				$html,
 				[
-					'footer-right' => utf8_decode('Pagina [page] de [topage] - ' . date('d.m.Y')),
-					'footer-left'  => utf8_decode(' (C) ' . date('Y') . ' MiniCC KuKu - Atacames')
+					'footer-html' => $footer,
+					'header-html' => $header,
 				]
 			),
 			$filename

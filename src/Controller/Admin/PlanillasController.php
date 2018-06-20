@@ -118,6 +118,7 @@ class PlanillasController extends Controller
                 'prevDate'  => $prevDate,
                 'stores'    => $stores,
                 'storeData' => $storeData,
+	            'rootPath'  => $this->get('kernel')->getProjectDir() . '/public',
             ]
         );
     }
