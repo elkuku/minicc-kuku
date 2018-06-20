@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Class ListController
+ * Class DefaultController
  */
 class DefaultController extends Controller
 {
@@ -23,21 +23,13 @@ class DefaultController extends Controller
      */
     public function index(TransactionRepository $transactionRepository): Response
     {
-	    $saldos = null;
-	    $stores = null;
-
         $user = $this->getUser();
-
-        if ($user) {
-            $stores = $user->getStores();
-            $saldos = $transactionRepository->getSaldos();
-        }
 
         return $this->render(
             'default/index.html.twig',
             [
-                'stores' => $stores,
-                'saldos' => $saldos,
+                'stores' => $user ? $user->getStores() : null,
+                'saldos' => $user ? $transactionRepository->getSaldos() : null,
             ]
         );
     }
@@ -47,7 +39,7 @@ class DefaultController extends Controller
      */
     public function about(): Response
     {
-        return $this->render('default/about.html.twig', ['user' => $this->getUser()]);
+        return $this->render('default/about.html.twig');
     }
 
     /**
