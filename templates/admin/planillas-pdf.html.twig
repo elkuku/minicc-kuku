@@ -10,7 +10,6 @@
         font-size: 1.4em;
     }
 </style>
-
 {% endblock %}
 
 {% block body %}
@@ -21,16 +20,15 @@
             <hr/>
             <table>
                 <tr>
-                    <td style="width: 10%; white-space: nowrap;">
+                    <td style="width: 33%; white-space: nowrap;">
                         Local {{ store.id }} - {{ store.destination }}<br/>
                         Inquilino: {{ store.user.name }}<br/>
-                        Alquiler mensual: $ {{ store.valAlq|conIva|price|raw }}<br/>
                     </td>
-                    <td style="text-align: center">
+                    <td style="text-align: center; width: 34%">
                         <span style="font-size: 2em;">Planilla</span><br/>
-                        {{ intlDate(factDate, "d 'de' MMMM YYYY") }}
+                        {{ intlDate(factDate, "MMMM YYYY") }}
                     </td>
-                    <td style="text-align: right; width: 10%; white-space: nowrap;">
+                    <td style="text-align: right; width: 33%; white-space: nowrap;">
                         <img src="{{ rootPath ~ asset('build/images/minicc-logo.gif') }}" alt="Logo" height="50px"/><br/>
                     </td>
                 </tr>
@@ -38,7 +36,7 @@
             <hr/>
             <table>
                 <tr valign="top">
-                    <td width="50%">
+                    <td width="40%">
                         <table>
                             <tr>
                                 <th>Movimientos de {{ intlDate(prevDate, 'MMMM') }}</th>
@@ -61,16 +59,17 @@
                                 </tr>
                             {% endfor %}
                             <tr>
-                                <td colspan="2">Saldo de {{ intlDate(prevDate, 'MMMM') }}</td>
+                                <td colspan="2">Saldo de {{ intlDate(prevDate, 'MMMM') }} (1)</td>
                                 <td class="text-right"
                                     style="border-top: 1px solid silver">{{ saldoIni|invert|price|raw }}</td>
                             </tr>
                         </table>
                     </td>
+                    <td></td>
                     <td width="50%" style="padding-left: 10px">
                         <table>
                             <tr>
-                                <td>Saldo de {{ intlDate(prevDate, 'MMMM') }}</td>
+                                <td>Saldo de {{ intlDate(prevDate, 'MMMM') }} (1)</td>
                                 <td class="text-right">{{ saldoIni|invert|price|raw }}</td>
                             </tr>
                             <tr>
@@ -84,7 +83,7 @@
                             </tr>
                             <tr>
                                 <td></td>
-                                <td style="font-size: 1.3em">Meses de
+                                <td style="font-size: 1.3em; text-align: right">Meses de
                                     deuda: {{ (-(saldoIni - store.valAlq|conIva) / store.valAlq|conIva)|round(1) }}</td>
                             </tr>
                         </table>
