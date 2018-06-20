@@ -38,6 +38,7 @@ Encore
     .createSharedEntry('js/common', ['jquery'])
 
     .addEntry('js/app', './assets/js/app.js')
+    .addEntry('js/index-charts', './assets/js/index-charts.js')
     .addEntry('js/login', './assets/js/login.js')
     .addEntry('js/pagos-por-ano', './assets/js/pagos-por-ano.js')
 
