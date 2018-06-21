@@ -8,7 +8,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Transaction;
 use App\Repository\TransactionRepository;
+use App\Service\TaxService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -21,15 +23,37 @@ class DefaultController extends Controller
     /**
      * @Route("/", name="welcome")
      */
-    public function index(TransactionRepository $transactionRepository): Response
+    public function index(TransactionRepository $transactionRepository, TaxService $taxService): Response
     {
         $user = $this->getUser();
+	    $headers = [];
+	    $data1 = [];
+	    $data2 = [];
+	    $saldos = null;
+
+	    if ($user)
+	    {
+		    $saldos = $transactionRepository->getSaldos();
+
+		    foreach ($saldos as $saldo)
+		    {
+		    	/* @var Transaction $transaction */
+		    	$transaction = $saldo['data'];
+
+			    $headers[] = 'Local ' . $transaction->getStore()->getId();
+			    $data1[]   = round(-$saldo['amount'] / $taxService->getValueConTax($transaction->getStore()->getValAlq()), 1);
+			    $data2[]   = -$saldo['amount'];
+		    }
+	    }
 
         return $this->render(
             'default/index.html.twig',
             [
                 'stores' => $user ? $user->getStores() : null,
-                'saldos' => $user ? $transactionRepository->getSaldos() : null,
+                'saldos' => $saldos,
+                'chart_headers'     => "'" . implode("', '", $headers) . "'",
+                'chart_data1' => implode(', ', $data1),
+                'chart_data2'  => implode(', ', $data2),
             ]
         );
     }

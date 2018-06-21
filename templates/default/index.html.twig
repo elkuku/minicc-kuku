@@ -4,19 +4,9 @@
     {{ parent() }}
     {% if app.user and app.user.role == 'ROLE_ADMIN' %}
         <script type="text/javascript" src="{{ asset('build/js/index-charts.js') }}"></script>
-        {% set headerString, valueString, valueString2 = '', '', '' %}
-        {% for saldo in saldos %}
-            {% if saldo.data.store.user %}
-                {% set mesesDebt = (saldo.amount / (saldo.data.store.valAlq|conIva))|invert|round(1) %}
-                {% set saldoAmount = saldo.amount|invert %}
-                {% set headerString = headerString ? headerString~', "Local '~saldo.data.store.id~'"' : '"Local '~saldo.data.store.id~'"' %}
-                {% set valueString = valueString ? valueString~', '~mesesDebt : mesesDebt %}
-                {% set valueString2 = valueString2 ? valueString2~', '~saldoAmount : saldoAmount %}
-            {% endif %}
-        {% endfor %}
         <script>
-            drawChart('chart1', 'Meses de deuda', [{{ headerString|raw }}], [{{ valueString }}]);
-            drawChart('chart2', 'Saldo en $', [{{ headerString|raw }}], [{{ valueString2 }}]);
+            drawChart('chart1', 'Meses de deuda', [{{ chart_headers|raw }}], [{{ chart_data1 }}]);
+            drawChart('chart2', 'Saldo en $', [{{ chart_headers|raw }}], [{{ chart_data2 }}]);
         </script>
     {% endif %}
 {% endblock %}
