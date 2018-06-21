@@ -79,8 +79,8 @@
                     <td class="text-right">{{ transaction.amount|price|raw }}</td>
                     <td class="text-right">{{ saldo|price|raw }}</td>
                     <td>
-                        <a href="{{ path('transaction-edit', {'id': transaction.id, 'view': 'stores/'~transaction.store.id}) }}">Edit</a>
-                        <a href="{{ path('transaction-delete', {'id': transaction.id, 'view': 'stores/'~transaction.store.id}) }}">Delete</a>
+                        <a href="{{ path('transaction-edit', {'id': transaction.id, 'view': 'stores/'~store.id}) }}">Edit</a>
+                        <a href="{{ path('transaction-delete', {'id': transaction.id, 'view': 'stores/'~store.id}) }}">Delete</a>
                     </td>
                 </tr>
             {% else %}
