@@ -4,20 +4,14 @@
 
 {% block javascripts %}
     {{ parent() }}
-    {% set headerString = '' %}
-    {% for i in range(1, 12) %}
-        {% set month = intlDate('1966-'~i~'-1', 'MMMM') %}
-        {% set headerString = headerString ? headerString~', "'~month~'"' : '"'~month~'"' %}
-    {% endfor %}
         <script type="text/javascript" src="{{ asset('build/js/stores/transactions.js') }}"></script>
-
         <script>
-            drawChart('chart', [{{ headerString|raw }}], [{{ monthPayments }}], [{{ rentalValStr }}]);
+            drawChart('chart', [{{ headerStr|raw }}], [{{ monthPayments }}], [{{ rentalValStr }}]);
         </script>
 {% endblock %}
 
 {% block body %}
-    {% set saldo = saldoAnterior %}
+
     {% include('_breadcrumbs.html.twig') %}
 
     <div style="float: right">
@@ -63,6 +57,7 @@
                 <td class="text-right">{{ saldoAnterior|price|raw }}</td>
                 <td></td>
             </tr>
+            {% set saldo = saldoAnterior %}
             {% for transaction in transactions %}
                 {% set saldo = saldo + transaction.amount %}
                 {% if transaction.type.name == 'Ajuste' %}

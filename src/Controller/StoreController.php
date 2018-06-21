@@ -11,6 +11,7 @@ namespace App\Controller;
 use App\Entity\Store;
 use App\Form\StoreType;
 use App\Helper\BreadcrumbTrait;
+use App\Helper\IntlConverter;
 use App\Repository\StoreRepository;
 use App\Repository\TransactionRepository;
 use App\Service\TaxService;
@@ -115,11 +116,13 @@ class StoreController extends Controller
 
         $transactions = $transactionRepository->findByStoreAndYear($store, $year);
 
-        $monthPayments = [];
-        $rentalValues  = [];
+	    $headers       = [];
+	    $monthPayments = [];
+	    $rentalValues  = [];
         $rentalValue   = $taxService->getValueConTax($store->getValAlq());
 
         for ($i = 1; $i < 13; $i++) {
+	        $headers[]         = IntlConverter::formatDate('1966-' . $i . '-1', 'MMMM');
             $monthPayments[$i] = 0;
             $rentalValues[$i]  = $rentalValue;
         }
@@ -130,14 +133,13 @@ class StoreController extends Controller
             }
         }
 
-        $monthPayments = implode(', ', $monthPayments);
-
         return $this->render(
             'stores/transactions.html.twig',
             [
                 'transactions'  => $transactions,
                 'saldoAnterior' => $transactionRepository->getSaldoAnterior($store, $year),
-                'monthPayments' => $monthPayments,
+                'headerStr'     => "'" . implode("', '", $headers) . "'",
+                'monthPayments' => implode(', ', $monthPayments),
                 'rentalValStr'  => implode(', ', $rentalValues),
                 'store'         => $store,
                 'stores'        => $this->getDoctrine()->getRepository(Store::class)->findAll(),
