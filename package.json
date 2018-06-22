@@ -2,7 +2,6 @@
   "license": "WTFPL",
   "devDependencies": {
     "@symfony/webpack-encore": "^0.20.1",
-    "bootstrap-datepicker": "1.7.1",
     "bootstrap-sass": "^3.3.7",
     "chart.js": "^2.7.2",
     "copy-webpack-plugin": "^4.5.1",

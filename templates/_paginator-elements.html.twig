@@ -94,7 +94,7 @@
 {% endmacro %}
 
 {% macro date(name, paginatorOptions) %}
-    <input name="paginatorOptions[criteria][{{ name }}]" type="text" class="js-datepicker" size="9"
+    <input name="paginatorOptions[criteria][{{ name }}]" type="date" size="9"
            value="{{ paginatorOptions.searchCriteria(name) }}">
     <div class="btn-group" role="group" aria-label="Opciones de busqueda">
         <button class="btn btn-default btn-xs" aria-label="Borrar"

@@ -1,7 +1,7 @@
 $icon-font-path: "~bootstrap-sass/assets/fonts/bootstrap/";
 
-// set if you're also including font-awesome
-//$fa-font-path: "~font-awesome/fonts";
+@import "variables";
+@import '~bootstrap-sass/assets/stylesheets/bootstrap';
 
 html {
   position: relative;
@@ -44,7 +44,3 @@ pre.console {
 .tableHover {
   background-color: #eedd91;
 }
-@import "variables";
-@import '~bootstrap-sass/assets/stylesheets/bootstrap';
-@import '~bootstrap-datepicker/dist/css/bootstrap-datepicker3';
-

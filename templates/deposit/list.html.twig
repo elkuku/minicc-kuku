@@ -4,17 +4,6 @@
 
 {% block title %} {{ parent() }} - Depositos{% endblock %}
 
-{% block javascripts %}
-    {{ parent() }}
-    <script>
-        $(document).ready(function () {
-            $('.js-datepicker').datepicker({
-                format: 'yyyy-mm-dd'
-            });
-        });
-    </script>
-{% endblock %}
-
 {% block body %}
 
     <div style="float: right">

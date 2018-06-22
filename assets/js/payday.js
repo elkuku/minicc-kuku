@@ -1,7 +1,6 @@
 module.exports = function () {
     this.addRow = function (e) {
         $('#paymentsTable tbody').append('<tr>' + $(e).parent().parent().html() + '</tr>');
-        $('.js-datepicker').datepicker();
         e.remove();
     };
 

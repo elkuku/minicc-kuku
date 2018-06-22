@@ -29,9 +29,6 @@ class TransactionTypeType extends AbstractType
 				[
 					'widget' => 'single_text',
 					'format' => 'yyyy-MM-dd',
-					'attr'   => [
-						'class' => 'js-datepicker',
-					],
 				]
 			)
 			->add(

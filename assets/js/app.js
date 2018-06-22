@@ -6,7 +6,6 @@ window.$ = $;
 require('bootstrap-sass');
 
 require('chart.js');
-require('bootstrap-datepicker');
 
 require('tinymce');
 require('tinymce/themes/modern/theme');
@@ -17,7 +16,3 @@ var pag = require('./pagination.js');
 window.paginator = new pag();
 
 window.PayDay = require('./payday');
-
-$(document).ready(function() {
-    $('.js-datepicker').datepicker();
-});

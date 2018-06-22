@@ -6,13 +6,6 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <script>
-        $(document).ready(function () {
-            $('.js-datepicker').datepicker({
-                format: 'yyyy-mm-dd'
-            });
-        });
-    </script>
 {% endblock %}
 
 {% block body %}
