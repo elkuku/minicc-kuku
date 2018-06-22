@@ -4,60 +4,13 @@
 
 {% block javascripts %}
     {{ parent() }}
+    <script type="text/javascript" src="{{ asset('build/js/transaction/form.js') }}"></script>
     <script>
         $(document).ready(function () {
             $('.js-datepicker').datepicker({
                 format: 'yyyy-mm-dd'
             });
         });
-
-        function searchDepId(e) {
-            var prefix = 'transaction_';
-            var documentIdElement = $('#'+prefix+'document');
-            var destElement = $('#'+prefix+'depId');
-            var dateElement = $('#'+prefix+'date');
-            var methodElement = $('#'+prefix+'method');
-            var amountElement = $('#'+prefix+'amount');
-
-            var messageElement = $('#messageContainer');
-
-            var documentId = documentIdElement.val();
-
-            if(!documentId) {
-                messageElement.html('<div class="alert alert-warning">Introduzca el documento</div>');
-                documentIdElement.focus();
-                return false;
-            }
-
-            $.ajax({
-                type: 'POST',
-                url: '{{ path('lookup-depo') }}',
-                data: 'document_id=' + documentId,
-                beforeSend: function() {
-                    messageElement.html(
-                        '<div class="progress"><div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar"' +
-                        ' style="width:100%">Procesando...</div></div>');
-                },
-                success: function (response) {
-                    if (response.error) {
-                        messageElement.html('<div class="alert alert-danger">'+response.error+'</div>');
-                        documentIdElement.focus();
-                    }
-                    else {
-                        messageElement.html('<div class="alert alert-success">Depósito encontrado.</div>');
-                        console.log(response.data);
-                        var depo = response.data[0];
-                        documentIdElement.val(depo.document);
-                        destElement.val(depo.id);
-                        dateElement.val(depo.date);
-                        amountElement.val(depo.amount);
-                        methodElement.val(2);
-                    }
-                }
-            });
-
-            return false;
-        }
     </script>
 {% endblock %}
 
@@ -113,7 +66,7 @@
         </div>
         <div class="col-sm-3">
             <label class="col-sm-2 control-label">Lookup</label><br />
-            <a href="javascript:" onclick="searchDepId()" class="btn btn-default btn-info form-control">&raquo; &raquo; &raquo;</a>
+            <a href="javascript:" onclick="searchDepId('{{ path('lookup-depo') }}')" class="btn btn-default btn-info form-control">&raquo; &raquo; &raquo;</a>
             <div id="messageContainer"></div>
         </div>
         <div class="col-sm-3">
