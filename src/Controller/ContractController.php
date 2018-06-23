@@ -107,7 +107,7 @@ class ContractController extends Controller
 	}
 
 	/**
-	 * @Route("/{id}", name="contracts-edit")
+	 * @Route("/{id}", name="contracts-edit", requirements={"id"="\d+"})
 	 *
 	 * @Security("has_role('ROLE_ADMIN')")
 	 */
@@ -177,7 +177,7 @@ class ContractController extends Controller
 	}
 
 	/**
-	 * @Route("/generate/{id}", name="contract-generate")
+	 * @Route("/generate/{id}", name="contract-generate", requirements={"id"="\d+"})
 	 *
 	 * @Security("has_role('ROLE_ADMIN')")
 	 */
