@@ -1,14 +1,14 @@
-$icon-font-path: "~bootstrap-sass/assets/fonts/bootstrap/";
+//@import "variables";
+@import '~bootstrap/scss/bootstrap';
 
-@import "variables";
-@import '~bootstrap-sass/assets/stylesheets/bootstrap';
+@import '~open-iconic/font/css/open-iconic-bootstrap.css';
 
 html {
   position: relative;
   min-height: 100%;
 }
 body {
-  padding-top: 70px;
+  padding-top: 80px;
   padding-bottom: 40px;
 }
 .footer {
@@ -43,4 +43,8 @@ pre.console {
 
 .tableHover {
   background-color: #eedd91;
+}
+
+th {
+  white-space: nowrap;
 }

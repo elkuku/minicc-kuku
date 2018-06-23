@@ -3,7 +3,7 @@
 // This seems legacy stuff...
 window.$ = $;
 
-require('bootstrap-sass');
+require('bootstrap');
 
 require('chart.js');
 
