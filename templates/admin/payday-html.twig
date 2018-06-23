@@ -55,11 +55,11 @@
                         {% endfor %}
                     </select>
                 </td>
-                <th>
+                <td>
                     <input class="form-control" name="payments[document][]" type="text" size="7">
                     <span class="btn btn-warning btn-sm" onclick="payday.searchDepId($(this), '{{ path('lookup-depo') }}')">&rArr;</span>
                     <input class="form-control" name="payments[depId][]" type="text" size="7">
-                </th>
+                </td>
                 <td>
                     <input class="form-control" name="payments[recipe][]" type="text" size="7">
                 </td>
