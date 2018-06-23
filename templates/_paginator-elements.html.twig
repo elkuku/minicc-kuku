@@ -28,29 +28,31 @@
             {% set startPage, endPage, startString, endString = page - 5, page + 5, '...', '...' %}
         {% endif %}
 
-        <ul class="pagination pagination-sm">
-            <li {{ page == 1 ? 'class="disabled"' }}>
-                <a href="javascript:"
+        <nav>
+        <ul class="pagination">
+            <li class="page-item{{ page == 1 ? ' disabled' }}">
+                <a class="page-link" href="javascript:"
                    onclick="paginator.goToPage($(this), {{ page - 1 < 1 ? 1 : page - 1 }})">&lArr;</a>
             </li>
             {% if startString %}
-                <li class="disabled"><a href="#">{{ startString }}</a></li>
+                <li class="page-item disabled"><a class="page-link" href="#">{{ startString }}</a></li>
             {% endif %}
             {% for i in startPage..endPage %}
-                <li {{ page == i ? 'class="active"' }}>
-                    <a href="javascript:"
+                <li class="page-item{{ page == i ? ' active' }}">
+                    <a class="page-link" href="javascript:"
                        onclick="paginator.goToPage($(this), {{ i }})">{{ i }}</a>
                 </li>
             {% endfor %}
             {% if endString %}
-                <li class="disabled"><a href="#">{{ endString }}</a></li>
+                <li class="disabled"><a class="page-link" href="#">{{ endString }}</a></li>
             {% endif %}
             <li {{ page == maxPages ? 'class="disabled"' }}>
-                <a href="javascript:"
+                <a class="page-link" href="javascript:"
                    onclick="paginator.goToPage($(this), {{ page + 1 <= maxPages ? page + 1 : page }})">&rArr;</a>
             </li>
             <li> of {{ maxPages }} Pages</li>
         </ul>
+        </nav>
 
     {% endif %}
 {% endmacro %}
@@ -68,12 +70,12 @@
     {% set selected = order == paginatorOptions.order %}
     <a
             onclick="paginator.setOrdering($(this), '{{ order }}', 'ASC')"
-            class="btn btn-{{ selected and 'ASC' == paginatorOptions.orderDir ? 'primary' : 'default' }} btn-xs">
+            class="btn btn-{{ selected and 'ASC' == paginatorOptions.orderDir ? 'primary' : 'light' }} btn-sm">
         &dArr;
     </a>
     <a
             onclick="paginator.setOrdering($(this), '{{ order }}', 'DESC')"
-            class="btn btn-{{ selected and 'DESC' == paginatorOptions.orderDir ? 'primary' : 'default' }} btn-xs">
+            class="btn btn-{{ selected and 'DESC' == paginatorOptions.orderDir ? 'primary' : 'light' }} btn-sm">
         &uArr;
     </a>
 {% endmacro %}
@@ -82,13 +84,13 @@
     <input name="paginatorOptions[criteria][{{ name }}]" size="6"
            value="{{ paginatorOptions.searchCriteria(name) }}">
     <div class="btn-group" role="group" aria-label="Opciones de busqueda">
-        <button class="btn btn-default btn-xs" aria-label="Borrar"
+        <button class="btn btn-light btn-sm" aria-label="Borrar"
                 onclick="$(this).parent().prev().val('');paginator.resetAndSubmit($(this))">
-            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+            <span class="oi oi-trash" aria-hidden="true"></span>
         </button>
-        <button class="btn btn-default btn-xs" aria-label="Buscar"
+        <button class="btn btn-light btn-sm" aria-label="Buscar"
                 onclick="paginator.resetAndSubmit($(this))">
-            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+            <span class="oi oi-magnifying-glass" aria-hidden="true"></span>
         </button>
     </div>
 {% endmacro %}
@@ -97,13 +99,13 @@
     <input name="paginatorOptions[criteria][{{ name }}]" type="date" size="9"
            value="{{ paginatorOptions.searchCriteria(name) }}">
     <div class="btn-group" role="group" aria-label="Opciones de busqueda">
-        <button class="btn btn-default btn-xs" aria-label="Borrar"
+        <button class="btn btn-light btn-sm" aria-label="Borrar"
                 onclick="$(this).parent().prev().val('');paginator.resetAndSubmit($(this))">
-            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+            <span class="oi oi-trash" aria-hidden="true"></span>
         </button>
-        <button class="btn btn-default btn-xs" aria-label="Buscar"
+        <button class="btn btn-light btn-sm" aria-label="Buscar"
                 onclick="paginator.resetAndSubmit($(this))">
-            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+            <span class="oi oi-magnifying-glass" aria-hidden="true"></span>
         </button>
     </div>
 {% endmacro %}

@@ -3,19 +3,20 @@
 {% block title %} {{ parent() }} - Users {% endblock %}
 
 {% block body %}
-    <div style="float: right">
+    <div class="float-right">
         <a href="{{ path('register') }}" class="btn btn-info">Nuevo</a>
-        <a href="{{ path('pdf-users') }}" class="btn btn-default">Lista PDF</a>
-        <a href="{{ path('users-ruclist') }}" class="btn btn-default">Lista RUC</a>
+        <a href="{{ path('pdf-users') }}" class="btn btn-light">Lista PDF</a>
+        <a href="{{ path('users-ruclist') }}" class="btn btn-light">Lista RUC</a>
     </div>
 
-    <h2>Usuarios</h2>
+    <h1>Usuarios</h1>
 
     <form method="post" action="{{ path('users-list') }}">
-        <table class="table table-bordered table-condensed table-hover table-striped">
+        <table class="table table-sm table-hover">
+            <thead>
             <tr>
                 <th>
-                    <select name="user_state" id="user_state" onchange="form.submit()">
+                    <select class="form-control" name="user_state" id="user_state" onchange="form.submit()">
                         <option value="0">Estado...</option>
                         {% for state in states %}
                             <option value="{{ state.id }}"{{ state.id == userState ? ' selected="selected"' : '' }}>
@@ -28,6 +29,7 @@
                 <th>Nombre</th>
                 <th>Locales</th>
             </tr>
+            </thead>
             {% for user in users %}
                 <tr>
                     <td>{{ user.state ? user.state.name : '?' }}</td>
@@ -35,8 +37,8 @@
                     <td><a href="{{ path('user-edit', {'id': user.id}) }}">{{ user.name }}</a></td>
                     <td>
                         {% for store in user.stores %}
-                            <a class="btn btn-default btn-xs" href="{{ path('store-transactions', {'id': store.id}) }}">
-                                {{ store.id }}
+                            <a href="{{ path('store-transactions', {'id': store.id}) }}">
+                               # {{ store.id }}
                             </a>
                         {% else %}
                             N/A

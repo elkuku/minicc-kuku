@@ -12,7 +12,10 @@
 {% block body %}
 
     <form method="get">
-        <h3>Pagos por Año {{ field.selectYear(year) }}</h3>
+        <div class="float-right">
+        {{ field.selectYear(year) }}
+        </div>
+        <h1>Pagos del año {{ year }}</h1>
     </form>
 
     {% set maxLoc, newRow, totalLocal = 10, false, [] %}
@@ -27,7 +30,7 @@ $total_IVA = 0;
 $total_ano_total = 0;
 $total_ano_IVA = 0;
 #}
-    <table class="table table-bordered table-condensed">
+    <table class="table table-bordered table-sm">
         <colgroup></colgroup>
         {% for loc in range(1, maxLoc) %}
             <colgroup></colgroup>

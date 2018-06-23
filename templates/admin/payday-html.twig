@@ -35,10 +35,10 @@
             <tbody>
             <tr>
                 <td>
-                    <input name="payments[date_cobro][]" type="date" size="9">
+                    <input class="form-control" name="payments[date_cobro][]" type="date" size="9">
                 </td>
                 <td>
-                    <select name="payments[store][]">
+                    <select class="form-control" name="payments[store][]">
                         <option>Local</option>
                         {% for store in stores %}
                             <option value="{{ store.id }}">
@@ -49,31 +49,31 @@
                     </select>
                 </td>
                 <td>
-                    <select name="payments[method][]">
+                    <select class="form-control" name="payments[method][]">
                         {% for method in paymentMethods %}
                             <option value="{{ method.id }}">{{ method.name }}</option>
                         {% endfor %}
                     </select>
                 </td>
+                <th>
+                    <input class="form-control" name="payments[document][]" type="text" size="7">
+                    <span class="btn btn-warning btn-sm" onclick="payday.searchDepId($(this), '{{ path('lookup-depo') }}')">&rArr;</span>
+                    <input class="form-control" name="payments[depId][]" type="text" size="7">
+                </th>
                 <td>
-                    <input name="payments[document][]" type="text" size="7">
-                    <span class="btn btn-default btn-xs" onclick="payday.searchDepId($(this), '{{ path('lookup-depo') }}')">&rArr;</span>
-                    <input name="payments[depId][]" type="text" size="7">
+                    <input class="form-control" name="payments[recipe][]" type="text" size="7">
                 </td>
                 <td>
-                    <input name="payments[recipe][]" type="text" size="7">
+                    <input class="form-control" name="payments[amount][]" type="text" size="7">
                 </td>
                 <td>
-                    <input name="payments[amount][]" type="text" size="7">
-                </td>
-                <td>
-                    <a class="btn btn-xs btn-info" onclick="payday.addRow(this)">ADD</a>
+                    <a class="btn btn-sm btn-info" onclick="payday.addRow(this)">ADD</a>
                 </td>
             </tr>
             </tbody>
         </table>
 
-        <div class="well">
+        <div class="card-footer">
             <button type="submit" class="btn btn-success">A Cobrar</button>
         </div>
 

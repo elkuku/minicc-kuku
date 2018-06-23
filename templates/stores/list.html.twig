@@ -3,17 +3,18 @@
 {% block title %} {{ parent() }} - Stores{% endblock %}
 
 {% block body %}
-    <div style="float: right">
-        <a href="{{ path('stores-add') }}" class="btn btn-success">Nuevo Local</a>
+    <div class="float-right">
+        <a href="{{ path('stores-add') }}" class="btn btn-info">Nuevo Local</a>
     </div>
 
-    <h2>Locales</h2>
+    <h1>Locales</h1>
 
     {% set total, totalIva = 0, 0 %}
     {% if stores is empty %}
         <div class="alert alert-warning">No hay locales!</div>
     {% else %}
-        <table class="table table-bordered table-condensed table-hover table-striped">
+        <table class="table table-sm table-hover">
+            <thead>
             <tr>
                 <th class="text-center">Numero</th>
                 <th>Destino</th>
@@ -21,6 +22,7 @@
                 <th>Alquiler</th>
                 <th>Alquiler + IVA</th>
             </tr>
+            </thead>
             {% for store in stores %}
                 <tr>
                     <td class="text-center">

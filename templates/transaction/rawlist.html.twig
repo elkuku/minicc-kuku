@@ -19,7 +19,7 @@
             <div class="col-xs-10">{{ paginator.pagination(paginatorOptions) }}</div>
         </div>
 
-        <table class="table table-bordered table-condensed table-hover table-striped">
+        <table class="table table-bordered table-sm table-hover">
             <tr>
                 <th>{{ paginator.ordering('id', paginatorOptions) }} Id</th>
                 <th{{ paginatorOptions.searchCriteria('store') ? ' class="cell-active"' : '' }}>

@@ -8,46 +8,32 @@
 {% endblock %}
 
 {% block body %}
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Login</div>
-                <div class="panel-body">
-                    <form class="form-horizontal" role="form" method="post" action="{{ path('login') }}">
-                        {% if error %}
-                            <div class="alert alert-danger">
-                                {{ error.messageKey|trans(error.messageData) }}
-                            </div>
-                        {% endif %}
-
-                        <div class="form-group">
-                            <label for="username" class="col-md-4 control-label">Nombre usuario</label>
-
-                            <div class="col-md-6">
-                                <input id="username" class="form-control" name="_username" value="{{ last_username }}">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="password" class="col-md-4 control-label">Clave de acceso</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control" name="_password">
-                            </div>
-                        </div>
-
-                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    Ingresar
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+    <div class="jumbotron">
+        <h1>Login</h1>
+        <form class="form-horizontal" role="form" method="post" action="{{ path('login') }}">
+            {% if error %}
+                <div class="alert alert-danger">
+                    {{ error.messageKey|trans(error.messageData) }}
                 </div>
+            {% endif %}
+
+            <div class="form-group">
+                <label for="username" class="col-md-4 control-label">Nombre usuario</label>
+                <input id="username" class="form-control col-md-4" name="_username" value="{{ last_username }}">
             </div>
-        </div>
+
+            <div class="form-group">
+                <label for="password" class="col-md-4 control-label">Clave de acceso</label>
+                <input id="password" type="password" class="form-control col-md-4" name="_password">
+            </div>
+
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">
+                    Ingresar
+                </button>
+            </div>
+        </form>
     </div>
 {% endblock %}

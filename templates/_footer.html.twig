@@ -1,11 +1,15 @@
 {% block footer %}
-    <footer class="footer">
-        <div class="container text-center text-muted">
-            <div class="pull-left">&copy; 2005 - {{ "now"|date("Y") }} MiniCC KuKu - Atacames</div>
+    <footer class="footer text-muted d-flex flex-row">
+        <div class="p-1">
+            &copy; 2005 - {{ "now"|date("Y") }} MiniCC KuKu - Atacames
+        </div>
+        <div class="p-1 ml-auto">
             {% if app.user and app.user.role == 'ROLE_ADMIN' %}
                 v {{ sha[:7] }}
             {% endif %}
-            <p class="pull-right">Made with <a href="https://symfony.com">Symfony</a></p>
+        </div>
+        <div class="p-1 ml-auto">
+            Made with <a href="https://symfony.com">Symfony</a>
         </div>
     </footer>
 {% endblock %}

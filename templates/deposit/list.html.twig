@@ -6,7 +6,7 @@
 
 {% block body %}
 
-    <div style="float: right">
+    <div class="float-right">
         {% include('deposit/_csvupload.html.twig') %}
     </div>
 
@@ -14,41 +14,64 @@
 
     <form method="post">
 
-        <div class="row">
-            <div class="col-xs-2">{{ paginator.listLimit(paginatorOptions) }}</div>
-            <div class="col-xs-10">{{ paginator.pagination(paginatorOptions) }}</div>
+        <div class="container">
+
         </div>
 
-        <table class="table table-bordered table-condensed table-hover table-striped">
+        <div class="row">
+            <div class="col-4">{{ paginator.listLimit(paginatorOptions) }}</div>
+            <div class="col">{{ paginator.pagination(paginatorOptions) }}</div>
+        </div>
+
+        <table class="table table-sm table-hover">
+            <thead>
+
             <tr>
-                <th>{{ paginator.ordering('id', paginatorOptions) }} Id</th>
+                <th></th>
+                <th></th>
+                <th style="white-space: nowrap">
+                    De {{ paginator.date('date_from', paginatorOptions) }}<br/>
+                    A {{ paginator.date('date_to', paginatorOptions) }}
+                </th>
+                <th></th>
+                <th style="white-space: nowrap">
+                    {{ paginator.criteria('document', paginatorOptions) }}<br/>
+
+                </th>
+                <th style="white-space: nowrap">
+                    {{ paginator.criteria('amount', paginatorOptions) }}<br/>
+
+                </th>
+                <th></th>
+            </tr>
+            <tr>
+                <th>{{ paginator.ordering('id', paginatorOptions) }}</th>
+                <th></th>
+                <th>{{ paginator.ordering('date', paginatorOptions) }}</th>
+                <th></th>
+                <th>                    {{ paginator.ordering('document', paginatorOptions) }}<br/>
+                </th>
+                <th></th>
+                <th></th>
+            </tr>
+            <tr>
+                <th>Id</th>
                 <th>Tr Id</th>
-                <th>{{ paginator.ordering('date', paginatorOptions) }}
-                    Fecha<br/>
-                    <div class="text-right">
-                    From {{ paginator.date('date_from', paginatorOptions) }}
-                        <br/>
-                    To {{ paginator.date('date_to', paginatorOptions) }}
-                        <br />
-                    </div>
-                </th>
+                <th>Fecha</th>
                 <th>Entity</th>
-                <th>{{ paginator.ordering('document', paginatorOptions) }}
-                    Document<br/>
-                    {{ paginator.criteria('document', paginatorOptions) }}
-                </th>
-                <th>Amount<br/>
-                    {{ paginator.criteria('amount', paginatorOptions) }}
-                </th>
+                <th>Document</th>
+                <th>Amount</th>
                 <th>Action</th>
             </tr>
+            </thead>
+            <tbody>
             {% for d in deposits %}
                 {% set deposit = d[0] %}
                 <tr>
                     <td>{{ deposit.id }}</td>
                     <td>{{ d['tr_id'] }}</td>
                     <td>{{ deposit.date|date('Y-m-d') }}</td>
-                    <td>{{ deposit.entity.name }}</td>
+                    <td style="white-space: nowrap">{{ deposit.entity.name }}</td>
                     <td>{{ deposit.document }}</td>
                     <td>{{ deposit.amount }}</td>
                     <td>
@@ -60,6 +83,7 @@
                     <td colspan="7" class="alert-warning text-center">No hay depositos que mostrar!</td>
                 </tr>
             {% endfor %}
+            </tbody>
         </table>
 
         {{ paginator.formFields(paginatorOptions) }}

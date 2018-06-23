@@ -1,7 +1,7 @@
 {% block breadcrumbs %}
     <ol class="breadcrumb">
         {% for text, link in breadcrumbs %}
-            <li>
+            <li class="breadcrumb-item">
                 {% if link %}
                     <a href="{{ path(link) }}">{{ text }}</a>
                 {% else %}

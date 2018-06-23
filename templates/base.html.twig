@@ -19,16 +19,8 @@
 {% include('_menu.html.twig') %}
 
 <div class="container">
-    <div class="row">
-        <div class="col-sm-12">
-            {% include ('_flash-messages.html.twig') %}
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-12">
-            {% block body %}{% endblock %}
-        </div>
-    </div>
+    {% include ('_flash-messages.html.twig') %}
+    {% block body %}{% endblock %}
 </div>
 
 {% include ('_footer.html.twig') %}

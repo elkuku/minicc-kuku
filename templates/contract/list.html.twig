@@ -6,30 +6,30 @@
 
 {% block body %}
     <div style="float: right;">
-        <a class="btn btn-default" href="{{ path('contracts-template') }}">Plantilla</a>
+        <a class="btn btn-light" href="{{ path('contracts-template') }}">Plantilla</a>
         <form action="{{ path('contracts-new') }}" method="post" class="form-inline">
-            <select name="store">
+            <select class="form-control form-control-sm" name="store">
                 <option value="0">Local ...</option>
                 {% for store in stores %}
                     <option value="{{ store.id }}">{{ store.id }} - {{ store.destination }}</option>
                 {% endfor %}
             </select>
-            <select name="user">
+            <select class="form-control form-control-sm" name="user">
                 <option value="0">Usuario ...</option>
                 {% for user in users %}
                     <option value="{{ user.id }}">{{ user.name }}</option>
                 {% endfor %}
             </select>
-            <button class="btn btn-success" type="submit">Nuevo Contrato</button>
+            <button class="btn btn-info" type="submit">Nuevo Contrato</button>
         </form>
     </div>
     <h2>Contratos</h2>
 
     <form method="post">
-        <table class="table table-bordered table-condensed table-hover table-striped">
+        <table class="table table-sm table-hover">
             <tr>
                 <th>Local
-                    <select name="store_id" onchange="form.submit()">
+                    <select class="form-control form-control-sm" name="store_id" onchange="form.submit()">
                         <option value="0">Local ...</option>
                         {% for store in stores %}
                             <option value="{{ store.id }}"{{ store.id == storeId ? ' selected="selected"' : '' }}>
