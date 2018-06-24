@@ -3,47 +3,41 @@
 {% block title %} {{ parent() }} - Admin Tasks{% endblock %}
 
 {% block body %}
-    <div class="row">
-        <div class="col-xs-4">
-            <h3>Admin Tasks</h3>
-            <ul>
-                <li><a href="{{ path('planillas') }}">Download Planillas</a></li>
-                <li><a href="{{ path('planillas-mail') }}">Mail Planillas</a></li>
-                <li><a href="{{ path('backup') }}">Send Backup per e-mail</a></li>
-                <li><a href="{{ path('stores-transactions-pdf') }}">Transactions PDF</a></li>
+    <h1>Admin Tasks</h1>
+
+<div class="card-columns">
+    <div class="card">
+        <h5 class="card-header">Documentos</h5>
+
+            <ul class="list-group">
+                <li class="list-group-item"><a href="{{ path('planillas') }}">Download Planillas</a></li>
+                <li class="list-group-item"><a href="{{ path('planillas-mail') }}">Mail Planillas</a></li>
+                <li class="list-group-item"><a href="{{ path('stores-transactions-pdf') }}">Transactions PDF</a></li>
             </ul>
-        </div>
-        <div class="col-xs-4">
-            <h3>Sync</h3>
-
-            <h4>Export</h4>
-
-            <ul>
-                <li>
-                    <a href="{{ path('export-table', {'name': 'transaction'}) }}">Export Transactions</a>
-                </li>
-                <li>
-                    <a href="{{ path('export-table', {'name': 'deposit'}) }}">Export Depositos</a>
-                </li>
+    </div>
+    <div class="card">
+        <h5 class="card-header">Sync</h5>
+            <h6 class="card-header">Export</h6>
+            <ul class="list-group">
+                <li class="list-group-item"><a href="{{ path('backup') }}">Send Backup per e-mail</a></li>
+                <li class="list-group-item"><a href="{{ path('export-table', {'name': 'transaction'}) }}">Export Transactions</a></li>
+                <li class="list-group-item"><a href="{{ path('export-table', {'name': 'deposit'}) }}">Export Depositos</a></li>
             </ul>
 
-            <h4>Import</h4>
-
-            <form enctype="multipart/form-data" method="post" class="form form-inline"
-                  action="{{ path('import-table') }}">
+            <h6 class="card-header">Import</h6>
+            <form enctype="multipart/form-data" method="post" class="form" action="{{ path('import-table') }}">
                 <div class="form-group">
                     <input name="file" type="file" class="form-control"/>
                     <button type="submit" class="btn btn-primary">Upload Export</button>
                 </div>
             </form>
-        </div>
-        <div class="col-xs-4">
-            <h3>View</h3>
-
-            <ul>
-                <li><a href="{{ path('console-view', {'item': 'routes'}) }}">Routes</a></li>
-                <li>
-                    <form enctype="multipart/form-data" method="post" class="form form-inline"
+    </div>
+    <div class="card">
+        <h5 class="card-header">View</h5>
+            <ul class="list-group">
+                <li class="list-group-item"><a href="{{ path('console-view', {'item': 'routes'}) }}">Routes</a></li>
+                <li class="list-group-item">
+                    <form enctype="multipart/form-data" method="post" class="form"
                           action="{{ path('console-view', {'item': 'route-match'}) }}">
                         <div class="form-group">
                             <label>Route</label>
@@ -51,16 +45,16 @@
                             <button type="submit" class="btn btn-primary">Check</button>
                         </div>
                     </form>
-
                 </li>
-                <li><a href="{{ path('console-view', {'item': 'migrations'}) }}">Migrations</a></li>
-                <li><a href="{{ path('console-view', {'item': 'security'}) }}">Security check</a></li>
+                <li class="list-group-item"><a href="{{ path('console-view', {'item': 'migrations'}) }}">Migrations</a></li>
+                <li class="list-group-item"><a href="{{ path('console-view', {'item': 'security'}) }}">Security check</a></li>
             </ul>
-        </div>
+    </div>
     </div>
 
+
     {% if consoleOutput is defined %}
-        <h4>Console output</h4>
+        <h2>Console output</h2>
         <ul>
         {% for name, value in consoleCommand %}
             <li><b>{{ name }}</b> - <code>{{ value }}</code></li>

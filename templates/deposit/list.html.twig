@@ -7,20 +7,22 @@
 {% block body %}
 
     <div class="float-right">
-        {% include('deposit/_csvupload.html.twig') %}
+            <a class="btn btn-light" data-toggle="collapse" href="#collapseExample" role="button">
+                CSV Upload
+            </a>
+        <div class="collapse" id="collapseExample">
+                {% include('deposit/_csvupload.html.twig') %}
+        </div>
     </div>
 
-    <h3>Depositos</h3>
+    <h1>Depositos</h1>
+
 
     <form method="post">
 
-        <div class="container">
-
-        </div>
-
         <div class="row">
-            <div class="col-4">{{ paginator.listLimit(paginatorOptions) }}</div>
-            <div class="col">{{ paginator.pagination(paginatorOptions) }}</div>
+            <div class="col-xs-2">{{ paginator.listLimit(paginatorOptions) }}</div>
+            <div class="col-xs-10">{{ paginator.pagination(paginatorOptions) }}</div>
         </div>
 
         <table class="table table-sm table-hover">
