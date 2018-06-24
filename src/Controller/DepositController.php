@@ -60,6 +60,10 @@ class DepositController extends Controller
     {
         $csvFile = $request->files->get('csv_file');
 
+        if (!$csvFile) {
+            throw new \RuntimeException('No CSV file recieved.');
+        }
+
         $path = $csvFile->getRealPath();
 
         if (!$path) {
@@ -75,6 +79,10 @@ class DepositController extends Controller
         $insertCount = 0;
 
         foreach ($csvData->lines as $line) {
+            if (!isset($line->tipo)) {
+                continue;
+            }
+
             if ('C' != $line->tipo) {
                 continue;
             }
