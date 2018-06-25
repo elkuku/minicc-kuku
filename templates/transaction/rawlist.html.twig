@@ -20,7 +20,8 @@
             <tr>
                 <th></th>
                 <th{{ paginatorOptions.searchCriteria('store') ? ' class="cell-active"' : '' }}>
-                    <select name="paginatorOptions[criteria][store]" onchange="paginator.resetAndSubmit($(this));" class="form-control">
+                    <select name="paginatorOptions[criteria][store]" onchange="paginator.resetAndSubmit($(this));"
+                            class="form-control">
                         <option value="0">...</option>
                         {% for store in stores %}
                             <option value="{{ store.id }}"
@@ -36,13 +37,14 @@
                         From {{ paginator.date('date_from', paginatorOptions) }}
                         <br/>
                         To {{ paginator.date('date_to', paginatorOptions) }}
-                        <br /><!-- don't remove.. -->
+                        <br/><!-- don't remove.. -->
                     </div>
 
                 </th>
                 <th{{ paginatorOptions.searchCriteria('type') ? ' class="cell-active"' : '' }}>
 
-                    <select name="paginatorOptions[criteria][type]" onchange="paginator.resetAndSubmit($(this));" class="form-control">
+                    <select name="paginatorOptions[criteria][type]" onchange="paginator.resetAndSubmit($(this));"
+                            class="form-control">
                         <option value="0">...</option>
                         {% for type in transactionTypes %}
                             <option value="{{ type.id }}"
@@ -53,7 +55,7 @@
                     </select>
                 </th>
                 <th{{ paginatorOptions.searchCriteria('amount') ? ' class="cell-active"' : '' }}>
-                    <br />
+                    <br/>
                     {{ paginator.criteria('amount', paginatorOptions) }}
                 </th>
                 <th></th>

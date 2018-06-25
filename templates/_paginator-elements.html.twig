@@ -29,29 +29,29 @@
         {% endif %}
 
         <nav>
-        <ul class="pagination">
-            <li class="page-item{{ page == 1 ? ' disabled' }}">
-                <a class="page-link" href="javascript:"
-                   onclick="paginator.goToPage($(this), {{ page - 1 < 1 ? 1 : page - 1 }})">&lArr;</a>
-            </li>
-            {% if startString %}
-                <li class="page-item disabled"><a class="page-link" href="#">{{ startString }}</a></li>
-            {% endif %}
-            {% for i in startPage..endPage %}
-                <li class="page-item{{ page == i ? ' active' }}">
+            <ul class="pagination">
+                <li class="page-item{{ page == 1 ? ' disabled' }}">
                     <a class="page-link" href="javascript:"
-                       onclick="paginator.goToPage($(this), {{ i }})">{{ i }}</a>
+                       onclick="paginator.goToPage($(this), {{ page - 1 < 1 ? 1 : page - 1 }})">&lArr;</a>
                 </li>
-            {% endfor %}
-            {% if endString %}
-                <li class="disabled"><a class="page-link" href="#">{{ endString }}</a></li>
-            {% endif %}
-            <li {{ page == maxPages ? 'class="disabled"' }}>
-                <a class="page-link" href="javascript:"
-                   onclick="paginator.goToPage($(this), {{ page + 1 <= maxPages ? page + 1 : page }})">&rArr;</a>
-            </li>
-            <li> of {{ maxPages }} Pages</li>
-        </ul>
+                {% if startString %}
+                    <li class="page-item disabled"><a class="page-link" href="#">{{ startString }}</a></li>
+                {% endif %}
+                {% for i in startPage..endPage %}
+                    <li class="page-item{{ page == i ? ' active' }}">
+                        <a class="page-link" href="javascript:"
+                           onclick="paginator.goToPage($(this), {{ i }})">{{ i }}</a>
+                    </li>
+                {% endfor %}
+                {% if endString %}
+                    <li class="disabled"><a class="page-link" href="#">{{ endString }}</a></li>
+                {% endif %}
+                <li {{ page == maxPages ? 'class="disabled"' }}>
+                    <a class="page-link" href="javascript:"
+                       onclick="paginator.goToPage($(this), {{ page + 1 <= maxPages ? page + 1 : page }})">&rArr;</a>
+                </li>
+                <li> of {{ maxPages }} Pages</li>
+            </ul>
         </nav>
 
     {% endif %}

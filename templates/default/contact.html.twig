@@ -2,13 +2,17 @@
 
 {% block title %} {{ parent() }} - Contact{% endblock %}
 
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $('#app-layout').addClass('bg-atacames');
+    </script>
+{% endblock %}
+
 {% block body %}
     <div class="jumbotron">
         <h1>Contact</h1>
         <p>Visit us at Atacames Beach</p>
-
-        <img class="img-fluid" src="{{ asset('build/images/atacames-sunset-4711.jpg') }}"/>
-
         <code>=;)</code>
     </div>
 {% endblock %}

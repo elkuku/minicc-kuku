@@ -7,11 +7,11 @@
 {% block body %}
 
     <div class="float-right">
-            <a class="btn btn-light" data-toggle="collapse" href="#collapseExample" role="button">
-                CSV Upload
-            </a>
+        <a class="btn btn-light" data-toggle="collapse" href="#collapseExample" role="button">
+            CSV Upload
+        </a>
         <div class="collapse" id="collapseExample">
-                {% include('deposit/_csvupload.html.twig') %}
+            {% include('deposit/_csvupload.html.twig') %}
         </div>
     </div>
 
@@ -31,18 +31,16 @@
             <tr>
                 <th></th>
                 <th></th>
-                <th style="white-space: nowrap">
-                    De {{ paginator.date('date_from', paginatorOptions) }}<br/>
-                    A {{ paginator.date('date_to', paginatorOptions) }}
+                <th class="text-right">
+                    De{{ paginator.date('date_from', paginatorOptions) }}<br/>
+                    A {{ paginator.date('date_to', paginatorOptions) }}<br/>
                 </th>
                 <th></th>
-                <th style="white-space: nowrap">
+                <th>
                     {{ paginator.criteria('document', paginatorOptions) }}<br/>
-
                 </th>
-                <th style="white-space: nowrap">
+                <th>
                     {{ paginator.criteria('amount', paginatorOptions) }}<br/>
-
                 </th>
                 <th></th>
             </tr>
@@ -51,8 +49,7 @@
                 <th></th>
                 <th>{{ paginator.ordering('date', paginatorOptions) }}</th>
                 <th></th>
-                <th>                    {{ paginator.ordering('document', paginatorOptions) }}<br/>
-                </th>
+                <th>{{ paginator.ordering('document', paginatorOptions) }}</th>
                 <th></th>
                 <th></th>
             </tr>

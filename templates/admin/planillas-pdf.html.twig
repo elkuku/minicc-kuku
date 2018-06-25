@@ -1,24 +1,27 @@
 {% extends 'base-pdf.html.twig' %}
 {% block stylesheets %}
-<style>
-    body {
-        font-size: 12px;
-    }
-    td.gran-total {
-        border: 2px solid black;
-        padding: 4px;
-        font-size: 1.4em;
-    }
-    .planilla {
-        border: 1px solid silver;
-        margin-bottom: 30px;
-        padding-right: 5px;
-        padding-left: 5px;
-    }
-    .number {
-        font-family: monospace;
-    }
-</style>
+    <style>
+        body {
+            font-size: 12px;
+        }
+
+        td.gran-total {
+            border: 2px solid black;
+            padding: 4px;
+            font-size: 1.4em;
+        }
+
+        .planilla {
+            border: 1px solid silver;
+            margin-bottom: 30px;
+            padding-right: 5px;
+            padding-left: 5px;
+        }
+
+        .number {
+            font-family: monospace;
+        }
+    </style>
 {% endblock %}
 
 {% block body %}
@@ -37,7 +40,8 @@
                         {{ intlDate(factDate, "MMMM YYYY")|capitalize }}
                     </td>
                     <td style="text-align: right; width: 33%;">
-                        <img src="{{ rootPath ~ asset('build/images/minicc-logo.gif') }}" alt="Logo" height="50px"/><br/>
+                        <img src="{{ rootPath ~ asset('build/images/minicc-logo.gif') }}" alt="Logo"
+                             height="50px"/><br/>
                     </td>
                 </tr>
             </table>

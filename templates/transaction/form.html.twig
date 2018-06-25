@@ -58,8 +58,9 @@
             {{ form_widget(form.document) }}
         </div>
         <div class="col-sm-3">
-            <label class="col-sm-2 control-label">Lookup</label><br />
-            <a href="javascript:" onclick="searchDepId('{{ path('lookup-depo') }}')" class="btn btn-light btn-info form-control">&raquo; &raquo; &raquo;</a>
+            <label class="col-sm-2 control-label">Lookup</label><br/>
+            <a href="javascript:" onclick="searchDepId('{{ path('lookup-depo') }}')"
+               class="btn btn-light btn-info form-control">&raquo; &raquo; &raquo;</a>
             <div id="messageContainer"></div>
         </div>
         <div class="col-sm-3">
@@ -70,7 +71,7 @@
 
     {{ form_widget(form) }}
 
-    <input type="hidden" name="redirect" value="{{ redirect }}" />
+    <input type="hidden" name="redirect" value="{{ redirect }}"/>
 
     <div class="pull-right">
         <button type="submit" class="btn btn-light btn-success">Guardar</button>

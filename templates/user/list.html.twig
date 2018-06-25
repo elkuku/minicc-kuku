@@ -38,7 +38,7 @@
                     <td>
                         {% for store in user.stores %}
                             <a href="{{ path('store-transactions', {'id': store.id}) }}">
-                               # {{ store.id }}
+                                # {{ store.id }}
                             </a>
                         {% else %}
                             N/A

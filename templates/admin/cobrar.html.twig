@@ -28,7 +28,8 @@
                         <td>
                             <input type="hidden" name="users[{{ store.id }}]"
                                    value="{{ store.user ? store.user.id : 0 }}"/>
-                            <input class="form-control" type="text" name="values[{{ store.id }}]" value="{{ store.valAlq|conIva|round(2) }}" size="7"
+                            <input class="form-control" type="text" name="values[{{ store.id }}]"
+                                   value="{{ store.valAlq|conIva|round(2) }}" size="7"
                                    maxlength="7">
                         </td>
                     </tr>

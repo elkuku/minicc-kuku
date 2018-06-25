@@ -15,9 +15,6 @@ body {
   position: absolute;
   bottom: 0;
   width: 100%;
-  height: 30px;
-  background-color: #f5f5f5;
-  padding-top: 5px;
 }
 
 .amount {
@@ -47,4 +44,17 @@ pre.console {
 
 th {
   white-space: nowrap;
+}
+
+.bg-atacames {
+  background-color: #635584;
+  background-image: url("/build/images/atacames-sunset-4711.jpg");
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.jumbotron {
+  opacity: 0.8;
 }

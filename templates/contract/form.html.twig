@@ -33,7 +33,9 @@
     <div {{ form.vars.data.id == 1 ? ' style="display: none"' : '' }}>
         <table>
             <tr>
-                <th>Fecha</th><th>Local</th><th>Destination</th>
+                <th>Fecha</th>
+                <th>Local</th>
+                <th>Destination</th>
             </tr>
             <tr>
                 <td>{{ form_widget(form.date) }}</td>
@@ -44,13 +46,18 @@
 
         <table>
             <tr>
-                <th class="alert-warning">Alquiler</th><th>Garantia</th>
+                <th class="alert-warning">Alquiler</th>
+                <th>Garantia</th>
             </tr>
             <tr valign="top">
                 <td class="alert-warning">
                     ConIVA: <input id="val_alq_coniva"/><br/>
-                    <a class="btn btn-light btn-xs" onclick="$('#contract_valAlq').val(taxCalculator.sinIva($('#val_alq_coniva').val()))">&dArr; Recalc &dArr;</a>
-                    <a class="btn btn-light btn-xs" onclick="$('#val_alq_coniva').val(taxCalculator.conIva($('#contract_valAlq').val()))">&uArr; Recalc &uArr;</a>
+                    <a class="btn btn-light btn-xs"
+                       onclick="$('#contract_valAlq').val(taxCalculator.sinIva($('#val_alq_coniva').val()))">&dArr;
+                        Recalc &dArr;</a>
+                    <a class="btn btn-light btn-xs"
+                       onclick="$('#val_alq_coniva').val(taxCalculator.conIva($('#contract_valAlq').val()))">&uArr;
+                        Recalc &uArr;</a>
                     <br/>
                     Sin IVA{{ form_widget(form.valAlq) }}</td>
                 <td>{{ form_widget(form.valGarantia) }}</td>
@@ -59,7 +66,9 @@
         <h4>Inquilino</h4>
         <table>
             <tr>
-                <th>Genero</th><th>Nombre</th><th>C.I.</th>
+                <th>Genero</th>
+                <th>Nombre</th>
+                <th>C.I.</th>
             </tr>
             <tr>
                 <td>{{ form_widget(form.gender) }}</td>
@@ -68,50 +77,50 @@
             </tr>
         </table>
 
-    <h4>Assesorios</h4>
+        <h4>Assesorios</h4>
 
-    <div class="row">
-        <div class="col-sm-2">{{ form_label(form.cntLanfort) }}
-            {{ form_widget(form.cntLanfort) }}
-        </div>
-        <div class="col-sm-2">{{ form_label(form.cntNeon) }}
-            {{ form_widget(form.cntNeon) }}
-        </div>
-        <div class="col-sm-2">{{ form_label(form.cntSwitch) }}
-            {{ form_widget(form.cntSwitch) }}
-        </div>
-        <div class="col-sm-2">{{ form_label(form.cntToma) }}
-            {{ form_widget(form.cntToma) }}
-        </div>
-        <div class="col-sm-2">{{ form_label(form.cntVentana) }}
-            {{ form_widget(form.cntVentana) }}
-        </div>
-        <div class="col-sm-2">{{ form_label(form.cntLlaves) }}
-            {{ form_widget(form.cntLlaves) }}
-        </div>
-    </div>
-
-    <h4>Medidores</h4>
-
-    <div class="row">
-        <div class="col-sm-2">{{ form_label(form.cntMedElec) }}
-            {{ form_widget(form.cntMedElec) }}
-        </div>
-        <div class="col-sm-5">{{ form_label(form.medElectrico) }}
-            {{ form_widget(form.medElectrico) }}
-        </div>
-        <div class="col-sm-5"></div>
         <div class="row">
+            <div class="col-sm-2">{{ form_label(form.cntLanfort) }}
+                {{ form_widget(form.cntLanfort) }}
+            </div>
+            <div class="col-sm-2">{{ form_label(form.cntNeon) }}
+                {{ form_widget(form.cntNeon) }}
+            </div>
+            <div class="col-sm-2">{{ form_label(form.cntSwitch) }}
+                {{ form_widget(form.cntSwitch) }}
+            </div>
+            <div class="col-sm-2">{{ form_label(form.cntToma) }}
+                {{ form_widget(form.cntToma) }}
+            </div>
+            <div class="col-sm-2">{{ form_label(form.cntVentana) }}
+                {{ form_widget(form.cntVentana) }}
+            </div>
+            <div class="col-sm-2">{{ form_label(form.cntLlaves) }}
+                {{ form_widget(form.cntLlaves) }}
+            </div>
         </div>
-        <div class="col-sm-2">{{ form_label(form.cntMedAgua) }}
-            {{ form_widget(form.cntMedAgua) }}
+
+        <h4>Medidores</h4>
+
+        <div class="row">
+            <div class="col-sm-2">{{ form_label(form.cntMedElec) }}
+                {{ form_widget(form.cntMedElec) }}
+            </div>
+            <div class="col-sm-5">{{ form_label(form.medElectrico) }}
+                {{ form_widget(form.medElectrico) }}
+            </div>
+            <div class="col-sm-5"></div>
+            <div class="row">
+            </div>
+            <div class="col-sm-2">{{ form_label(form.cntMedAgua) }}
+                {{ form_widget(form.cntMedAgua) }}
+            </div>
+            <div class="col-sm-5">{{ form_label(form.medAgua) }}
+                {{ form_widget(form.medAgua) }}
+            </div>
+            <div class="col-sm-5">
+            </div>
         </div>
-        <div class="col-sm-5">{{ form_label(form.medAgua) }}
-            {{ form_widget(form.medAgua) }}
-        </div>
-        <div class="col-sm-5">
-        </div>
-    </div>
 
     </div><!-- container -->
 

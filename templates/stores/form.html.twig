@@ -30,10 +30,14 @@
             {{ form_widget(form.destination) }}
         </div>
         <div class="col-sm-3 alert-warning">
-            {{ form_label(form.valAlq) }}<br />
+            {{ form_label(form.valAlq) }}<br/>
             ConIVA: <input id="val_alq_coniva"/><br/>
-            <a class="btn btn-light btn-xs" onclick="$('#store_valAlq').val(taxCalculator.sinIva($('#val_alq_coniva').val()))">&dArr; Recalc &dArr;</a>
-            <a class="btn btn-light btn-xs" onclick="$('#val_alq_coniva').val(taxCalculator.conIva($('#store_valAlq').val()))">&uArr; Recalc &uArr;</a>
+            <a class="btn btn-light btn-xs"
+               onclick="$('#store_valAlq').val(taxCalculator.sinIva($('#val_alq_coniva').val()))">&dArr; Recalc
+                &dArr;</a>
+            <a class="btn btn-light btn-xs"
+               onclick="$('#val_alq_coniva').val(taxCalculator.conIva($('#store_valAlq').val()))">&uArr; Recalc
+                &uArr;</a>
             <br/>
             Sin IVA
             {{ form_widget(form.valAlq) }}
@@ -77,8 +81,8 @@
             {{ form_widget(form.medElectrico) }}
         </div>
         <div class="col-sm-5"></div>
-    <div class="row">
-    </div>
+        <div class="row">
+        </div>
         <div class="col-sm-2">{{ form_label(form.cntMedAgua) }}
             {{ form_widget(form.cntMedAgua) }}
         </div>

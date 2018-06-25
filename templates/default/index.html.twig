@@ -2,6 +2,13 @@
 
 {% block javascripts %}
     {{ parent() }}
+    {% if not app.user %}
+        <script>
+            $('html').addClass('bg-atacames');
+            $('#main-container').remove();
+            $('#app-layout').css({'padding': '0'});
+        </script>
+    {% endif %}
     {% if app.user and app.user.role == 'ROLE_ADMIN' %}
         <script type="text/javascript" src="{{ asset('build/js/index-charts.js') }}"></script>
         <script>
@@ -12,9 +19,7 @@
 {% endblock %}
 
 {% block body %}
-    {% if app.user == null %}
-        <img class="img-thumbnail" src="{{ asset('build/images/atacames-sunset-4711.jpg') }}"/>
-    {% else %}
+    {% if app.user %}
         {% if app.user.role == 'ROLE_ADMIN' %}
             {% set theyOweYou = 0 %}
             <table class="table table-sm table-hover">
