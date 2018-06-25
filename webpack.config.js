@@ -13,7 +13,7 @@ Encore
     .setPublicPath('/build')
 
     // show OS notifications when builds finish/fail
-    //.enableBuildNotifications()
+    .enableBuildNotifications()
 
     //-- A sub directory...
     //.setPublicPath(Encore.isProduction() ? '/build' : '/minicc-kuku-4/public/build')
