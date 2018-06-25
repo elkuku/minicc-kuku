@@ -14,9 +14,12 @@
     <rule ref="Joomla">
         <exclude name="Generic.Arrays.DisallowShortArraySyntax"/>
         <exclude name="Squiz.Commenting.VariableComment.IncorrectVarType"/>
+        <exclude name="Squiz.Commenting.VariableComment.MissingVar"/>
+        <exclude name="Joomla.Commenting.FunctionComment.Missing"/>
         <exclude name="Joomla.Commenting.FunctionComment.BeforeParamType"/>
         <exclude name="Joomla.Commenting.FunctionComment.MissingParamComment"/>
         <exclude name="Joomla.Commenting.FunctionComment.InvalidReturn"/>
+        <exclude name="Joomla.Commenting.ClassComment.Missing"/>
         <exclude name="Joomla.Commenting.ClassComment.MissingSinceTag"/>
         <exclude name="Joomla.Commenting.FileComment.MissingLicenseTag"/>
         <exclude name="Joomla.Commenting.FileComment.MissingCopyrightTag"/>
