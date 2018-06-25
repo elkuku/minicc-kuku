@@ -14,14 +14,7 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 
 trait PaginatorRepoTrait
 {
-	/**
-	 * @param Query   $dql
-	 * @param integer $page
-	 * @param integer $limit
-	 *
-	 * @return Paginator
-	 */
-	public function paginate(Query $dql, $page = 1, $limit = 5)
+	public function paginate(Query $dql, int $page = 1, int $limit = 5): Paginator
 	{
 		$paginator = new Paginator($dql);
 

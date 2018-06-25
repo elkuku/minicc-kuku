@@ -17,26 +17,26 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class SecurityController extends Controller
 {
-    /**
-     * @Route("/login", name="login")
-     */
-    public function login(): Response
-    {
-        $helper = $this->get('security.authentication_utils');
+	/**
+	 * @Route("/login", name="login")
+	 */
+	public function login(): Response
+	{
+		$helper = $this->get('security.authentication_utils');
 
-        return $this->render(
-            'auth/login.html.twig',
-            [
-                'last_username' => $helper->getLastUsername(),
-                'error'         => $helper->getLastAuthenticationError(),
-            ]
-        );
-    }
+		return $this->render(
+			'auth/login.html.twig',
+			[
+				'last_username' => $helper->getLastUsername(),
+				'error'         => $helper->getLastAuthenticationError(),
+			]
+		);
+	}
 
-    /**
-     * @Route("/logout", name="logout")
-     */
-    public function logout()
-    {
-    }
+	/**
+	 * @Route("/logout", name="logout")
+	 */
+	public function logout()
+	{
+	}
 }

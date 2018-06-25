@@ -20,57 +20,57 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class DefaultController extends Controller
 {
-    /**
-     * @Route("/", name="welcome")
-     */
-    public function index(TransactionRepository $transactionRepository, TaxService $taxService): Response
-    {
-        $user = $this->getUser();
-	    $headers = [];
-	    $data1 = [];
-	    $data2 = [];
-	    $saldos = null;
+	/**
+	 * @Route("/", name="welcome")
+	 */
+	public function index(TransactionRepository $transactionRepository, TaxService $taxService): Response
+	{
+		$user    = $this->getUser();
+		$headers = [];
+		$data1   = [];
+		$data2   = [];
+		$saldos  = null;
 
-	    if ($user)
-	    {
-		    $saldos = $transactionRepository->getSaldos();
+		if ($user)
+		{
+			$saldos = $transactionRepository->getSaldos();
 
-		    foreach ($saldos as $saldo)
-		    {
-		    	/* @var Transaction $transaction */
-		    	$transaction = $saldo['data'];
+			foreach ($saldos as $saldo)
+			{
+				/* @var Transaction $transaction */
+				$transaction = $saldo['data'];
 
-			    $headers[] = 'Local ' . $transaction->getStore()->getId();
-			    $data1[]   = round(-$saldo['amount'] / $taxService->getValueConTax($transaction->getStore()->getValAlq()), 1);
-			    $data2[]   = -$saldo['amount'];
-		    }
-	    }
+				$headers[] = 'Local ' . $transaction->getStore()->getId();
+				$data1[]   = round(-$saldo['amount'] / $taxService->getValueConTax($transaction->getStore()->getValAlq()), 1);
+				$data2[]   = -$saldo['amount'];
+			}
+		}
 
-        return $this->render(
-            'default/index.html.twig',
-            [
-                'stores' => $user ? $user->getStores() : null,
-                'saldos' => $saldos,
-                'chart_headers'     => "'" . implode("', '", $headers) . "'",
-                'chart_data1' => implode(', ', $data1),
-                'chart_data2'  => implode(', ', $data2),
-            ]
-        );
-    }
+		return $this->render(
+			'default/index.html.twig',
+			[
+				'stores'        => $user ? $user->getStores() : null,
+				'saldos'        => $saldos,
+				'chart_headers' => "'" . implode("', '", $headers) . "'",
+				'chart_data1'   => implode(', ', $data1),
+				'chart_data2'   => implode(', ', $data2),
+			]
+		);
+	}
 
-    /**
-     * @Route("/about", name="about")
-     */
-    public function about(): Response
-    {
-        return $this->render('default/about.html.twig');
-    }
+	/**
+	 * @Route("/about", name="about")
+	 */
+	public function about(): Response
+	{
+		return $this->render('default/about.html.twig');
+	}
 
-    /**
-     * @Route("/contact", name="contact")
-     */
-    public function contact(): Response
-    {
-        return $this->render('default/contact.html.twig');
-    }
+	/**
+	 * @Route("/contact", name="contact")
+	 */
+	public function contact(): Response
+	{
+		return $this->render('default/contact.html.twig');
+	}
 }

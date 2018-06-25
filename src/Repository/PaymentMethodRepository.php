@@ -1,4 +1,10 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: elkuku
+ * Date: 19.03.17
+ * Time: 12:40
+ */
 
 namespace App\Repository;
 
@@ -14,8 +20,8 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class PaymentMethodRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
-    {
-        parent::__construct($registry, PaymentMethod::class);
-    }
+	public function __construct(RegistryInterface $registry)
+	{
+		parent::__construct($registry, PaymentMethod::class);
+	}
 }
