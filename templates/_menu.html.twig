@@ -48,9 +48,9 @@
         <div class="ml-auto">
             <ul class="nav navbar-nav">
                 {% if app.user %}
-                    <li class="nav-item"><a class="nav-link" href="{{ path('logout') }}">Salir</a></li>
+                    <li class="nav-item"><a class="nav-link" accesskey="l" href="{{ path('logout') }}">Salir</a></li>
                 {% else %}
-                    <li class="nav-item"><a class="nav-link" href="{{ path('login') }}">Login</a></li>
+                    <li class="nav-item"><a class="nav-link" accesskey="l" href="{{ path('login') }}">Login</a></li>
                 {% endif %}
             </ul>
         </div>
