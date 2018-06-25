@@ -238,7 +238,7 @@ class ContractController extends Controller
 
 		$html = str_replace(array_keys($searchReplace), $searchReplace, $contract->getText());
 
-		/* @type \Twig_Environment $twig */
+		/** @var \Twig_Environment $twig */
 		$twig = clone $this->get('twig');
 
 		return new PdfResponse(
