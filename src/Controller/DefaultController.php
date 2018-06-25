@@ -37,7 +37,7 @@ class DefaultController extends Controller
 
 			foreach ($saldos as $saldo)
 			{
-				/* @var Transaction $transaction */
+				/* @type Transaction $transaction */
 				$transaction = $saldo['data'];
 
 				$headers[] = 'Local ' . $transaction->getStore()->getId();

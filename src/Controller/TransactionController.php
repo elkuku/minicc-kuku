@@ -99,7 +99,8 @@ class TransactionController extends Controller
 	 * @Security("has_role('ROLE_ADMIN')")
 	 */
 	public function rawList(StoreRepository $storeRepository, TransactionRepository $transactionRepository,
-	                        TransactionTypeRepository $transactionTypeRepository, Request $request): Response
+		TransactionTypeRepository $transactionTypeRepository, Request $request
+	): Response
 	{
 		$paginatorOptions = $this->getPaginatorOptions($request);
 

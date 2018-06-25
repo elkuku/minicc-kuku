@@ -31,7 +31,8 @@ class AdminController extends Controller
 	 * @Security("has_role('ROLE_ADMIN')")
 	 */
 	public function cobrar(StoreRepository $storeRepository, UserRepository $userRepository,
-	                       TransactionTypeRepository $transactionTypeRepository, Request $request): Response
+		TransactionTypeRepository $transactionTypeRepository, Request $request
+	): Response
 	{
 		$values = $request->request->get('values');
 		$users  = $request->request->get('users');
@@ -78,7 +79,8 @@ class AdminController extends Controller
 	 * @Security("has_role('ROLE_ADMIN')")
 	 */
 	public function payDay(StoreRepository $storeRepository, PaymentMethodRepository $paymentMethodRepository,
-	                       TransactionTypeRepository $transactionTypeRepository, Request $request): Response
+		TransactionTypeRepository $transactionTypeRepository, Request $request
+	): Response
 	{
 		$payments = $request->request->get('payments');
 

@@ -205,7 +205,6 @@ class AppExtension extends \Twig_Extension implements Twig_Extension_GlobalsInte
 			{
 				$ruc = chunk_split($ruc, 3, ' ');
 			}
-
 		}
 		elseif ($user->getInqCi())
 		{

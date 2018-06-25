@@ -35,7 +35,8 @@ class ContractController extends Controller
 	 * @Security("has_role('ROLE_ADMIN')")
 	 */
 	public function list(StoreRepository $storeRepository, UserRepository $userRepository,
-	                     ContractRepository $contractRepository, Request $request): Response
+		ContractRepository $contractRepository, Request $request
+	): Response
 	{
 		$storeId = $request->request->getInt('store_id');
 		$year    = $request->request->getInt('year');
@@ -58,7 +59,8 @@ class ContractController extends Controller
 	 * @Security("has_role('ROLE_ADMIN')")
 	 */
 	public function new(StoreRepository $storeRepository, UserRepository $userRepository,
-	                    ContractRepository $contractRepository, Request $request): Response
+		ContractRepository $contractRepository, Request $request
+	): Response
 	{
 		$store     = $storeRepository->find($request->request->getInt('store'));
 		$user      = $userRepository->find($request->request->getInt('user'));
@@ -236,7 +238,7 @@ class ContractController extends Controller
 
 		$html = str_replace(array_keys($searchReplace), $searchReplace, $contract->getText());
 
-		/* @var \Twig_Environment $twig */
+		/* @type \Twig_Environment $twig */
 		$twig = clone $this->get('twig');
 
 		return new PdfResponse(

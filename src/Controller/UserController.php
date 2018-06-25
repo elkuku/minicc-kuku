@@ -31,7 +31,8 @@ class UserController extends Controller
 	 * @Security("has_role('ROLE_ADMIN')")
 	 */
 	public function list(UserRepository $userRepository, UserStateRepository $userStateRepository,
-	                     Request $request): Response
+		Request $request
+	): Response
 	{
 		$userState = (int) $request->get('user_state', 1);
 

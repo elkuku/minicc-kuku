@@ -56,7 +56,8 @@ class DepositController extends Controller
 	 * @Security("has_role('ROLE_ADMIN')")
 	 */
 	public function uploadCSV(PaymentMethodRepository $paymentMethodRepository, DepositRepository $depositRepository,
-	                          Request $request): RedirectResponse
+		Request $request
+	): RedirectResponse
 	{
 		$csvFile = $request->files->get('csv_file');
 
