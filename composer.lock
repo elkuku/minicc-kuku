@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d4f29d0a9f1fd54ce082b025f46a4183",
+    "content-hash": "64d9972b9856414b4181a587c45795f1",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -973,7 +973,7 @@
         },
         {
             "name": "elkuku/intl-numbers-to-words",
-            "version": "dev-master",
+            "version": "1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/elkuku/IntlNumbersToWords.git",
@@ -4924,7 +4924,6 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "elkuku/intl-numbers-to-words": 20,
         "symfony/lts": 20,
         "joomla/coding-standards": 15
     },
