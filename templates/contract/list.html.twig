@@ -5,30 +5,39 @@
 {% block title %} {{ parent() }} - About{% endblock %}
 
 {% block body %}
-    <div style="float: right;">
+    <div class="float-right">
+
+        <a class="btn btn-info" data-toggle="collapse" href="#collapseExample" role="button">Nuevo</a>
         <a class="btn btn-light" href="{{ path('contracts-template') }}">Plantilla</a>
-        <form action="{{ path('contracts-new') }}" method="post" class="form-inline">
-            <select class="form-control form-control-sm" name="store">
-                <option value="0">Local ...</option>
-                {% for store in stores %}
-                    <option value="{{ store.id }}">{{ store.id }} - {{ store.destination }}</option>
-                {% endfor %}
-            </select>
-            <select class="form-control form-control-sm" name="user">
-                <option value="0">Usuario ...</option>
-                {% for user in users %}
-                    <option value="{{ user.id }}">{{ user.name }}</option>
-                {% endfor %}
-            </select>
-            <button class="btn btn-info" type="submit">Nuevo Contrato</button>
-        </form>
+        <div class="collapse" id="collapseExample">
+            <div class="card card-body">
+                <form action="{{ path('contracts-new') }}" method="post" class="form-inline">
+                    <select required="required" class="form-control form-control-sm" name="store">
+                        <option value="">Local ...</option>
+                        {% for store in stores %}
+                            <option value="{{ store.id }}">{{ store.id }} - {{ store.destination }}</option>
+                        {% endfor %}
+                    </select>
+                    <select required="required" class="form-control form-control-sm" name="user">
+                        <option value="">Usuario ...</option>
+                        {% for user in users %}
+                            <option value="{{ user.id }}">{{ user.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <button class="btn btn-success" type="submit">Crear</button>
+                </form>
+            </div>
+        </div>
+
+
     </div>
     <h2>Contratos</h2>
 
     <form method="post">
         <table class="table table-sm table-hover">
+            <thead>
             <tr>
-                <th>Local
+                <th>
                     <select class="form-control form-control-sm" name="store_id" onchange="form.submit()">
                         <option value="0">Local ...</option>
                         {% for store in stores %}
@@ -37,13 +46,17 @@
                             </option>
                         {% endfor %}
                     </select>
+                    Local
                 </th>
-                <th>Fecha
+                <th>
                     {{ field.selectYear(year) }}
+                    Fecha
                 </th>
                 <th>Inquilino</th>
                 <th>Action</th>
             </tr>
+            </thead>
+            <tbody>
             {% for contract in contracts %}
                 <tr>
                     <td>{{ contract.storeNumber }}</td>
@@ -52,7 +65,7 @@
                     <td>
                         <a href="{{ path('contracts-edit', {'id': contract.id}) }}">Edit</a>
                         <a href="{{ path('contract-generate', {'id': contract.id}) }}">Generate</a>
-                        <a href="{{ path('payment-methods-delete', {'id': contract.id}) }}">Delete</a>
+                        <a href="{{ path('contracts-delete', {'id': contract.id}) }}">Delete</a>
                     </td>
                 </tr>
             {% else %}
@@ -60,6 +73,7 @@
                     <td colspan="4" class="alert-warning text-center">No hay contractos definidos!!</td>
                 </tr>
             {% endfor %}
+            </tbody>
         </table>
     </form>
 

@@ -15,6 +15,7 @@ use App\Repository\ContractRepository;
 use App\Repository\StoreRepository;
 use App\Repository\UserRepository;
 use IntlNumbersToWords\Numbers;
+use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -102,6 +103,7 @@ class ContractController extends Controller
 				'form'          => $form->createView(),
 				'data'          => $contract,
 				'ivaMultiplier' => getenv('value_iva'),
+				'title'         => 'Nuevo Contrato',
 			]
 		);
 	}
@@ -136,8 +138,25 @@ class ContractController extends Controller
 				'form'          => $form->createView(),
 				'data'          => $contract,
 				'ivaMultiplier' => getenv('value_iva'),
+				'title'         => 'Editar Contrato'
 			]
 		);
+	}
+
+	/**
+	 * @Route("/delete/{id}", name="contracts-delete")
+	 *
+	 * @Security("has_role('ROLE_ADMIN')")
+	 */
+	public function delete(Contract $contract): Response
+	{
+		$em = $this->getDoctrine()->getManager();
+		$em->remove($contract);
+		$em->flush();
+
+		$this->addFlash('success', 'Contract has been deleted');
+
+		return $this->redirectToRoute('contract-list');
 	}
 
 	/**
@@ -172,6 +191,7 @@ class ContractController extends Controller
 				'form'          => $form->createView(),
 				'data'          => $data,
 				'ivaMultiplier' => getenv('value_iva'),
+				'title'         => 'Plantilla'
 			]
 		);
 	}
@@ -181,7 +201,7 @@ class ContractController extends Controller
 	 *
 	 * @Security("has_role('ROLE_ADMIN')")
 	 */
-	public function generate(Contract $contract): Response
+	public function generate(Contract $contract): PdfResponse
 	{
 		$numberToWord = new Numbers;
 
@@ -192,7 +212,6 @@ class ContractController extends Controller
 			'[txt_alq]'      => $numberToWord->toCurrency($contract->getValAlq(), 'es_EC', 'USD'),
 			'[val_garantia]' => number_format($contract->getValGarantia(), 2),
 			'[txt_garantia]' => $numberToWord->toCurrency($contract->getValGarantia(), 'es_EC', 'USD'),
-			//      '[fecha_inicio]' => $contract->getDate(),
 			'[fecha_long]'   => IntlConverter::formatDate($contract->getDate()),
 
 			'[inq_nombreapellido]' => $contract->getInqNombreapellido(),
@@ -217,23 +236,12 @@ class ContractController extends Controller
 
 		$html = str_replace(array_keys($searchReplace), $searchReplace, $contract->getText());
 
-		/** @var \Twig_Environment $twig */
+		/* @var \Twig_Environment $twig */
 		$twig = clone $this->get('twig');
 
-		$template = $twig->createTemplate($html);
-
-		$html = $template->render($searchReplace);
-
-		$filename = sprintf('contrato-local-%d-%s.pdf', $contract->getStoreNumber(), date('Y-m-d'));
-
-		return new Response(
-			$this->get('knp_snappy.pdf')
-				->getOutputFromHtml($html, ['encoding' => 'utf-8']),
-			200,
-			[
-				'Content-Type'        => 'application/pdf',
-				'Content-Disposition' => sprintf('attachment; filename="%s"', $filename),
-			]
+		return new PdfResponse(
+			$this->get('knp_snappy.pdf')->getOutputFromHtml($twig->createTemplate($html)->render([]), ['encoding' => 'utf-8']),
+			sprintf('contrato-local-%d-%s.pdf', $contract->getStoreNumber(), date('Y-m-d'))
 		);
 	}
 }

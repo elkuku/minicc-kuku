@@ -31,7 +31,7 @@ class StoreRepository extends ServiceEntityRepository
 	}
 
 	/**
-	 * @return array
+	 * @return Store[]
 	 */
 	public function getActive()
 	{

@@ -30,7 +30,7 @@ class ContractRepository extends ServiceEntityRepository
 	 * @param int $storeId
 	 * @param int $year
 	 *
-	 * @return array
+	 * @return Contract[]
 	 */
 	public function findContracts($storeId = 0, $year = 0)
 	{

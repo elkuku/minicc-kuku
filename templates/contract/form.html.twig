@@ -22,12 +22,12 @@
 
     {{ form_start(form) }}
 
-    <div class="pull-right">
-        <button type="submit" class="btn btn-light btn-success">Guardar</button>
+    <div class="float-right">
+        <button type="submit" class="btn btn-success">Guardar</button>
         <a class="btn btn-light" href="{{ path('contract-list') }}">Cancelar</a>
     </div>
 
-    <h2>Contrato</h2>
+    <h2>{{ title }}</h2>
 
     {# Check if this is the template - only display the text #}
     <div {{ form.vars.data.id == 1 ? ' style="display: none"' : '' }}>
@@ -123,8 +123,6 @@
         </div>
 
     </div><!-- container -->
-
-    <h4>Contrato</h4>
 
     {{ form_errors(form.text) }}
     {{ form_widget(form.text) }}
