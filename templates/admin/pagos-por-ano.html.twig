@@ -94,8 +94,7 @@
                     </th>
                 {% endfor %}
                 <th class="text-right">{{ totalTotal|price|raw }}</th>
-                <th class="text-right">{{ totalTaxMonth|price|raw }}
-                </th>
+                <th class="text-right">{{ totalTaxMonth|price|raw }}</th>
                 <th class="text-right">{{ (totalTotal - totalTaxMonth)|price|raw }}</th>
             </tr>
             {% set totalAnoTotal = totalAnoTotal + totalTotal %}
