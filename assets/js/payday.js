@@ -5,11 +5,11 @@ module.exports = function () {
     };
 
     this.searchDepId = function (e, url) {
-        var documentIdElement = e.prev();
-        var destElement = e.next();
-        var dateElement = e.closest('td').prev().prev().prev().find('input');
-        var methodElement = e.closest('td').prev().find('select');
-        var amountElement = e.closest('td').next().next().find('input');
+        var documentIdElement = e.closest('td').prev().find('input');
+        var destElement = e.closest('td').next().find('input');
+        var dateElement = e.closest('td').prev().prev().prev().prev().find('input');
+        var methodElement = e.closest('td').prev().prev().find('select');
+        var amountElement = e.closest('td').next().next().next().find('input');
 
         var messageElement = $('#messageContainer');
 

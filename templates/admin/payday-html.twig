@@ -27,6 +27,8 @@
                 <th>Local</th>
                 <th>Forma</th>
                 <th>Documento</th>
+                <th></th>
+                <th>DepId</th>
                 <th>Factura</th>
                 <th>Monto</th>
                 <th></th>
@@ -37,7 +39,7 @@
                 <td>
                     <input class="form-control" name="payments[date_cobro][]" type="date" size="9">
                 </td>
-                <td>
+                <td width="10%">
                     <select class="form-control" name="payments[store][]">
                         <option>Local</option>
                         {% for store in stores %}
@@ -57,9 +59,16 @@
                 </td>
                 <td>
                     <input class="form-control" name="payments[document][]" type="text" size="7">
-                    <span class="btn btn-warning btn-sm"
-                          onclick="payday.searchDepId($(this), '{{ path('lookup-depo') }}')">&rArr;</span>
+                </td>
+                <td>
+                    <button class="btn btn-warning"
+                          onclick="payday.searchDepId($(this), '{{ path('lookup-depo') }}'); return false">
+                    <span class="oi oi-magnifying-glass"></span>
+                    </button>
+                </td>
+                <td>
                     <input class="form-control" name="payments[depId][]" type="text" size="7">
+                </td>
                 </td>
                 <td>
                     <input class="form-control" name="payments[recipe][]" type="text" size="7">
@@ -68,7 +77,9 @@
                     <input class="form-control" name="payments[amount][]" type="text" size="7">
                 </td>
                 <td>
-                    <a class="btn btn-sm btn-info" onclick="payday.addRow(this)">ADD</a>
+                    <button class="btn btn-info" onclick="payday.addRow(this)">
+                        <span class="oi oi-plus"></span>
+                    </button>
                 </td>
             </tr>
             </tbody>

@@ -18,10 +18,10 @@
                         <div class="dropdown-menu">
                             <a class="dropdown-item" href="{{ path('pay-day') }}">Pay Day</a>
                             <a class="dropdown-item" href="{{ path('cobrar') }}">Cobrar Alquileres</a>
+                            <a class="dropdown-item" href="{{ path('pagos-por-ano') }}">Pagos por Año</a>
                             <a class="dropdown-item" href="{{ path('admin-tasks') }}">Tasks</a>
                             <div class="dropdown-divider"></div>
-                            <h6 class="dropdown-header">etcr</h6>
-                            <a class="dropdown-item" href="{{ path('pagos-por-ano') }}">Pagos por Año</a>
+                            <h6 class="dropdown-header">etc</h6>
                             <a class="dropdown-item" href="{{ path('transaction-rawlist') }}">Transactions RAW</a>
                             <a class="dropdown-item" href="{{ path('deposits') }}">Depositos</a>
                             <div class="dropdown-divider"></div>
@@ -46,13 +46,15 @@
         </div>
 
         <div class="ml-auto">
-            <ul class="nav navbar-nav">
-                {% if app.user %}
-                    <li class="nav-item"><a class="nav-link" accesskey="l" href="{{ path('logout') }}">Salir</a></li>
-                {% else %}
-                    <li class="nav-item"><a class="nav-link" accesskey="l" href="{{ path('login') }}">Login</a></li>
-                {% endif %}
-            </ul>
+            {% if app.user %}
+                <a class="nav-link" accesskey="l" href="{{ path('logout') }}" title="logout">
+                    <span class="oi oi-account-logout"></span>
+                </a>
+            {% else %}
+                <a class="nav-link" accesskey="l" href="{{ path('login') }}" title="login">
+                    <span class="oi oi-account-login"></span>
+                </a>
+            {% endif %}
         </div>
     </div>
 </nav>
