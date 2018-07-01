@@ -35,7 +35,6 @@
         <colgroup></colgroup>
         <colgroup></colgroup>
         <colgroup></colgroup>
-
         {% for mes in range(1, 12) %}
             <tr>
                 <th colspan="14" class="text-center alert-info">
@@ -80,7 +79,6 @@
                     <td class="text-right">{{ (totalDia - totalDia|taxFromTotal)|price|raw }}</td>
                 {% endif %}
                 {% set newRow, totalDia = false, 0 %}
-
                 </tr>
             {% endfor %}
             <tr>
@@ -111,5 +109,4 @@
         </tr>
         </tfoot>
     </table>
-
 {% endblock %}
