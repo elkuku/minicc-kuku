@@ -20,16 +20,12 @@
 
     {% set maxLoc, newRow, totalLocal = 10, false, [] %}
     {% set totalDia, totalTotal, totalAnoTotal = 0, 0, 0 %}
+    {% set totalTaxMonth, totalTaxYear = 0, 0 %}
 
     {% for loc in range(1, maxLoc) %}
         {% set totalLocal = totalLocal|merge({('local'~loc): 0}) %}
     {% endfor %}
 
-    {#
-$total_IVA = 0;
-$total_ano_total = 0;
-$total_ano_IVA = 0;
-#}
     <table class="table table-bordered table-sm">
         <colgroup></colgroup>
         {% for loc in range(1, maxLoc) %}
@@ -42,7 +38,7 @@ $total_ano_IVA = 0;
 
         {% for mes in range(1, 12) %}
             <tr>
-                <th colspan="15" class="text-center alert-info">
+                <th colspan="14" class="text-center alert-info">
                     {{ intlDate(year~'-'~mes~'-1', 'MMMM')|capitalize }}
                 </th>
             </tr>
@@ -53,7 +49,6 @@ $total_ano_IVA = 0;
                 {% endfor %}
                 <th class="text-right">TOTAL</th>
                 <th class="text-right">IVA</th>
-                <th class="text-right">10%</th>
                 <th class="text-right">Deposito</th>
             </tr>
             {% for dia in range(1, 31) %}
@@ -78,17 +73,11 @@ $total_ano_IVA = 0;
                             <td>&nbsp;</td>
                         {% endif %}
                     {% endfor %}
-
-                    {#
-                        $IVA = ($total_dia / 100) * $valIVA;
-
-                        $total_IVA += $IVA;
-                        #}
                     {% set totalTotal = totalTotal + totalDia %}
+                    {% set totalTaxMonth = totalTaxMonth + totalDia|taxFromTotal %}
                     <td class="text-right">{{ totalDia|price|raw }}</td>
-                    <td class="text-right"><?= number_format($IVA, 2, ",", "."); ?></td>
-                    <td class="text-right"><?= number_format($diezproz, 2, ",", "."); ?></td>
-                    <td class="text-right"><?= number_format($deposito, 2, ",", "."); ?></td>
+                    <td class="text-right">{{ totalDia|taxFromTotal|price|raw }}</td>
+                    <td class="text-right">{{ (totalDia - totalDia|taxFromTotal)|price|raw }}</td>
                 {% endif %}
                 {% set newRow, totalDia = false, 0 %}
 
@@ -105,34 +94,23 @@ $total_ano_IVA = 0;
                     </th>
                 {% endfor %}
                 <th class="text-right">{{ totalTotal|price|raw }}</th>
-                <td class="text-right"><strong><?= number_format($total_IVA, 2, ",", "."); ?></strong>
-                </td>
-                <td class="text-right">
-                    <strong><?= number_format($total_diezproz, 2, ",", "."); ?></strong></td>
-                <td class="text-right">
-                    <strong><?= number_format($total_deposito, 2, ",", "."); ?></strong></td>
+                <th class="text-right">{{ totalTaxMonth|price|raw }}
+                </th>
+                <th class="text-right">{{ (totalTotal - totalTaxMonth)|price|raw }}</th>
             </tr>
             {% set totalAnoTotal = totalAnoTotal + totalTotal %}
-            {% set totalTotal = 0 %}
-            {#
-        $total_ano_IVA += $total_IVA;
-        $total_IVA = 0;
-        #}
+            {% set totalTaxYear = totalTaxYear + totalTaxMonth %}
+            {% set totalTotal, totalTaxMonth = 0, 0 %}
         {% endfor %}
+        <tfoot>
         <tr>
             <th>Totales del A&ntilde;o:</th>
-            <td colspan="{{ maxLoc }}"></td>
-            <td class="text-right">{{ totalAnoTotal|price|raw }}</td>
-            <td class="text-right">Total IVA :
-                <?= number_format($total_ano_IVA, 2, ",", "."); ?>
-            </td>
-            <td class="text-right">Total 10% :
-                <?= number_format($total_ano_diezproz, 2, ",", "."); ?>
-            </td>
-            <td class="text-right">Total deposito :
-                <?= number_format($total_ano_deposito, 2, ",", "."); ?>
-            </td>
+            <th colspan="{{ maxLoc }}"></th>
+            <th class="text-right">{{ totalAnoTotal|price|raw }}</th>
+            <th class="text-right">{{ totalTaxYear|price|raw }}</th>
+            <th class="text-right">{{ (totalAnoTotal - totalTaxYear)|price|raw }}</th>
         </tr>
+        </tfoot>
     </table>
 
 {% endblock %}

@@ -45,6 +45,20 @@ class TaxService
 	 */
 	public function getValueConTax(float $value): float
 	{
-		return round($value * (1 + $this->getTaxValue() / 100), 2);
+		return round($value * (1 + $this->taxValue / 100), 2);
+	}
+
+	/**
+	 * Get the tax amount from total value.
+	 *
+	 * @param float $total
+	 *
+	 * @return float
+	 */
+	public function getTaxFromTotal(float $total): float
+	{
+		$base = $total / (1 + $this->taxValue / 100);
+
+		return $total - $base;
 	}
 }

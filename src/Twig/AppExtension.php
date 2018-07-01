@@ -58,6 +58,7 @@ class AppExtension extends \Twig_Extension implements Twig_Extension_GlobalsInte
 		return [
 			new \Twig_SimpleFilter('price', [$this, 'priceFilter']),
 			new \Twig_SimpleFilter('conIva', [$this, 'conIvaFilter']),
+			new \Twig_SimpleFilter('taxFromTotal', [$this, 'taxFromTotalFilter']),
 			new \Twig_SimpleFilter('invert', [$this, 'invertFilter']),
 			new \Twig_SimpleFilter('cast_to_array', [$this, 'objectFilter']),
 			new \Twig_SimpleFilter('short_name', [$this, 'shortName']),
@@ -182,6 +183,14 @@ class AppExtension extends \Twig_Extension implements Twig_Extension_GlobalsInte
 	public function conIvaFilter(float $value): float
 	{
 		return $this->taxService->getValueConTax($value);
+	}
+
+	/**
+	 * Add the tax value to a given amount.
+	 */
+	public function taxFromTotalFilter(float $value): float
+	{
+		return $this->taxService->getTaxFromTotal($value);
 	}
 
 	/**
