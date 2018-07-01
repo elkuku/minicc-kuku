@@ -39,7 +39,7 @@ pre.console {
 }
 
 .tableHover {
-  background-color: #eedd91;
+  background-color: #d1ecf1;
 }
 
 th {
@@ -47,11 +47,8 @@ th {
 }
 
 .bg-atacames {
-  background-color: #635584;
-  background-image: url("/build/images/atacames-sunset-4711.jpg");
   height: 100%;
-  background-position: center;
-  background-repeat: no-repeat;
+  background: #635584 url("/build/images/atacames-sunset-4711.jpg") no-repeat center;
   background-size: cover;
 }
 
