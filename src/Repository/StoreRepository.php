@@ -33,7 +33,7 @@ class StoreRepository extends ServiceEntityRepository
 	/**
 	 * @return Store[]
 	 */
-	public function getActive()
+	public function getActive(): array
 	{
 		return $this->createQueryBuilder('s')
 			->where('s.valAlq > :val')

@@ -33,7 +33,7 @@ class PlanillasController extends Controller
 		$month = date('m');
 
 		$fileName = "planillas-$year-$month.pdf";
-		$html     = "Attachment: " . $fileName;
+		$html     = 'Attachment: ' . $fileName;
 
 		$pdf = $this->get('knp_snappy.pdf')
 			->getOutputFromHtml(
@@ -89,7 +89,7 @@ class PlanillasController extends Controller
 
 		$factDate = $year . '-' . $month . '-1';
 
-		if (1 == $month)
+		if (1 === $month)
 		{
 			$prevYear  = $year - 1;
 			$prevMonth = 12;

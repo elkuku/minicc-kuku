@@ -61,7 +61,7 @@ class TasksController extends Controller
 				break;
 			case 'security':
 				$command['command']  = 'security:check';
-				$command['lockfile'] = realpath($this->get('kernel')->getRootDir() . '/..');
+				$command['lockfile'] = \dirname($this->get('kernel')->getRootDir());
 				break;
 			default:
 				throw new \UnexpectedValueException('Unknown command');

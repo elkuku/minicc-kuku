@@ -20,7 +20,7 @@ class LoadPaymentMethodData implements FixtureInterface
 	/**
 	 * {@inheritdoc}
 	 */
-	public function load(ObjectManager $manager)
+	public function load(ObjectManager $manager): void
 	{
 		$names = ['Bar', 'pch-765', 'gye-1005345'];
 

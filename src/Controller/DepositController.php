@@ -39,7 +39,7 @@ class DepositController extends Controller
 
 		$deposits = $depositRepository->getPaginatedList($paginatorOptions);
 
-		$paginatorOptions->setMaxPages(ceil(count($deposits) / $paginatorOptions->getLimit()));
+		$paginatorOptions->setMaxPages(ceil(\count($deposits) / $paginatorOptions->getLimit()));
 
 		return $this->render(
 			'deposit/list.html.twig',
@@ -77,6 +77,11 @@ class DepositController extends Controller
 
 		$entity = $paymentMethodRepository->find(2);
 
+		if (!$entity)
+		{
+			throw new \UnexpectedValueException('Invalid entity');
+		}
+
 		$em = $this->getDoctrine()->getManager();
 
 		$insertCount = 0;
@@ -88,7 +93,7 @@ class DepositController extends Controller
 				continue;
 			}
 
-			if ('C' != $line->tipo)
+			if ('C' !== $line->tipo)
 			{
 				continue;
 			}
@@ -104,7 +109,7 @@ class DepositController extends Controller
 				->setDocument($line->documento)
 				->setAmount($line->monto);
 
-			if (false == $depositRepository->has($deposit))
+			if (false === $depositRepository->has($deposit))
 			{
 				$em->persist($deposit);
 				$insertCount++;
@@ -140,31 +145,25 @@ class DepositController extends Controller
 		{
 			$response['error'] = 'No se encontró ninún depósito con este número!';
 		}
+		elseif (\count($deposits) > 1)
+		{
+			$ids = [];
+			/** @type Deposit $d */
+			foreach ($deposits as $deposit)
+			{
+				$d     = $deposit[0];
+				$ids[] = $d->getDocument();
+			}
+
+			$response['error'] = 'Ambiguous selection. Found: ' . implode(' ', $ids);
+		}
+		elseif ($deposits[0]['tr_id'])
+		{
+			$response['error'] = 'Deposito ALREADY ASSIGNED!: ' . $deposits[0]['tr_id'];
+		}
 		else
 		{
-			if (count($deposits) > 1)
-			{
-				$ids = [];
-				/** @type Deposit $d */
-				foreach ($deposits as $deposit)
-				{
-					$d     = $deposit[0];
-					$ids[] = $d->getDocument();
-				}
-
-				$response['error'] = 'Ambiguous selection. Found: ' . implode(' ', $ids);
-			}
-			else
-			{
-				if ($deposits[0]['tr_id'])
-				{
-					$response['error'] = 'Deposito ALREADY ASSIGNED!: ' . $deposits[0]['tr_id'];
-				}
-				else
-				{
-					$response['data'] = $deposits[0];
-				}
-			}
+			$response['data'] = $deposits[0];
 		}
 
 		return new JsonResponse($response);

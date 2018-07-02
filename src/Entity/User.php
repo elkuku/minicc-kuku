@@ -163,7 +163,7 @@ class User implements UserInterface, \Serializable
 	/**
 	 * @return mixed
 	 */
-	public function getId()
+	public function getId(): int
 	{
 		return $this->id;
 	}

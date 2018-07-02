@@ -43,7 +43,7 @@ class AppExtension extends \Twig_Extension implements Twig_Extension_GlobalsInte
 	/**
 	 * {@inheritdoc}
 	 */
-	public function getGlobals()
+	public function getGlobals(): array
 	{
 		return [
 			'sha' => $this->shaFinder->getSha(),
@@ -84,7 +84,7 @@ class AppExtension extends \Twig_Extension implements Twig_Extension_GlobalsInte
 	 *
 	 * @return string
 	 */
-	public function priceFilter($number, $decimals = 2, $decPoint = '.', $thousandsSep = ',')
+	public function priceFilter($number, $decimals = 2, $decPoint = '.', $thousandsSep = ','): string
 	{
 		$price = number_format($number, $decimals, $decPoint, $thousandsSep);
 		$price = sprintf(
@@ -103,7 +103,7 @@ class AppExtension extends \Twig_Extension implements Twig_Extension_GlobalsInte
 	 *
 	 * @return integer
 	 */
-	public function invertFilter($value)
+	public function invertFilter($value): int
 	{
 		return -$value;
 	}
@@ -115,11 +115,12 @@ class AppExtension extends \Twig_Extension implements Twig_Extension_GlobalsInte
 	 *
 	 * @return string
 	 */
-	public function intlDate($date, $format = "d 'de' MMMM YYYY", $lang = 'es_ES')
+	public function intlDate($date, $format = "d 'de' MMMM YYYY", $lang = 'es_ES'): string
 	{
+		/** @noinspection PhpUndefinedClassInspection */
 		$formatter = new \IntlDateFormatter('ES_es', \IntlDateFormatter::LONG, \IntlDateFormatter::NONE);
 
-		$dateTime = is_object($date) ? $date : new \DateTime($date);
+		$dateTime = \is_object($date) ? $date : new \DateTime($date);
 
 		return $formatter->formatObject($dateTime, $format, $lang);
 	}
@@ -131,12 +132,12 @@ class AppExtension extends \Twig_Extension implements Twig_Extension_GlobalsInte
 	 *
 	 * @return array
 	 */
-	public function objectFilter($classObject)
+	public function objectFilter($classObject): array
 	{
 		$array    = (array) $classObject;
 		$response = [];
 
-		$className = get_class($classObject);
+		$className = \get_class($classObject);
 
 		foreach ($array as $k => $v)
 		{
@@ -158,17 +159,19 @@ class AppExtension extends \Twig_Extension implements Twig_Extension_GlobalsInte
 		// E.g. Juan José Perez Pillo
 		$parts = explode(' ', $longName);
 
-		if (2 == count($parts))
+		if (2 === \count($parts))
 		{
 			// Juan Perez => Juan Perez
 			return $longName;
 		}
-		elseif (3 == count($parts))
+
+		if (3 === \count($parts))
 		{
 			// Juan José Perez => Juan Perez
 			return $parts[0] . ' ' . $parts[2];
 		}
-		elseif (4 == count($parts))
+
+		if (4 === \count($parts))
 		{
 			// Juan José Perez Pillo => Juan Perez
 			return $parts[0] . ' ' . $parts[2];
@@ -204,7 +207,7 @@ class AppExtension extends \Twig_Extension implements Twig_Extension_GlobalsInte
 		{
 			$ruc = $user->getInqRuc();
 
-			if (13 === strlen($ruc))
+			if (13 === \strlen($ruc))
 			{
 				$rucs = str_split($ruc, 10);
 

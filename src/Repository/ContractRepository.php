@@ -32,7 +32,7 @@ class ContractRepository extends ServiceEntityRepository
 	 *
 	 * @return Contract[]
 	 */
-	public function findContracts($storeId = 0, $year = 0)
+	public function findContracts($storeId = 0, $year = 0): array
 	{
 		$query = $this->createQueryBuilder('c');
 

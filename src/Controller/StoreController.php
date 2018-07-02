@@ -132,7 +132,7 @@ class StoreController extends Controller
 
 		foreach ($transactions as $transaction)
 		{
-			if ($transaction->getType()->getName() == 'Pago')
+			if ($transaction->getType()->getName() === 'Pago')
 			{
 				$monthPayments[$transaction->getDate()->format('n')] += $transaction->getAmount();
 			}

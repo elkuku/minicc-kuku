@@ -32,7 +32,7 @@ class TransactionType
 	 *
 	 * @return integer
 	 */
-	public function getId()
+	public function getId(): int
 	{
 		return $this->id;
 	}
@@ -44,7 +44,7 @@ class TransactionType
 	 *
 	 * @return TransactionType
 	 */
-	public function setName($name)
+	public function setName($name): TransactionType
 	{
 		$this->name = $name;
 
@@ -56,7 +56,7 @@ class TransactionType
 	 *
 	 * @return string
 	 */
-	public function getName()
+	public function getName(): string
 	{
 		return $this->name;
 	}

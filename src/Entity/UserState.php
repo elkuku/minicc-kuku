@@ -32,7 +32,7 @@ class UserState
 	 *
 	 * @return integer
 	 */
-	public function getId()
+	public function getId(): int
 	{
 		return $this->id;
 	}
@@ -44,7 +44,7 @@ class UserState
 	 *
 	 * @return UserState
 	 */
-	public function setName($name)
+	public function setName($name): string
 	{
 		$this->name = $name;
 

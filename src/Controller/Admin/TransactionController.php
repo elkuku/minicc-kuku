@@ -16,7 +16,6 @@ use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class TransactionController
@@ -91,8 +90,8 @@ class TransactionController extends Controller
 	{
 		$transactions = $transactionRepository->findByStoreAndYear($store, $year);
 
-		$pages   = intval(count($transactions) / $transactionsPerPage) + 1;
-		$fillers = $transactionsPerPage - (count($transactions) - ($pages - 1) * $transactionsPerPage);
+		$pages   = (int) (\count($transactions) / $transactionsPerPage) + 1;
+		$fillers = $transactionsPerPage - (\count($transactions) - ($pages - 1) * $transactionsPerPage);
 
 		for ($i = 1; $i < $fillers; $i++)
 		{

@@ -50,7 +50,7 @@ class PaginatorOptions
 	 */
 	public function setPage(int $page): PaginatorOptions
 	{
-		$this->page = (int) $page;
+		$this->page = $page;
 
 		return $this;
 	}
@@ -93,7 +93,7 @@ class PaginatorOptions
 		$dirs = ['ASC', 'DESC'];
 		$dir  = strtoupper($orderDir);
 
-		if (false == in_array($dir, $dirs))
+		if (false === \in_array($dir, $dirs, true))
 		{
 			throw new \UnexpectedValueException(sprintf('Order dir must be %s', implode(', ', $dirs)));
 		}
@@ -138,7 +138,7 @@ class PaginatorOptions
 	 */
 	public function setMaxPages(int $maxPages): PaginatorOptions
 	{
-		$this->maxPages = (int) $maxPages;
+		$this->maxPages = $maxPages;
 
 		return $this;
 	}
@@ -158,7 +158,7 @@ class PaginatorOptions
 	 */
 	public function setLimit(int $limit): PaginatorOptions
 	{
-		$this->limit = (int) $limit;
+		$this->limit = $limit;
 
 		return $this;
 	}

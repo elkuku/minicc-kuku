@@ -20,7 +20,7 @@ class LoadUserGenderData implements FixtureInterface
 	/**
 	 * {@inheritdoc}
 	 */
-	public function load(ObjectManager $manager)
+	public function load(ObjectManager $manager): void
 	{
 		$names = ['Sr', 'Sra'];
 

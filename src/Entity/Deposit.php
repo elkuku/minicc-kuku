@@ -52,7 +52,7 @@ class Deposit implements JsonSerializable
 	 *
 	 * @return integer
 	 */
-	public function getId()
+	public function getId(): int
 	{
 		return $this->id;
 	}
@@ -64,9 +64,9 @@ class Deposit implements JsonSerializable
 	 *
 	 * @return Deposit
 	 */
-	public function setEntity(PaymentMethod $entity)
+	public function setEntity(PaymentMethod $entity): Deposit
 	{
-		if (1 == $entity->getId())
+		if (1 === $entity->getId())
 		{
 			throw new \UnexpectedValueException(
 				'The entity with ID "1" is supposed to be the BAR payment method!'
@@ -83,7 +83,7 @@ class Deposit implements JsonSerializable
 	 *
 	 * @return PaymentMethod
 	 */
-	public function getEntity()
+	public function getEntity(): PaymentMethod
 	{
 		return $this->entity;
 	}
@@ -95,7 +95,7 @@ class Deposit implements JsonSerializable
 	 *
 	 * @return Deposit
 	 */
-	public function setDate(\DateTime $date)
+	public function setDate(\DateTime $date): Deposit
 	{
 		$this->date = $date;
 
@@ -107,7 +107,7 @@ class Deposit implements JsonSerializable
 	 *
 	 * @return \DateTime
 	 */
-	public function getDate()
+	public function getDate(): \DateTime
 	{
 		return $this->date;
 	}
@@ -119,7 +119,7 @@ class Deposit implements JsonSerializable
 	 *
 	 * @return Deposit
 	 */
-	public function setDocument($document)
+	public function setDocument($document): Deposit
 	{
 		$this->document = $document;
 
@@ -131,7 +131,7 @@ class Deposit implements JsonSerializable
 	 *
 	 * @return string
 	 */
-	public function getDocument()
+	public function getDocument(): string
 	{
 		return $this->document;
 	}
@@ -143,7 +143,7 @@ class Deposit implements JsonSerializable
 	 *
 	 * @return Deposit
 	 */
-	public function setAmount($amount)
+	public function setAmount($amount): Deposit
 	{
 		$this->amount = $amount;
 
@@ -155,7 +155,7 @@ class Deposit implements JsonSerializable
 	 *
 	 * @return string
 	 */
-	public function getAmount()
+	public function getAmount(): string
 	{
 		return $this->amount;
 	}

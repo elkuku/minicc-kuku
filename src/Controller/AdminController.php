@@ -44,9 +44,14 @@ class AdminController extends Controller
 			// Type "Alquiler"
 			$type = $transactionTypeRepository->find(1);
 
+			if (!$type)
+			{
+				throw new \UnexpectedValueException('Invalid transaction type');
+			}
+
 			foreach ($values as $storeId => $value)
 			{
-				if (0 == $value)
+				if (0 === $value)
 				{
 					// No value
 					continue;
@@ -99,6 +104,11 @@ class AdminController extends Controller
 
 		$type = $transactionTypeRepository->findOneBy(['name' => 'Pago']);
 
+		if (!$type)
+		{
+			throw new \UnexpectedValueException('Invalid transaction type');
+		}
+
 		foreach ($payments['date_cobro'] as $i => $dateCobro)
 		{
 			if (!$dateCobro)
@@ -114,6 +124,11 @@ class AdminController extends Controller
 			}
 
 			$method = $paymentMethodRepository->find((int) $payments['method'][$i]);
+
+			if (!$method)
+			{
+				throw new \UnexpectedValueException('Invalid payment method.');
+			}
 
 			$transaction = (new Transaction)
 				->setDate(new \DateTime($dateCobro))

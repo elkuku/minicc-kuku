@@ -35,7 +35,7 @@ class DepositRepository extends ServiceEntityRepository
 	 *
 	 * @return boolean
 	 */
-	public function has(Deposit $deposit)
+	public function has(Deposit $deposit): bool
 	{
 		return $this->findOneBy(
 			[
@@ -50,7 +50,7 @@ class DepositRepository extends ServiceEntityRepository
 	 *
 	 * @return \Doctrine\ORM\Tools\Pagination\Paginator
 	 */
-	public function getPaginatedList(PaginatorOptions $options)
+	public function getPaginatedList(PaginatorOptions $options): \Doctrine\ORM\Tools\Pagination\Paginator
 	{
 		$query = $this->createQueryBuilder('d')
 			->orderBy('d.' . $options->getOrder(), $options->getOrderDir());
@@ -91,7 +91,7 @@ class DepositRepository extends ServiceEntityRepository
 	 *
 	 * @return array
 	 */
-	public function lookup($documentId)
+	public function lookup($documentId): array
 	{
 		return $this->createQueryBuilder('d')
 			->where('d.document LIKE :document')

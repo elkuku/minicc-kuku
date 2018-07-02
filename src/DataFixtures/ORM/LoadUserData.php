@@ -27,7 +27,7 @@ class LoadUserData implements FixtureInterface, ContainerAwareInterface
 	/**
 	 * {@inheritdoc}
 	 */
-	public function setContainer(ContainerInterface $container = null)
+	public function setContainer(ContainerInterface $container = null): void
 	{
 		$this->container = $container;
 	}
@@ -35,7 +35,7 @@ class LoadUserData implements FixtureInterface, ContainerAwareInterface
 	/**
 	 * {@inheritdoc}
 	 */
-	public function load(ObjectManager $manager)
+	public function load(ObjectManager $manager): void
 	{
 		$user = new User;
 

@@ -49,6 +49,7 @@ class SyncController extends Controller
 	 * @param Request $request
 	 *
 	 * @return Response
+	 * @throws \Doctrine\DBAL\DBALException
 	 */
 	public function import(Request $request): Response
 	{
@@ -72,7 +73,7 @@ class SyncController extends Controller
 
 		$parts = explode('-', $file->getClientOriginalName());
 
-		if (count($parts) < 2)
+		if (\count($parts) < 2)
 		{
 			$this->addFlash('danger', 'Invalid filename should be "export-{TABLE_NAME}-{DATE}.json".');
 
@@ -89,11 +90,11 @@ class SyncController extends Controller
 		{
 			foreach ($oldData as $io => $oldItem)
 			{
-				if ($oldItem['id'] == $newItem->id)
+				if ($oldItem['id'] === $newItem->id)
 				{
 					foreach ($newItem as $prop => $value)
 					{
-						if ($oldItem[$prop] != $value)
+						if ($oldItem[$prop] !== $value)
 						{
 							throw new \UnexpectedValueException('Data inconsistency.');
 						}
@@ -105,7 +106,7 @@ class SyncController extends Controller
 			}
 		}
 
-		if (!count($newData))
+		if (!\count($newData))
 		{
 			$this->addFlash('success', 'Everything is in Sync :)');
 
@@ -134,7 +135,7 @@ class SyncController extends Controller
 
 			foreach ($item as $prop => $value)
 			{
-				if (is_null($value))
+				if (null === $value)
 				{
 					$valueLine .= 'null, ';
 				}
@@ -178,7 +179,7 @@ class SyncController extends Controller
 
 		preg_match($pattern, getenv('DATABASE_URL'), $matches);
 
-		if (4 != count($matches))
+		if (4 !== \count($matches))
 		{
 			throw new \UnexpectedValueException('Error parsing the database URL.');
 		}

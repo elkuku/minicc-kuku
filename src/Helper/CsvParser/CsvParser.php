@@ -20,7 +20,7 @@ class CsvParser
 	 *
 	 * @return CsvObject
 	 */
-	public function parseCSV(array $contents)
+	public function parseCSV(array $contents): CsvObject
 	{
 		if (!$contents)
 		{

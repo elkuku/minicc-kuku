@@ -219,9 +219,9 @@ class ContractController extends Controller
 			'[inq_nombreapellido]' => $contract->getInqNombreapellido(),
 			'[inq_ci]'             => $contract->getInqCi(),
 
-			'[el_la]'   => $contract->getGender()->getId() == 1 ? 'el' : 'la',
-			'[del_la]'  => $contract->getGender()->getId() == 1 ? 'del' : 'de la',
-			'[senor_a]' => $contract->getGender()->getId() == 1 ? 'señor' : 'señora',
+			'[el_la]'   => $contract->getGender()->getId() === 1 ? 'el' : 'la',
+			'[del_la]'  => $contract->getGender()->getId() === 1 ? 'del' : 'de la',
+			'[senor_a]' => $contract->getGender()->getId() === 1 ? 'señor' : 'señora',
 
 			'[cnt_lanfort]'  => $contract->getCntLanfort(),
 			'[cnt_neon]'     => $contract->getCntNeon(),

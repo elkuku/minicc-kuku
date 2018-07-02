@@ -24,7 +24,7 @@ trait BreadcrumbTrait
 	 *
 	 * @return $this
 	 */
-	protected function addBreadcrumb(string $text, string $link = '')
+	protected function addBreadcrumb(string $text, string $link = ''): self
 	{
 		$this->initBreadcrumbs();
 
@@ -44,7 +44,7 @@ trait BreadcrumbTrait
 	/**
 	 * @return $this
 	 */
-	private function initBreadcrumbs()
+	private function initBreadcrumbs(): self
 	{
 		if (!$this->breadcrumbs)
 		{

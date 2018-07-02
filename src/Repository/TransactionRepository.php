@@ -42,14 +42,14 @@ class TransactionRepository extends ServiceEntityRepository
 	 *
 	 * @return Transaction[]
 	 */
-	public function findByStoreAndYear(Store $store, $year)
+	public function findByStoreAndYear(Store $store, $year): array
 	{
 		return $this->createQueryBuilder('p')
 			->where('p.store = :store')
 			->andWhere('YEAR(p.date) = :year')
 			->setParameter('store', $store->getId())
 			->setParameter('year', $year)
-			->orderBy("p.date, p.type", 'ASC')
+			->orderBy('p.date, p.type', 'ASC')
 			->getQuery()
 			->getResult();
 	}
@@ -57,7 +57,7 @@ class TransactionRepository extends ServiceEntityRepository
 	/**
 	 * @return array
 	 */
-	public function getSaldos()
+	public function getSaldos(): array
 	{
 		return $this->createQueryBuilder('t')
 			->select('t as data, SUM(t.amount) AS amount')
@@ -111,7 +111,7 @@ class TransactionRepository extends ServiceEntityRepository
 	 *
 	 * @return array
 	 */
-	public function findMonthPayments(Store $store, $month, $year)
+	public function findMonthPayments(Store $store, $month, $year): array
 	{
 		return $this->createQueryBuilder('p')
 			->where('p.store = :store')
@@ -131,7 +131,7 @@ class TransactionRepository extends ServiceEntityRepository
 	 *
 	 * @return Transaction[]
 	 */
-	public function getPagosPorAno($year)
+	public function getPagosPorAno($year): array
 	{
 		$transactions = $this->createQueryBuilder('t')
 			->where('YEAR(t.date) = :year')
@@ -141,7 +141,7 @@ class TransactionRepository extends ServiceEntityRepository
 			->getQuery()
 			->getResult();
 
-		if (!count($transactions))
+		if (!\count($transactions))
 		{
 			return [];
 		}
@@ -165,7 +165,7 @@ class TransactionRepository extends ServiceEntityRepository
 	 *
 	 * @return Paginator
 	 */
-	public function getRawList(PaginatorOptions $options)
+	public function getRawList(PaginatorOptions $options): Paginator
 	{
 		$criteria = $options->getCriteria();
 

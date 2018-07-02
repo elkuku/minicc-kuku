@@ -31,7 +31,7 @@ class TaxService
 	/**
 	 * @return int
 	 */
-	public function getTaxValue()
+	public function getTaxValue(): int
 	{
 		return $this->taxValue;
 	}
