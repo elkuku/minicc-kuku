@@ -16,7 +16,8 @@
         <form class="form-horizontal" role="form" method="post" action="{{ path('login') }}">
             {% if error %}
                 <div class="alert alert-danger">
-                    {{ error.messageKey|trans(error.messageData) }}
+                    {# @todo dumb translation :( #}
+                    {{ error.message | replace({"Bad credentials." : "Nombre de usuario o clave invalido."}) }}
                 </div>
             {% endif %}
 
