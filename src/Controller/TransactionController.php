@@ -14,7 +14,7 @@ use App\Helper\Paginator\PaginatorTrait;
 use App\Repository\StoreRepository;
 use App\Repository\TransactionRepository;
 use App\Repository\TransactionTypeRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;

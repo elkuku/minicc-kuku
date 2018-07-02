@@ -11,11 +11,11 @@ namespace App\Controller;
 use App\Entity\PaymentMethod;
 use App\Repository\PaymentMethodRepository;
 use App\Form\PaymentMethodType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/payment-methods")
