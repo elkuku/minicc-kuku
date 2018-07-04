@@ -156,13 +156,14 @@ class SyncController extends Controller
 
 		$query = implode('', $queryLines);
 
+		/** @type \Doctrine\ORM\EntityManager $em */
 		$em = $this->getDoctrine()->getManager();
 
 		/** @type \Doctrine\DBAL\Statement $statement */
 		$statement = $em->getConnection()->prepare($query);
 		$statement->execute();
 
-		$this->addFlash('success', count($newData) . ' lines inserted');
+		$this->addFlash('success', \count($newData) . ' lines inserted');
 
 		return $this->redirectToRoute('admin-tasks');
 	}
@@ -230,8 +231,7 @@ class SyncController extends Controller
 	{
 		try
 		{
-			/* @type \Doctrine\ORM\EntityManager $em */
-
+			/** @type \Doctrine\ORM\EntityManager $em */
 			$em = $this->getDoctrine()->getManager();
 
 			$query = "SELECT * FROM $tableName;";
