@@ -230,9 +230,11 @@ class SyncController extends Controller
 	{
 		try
 		{
+			/* @type \Doctrine\ORM\EntityManager $em */
+
 			$em = $this->getDoctrine()->getManager();
 
-			$query = 'SELECT * FROM ' . $tableName . ';';
+			$query = "SELECT * FROM $tableName;";
 
 			/** @type \Doctrine\DBAL\Statement $statement */
 			$statement = $em->getConnection()->prepare($query);
