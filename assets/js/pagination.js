@@ -1,3 +1,7 @@
+const $ = require('jquery')
+
+window.$ = $
+
 module.exports = function () {
     this.goToPage = function (e, page) {
         var form = e.closest('form');
