@@ -15,6 +15,7 @@
         <exclude name="Generic.Arrays.DisallowShortArraySyntax"/>
         <exclude name="Squiz.Commenting.VariableComment.IncorrectVarType"/>
         <exclude name="Squiz.Commenting.VariableComment.MissingVar"/>
+        <exclude name="Squiz.Commenting.VariableComment.Missing"/>
         <exclude name="Joomla.Commenting.FunctionComment.Missing"/>
         <exclude name="Joomla.Commenting.FunctionComment.BeforeParamType"/>
         <exclude name="Joomla.Commenting.FunctionComment.MissingParamComment"/>
