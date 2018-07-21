@@ -56,7 +56,8 @@ Encore
         },
         {
             from: 'assets/images/',
-            to: 'images/'
+            to: 'images/',
+            ignore: 'atacames-sunset*'
         }
     ]))
 
