@@ -22,7 +22,7 @@ Encore
     //.enableSourceMaps(!Encore.isProduction())
 
     // uncomment for legacy applications that require $/jQuery as a global variable
-    .autoProvidejQuery()
+    //.autoProvidejQuery()
 
     // uncomment if you use Sass/SCSS files
     //.enableSassLoader()
@@ -39,6 +39,9 @@ Encore
 
     .addEntry('js/app', './assets/js/app.js')
     .addEntry('js/index-charts', './assets/js/index-charts.js')
+    .addEntry('js/contract/form', './assets/js/contract/form.js')
+    .addEntry('js/default/index', './assets/js/default/index.js')
+    .addEntry('js/default/background', './assets/js/default/background.js')
     .addEntry('js/stores/transactions', './assets/js/stores/transactions.js')
     .addEntry('js/transaction/form', './assets/js/transaction/form.js')
     .addEntry('js/login', './assets/js/login.js')

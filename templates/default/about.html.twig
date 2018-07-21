@@ -4,9 +4,7 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <script>
-        $('#app-layout').addClass('bg-atacames');
-    </script>
+    <script type="text/javascript" src="{{ asset('build/js/default/background.js') }}"></script>
 {% endblock %}
 
 {% block body %}

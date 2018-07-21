@@ -1,3 +1,8 @@
+const $ = require('jquery')
+
+// @todo window.$
+window.$ = $
+
 module.exports = function () {
     this.addRow = function (e) {
         $('#paymentsTable tbody').append('<tr>' + $(e).parent().parent().html() + '</tr>');

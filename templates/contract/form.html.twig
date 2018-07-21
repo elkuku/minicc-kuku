@@ -4,18 +4,9 @@
 
 {% block javascripts %}
     {{ parent() }}
+    <script type="text/javascript" src="{{ asset('build/js/contract/form.js') }}"></script>
     <script>
-        tinymce.init({
-            selector: 'textarea',
-            height: 500,
-            menubar: false,
-            plugins: [],
-            //skin_url: '/static/tinymce/skins/lightgray',
-            toolbar: 'undo redo | insert | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent'
-        });
-
         var taxCalculator = new tax({{ ivaMultiplier }})
-
     </script>
 {% endblock %}
 {% block body %}

@@ -3,13 +3,8 @@
 {% block javascripts %}
     {{ parent() }}
     {% if not app.user %}
-        <script>
-            $('html').addClass('bg-atacames');
-            $('#main-container').remove();
-            $('#app-layout').css({'padding': '0'});
-        </script>
-    {% endif %}
-    {% if app.user and app.user.role == 'ROLE_ADMIN' %}
+        <script type="text/javascript" src="{{ asset('build/js/default/index.js') }}"></script>
+    {% elseif app.user and app.user.role == 'ROLE_ADMIN' %}
         <script type="text/javascript" src="{{ asset('build/js/index-charts.js') }}"></script>
         <script>
             drawChart('chart1', 'Meses de deuda', [{{ chart_headers|raw }}], [{{ chart_data1 }}]);
