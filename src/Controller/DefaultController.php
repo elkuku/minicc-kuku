@@ -51,9 +51,9 @@ class DefaultController extends Controller
 			[
 				'stores'        => $user ? $user->getStores() : null,
 				'saldos'        => $saldos,
-				'chart_headers' => "'" . implode("', '", $headers) . "'",
-				'chart_data1'   => implode(', ', $data1),
-				'chart_data2'   => implode(', ', $data2),
+				'chart_headers' => json_encode($headers),
+				'chart_data1'   => json_encode($data1),
+				'chart_data2'   => json_encode($data2),
 			]
 		);
 	}

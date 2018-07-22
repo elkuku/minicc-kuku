@@ -50,4 +50,6 @@ function drawChart(elemantId, labels, data1, data2) {
     });
 }
 
-window.drawChart = drawChart;
+let chart = $('#chart')
+
+drawChart('chart', JSON.parse(chart.attr('data-chart-headers')), JSON.parse(chart.attr('data-chart-data')), JSON.parse(chart.attr('data-chart-data2')))

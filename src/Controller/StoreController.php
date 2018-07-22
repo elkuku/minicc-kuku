@@ -134,7 +134,7 @@ class StoreController extends Controller
 		{
 			if ($transaction->getType()->getName() === 'Pago')
 			{
-				$monthPayments[$transaction->getDate()->format('n')] += $transaction->getAmount();
+				$monthPayments[(int) $transaction->getDate()->format('n')] += $transaction->getAmount();
 			}
 		}
 
@@ -143,9 +143,9 @@ class StoreController extends Controller
 			[
 				'transactions'  => $transactions,
 				'saldoAnterior' => $transactionRepository->getSaldoAnterior($store, $year),
-				'headerStr'     => "'" . implode("', '", $headers) . "'",
-				'monthPayments' => implode(', ', $monthPayments),
-				'rentalValStr'  => implode(', ', $rentalValues),
+				'headerStr'     => json_encode($headers),
+				'monthPayments' => json_encode(array_values($monthPayments)),
+				'rentalValStr'  => json_encode(array_values($rentalValues)),
 				'store'         => $store,
 				'stores'        => $this->getDoctrine()->getRepository(Store::class)->findAll(),
 				'year'          => $year,

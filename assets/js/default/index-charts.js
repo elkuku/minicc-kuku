@@ -40,4 +40,8 @@ function drawChart(elemantId, title, labels, data) {
     });
 }
 
-window.drawChart = drawChart;
+let chart1 = $('#chart1')
+let chart2 = $('#chart2')
+
+drawChart('chart1', 'Meses de deuda', JSON.parse(chart1.attr('data-chart-headers')), JSON.parse(chart1.attr('data-chart-data')))
+drawChart('chart2', 'Saldo en $', JSON.parse(chart2.attr('data-chart-headers')), JSON.parse(chart2.attr('data-chart-data')))
