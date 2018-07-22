@@ -1,15 +1,29 @@
-module.exports = function (taxRate) {
-    this.taxRate = 1 + taxRate / 100;
+const $ = require('jquery')
 
-    this.sinIva = function(conIva) {
-        var sinIva = conIva / this.taxRate;
+const taxRate = 1 + $('#tax-rate').attr('data-tax-rate') / 100
 
-        return sinIva.toFixed(2);
-    };
+$('.taxWithTax').on('click', function () {
+    let eWithTax = $(this).attr('data-with-tax')
+    let eWithoutTax = $(this).attr('data-without-tax')
 
-    this.conIva = function(sinIva) {
-        var conIva = sinIva * this.taxRate;
+    $(eWithTax).val(withTax($(eWithoutTax).val()))
+})
 
-        return conIva.toFixed(2);
-    };
-};
+$('.taxWithoutTax').on('click', function () {
+    let eWithTax = $(this).attr('data-with-tax')
+    let eWithoutTax = $(this).attr('data-without-tax')
+
+    $(eWithoutTax).val(WithoutTax($(eWithTax).val()))
+})
+
+function WithoutTax(withTax) {
+    let val = withTax / taxRate
+
+    return val.toFixed(2);
+}
+
+function withTax(WithoutTax) {
+    let val = WithoutTax * taxRate
+
+    return val.toFixed(2);
+}

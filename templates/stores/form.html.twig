@@ -4,12 +4,12 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <script>
-        var taxCalculator = new tax({{ ivaMultiplier }})
-    </script>
+    <script type="text/javascript" src="{{ asset('build/js/taxcalc.js') }}"></script>
 {% endblock %}
 
 {% block body %}
+
+    <span id="tax-rate" data-tax-rate="{{ ivaMultiplier }}"></span>
 
     {{ form_start(form) }}
 
@@ -32,12 +32,10 @@
         <div class="col-sm-3 alert-warning">
             {{ form_label(form.valAlq) }}<br/>
             ConIVA: <input id="val_alq_coniva"/><br/>
-            <a class="btn btn-light btn-xs"
-               onclick="$('#store_valAlq').val(taxCalculator.sinIva($('#val_alq_coniva').val()))">&dArr; Recalc
-                &dArr;</a>
-            <a class="btn btn-light btn-xs"
-               onclick="$('#val_alq_coniva').val(taxCalculator.conIva($('#store_valAlq').val()))">&uArr; Recalc
-                &uArr;</a>
+            <a class="btn btn-light btn-xs taxWithoutTax" data-with-tax="#val_alq_coniva"
+               data-without-tax="#store_valAlq">&dArr; Recalc &dArr;</a>
+            <a class="btn btn-light btn-xs taxWithTax" data-with-tax="#val_alq_coniva"
+               data-without-tax="#store_valAlq">&uArr; Recalc &uArr;</a>
             <br/>
             Sin IVA
             {{ form_widget(form.valAlq) }}

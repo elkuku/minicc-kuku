@@ -5,11 +5,11 @@
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('build/js/contract/form.js') }}"></script>
-    <script>
-        var taxCalculator = new tax({{ ivaMultiplier }})
-    </script>
+    <script type="text/javascript" src="{{ asset('build/js/taxcalc.js') }}"></script>
 {% endblock %}
 {% block body %}
+
+    <span id="tax-rate" data-tax-rate="{{ ivaMultiplier }}"></span>
 
     {{ form_start(form) }}
 
@@ -43,12 +43,10 @@
             <tr valign="top">
                 <td class="alert-warning">
                     ConIVA: <input id="val_alq_coniva"/><br/>
-                    <a class="btn btn-light btn-xs"
-                       onclick="$('#contract_valAlq').val(taxCalculator.sinIva($('#val_alq_coniva').val()))">&dArr;
-                        Recalc &dArr;</a>
-                    <a class="btn btn-light btn-xs"
-                       onclick="$('#val_alq_coniva').val(taxCalculator.conIva($('#contract_valAlq').val()))">&uArr;
-                        Recalc &uArr;</a>
+                    <a class="btn btn-light btn-xs taxWithoutTax" data-with-tax="#val_alq_coniva"
+                       data-without-tax="#contract_valAlq">&dArr; Recalc &dArr;</a>
+                    <a class="btn btn-light btn-xs taxWithTax" data-with-tax="#val_alq_coniva"
+                       data-without-tax="#contract_valAlq">&uArr; Recalc &uArr;</a>
                     <br/>
                     Sin IVA{{ form_widget(form.valAlq) }}</td>
                 <td>{{ form_widget(form.valGarantia) }}</td>
