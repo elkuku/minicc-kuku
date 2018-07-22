@@ -134,7 +134,7 @@ class StoreController extends Controller
 		{
 			if ($transaction->getType()->getName() === 'Pago')
 			{
-				$monthPayments[(int) $transaction->getDate()->format('n')] += $transaction->getAmount();
+				$monthPayments[$transaction->getDate()->format('n')] += $transaction->getAmount();
 			}
 		}
 
