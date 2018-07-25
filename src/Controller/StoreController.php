@@ -109,7 +109,9 @@ class StoreController extends Controller
 	 * @Route("/{id}", name="store-transactions")
 	 * @Security("has_role('ROLE_ADMIN')")
 	 */
-	public function show(TransactionRepository $transactionRepository, Store $store, Request $request, TaxService $taxService): Response
+	public function show(TransactionRepository $transactionRepository, StoreRepository $storeRepository, Store $store,
+		Request $request, TaxService $taxService
+	): Response
 	{
 		$year = (int) $request->get('year', date('Y'));
 
@@ -147,7 +149,7 @@ class StoreController extends Controller
 				'monthPayments' => json_encode(array_values($monthPayments)),
 				'rentalValStr'  => json_encode(array_values($rentalValues)),
 				'store'         => $store,
-				'stores'        => $this->getDoctrine()->getRepository(Store::class)->findAll(),
+				'stores'        => $storeRepository->findAll(),
 				'year'          => $year,
 				'breadcrumbs'   => $this->getBreadcrumbs(),
 			]
