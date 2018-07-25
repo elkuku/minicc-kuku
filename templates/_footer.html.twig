@@ -5,7 +5,7 @@
         </div>
         <div class="p-1 ml-auto">
             {% if app.user and app.user.role == 'ROLE_ADMIN' %}
-                v {{ sha[:7] }}
+                v {{ getSHA()[:7] }}
             {% endif %}
         </div>
         <div class="p-1 ml-auto">
