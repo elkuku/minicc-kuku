@@ -57,37 +57,32 @@ class TransactionController extends Controller
 	 *
 	 * @Security("has_role('ROLE_ADMIN')")
 	 */
-	public function edit(Request $request): Response
+	public function edit(Transaction $transaction, Request $request): Response
 	{
 		$view = $request->query->get('view');
-		$id   = (int) $request->get('id');
 
-		$data = $this->getDoctrine()
-			->getRepository(Transaction::class)
-			->find($id);
-
-		$form = $this->createForm(TransactionTypeType::class, $data);
+		$form = $this->createForm(TransactionTypeType::class, $transaction);
 
 		$form->handleRequest($request);
 
 		if ($form->isSubmitted() && $form->isValid())
 		{
-			$data = $form->getData();
+			$transaction = $form->getData();
 
 			$em = $this->getDoctrine()->getManager();
-			$em->persist($data);
+			$em->persist($transaction);
 			$em->flush();
 
 			$this->addFlash('success', 'La Transaccion ha sido guardada.');
 
-			return $this->redirectToRoute($view, ['id' => $data->getStore()->getId()]);
+			return $this->redirectToRoute($view, ['id' => $transaction->getStore()->getId()]);
 		}
 
 		return $this->render(
 			'transaction/form.html.twig',
 			[
 				'form'     => $form->createView(),
-				'data'     => $data,
+				'data'     => $transaction,
 				'redirect' => $view,
 			]
 		);
