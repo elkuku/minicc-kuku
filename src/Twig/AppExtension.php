@@ -11,43 +11,26 @@ namespace App\Twig;
 use App\Entity\User;
 use App\Service\ShaFinder;
 use App\Service\TaxService;
-use Twig_Extension_GlobalsInterface;
+use Psr\Container\ContainerInterface;
+use Symfony\Component\DependencyInjection\ServiceSubscriberInterface;
+use Twig\Extension\AbstractExtension;
 
 /**
  * Class AppExtension
  */
-class AppExtension extends \Twig_Extension implements Twig_Extension_GlobalsInterface
+class AppExtension extends AbstractExtension implements ServiceSubscriberInterface
 {
 	/**
-	 * @var TaxService
+	 * @var ContainerInterface
 	 */
-	private $taxService;
-
-	/**
-	 * @var ShaFinder
-	 */
-	private $shaFinder;
+	private $container;
 
 	/**
 	 * AppExtension constructor.
-	 *
-	 * @param TaxService $taxService
-	 * @param ShaFinder  $shaFinder
 	 */
-	public function __construct(TaxService $taxService, ShaFinder $shaFinder)
+	public function __construct(ContainerInterface $container)
 	{
-		$this->taxService = $taxService;
-		$this->shaFinder  = $shaFinder;
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getGlobals(): array
-	{
-		return [
-			'sha' => $this->shaFinder->getSha(),
-		];
+		$this->container = $container;
 	}
 
 	/**
@@ -73,6 +56,7 @@ class AppExtension extends \Twig_Extension implements Twig_Extension_GlobalsInte
 		return [
 			new \Twig_SimpleFunction('intlDate', [$this, 'intlDate']),
 			new \Twig_SimpleFunction('formatRUC', [$this, 'formatRUC']),
+			new \Twig_SimpleFunction('getSHA', [$this, 'getSHA']),
 		];
 	}
 
@@ -185,7 +169,7 @@ class AppExtension extends \Twig_Extension implements Twig_Extension_GlobalsInte
 	 */
 	public function conIvaFilter(float $value): float
 	{
-		return $this->taxService->getValueConTax($value);
+		return $this->container->get(TaxService::class)->getValueConTax($value);
 	}
 
 	/**
@@ -193,7 +177,12 @@ class AppExtension extends \Twig_Extension implements Twig_Extension_GlobalsInte
 	 */
 	public function taxFromTotalFilter(float $value): float
 	{
-		return $this->taxService->getTaxFromTotal($value);
+		return $this->container->get(TaxService::class)->getTaxFromTotal($value);
+	}
+
+	public function getSHA()
+	{
+		return $this->container->get(ShaFinder::class)->getSha();
 	}
 
 	/**
@@ -225,5 +214,13 @@ class AppExtension extends \Twig_Extension implements Twig_Extension_GlobalsInte
 		}
 
 		return $ruc;
+	}
+
+	public static function getSubscribedServices():array
+	{
+		return [
+			ShaFinder::class,
+			TaxService::class
+		];
 	}
 }
