@@ -90,7 +90,7 @@ class Transaction implements JsonSerializable
 	 *
 	 * @return integer
 	 */
-	public function getId(): int
+	public function getId(): ?int
 	{
 		return $this->id;
 	}
