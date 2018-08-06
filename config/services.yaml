@@ -33,3 +33,17 @@ services:
 
     App\Service\ShaFinder:
         $root: '%kernel.project_dir%'
+
+    App\Helper\GitLoader:
+        arguments:
+            ['%kernel.project_dir%']
+
+
+    App\DataCollector\GitDataCollector:
+        tags:
+        -
+            name:     data_collector
+            template: 'data_collector/git_data.html.twig'
+          # must match the value returned by the getName() method
+            id: 'app.git_data_collector'
+        public: false
