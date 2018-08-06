@@ -6,7 +6,7 @@ const ImageminPlugin = require('imagemin-webpack-plugin').default
 
 Encore
 
-// the project directory where compiled assets will be stored
+    // the project directory where compiled assets will be stored
     .setOutputPath('public/build/')
 
     // the public path used by the web server to access the previous directory
@@ -30,7 +30,7 @@ Encore
     // uncomment to create hashed filenames (e.g. app.abc123.css)
     //.enableVersioning(Encore.isProduction())
     .enableVersioning(false)
-    //.enableSourceMaps(!Encore.isProduction())
+    .enableSourceMaps(!Encore.isProduction())
 
     // uncomment to define the assets of the project
     .createSharedEntry('js/common', ['jquery'])
