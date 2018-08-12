@@ -66,7 +66,7 @@
       "@auto-scripts"
     ],
     "phpcs": "vendor/bin/phpcs src --standard=ruleset.xml",
-    "test": "echo no tests yet...;",
+    "test": "bin/phpunit",
     "ci": [
       "@composer validate --no-check-all --strict",
       "@phpcs",
