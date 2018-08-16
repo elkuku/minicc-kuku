@@ -36,7 +36,7 @@ class AppExtension extends AbstractExtension implements ServiceSubscriberInterfa
 	/**
 	 * {@inheritdoc}
 	 */
-	public function getFilters()
+	public function getFilters(): array
 	{
 		return [
 			new \Twig_SimpleFilter('price', [$this, 'priceFilter']),
@@ -51,7 +51,7 @@ class AppExtension extends AbstractExtension implements ServiceSubscriberInterfa
 	/**
 	 * {@inheritdoc}
 	 */
-	public function getFunctions()
+	public function getFunctions(): array
 	{
 		return [
 			new \Twig_SimpleFunction('intlDate', [$this, 'intlDate']),
