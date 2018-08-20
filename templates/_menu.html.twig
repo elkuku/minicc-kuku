@@ -1,3 +1,4 @@
+{% import "_macro/g11n.html.twig" as g11n %}
 <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" href="{{ path('welcome') }}">MiniCC KuKu</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -56,5 +57,8 @@
                 </a>
             {% endif %}
         </div>
+
+        {{ g11n.switcher(getLangs(), getCurrentLang()) }}
+
     </div>
 </nav>
