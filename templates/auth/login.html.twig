@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} {{ parent() }} - Login{% endblock %}
+{% block title %} {{ parent() }} - {{ _('Login') }}{% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
@@ -9,31 +9,28 @@
 
 {% block body %}
     <div class="jumbotron">
-        <h1>Login</h1>
+        <h1>{{ _('Login') }}</h1>
         <form class="form-horizontal" role="form" method="post" action="{{ path('login') }}">
             {% if error %}
                 <div class="alert alert-danger">
-                    {# @todo dumb translation :( #}
-                    {{ error.message | replace({"Bad credentials." : "Nombre de usuario o clave invalido."}) }}
+                    {{ error.message | replace({"Bad credentials." : _("Invalid username or password.")}) }}
                 </div>
             {% endif %}
 
             <div class="form-group">
-                <label for="username" class="col-md-4 control-label">Nombre usuario</label>
+                <label for="username" class="col-md-4 control-label">{{ _('Username') }}</label>
                 <input id="username" class="form-control col-md-4" name="_username" value="{{ last_username }}">
             </div>
 
             <div class="form-group">
-                <label for="password" class="col-md-4 control-label">Clave de acceso</label>
+                <label for="password" class="col-md-4 control-label">{{ _('Password') }}</label>
                 <input id="password" type="password" class="form-control col-md-4" name="_password">
             </div>
 
             <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
             <div class="form-group">
-                <button type="submit" class="btn btn-primary">
-                    Ingresar
-                </button>
+                <button type="submit" class="btn btn-primary">{{ _('Enter') }}</button>
             </div>
         </form>
     </div>

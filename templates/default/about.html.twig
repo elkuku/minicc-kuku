@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} {{ parent() }} - About{% endblock %}
+{% block title %} {{ parent() }} - {{ _('About') }}{% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
@@ -9,8 +9,7 @@
 
 {% block body %}
     <div class="jumbotron">
-        <h1>About</h1>
-        <p class="lead">Este sitio es para los clientes del MiniCC KuKu - Atacames - Ecuador</p>
-        <p>This site is for the clients of the MiniCC KuKu - Atacames - Ecuador</p>
+        <h1>{{ _('About') }}</h1>
+        <p class="lead">{{ _('This site is for the clients of the "MiniCC KuKu" - Atacames - Ecuador') }}</p>
     </div>
 {% endblock %}

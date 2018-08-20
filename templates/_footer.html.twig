@@ -9,7 +9,7 @@
             {% endif %}
         </div>
         <div class="p-1 ml-auto">
-            Made with <a href="https://symfony.com">Symfony</a>
+            {{ _('Made with %product%', {'%product%' : '<a href="https://symfony.com">Symfony</a>'})|raw }}
         </div>
     </footer>
 {% endblock %}

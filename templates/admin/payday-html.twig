@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} {{ parent() }} - Pay Day{% endblock %}
+{% block title %} {{ parent() }} - {{ _('Pay Day') }}{% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
@@ -12,7 +12,7 @@
 
     <div class="row">
         <div class="col-xs-4">
-            <h1>Pay Day</h1>
+            <h1>{{ _('Pay Day') }}</h1>
         </div>
         <div class="col-xs-8" id="messageContainer">
         </div>
