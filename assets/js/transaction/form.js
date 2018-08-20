@@ -31,7 +31,7 @@ function searchDepId(url) {
                 documentIdElement.focus();
             }
             else {
-                messageElement.html('<div class="alert alert-success">Depósito encontrado.</div>');
+                messageElement.html('<div class="alert alert-success">Deposit found.</div>');
                 console.log(response.data);
                 var depo = response.data[0];
                 documentIdElement.val(depo.document);
