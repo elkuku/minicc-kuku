@@ -76,16 +76,16 @@
         },
         {
             "name": "doctrine/cache",
-            "version": "v1.7.1",
+            "version": "v1.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/cache.git",
-                "reference": "b3217d58609e9c8e661cd41357a54d926c4a2a1a"
+                "reference": "d768d58baee9a4862ca783840eca1b9add7a7f57"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/cache/zipball/b3217d58609e9c8e661cd41357a54d926c4a2a1a",
-                "reference": "b3217d58609e9c8e661cd41357a54d926c4a2a1a",
+                "url": "https://api.github.com/repos/doctrine/cache/zipball/d768d58baee9a4862ca783840eca1b9add7a7f57",
+                "reference": "d768d58baee9a4862ca783840eca1b9add7a7f57",
                 "shasum": ""
             },
             "require": {
@@ -96,8 +96,9 @@
             },
             "require-dev": {
                 "alcaeus/mongo-php-adapter": "^1.1",
+                "doctrine/coding-standard": "^4.0",
                 "mongodb/mongodb": "^1.1",
-                "phpunit/phpunit": "^5.7",
+                "phpunit/phpunit": "^7.0",
                 "predis/predis": "~1.0"
             },
             "suggest": {
@@ -106,7 +107,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.7.x-dev"
+                    "dev-master": "1.8.x-dev"
                 }
             },
             "autoload": {
@@ -141,12 +142,12 @@
                 }
             ],
             "description": "Caching library offering an object-oriented API for many cache backends",
-            "homepage": "http://www.doctrine-project.org",
+            "homepage": "https://www.doctrine-project.org",
             "keywords": [
                 "cache",
                 "caching"
             ],
-            "time": "2017-08-25T07:02:50+00:00"
+            "time": "2018-08-21T18:01:43+00:00"
         },
         {
             "name": "doctrine/collections",
@@ -1004,16 +1005,16 @@
         },
         {
             "name": "doctrine/persistence",
-            "version": "v1.0.0",
+            "version": "v1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/persistence.git",
-                "reference": "17896f6d56a2794a1619e019596ae627aabd8fd5"
+                "reference": "af1ec238659a83e320f03e0e454e200f689b4b97"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/persistence/zipball/17896f6d56a2794a1619e019596ae627aabd8fd5",
-                "reference": "17896f6d56a2794a1619e019596ae627aabd8fd5",
+                "url": "https://api.github.com/repos/doctrine/persistence/zipball/af1ec238659a83e320f03e0e454e200f689b4b97",
+                "reference": "af1ec238659a83e320f03e0e454e200f689b4b97",
                 "shasum": ""
             },
             "require": {
@@ -1078,7 +1079,7 @@
             "keywords": [
                 "persistence"
             ],
-            "time": "2018-06-14T18:57:48+00:00"
+            "time": "2018-07-12T12:37:50+00:00"
         },
         {
             "name": "doctrine/reflection",
@@ -1303,16 +1304,16 @@
         },
         {
             "name": "elkuku/g11n-util",
-            "version": "1.1",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/elkuku/g11n-util.git",
-                "reference": "b3f1f8a7d4432cfd3c0d876df383db98bb1d5548"
+                "reference": "69d8fd4930673b613af39ca7a7ae7b19b0b8566f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/elkuku/g11n-util/zipball/b3f1f8a7d4432cfd3c0d876df383db98bb1d5548",
-                "reference": "b3f1f8a7d4432cfd3c0d876df383db98bb1d5548",
+                "url": "https://api.github.com/repos/elkuku/g11n-util/zipball/69d8fd4930673b613af39ca7a7ae7b19b0b8566f",
+                "reference": "69d8fd4930673b613af39ca7a7ae7b19b0b8566f",
                 "shasum": ""
             },
             "require": {
@@ -1347,7 +1348,7 @@
                 }
             ],
             "description": "g11n-util",
-            "time": "2018-07-16T13:58:27+00:00"
+            "time": "2018-08-19T18:45:29+00:00"
         },
         {
             "name": "elkuku/intl-numbers-to-words",
@@ -1612,16 +1613,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "1.0.45",
+            "version": "1.0.46",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "a99f94e63b512d75f851b181afcdf0ee9ebef7e6"
+                "reference": "f3e0d925c18b92cf3ce84ea5cc58d62a1762a2b2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/a99f94e63b512d75f851b181afcdf0ee9ebef7e6",
-                "reference": "a99f94e63b512d75f851b181afcdf0ee9ebef7e6",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/f3e0d925c18b92cf3ce84ea5cc58d62a1762a2b2",
+                "reference": "f3e0d925c18b92cf3ce84ea5cc58d62a1762a2b2",
                 "shasum": ""
             },
             "require": {
@@ -1633,7 +1634,7 @@
             "require-dev": {
                 "ext-fileinfo": "*",
                 "phpspec/phpspec": "^3.4",
-                "phpunit/phpunit": "^5.7"
+                "phpunit/phpunit": "^5.7.10"
             },
             "suggest": {
                 "ext-fileinfo": "Required for MimeType",
@@ -1692,7 +1693,7 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2018-05-07T08:44:23+00:00"
+            "time": "2018-08-22T07:45:22+00:00"
         },
         {
             "name": "oro/doctrine-extensions",
@@ -2746,16 +2747,16 @@
         },
         {
             "name": "symfony/flex",
-            "version": "v1.0.89",
+            "version": "v1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/flex.git",
-                "reference": "26be754f42c3c3f21139af2bdd74118ef8f82757"
+                "reference": "d6f5fed47ddad2eb25d5cc19316692203a2898eb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/flex/zipball/26be754f42c3c3f21139af2bdd74118ef8f82757",
-                "reference": "26be754f42c3c3f21139af2bdd74118ef8f82757",
+                "url": "https://api.github.com/repos/symfony/flex/zipball/d6f5fed47ddad2eb25d5cc19316692203a2898eb",
+                "reference": "d6f5fed47ddad2eb25d5cc19316692203a2898eb",
                 "shasum": ""
             },
             "require": {
@@ -2769,7 +2770,7 @@
             "type": "composer-plugin",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0-dev"
+                    "dev-master": "1.1-dev"
                 },
                 "class": "Symfony\\Flex\\Flex"
             },
@@ -2789,7 +2790,7 @@
                 }
             ],
             "description": "Composer plugin for Symfony",
-            "time": "2018-07-29T16:20:30+00:00"
+            "time": "2018-08-21T07:51:18+00:00"
         },
         {
             "name": "symfony/form",
@@ -4649,12 +4650,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/joomla/coding-standards.git",
-                "reference": "806064525493bd4150421f2da96b5b3fead5e96f"
+                "reference": "fc420f31e38d6af8ff1c895622893b129d6ebf86"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/joomla/coding-standards/zipball/806064525493bd4150421f2da96b5b3fead5e96f",
-                "reference": "806064525493bd4150421f2da96b5b3fead5e96f",
+                "url": "https://api.github.com/repos/joomla/coding-standards/zipball/fc420f31e38d6af8ff1c895622893b129d6ebf86",
+                "reference": "fc420f31e38d6af8ff1c895622893b129d6ebf86",
                 "shasum": ""
             },
             "require": {
@@ -4688,7 +4689,7 @@
                 "php codesniffer",
                 "phpcs"
             ],
-            "time": "2018-08-13T14:54:20+00:00"
+            "time": "2018-08-20T00:05:28+00:00"
         },
         {
             "name": "monolog/monolog",
