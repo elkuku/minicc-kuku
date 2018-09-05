@@ -48,7 +48,7 @@ trait BreadcrumbTrait
 	{
 		if (!$this->breadcrumbs)
 		{
-			$this->breadcrumbs = ['Inicio' => 'welcome'];
+			$this->breadcrumbs = [g11n3t('Home') => 'welcome'];
 		}
 
 		return $this;
