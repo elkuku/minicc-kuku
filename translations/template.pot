@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: G11nTest \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-19 14:14-0500\n"
+"POT-Creation-Date: 2018-08-27 10:56-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,10 +16,6 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-#: /src/Controller/DefaultController.php:57
-msgid "This is a message from controller!"
-msgstr ""
 
 #: /templates/default/contact.html.twig:3
 #: /templates/default/contact.html.twig:12
@@ -33,6 +29,7 @@ msgstr ""
 
 #: /templates/auth/login.html.twig:3
 #: /templates/auth/login.html.twig:12
+#: /templates/_menu.html.twig:55
 msgid "Login"
 msgstr ""
 
@@ -61,8 +58,29 @@ msgstr ""
 msgid "Pay Day"
 msgstr ""
 
-#: /templates/default/index.html.twig:14
-msgid "This is a message from Twig!"
+#: /templates/default/index.html.twig:19
+msgid "Store"
+msgstr ""
+
+#: /templates/default/index.html.twig:20
+#: /templates/default/index.html.twig:61
+msgid "Destination"
+msgstr ""
+
+#: /templates/default/index.html.twig:21
+msgid "Client"
+msgstr ""
+
+#: /templates/default/index.html.twig:22
+msgid "Balance"
+msgstr ""
+
+#: /templates/default/index.html.twig:23
+msgid "Months"
+msgstr ""
+
+#: /templates/default/index.html.twig:60
+msgid "Number"
 msgstr ""
 
 #: /templates/default/about.html.twig:3
@@ -73,4 +91,28 @@ msgstr ""
 
 #: /templates/default/about.html.twig:13
 msgid "This site is for the clients of the \"MiniCC KuKu\" - Atacames - Ecuador"
+msgstr ""
+
+#: /templates/_menu.html.twig:34
+msgid "Setup"
+msgstr ""
+
+#: /templates/_menu.html.twig:36
+msgid "Stores"
+msgstr ""
+
+#: /templates/_menu.html.twig:37
+msgid "Clients"
+msgstr ""
+
+#: /templates/_menu.html.twig:38
+msgid "Contracts"
+msgstr ""
+
+#: /templates/_menu.html.twig:41
+msgid "Payment Methods"
+msgstr ""
+
+#: /templates/_menu.html.twig:51
+msgid "Logout"
 msgstr ""
