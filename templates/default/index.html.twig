@@ -16,11 +16,11 @@
             <table class="table table-sm table-hover">
                 <thead>
                 <tr>
-                    <th class="text-center">Local</th>
-                    <th>Destino</th>
-                    <th>Inquilino</th>
-                    <th class="text-right">Saldo</th>
-                    <th class="text-left">Meses</th>
+                    <th class="text-center">{{ _('Store') }}</th>
+                    <th>{{ _('Destination') }}</th>
+                    <th>{{ _('Client') }}</th>
+                    <th class="text-right">{{ _('Balance') }}</th>
+                    <th class="text-left">{{ _('Months') }}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -57,8 +57,8 @@
             {% if stores.count() %}
                 <table class="table">
                     <tr>
-                        <th>Numero</th>
-                        <th>Destino</th>
+                        <th>{{ _('Number') }}</th>
+                        <th>{{ _('Destination') }}</th>
                         <th>Saldo</th>
                     </tr>
                     {% for store in stores %}
