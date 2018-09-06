@@ -168,4 +168,19 @@ class AdminController extends Controller
 			]
 		);
 	}
+
+	/**
+	 * @Route("/mail-list-transactions", name="mail-list-transactions")
+	 *
+	 * @Security("has_role('ROLE_ADMIN')")
+	 */
+	public function MailListTransactions(StoreRepository $storeRepository, UserRepository $userRepository): Response
+	{
+		return $this->render(
+			'admin/mail-list-transactions.twig',
+			[
+                'stores' => $storeRepository->getActive(),
+			]
+		);
+	}
 }

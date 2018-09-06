@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ parent() }} - Cobrar alquileres{% endblock %}
+
+{% block body %}
+    <h1>{{ _('Mail Transactions') }}</h1>
+    {% if stores is empty %}
+        <div class="alert alert-danger">{{ _('No stores defined') }}</div>
+    {% else %}
+        <form method="post" action="{{ path('mail-transactions') }}">
+            <table class="table table-bordered table-sm table-hover">
+                <thead>
+                <tr>
+                    <th class="text-center">Store</th>
+                    <th>Destiny</th>
+                    <th>Client</th>
+                    <th>e-mail</th>
+                    <th>Send</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for store in stores %}
+                    <tr>
+                        <td class="text-center">{{ store.id }}</td>
+                        <td>{{ store.destination }}</td>
+                        <td>{{ store.user.name|short_name }}</td>
+                        <td>{{ store.user.email }}</td>
+                        <td>
+                            <input class="form-control" type="checkbox" name="recipients[{{ store.id }}]">
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+                <tfoot>
+                <tr>
+                    <td colspan="5">
+                        <button type="submit" class="btn btn-success">{{ _('Send mails') }}</button>
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
+        </form>
+    {% endif %}
+{% endblock %}
