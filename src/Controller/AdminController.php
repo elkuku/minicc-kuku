@@ -174,12 +174,12 @@ class AdminController extends Controller
 	 *
 	 * @Security("has_role('ROLE_ADMIN')")
 	 */
-	public function MailListTransactions(StoreRepository $storeRepository): Response
+	public function mailListTransactions(StoreRepository $storeRepository): Response
 	{
 		return $this->render(
 			'admin/mail-list-transactions.twig',
 			[
-                'stores' => $storeRepository->getActive(),
+				'stores' => $storeRepository->getActive(),
 			]
 		);
 	}
@@ -189,12 +189,12 @@ class AdminController extends Controller
 	 *
 	 * @Security("has_role('ROLE_ADMIN')")
 	 */
-	public function MailListPlanillas(StoreRepository $storeRepository): Response
+	public function mailListPlanillas(StoreRepository $storeRepository): Response
 	{
 		return $this->render(
 			'admin/mail-list-planillas.twig',
 			[
-                'stores' => $storeRepository->getActive(),
+				'stores' => $storeRepository->getActive(),
 			]
 		);
 	}

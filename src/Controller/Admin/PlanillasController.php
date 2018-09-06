@@ -166,7 +166,9 @@ class PlanillasController extends Controller
 	/**
 	 * Get HTML
 	 */
-	private function getPlanillasHtml(int $year, int $month, StoreRepository $storeRepository, TransactionRepository $transactionRepository, int $storeId = 0): string
+	private function getPlanillasHtml(int $year, int $month, StoreRepository $storeRepository,
+		TransactionRepository $transactionRepository, int $storeId = 0
+	): string
 	{
 		$stores = $storeRepository->findAll();
 
