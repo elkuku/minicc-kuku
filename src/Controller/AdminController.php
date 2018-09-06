@@ -174,10 +174,25 @@ class AdminController extends Controller
 	 *
 	 * @Security("has_role('ROLE_ADMIN')")
 	 */
-	public function MailListTransactions(StoreRepository $storeRepository, UserRepository $userRepository): Response
+	public function MailListTransactions(StoreRepository $storeRepository): Response
 	{
 		return $this->render(
 			'admin/mail-list-transactions.twig',
+			[
+                'stores' => $storeRepository->getActive(),
+			]
+		);
+	}
+
+	/**
+	 * @Route("/mail-list-planillas", name="mail-list-planillas")
+	 *
+	 * @Security("has_role('ROLE_ADMIN')")
+	 */
+	public function MailListPlanillas(StoreRepository $storeRepository): Response
+	{
+		return $this->render(
+			'admin/mail-list-planillas.twig',
 			[
                 'stores' => $storeRepository->getActive(),
 			]

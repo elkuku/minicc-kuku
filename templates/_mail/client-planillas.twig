@@ -1,0 +1,10 @@
+Estimad{{ user.gender.id == 1 ? 'o' : 'a' }} {{ user.gender.name }} {{ user.name }},
+adjunto la planilla del mes de {{ intlDate(factDate, "MMMM YYYY")|capitalize }} de su local No {{ store.id }} - {{ store.destination }}.
+
+Por favor revisela y comuniquenos cualquier inquietud.
+
+Attentamente,
+MiniCC KuKu
+
+----------------------------------------------------------------
+Archivo adjunto: {{ fileName }}

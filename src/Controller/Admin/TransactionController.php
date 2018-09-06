@@ -47,47 +47,48 @@ class TransactionController extends Controller
 
 		foreach ($stores as $store)
 		{
-			if (array_key_exists($store->getId(), $recipients))
+			if (!array_key_exists($store->getId(), $recipients))
 			{
-				$fileName = "movimientos-{$store->getId()}-$year.pdf";
-				$g = $store->getUser()->getGender()->getName();
-				$html = $this->renderView(
-					'_mail/client-transactions.twig',
-					[
-						'user' => $store->getUser(),
-						'store' => $store,
-						'fileName' => $fileName,
-					]
+				continue;
+			}
+
+			$fileName = "movimientos-{$store->getId()}-$year.pdf";
+			$html = $this->renderView(
+				'_mail/client-transactions.twig',
+				[
+					'user' => $store->getUser(),
+					'store' => $store,
+					'fileName' => $fileName,
+				]
+			);
+
+			$pdf = $this->get('knp_snappy.pdf')
+				->getOutputFromHtml(
+					$this->getTransactionsHtml($transactionRepository, $store, $year)
 				);
 
-				$pdf = $this->get('knp_snappy.pdf')
-					->getOutputFromHtml(
-						$this->getTransactionsHtml($transactionRepository, $store, $year)
-					);
+			$count = 0;
 
-				$count = 0;
+			try
+			{
+				$message = (new \Swift_Message)
+					->setSubject("Movimientos del local {$store->getId()} ano $year")
+					->setFrom('minicckuku@gmail.com')
+					->setTo($store->getUser()->getEmail())
+					->setBody($html)
+					->attach(new \Swift_Attachment($pdf, $fileName, 'application/pdf'));
 
-				try
-				{
-					$message = (new \Swift_Message)
-						->setSubject("Movimientos del local {$store->getId()} ano $year")
-						->setFrom('minicckuku@gmail.com')
-						->setTo($store->getUser()->getEmail())
-						->setBody($html)
-						->attach(new \Swift_Attachment($pdf, $fileName, 'application/pdf'));
+				$count = $this->get('mailer')->send($message);
+				$successes[] = $store->getId();
+			}
+			catch (\Exception $exception)
+			{
+				$failures[] = $exception->getMessage();
+			}
 
-					$count = $this->get('mailer')->send($message);
-					$successes[] = $store->getId();
-				}
-				catch (\Exception $exception)
-				{
-					$failures[] = $exception->getMessage();
-				}
-
-				if (0 === $count)
-				{
-					$failures[] = 'Unable to send the message to store: ' . $store->getId();
-				}
+			if (0 === $count)
+			{
+				$failures[] = 'Unable to send the message to store: ' . $store->getId();
 			}
 		}
 

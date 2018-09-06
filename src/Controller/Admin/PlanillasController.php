@@ -12,6 +12,7 @@ use App\Entity\Store;
 use App\Repository\StoreRepository;
 use App\Repository\TransactionRepository;
 use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -62,6 +63,88 @@ class PlanillasController extends Controller
 	}
 
 	/**
+	 * @Route("/planilla-mail", name="planilla-mail")
+	 *
+	 * @Security("has_role('ROLE_ADMIN')")
+	 */
+	public function mailClients(StoreRepository $storeRepository, TransactionRepository $transactionRepository, Request $request): Response
+	{
+		$recipients = $request->get('recipients');
+
+		if (!$recipients)
+		{
+			$this->addFlash('warning', 'No recipients selected');
+
+			return $this->redirectToRoute('mail-list-transactions');
+		}
+
+		$year  = date('Y');
+		$month = date('m');
+
+		$fileName = "planilla-$year-$month.pdf";
+		$stores    = $storeRepository->getActive();
+		$failures  = [];
+		$successes = [];
+
+		foreach ($stores as $store)
+		{
+			if (!array_key_exists($store->getId(), $recipients))
+			{
+				continue;
+			}
+
+			$pdf = $this->get('knp_snappy.pdf')
+				->getOutputFromHtml(
+					$this->getPlanillasHtml($year, $month, $storeRepository, $transactionRepository, $store->getId())
+				);
+
+			$html = $this->renderView(
+				'_mail/client-planillas.twig',
+				[
+					'user' => $store->getUser(),
+					'store' => $store,
+					'factDate' => "$year-$month-1",
+					'fileName' => $fileName,
+				]
+			);
+
+			try
+			{
+				$message = (new \Swift_Message)
+					->setSubject("Planilla Local {$store->getId()} ($month - $year)")
+					->setFrom('minicckuku@gmail.com')
+					->setTo($store->getUser()->getEmail())
+					->setBody($html)
+					->attach(new \Swift_Attachment($pdf, $fileName, 'application/pdf'));
+
+				$count       = $this->get('mailer')->send($message);
+				$successes[] = $store->getId();
+			}
+			catch (\Exception $exception)
+			{
+				$failures[] = $exception->getMessage();
+			}
+
+			if (0 === $count)
+			{
+				$failures[] = 'Unable to send the message to store: ' . $store->getId();
+			}
+		}
+
+		if ($failures)
+		{
+			$this->addFlash('warning', implode('<br>', $failures));
+		}
+
+		if ($successes)
+		{
+			$this->addFlash('success', 'Mails have been sent to stores: ' . implode(', ', $successes));
+		}
+
+		return $this->redirectToRoute('welcome');
+	}
+
+	/**
 	 * @Route("/planillas", name="planillas")
 	 *
 	 * @Security("has_role('ROLE_ADMIN')")
@@ -83,7 +166,7 @@ class PlanillasController extends Controller
 	/**
 	 * Get HTML
 	 */
-	private function getPlanillasHtml(int $year, int $month, StoreRepository $storeRepository, TransactionRepository $transactionRepository): string
+	private function getPlanillasHtml(int $year, int $month, StoreRepository $storeRepository, TransactionRepository $transactionRepository, int $storeId = 0): string
 	{
 		$stores = $storeRepository->findAll();
 
@@ -103,19 +186,28 @@ class PlanillasController extends Controller
 		$prevDate = $prevYear . '-' . $prevMonth . '-01';
 
 		$storeData = [];
+		$selecteds = [];
 
 		/** @type Store $store */
 		foreach ($stores as $store)
 		{
-			$storeData[$store->getId()]['saldoIni']     = $transactionRepository->getSaldoALaFecha(
+			if ($storeId && $store->getId() !== $storeId)
+			{
+				continue;
+			}
+
+			$storeData[$store->getId()]['saldoIni'] = $transactionRepository->getSaldoALaFecha(
 				$store,
 				$prevYear . '-' . $prevMonth . '-01'
 			);
+
 			$storeData[$store->getId()]['transactions'] = $transactionRepository->findMonthPayments(
 				$store,
 				$prevMonth,
 				$prevYear
 			);
+
+			$selecteds[] = $store;
 		}
 
 		return $this->renderView(
@@ -123,7 +215,7 @@ class PlanillasController extends Controller
 			[
 				'factDate'  => $factDate,
 				'prevDate'  => $prevDate,
-				'stores'    => $stores,
+				'stores'    => $selecteds,
 				'storeData' => $storeData,
 				'rootPath'  => $this->get('kernel')->getProjectDir() . '/public',
 			]
