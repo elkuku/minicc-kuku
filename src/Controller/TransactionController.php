@@ -36,7 +36,7 @@ class TransactionController extends Controller
 	 */
 	public function delete(Request $request, Transaction $transaction): Response
 	{
-		if (!$transaction)
+		if (null === $transaction)
 		{
 			throw $this->createNotFoundException('No transaction found');
 		}
@@ -101,7 +101,7 @@ class TransactionController extends Controller
 
 		$transactions = $transactionRepository->getRawList($paginatorOptions);
 
-		$paginatorOptions->setMaxPages(ceil($transactions->count() / $paginatorOptions->getLimit()));
+		$paginatorOptions->setMaxPages((int) ceil($transactions->count() / $paginatorOptions->getLimit()));
 
 		return $this->render(
 			'transaction/rawlist.html.twig',

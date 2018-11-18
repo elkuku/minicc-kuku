@@ -61,7 +61,7 @@ class AppExtension extends AbstractExtension implements ServiceSubscriberInterfa
 	}
 
 	/**
-	 * @param string  $number
+	 * @param float   $number
 	 * @param integer $decimals
 	 * @param string  $decPoint
 	 * @param string  $thousandsSep

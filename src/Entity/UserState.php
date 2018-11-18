@@ -44,7 +44,7 @@ class UserState
 	 *
 	 * @return UserState
 	 */
-	public function setName($name): string
+	public function setName($name): self
 	{
 		$this->name = $name;
 

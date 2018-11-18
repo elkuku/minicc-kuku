@@ -32,7 +32,7 @@ class TransactionController extends Controller
 	{
 		$recipients = $request->get('recipients');
 
-		$year = date('Y');
+		$year = (int) date('Y');
 
 		if (!$recipients)
 		{
@@ -146,7 +146,7 @@ class TransactionController extends Controller
 	{
 		$htmlPages = [];
 
-		$year = date('Y');
+		$year = (int) date('Y');
 
 		$stores = $storeRepository->findAll();
 

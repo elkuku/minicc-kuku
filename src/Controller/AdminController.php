@@ -158,7 +158,7 @@ class AdminController extends Controller
 	 */
 	public function pagosPorAno(Request $request, TransactionRepository $repository): Response
 	{
-		$year = $request->query->getInt('year', date('Y'));
+		$year = $request->query->getInt('year', (int) date('Y'));
 
 		return $this->render(
 			'admin/pagos-por-ano.html.twig',

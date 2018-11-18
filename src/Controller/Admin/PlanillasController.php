@@ -108,6 +108,8 @@ class PlanillasController extends Controller
 				]
 			);
 
+			$count = 0;
+
 			try
 			{
 				$message = (new \Swift_Message)

@@ -140,11 +140,11 @@ class User implements UserInterface, \Serializable
 	}
 
 	/**
-	 * @param null $role
+	 * @param string $role
 	 *
 	 * @return $this
 	 */
-	public function setRole($role = null)
+	public function setRole(string $role = null)
 	{
 		$this->role = $role;
 
@@ -161,7 +161,7 @@ class User implements UserInterface, \Serializable
 	}
 
 	/**
-	 * @return mixed
+	 * @return int
 	 */
 	public function getId(): int
 	{
@@ -181,7 +181,7 @@ class User implements UserInterface, \Serializable
 	}
 
 	/**
-	 * @return mixed
+	 * getName
 	 */
 	public function getName()
 	{
@@ -237,7 +237,7 @@ class User implements UserInterface, \Serializable
 	}
 
 	/**
-	 * @return mixed
+	 * getPlainPassword
 	 */
 	public function getPlainPassword()
 	{
@@ -245,11 +245,9 @@ class User implements UserInterface, \Serializable
 	}
 
 	/**
-	 * @param string $plainPassword
-	 *
-	 * @return $this
+	 * setPlainPassword
 	 */
-	public function setPlainPassword($plainPassword)
+	public function setPlainPassword(string $plainPassword)
 	{
 		$this->plainPassword = $plainPassword;
 
@@ -395,7 +393,7 @@ class User implements UserInterface, \Serializable
 	}
 
 	/**
-	 * Get direccion
+	 * Get address
 	 *
 	 * @return string
 	 */
@@ -574,9 +572,9 @@ class User implements UserInterface, \Serializable
 	 *
 	 * @return User
 	 */
-	public function setIsEnabled($isEnabled)
+	public function setIsEnabled(bool $isEnabled): self
 	{
-		$this->isEnabled = (boolean) $isEnabled;
+		$this->isEnabled = $isEnabled;
 
 		return $this;
 	}

@@ -61,14 +61,14 @@ class Transaction implements JsonSerializable
 	 *
 	 * @ORM\Column(type="date", nullable=false)
 	 */
-	private $date = '0000-00-00';
+	private $date;
 
 	/**
 	 * @var float
 	 *
 	 * @ORM\Column(type="decimal", precision=13, scale=2, nullable=false)
 	 */
-	private $amount = '0.00';
+	private $amount = 0.00;
 
 	/**
 	 * @ORM\Column(type="integer", length=20, nullable=true)
@@ -144,7 +144,7 @@ class Transaction implements JsonSerializable
 	}
 
 	/**
-	 * @param string $document
+	 * @param integer $document
 	 *
 	 * @return $this
 	 */
@@ -293,7 +293,7 @@ class Transaction implements JsonSerializable
 			'store'    => $this->store->getId(),
 			'user'     => $this->user->getId(),
 			'type'     => $this->type->getId(),
-			'method'   => $this->method ? $this->method->getId() : null,
+			'method'   => $this->method->getId() ?: null,
 			'date'     => $this->date->format('Y-m-d'),
 			'amount'   => $this->amount,
 			'document' => $this->document,
