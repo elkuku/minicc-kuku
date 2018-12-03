@@ -1,12 +1,12 @@
 const fs = require('fs')
 const Encore = require('@symfony/webpack-encore')
 
-const CopyWebpackPlugin = require('copy-webpack-plugin')
-const ImageminPlugin = require('imagemin-webpack-plugin').default
+// const CopyWebpackPlugin = require('copy-webpack-plugin')
+// const ImageminPlugin = require('imagemin-webpack-plugin').default
 
 Encore
 
-    // the project directory where compiled assets will be stored
+// the project directory where compiled assets will be stored
     .setOutputPath('public/build/')
 
     // the public path used by the web server to access the previous directory
@@ -25,15 +25,20 @@ Encore
 
     // uncomment if you use Sass/SCSS files
     //.enableSassLoader()
-    .enableSassLoader(function(sassOptions) {}, {resolveUrlLoader: false})
+    .enableSassLoader(function (sassOptions) {
+    }, {resolveUrlLoader: false})
 
     // uncomment to create hashed filenames (e.g. app.abc123.css)
     //.enableVersioning(Encore.isProduction())
     .enableVersioning(false)
     .enableSourceMaps(!Encore.isProduction())
 
+    .disableSingleRuntimeChunk()
+
     // uncomment to define the assets of the project
-    .createSharedEntry('js/common', ['jquery'])
+    // .createSharedEntry('js/common', ['jquery'])
+    .addEntry('js/common', ['jquery'])
+    //.splitEntryChunks('js/common', ['jquery'])
 
     .addEntry('js/app', './assets/js/app.js')
     .addEntry('js/paginator', './assets/js/paginator.js')
@@ -56,20 +61,31 @@ Encore
 
     .addStyleEntry('css/app', './assets/css/app.scss')
 
-    .addPlugin(new CopyWebpackPlugin([
+    // .addPlugin(new CopyWebpackPlugin([
+    //     {
+    //         from: 'node_modules/tinymce/skins',
+    //         to: 'js/skins'
+    //     },
+    //     {
+    //         from: 'assets/images/',
+    //         to: 'images/',
+    //         ignore: 'atacames-sunset*'
+    //     }
+    // ]))
+
+    // .addPlugin(new ImageminPlugin({test: /\.(jpe?g|png|gif|svg)$/i}))
+
+
+    .copyFiles([
         {
             from: 'node_modules/tinymce/skins',
             to: 'js/skins'
         },
         {
             from: 'assets/images/',
-            to: 'images/',
-            ignore: 'atacames-sunset*'
+            to: 'images1'
         }
-    ]))
-
-    .addPlugin(new ImageminPlugin({test: /\.(jpe?g|png|gif|svg)$/i}))
-
+    ])
 
 let config = Encore.getWebpackConfig()
 
