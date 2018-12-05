@@ -16,8 +16,9 @@ use App\Repository\StoreRepository;
 use App\Repository\UserRepository;
 use IntlNumbersToWords\Numbers;
 use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
+use Knp\Snappy\Pdf;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -27,15 +28,14 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @Route("contracts")
  */
-class ContractController extends Controller
+class ContractController extends AbstractController
 {
 	/**
 	 * @Route("/", name="contract-list")
 	 *
 	 * @Security("has_role('ROLE_ADMIN')")
 	 */
-	public function list(StoreRepository $storeRepository, UserRepository $userRepository,
-		ContractRepository $contractRepository, Request $request
+	public function list(StoreRepository $storeRepository, UserRepository $userRepository, ContractRepository $contractRepository, Request $request
 	): Response
 	{
 		$storeId = $request->request->getInt('store_id');
@@ -58,13 +58,12 @@ class ContractController extends Controller
 	 *
 	 * @Security("has_role('ROLE_ADMIN')")
 	 */
-	public function new(StoreRepository $storeRepository, UserRepository $userRepository,
-		ContractRepository $contractRepository, Request $request
+	public function new(StoreRepository $storeRepo, UserRepository $userRepo, ContractRepository $contractRepo, Request $request
 	): Response
 	{
-		$store     = $storeRepository->find($request->request->getInt('store'));
-		$user      = $userRepository->find($request->request->getInt('user'));
-		$plantilla = $contractRepository->findPlantilla();
+		$store     = $storeRepo->find($request->request->getInt('store'));
+		$user      = $userRepo->find($request->request->getInt('user'));
+		$plantilla = $contractRepo->findPlantilla();
 
 		$contract = new Contract;
 
@@ -203,7 +202,7 @@ class ContractController extends Controller
 	 *
 	 * @Security("has_role('ROLE_ADMIN')")
 	 */
-	public function generate(Contract $contract): PdfResponse
+	public function generate(Contract $contract, Pdf $pdf): PdfResponse
 	{
 		$numberToWord = new Numbers;
 
@@ -242,7 +241,7 @@ class ContractController extends Controller
 		$twig = clone $this->get('twig');
 
 		return new PdfResponse(
-			$this->get('knp_snappy.pdf')->getOutputFromHtml($twig->createTemplate($html)->render([]), ['encoding' => 'utf-8']),
+			$pdf->getOutputFromHtml($twig->createTemplate($html)->render([]), ['encoding' => 'utf-8']),
 			sprintf('contrato-local-%d-%s.pdf', $contract->getStoreNumber(), date('Y-m-d'))
 		);
 	}

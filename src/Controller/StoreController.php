@@ -15,7 +15,7 @@ use App\Helper\IntlConverter;
 use App\Repository\StoreRepository;
 use App\Repository\TransactionRepository;
 use App\Service\TaxService;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,7 +25,7 @@ use Symfony\Component\HttpFoundation\Response;
  * Class StoreController
  * @Route("/stores")
  */
-class StoreController extends Controller
+class StoreController extends AbstractController
 {
 	use BreadcrumbTrait;
 
@@ -110,7 +110,7 @@ class StoreController extends Controller
 	 * @Security("has_role('ROLE_ADMIN')")
 	 */
 	public function show(TransactionRepository $transactionRepository, StoreRepository $storeRepository, Store $store,
-		Request $request, TaxService $taxService
+	                     Request $request, TaxService $taxService
 	): Response
 	{
 		$year = (int) $request->get('year', date('Y'));

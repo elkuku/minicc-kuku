@@ -15,7 +15,7 @@ use App\Repository\TransactionRepository;
 use App\Repository\TransactionTypeRepository;
 use App\Repository\UserRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -23,15 +23,15 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class AdminController
  */
-class AdminController extends Controller
+class AdminController extends AbstractController
 {
 	/**
 	 * @Route("/cobrar", name="cobrar")
 	 *
-	 * @Security("has_role('ROLE_ADMIN')")
+	 * @Security("is_granted('ROLE_ADMIN')")
 	 */
 	public function cobrar(StoreRepository $storeRepository, UserRepository $userRepository,
-		TransactionTypeRepository $transactionTypeRepository, Request $request
+	                       TransactionTypeRepository $transactionTypeRepository, Request $request
 	): Response
 	{
 		$values = $request->request->get('values');
@@ -84,7 +84,7 @@ class AdminController extends Controller
 	 * @Security("has_role('ROLE_ADMIN')")
 	 */
 	public function payDay(StoreRepository $storeRepository, PaymentMethodRepository $paymentMethodRepository,
-		TransactionTypeRepository $transactionTypeRepository, Request $request
+	                       TransactionTypeRepository $transactionTypeRepository, Request $request
 	): Response
 	{
 		$payments = $request->request->get('payments');

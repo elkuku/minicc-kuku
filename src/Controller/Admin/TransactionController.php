@@ -13,22 +13,23 @@ use App\Entity\Transaction;
 use App\Repository\StoreRepository;
 use App\Repository\TransactionRepository;
 use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
+use Knp\Snappy\Pdf;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 /**
  * Class TransactionController
  */
-class TransactionController extends Controller
+class TransactionController extends AbstractController
 {
 	/**
 	 * @Route("/mail-transactions", name="mail-transactions")
 	 *
 	 * @Security("has_role('ROLE_ADMIN')")
 	 */
-	public function mail(StoreRepository $storeRepository, TransactionRepository $transactionRepository, Request $request)
+	public function mail(StoreRepository $storeRepository, TransactionRepository $transactionRepository, Request $request, Pdf $pdf, \Swift_Mailer $mailer)
 	{
 		$recipients = $request->get('recipients');
 
@@ -41,8 +42,8 @@ class TransactionController extends Controller
 			return $this->redirectToRoute('mail-list-transactions');
 		}
 
-		$stores = $storeRepository->getActive();
-		$failures = [];
+		$stores    = $storeRepository->getActive();
+		$failures  = [];
 		$successes = [];
 
 		foreach ($stores as $store)
@@ -53,19 +54,18 @@ class TransactionController extends Controller
 			}
 
 			$fileName = "movimientos-{$store->getId()}-$year.pdf";
-			$html = $this->renderView(
+			$html     = $this->renderView(
 				'_mail/client-transactions.twig',
 				[
-					'user' => $store->getUser(),
-					'store' => $store,
+					'user'     => $store->getUser(),
+					'store'    => $store,
 					'fileName' => $fileName,
 				]
 			);
 
-			$pdf = $this->get('knp_snappy.pdf')
-				->getOutputFromHtml(
-					$this->getTransactionsHtml($transactionRepository, $store, $year)
-				);
+			$document = $pdf->getOutputFromHtml(
+				$this->getTransactionsHtml($transactionRepository, $store, $year)
+			);
 
 			$count = 0;
 
@@ -76,9 +76,9 @@ class TransactionController extends Controller
 					->setFrom('minicckuku@gmail.com')
 					->setTo($store->getUser()->getEmail())
 					->setBody($html)
-					->attach(new \Swift_Attachment($pdf, $fileName, 'application/pdf'));
+					->attach(new \Swift_Attachment($document, $fileName, 'application/pdf'));
 
-				$count = $this->get('mailer')->send($message);
+				$count       = $mailer->send($message);
 				$successes[] = $store->getId();
 			}
 			catch (\Exception $exception)
@@ -110,7 +110,7 @@ class TransactionController extends Controller
 	 *
 	 * @Security("has_role('ROLE_ADMIN')")
 	 */
-	public function getStore(Store $store, int $year, TransactionRepository $transactionRepository): PdfResponse
+	public function getStore(Store $store, int $year, TransactionRepository $transactionRepository, Pdf $pdf): PdfResponse
 	{
 		$html = $this->getTransactionsHtml($transactionRepository, $store, $year);
 
@@ -126,7 +126,7 @@ class TransactionController extends Controller
 		$footer = $this->renderView('_footer-pdf.html.twig');
 
 		return new PdfResponse(
-			$this->get('knp_snappy.pdf')->getOutputFromHtml(
+			$pdf->getOutputFromHtml(
 				$html,
 				[
 					'footer-html' => $footer,
@@ -142,7 +142,7 @@ class TransactionController extends Controller
 	 *
 	 * @Security("has_role('ROLE_ADMIN')")
 	 */
-	public function getStores(TransactionRepository $transactionRepository, StoreRepository $storeRepository): PdfResponse
+	public function getStores(TransactionRepository $transactionRepository, StoreRepository $storeRepository, Pdf $pdf): PdfResponse
 	{
 		$htmlPages = [];
 
@@ -161,7 +161,7 @@ class TransactionController extends Controller
 		$filename = sprintf('movimientos-%d-%s.pdf', $year, date('Y-m-d'));
 
 		return new PdfResponse(
-			$this->get('knp_snappy.pdf')->getOutputFromHtml($htmlPages),
+			$pdf->getOutputFromHtml($htmlPages),
 			$filename
 		);
 	}

@@ -11,14 +11,14 @@ namespace App\Controller;
 use App\Entity\Transaction;
 use App\Repository\TransactionRepository;
 use App\Service\TaxService;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class DefaultController
  */
-class DefaultController extends Controller
+class DefaultController extends AbstractController
 {
 	/**
 	 * @Route("/", name="welcome")

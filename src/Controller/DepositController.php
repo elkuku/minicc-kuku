@@ -14,7 +14,7 @@ use App\Helper\Paginator\PaginatorTrait;
 use App\Repository\DepositRepository;
 use App\Repository\PaymentMethodRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,7 +24,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/deposits")
  */
-class DepositController extends Controller
+class DepositController extends AbstractController
 {
 	use PaginatorTrait;
 
@@ -56,7 +56,7 @@ class DepositController extends Controller
 	 * @Security("has_role('ROLE_ADMIN')")
 	 */
 	public function uploadCSV(PaymentMethodRepository $paymentMethodRepository, DepositRepository $depositRepository,
-		Request $request
+	                          Request $request
 	): RedirectResponse
 	{
 		$csvFile = $request->files->get('csv_file');

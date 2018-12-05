@@ -12,7 +12,7 @@ use App\Entity\User;
 use App\Service\ShaFinder;
 use App\Service\TaxService;
 use Psr\Container\ContainerInterface;
-use Symfony\Component\DependencyInjection\ServiceSubscriberInterface;
+use Symfony\Contracts\Service\ServiceSubscriberInterface;
 use Twig\Extension\AbstractExtension;
 
 /**

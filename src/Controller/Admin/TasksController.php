@@ -9,7 +9,9 @@
 namespace App\Controller\Admin;
 
 use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -20,7 +22,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Class TasksController
  */
-class TasksController extends Controller
+class TasksController extends AbstractController
 {
 	/**
 	 * @Route("/admin-tasks", name="admin-tasks")
@@ -43,7 +45,7 @@ class TasksController extends Controller
 	 * @return Response
 	 * @throws \Exception
 	 */
-	public function consoleView(string $item, Request $request): Response
+	public function consoleView(string $item, Request $request, KernelInterface $kernel): Response
 	{
 		$command = [];
 
@@ -60,14 +62,14 @@ class TasksController extends Controller
 				$command['command'] = 'doctrine:migrations:status';
 				break;
 			case 'security':
-				$command['command']  = 'security:check';
-				$command['lockfile'] = \dirname($this->get('kernel')->getRootDir());
+				$command['command'] = 'security:check';
+				$command['lockfile'] = \dirname($kernel->getRootDir());
 				break;
 			default:
 				throw new \UnexpectedValueException('Unknown command');
 		}
 
-		$application = new Application($this->get('kernel'));
+		$application = new Application($kernel);
 		$application->setAutoExit(false);
 
 		$input  = new ArrayInput($command);

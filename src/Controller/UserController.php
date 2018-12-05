@@ -14,25 +14,25 @@ use App\Form\UserType;
 use App\Repository\UserRepository;
 use App\Repository\UserStateRepository;
 use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
+use Knp\Snappy\Pdf;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
 
 /**
  * @Route("/users")
  */
-class UserController extends Controller
+class UserController extends AbstractController
 {
 	/**
 	 * @Route("/", name="users-list")
 	 *
 	 * @Security("has_role('ROLE_ADMIN')")
 	 */
-	public function list(UserRepository $userRepository, UserStateRepository $userStateRepository,
-		Request $request
-	): Response
+	public function list(UserRepository $userRepo, UserStateRepository $stateRepo, Request $request): Response
 	{
 		$userState = (int) $request->get('user_state', 1);
 
@@ -40,15 +40,15 @@ class UserController extends Controller
 
 		if ($userState)
 		{
-			$criteria['state'] = $userStateRepository->find($userState);
+			$criteria['state'] = $stateRepo->find($userState);
 		}
 
 		return $this->render(
 			'user/list.html.twig',
 			[
-				'users'     => $userRepository->findBy($criteria),
+				'users'     => $userRepo->findBy($criteria),
 				'userState' => $userState,
-				'states'    => $userStateRepository->findAll(),
+				'states'    => $stateRepo->findAll(),
 			]
 		);
 	}
@@ -104,12 +104,12 @@ class UserController extends Controller
 	 *
 	 * @Security("has_role('ROLE_ADMIN')")
 	 */
-	public function rucList(UserRepository $userRepository): PdfResponse
+	public function rucList(UserRepository $userRepository, Pdf $pdf): PdfResponse
 	{
 		$html = $this->renderView('user/ruclist.html.twig', ['users' => $this->getSortedUsers($userRepository)]);
 
 		return new PdfResponse(
-			$this->get('knp_snappy.pdf')->getOutputFromHtml($html),
+			$pdf->getOutputFromHtml($html),
 			sprintf('user-list-%s.pdf', date('Y-m-d'))
 		);
 	}
@@ -152,7 +152,7 @@ class UserController extends Controller
 	 * // NOTE: Only admin can register new users !
 	 * @Security("has_role('ROLE_ADMIN')")
 	 */
-	public function new(Request $request): Response
+	public function new(UserPasswordEncoder $encoder, Request $request): Response
 	{
 		// Create a new blank user and process the form
 		$user = new User;
@@ -162,7 +162,6 @@ class UserController extends Controller
 		if ($form->isSubmitted() && $form->isValid())
 		{
 			// Encode the new users password
-			$encoder  = $this->get('security.password_encoder');
 			$password = $encoder->encodePassword($user, $user->getPlainPassword());
 			$user->setPassword($password);
 

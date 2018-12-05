@@ -8,7 +8,7 @@
 
 namespace App\Controller\Admin;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Class SyncController
  */
-class SyncController extends Controller
+class SyncController extends AbstractController
 {
 	/**
 	 * @Route("/export-table/{name}", name="export-table")
@@ -174,7 +174,7 @@ class SyncController extends Controller
 	 *
 	 * @return Response
 	 */
-	public function backup(): Response
+	public function backup(\Swift_Mailer $mailer): Response
 	{
 		$pattern = '#mysql://(.+)\:(.+)@127.0.0.1:3306/(.+)#';
 
@@ -208,7 +208,7 @@ class SyncController extends Controller
 			->setFrom('minicckuku@gmail.com')
 			->setTo('minicckuku@gmail.com');
 
-		$count = $this->get('mailer')->send($message);
+		$count = $mailer->send($message);
 
 		if (!$count)
 		{

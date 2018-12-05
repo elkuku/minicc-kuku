@@ -14,9 +14,9 @@ use App\Helper\Paginator\PaginatorTrait;
 use App\Repository\StoreRepository;
 use App\Repository\TransactionRepository;
 use App\Repository\TransactionTypeRepository;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -25,7 +25,7 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @Route("/transactions")
  */
-class TransactionController extends Controller
+class TransactionController extends AbstractController
 {
 	use PaginatorTrait;
 
@@ -93,13 +93,11 @@ class TransactionController extends Controller
 	 *
 	 * @Security("has_role('ROLE_ADMIN')")
 	 */
-	public function rawList(StoreRepository $storeRepository, TransactionRepository $transactionRepository,
-		TransactionTypeRepository $transactionTypeRepository, Request $request
-	): Response
+	public function rawList(StoreRepository $storeRepo, TransactionRepository $transactionRepo, TransactionTypeRepository $transactionTypeRepo, Request $request): Response
 	{
 		$paginatorOptions = $this->getPaginatorOptions($request);
 
-		$transactions = $transactionRepository->getRawList($paginatorOptions);
+		$transactions = $transactionRepo->getRawList($paginatorOptions);
 
 		$paginatorOptions->setMaxPages((int) ceil($transactions->count() / $paginatorOptions->getLimit()));
 
@@ -108,8 +106,8 @@ class TransactionController extends Controller
 			[
 				'transactions'     => $transactions,
 				'paginatorOptions' => $paginatorOptions,
-				'transactionTypes' => $transactionTypeRepository->findAll(),
-				'stores'           => $storeRepository->findAll(),
+				'transactionTypes' => $transactionTypeRepo->findAll(),
+				'stores'           => $storeRepo->findAll(),
 			]
 		);
 	}

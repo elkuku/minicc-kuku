@@ -12,23 +12,24 @@ use App\Entity\Store;
 use App\Repository\StoreRepository;
 use App\Repository\TransactionRepository;
 use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
+use Knp\Snappy\Pdf;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class PlanillasController
  */
-class PlanillasController extends Controller
+class PlanillasController extends AbstractController
 {
 	/**
 	 * @Route("/planillas-mail", name="planillas-mail")
 	 *
 	 * @Security("has_role('ROLE_ADMIN')")
 	 */
-	public function mail(StoreRepository $storeRepository, TransactionRepository $transactionRepository): Response
+	public function mail(StoreRepository $storeRepository, TransactionRepository $transactionRepository, Pdf $pdf, \Swift_Mailer $mailer): Response
 	{
 		$year  = date('Y');
 		$month = date('m');
@@ -36,19 +37,18 @@ class PlanillasController extends Controller
 		$fileName = "planillas-$year-$month.pdf";
 		$html     = 'Attachment: ' . $fileName;
 
-		$pdf = $this->get('knp_snappy.pdf')
-			->getOutputFromHtml(
-				$this->getPlanillasHtml($year, $month, $storeRepository, $transactionRepository)
-			);
+		$document = $pdf->getOutputFromHtml(
+			$this->getPlanillasHtml($year, $month, $storeRepository, $transactionRepository)
+		);
 
 		$message = (new \Swift_Message)
 			->setSubject("Planillas $year-$month")
 			->setFrom('minicckuku@gmail.com')
 			->setTo('minicckuku@gmail.com')
 			->setBody($html)
-			->attach(new \Swift_Attachment($pdf, $fileName, 'application/pdf'));
+			->attach(new \Swift_Attachment($document, $fileName, 'application/pdf'));
 
-		$count = $this->get('mailer')->send($message);
+		$count = $mailer->send($message);
 
 		if (!$count)
 		{
@@ -67,7 +67,7 @@ class PlanillasController extends Controller
 	 *
 	 * @Security("has_role('ROLE_ADMIN')")
 	 */
-	public function mailClients(StoreRepository $storeRepository, TransactionRepository $transactionRepository, Request $request): Response
+	public function mailClients(StoreRepository $storeRepository, TransactionRepository $transactionRepository, Request $request, Pdf $pdf, \Swift_Mailer $mailer): Response
 	{
 		$recipients = $request->get('recipients');
 
@@ -81,7 +81,7 @@ class PlanillasController extends Controller
 		$year  = date('Y');
 		$month = date('m');
 
-		$fileName = "planilla-$year-$month.pdf";
+		$fileName  = "planilla-$year-$month.pdf";
 		$stores    = $storeRepository->getActive();
 		$failures  = [];
 		$successes = [];
@@ -93,16 +93,15 @@ class PlanillasController extends Controller
 				continue;
 			}
 
-			$pdf = $this->get('knp_snappy.pdf')
-				->getOutputFromHtml(
-					$this->getPlanillasHtml($year, $month, $storeRepository, $transactionRepository, $store->getId())
-				);
+			$document = $pdf->getOutputFromHtml(
+				$this->getPlanillasHtml($year, $month, $storeRepository, $transactionRepository, $store->getId())
+			);
 
 			$html = $this->renderView(
 				'_mail/client-planillas.twig',
 				[
-					'user' => $store->getUser(),
-					'store' => $store,
+					'user'     => $store->getUser(),
+					'store'    => $store,
 					'factDate' => "$year-$month-1",
 					'fileName' => $fileName,
 				]
@@ -117,9 +116,9 @@ class PlanillasController extends Controller
 					->setFrom('minicckuku@gmail.com')
 					->setTo($store->getUser()->getEmail())
 					->setBody($html)
-					->attach(new \Swift_Attachment($pdf, $fileName, 'application/pdf'));
+					->attach(new \Swift_Attachment($document, $fileName, 'application/pdf'));
 
-				$count       = $this->get('mailer')->send($message);
+				$count       = $mailer->send($message);
 				$successes[] = $store->getId();
 			}
 			catch (\Exception $exception)
@@ -151,7 +150,7 @@ class PlanillasController extends Controller
 	 *
 	 * @Security("has_role('ROLE_ADMIN')")
 	 */
-	public function download(StoreRepository $storeRepository, TransactionRepository $transactionRepository): PdfResponse
+	public function download(StoreRepository $storeRepository, TransactionRepository $transactionRepository, Pdf $pdf): PdfResponse
 	{
 		$year  = date('Y');
 		$month = date('m');
@@ -160,7 +159,7 @@ class PlanillasController extends Controller
 		$html     = $this->getPlanillasHtml($year, $month, $storeRepository, $transactionRepository);
 
 		return new PdfResponse(
-			$this->get('knp_snappy.pdf')->getOutputFromHtml($html),
+			$pdf->getOutputFromHtml($html),
 			$filename
 		);
 	}
@@ -168,11 +167,9 @@ class PlanillasController extends Controller
 	/**
 	 * Get HTML
 	 */
-	private function getPlanillasHtml(int $year, int $month, StoreRepository $storeRepository,
-		TransactionRepository $transactionRepository, int $storeId = 0
-	): string
+	private function getPlanillasHtml(int $year, int $month, StoreRepository $storeRepo, TransactionRepository $transactionRepo, int $storeId = 0): string
 	{
-		$stores = $storeRepository->findAll();
+		$stores = $storeRepo->findAll();
 
 		$factDate = $year . '-' . $month . '-1';
 
@@ -200,12 +197,12 @@ class PlanillasController extends Controller
 				continue;
 			}
 
-			$storeData[$store->getId()]['saldoIni'] = $transactionRepository->getSaldoALaFecha(
+			$storeData[$store->getId()]['saldoIni'] = $transactionRepo->getSaldoALaFecha(
 				$store,
 				$prevYear . '-' . $prevMonth . '-01'
 			);
 
-			$storeData[$store->getId()]['transactions'] = $transactionRepository->findMonthPayments(
+			$storeData[$store->getId()]['transactions'] = $transactionRepo->findMonthPayments(
 				$store,
 				$prevMonth,
 				$prevYear
