@@ -15,30 +15,31 @@
     "knplabs/knp-snappy-bundle": "^1.5",
     "oro/doctrine-extensions": "^1.2",
     "sensio/framework-extra-bundle": "^5.1",
-    "symfony/asset": "^4.1",
-    "symfony/console": "^4.1",
-    "symfony/expression-language": "^4.1",
-    "symfony/flex": "^1.0",
-    "symfony/form": "^4.1",
-    "symfony/framework-bundle": "^4.1",
-    "symfony/security-bundle": "^4.1",
+    "sensiolabs/security-checker": "^5.0",
+    "symfony/asset": "*",
+    "symfony/console": "*",
+    "symfony/expression-language": "*",
+    "symfony/flex": "^1.1",
+    "symfony/form": "*",
+    "symfony/framework-bundle": "*",
+    "symfony/security-bundle": "*",
     "symfony/swiftmailer-bundle": "^3.1",
-    "symfony/twig-bundle": "^4.1",
-    "symfony/validator": "^4.1",
-    "symfony/webpack-encore-bundle": "^1.0",
-    "symfony/yaml": "^4.0"
+    "symfony/twig-bundle": "*",
+    "symfony/validator": "*",
+    "symfony/webpack-encore-bundle": "dev-master",
+    "symfony/yaml": "*"
   },
   "require-dev": {
     "joomla/coding-standards": "dev-master",
     "phpstan/phpstan": "^0.10.3",
     "roave/security-advisories": "dev-master",
-    "symfony/browser-kit": "^4.1",
-    "symfony/css-selector": "^4.1",
-    "symfony/debug-pack": "*",
-    "symfony/dotenv": "^4.1",
+    "symfony/browser-kit": "*",
+    "symfony/css-selector": "*",
+    "symfony/debug-bundle": "*",
+    "symfony/dotenv": "*",
     "symfony/maker-bundle": "^1.5",
-    "symfony/phpunit-bridge": "^4.1",
-    "symfony/profiler-pack": "^1.0"
+    "symfony/phpunit-bridge": "*",
+    "symfony/web-profiler-bundle": "*"
   },
   "config": {
     "preferred-install": {
@@ -61,7 +62,8 @@
   "scripts": {
     "auto-scripts": {
       "cache:clear": "symfony-cmd",
-      "assets:install --symlink --relative %PUBLIC_DIR%": "symfony-cmd"
+      "assets:install --symlink --relative %PUBLIC_DIR%": "symfony-cmd",
+      "security-checker security:check": "script"
     },
     "post-install-cmd": [
       "@auto-scripts"
@@ -85,7 +87,8 @@
   "extra": {
     "symfony": {
       "id": "01BZWDWDTYCF0SM409YTJTXP3E",
-      "allow-contrib": false
+      "allow-contrib": true,
+      "require": "4.2.*"
     }
   }
 }

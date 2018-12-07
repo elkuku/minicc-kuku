@@ -75,17 +75,26 @@ Encore
 
     // .addPlugin(new ImageminPlugin({test: /\.(jpe?g|png|gif|svg)$/i}))
 
+    .copyFiles({
+                from: './assets/images',
 
-    .copyFiles([
-        {
-            from: 'node_modules/tinymce/skins',
-            to: 'js/skins'
-        },
-        {
-            from: 'assets/images/',
-            to: 'images1'
-        }
-    ])
+                 // optional target path, relative to the output dir
+                 to: 'images/[path][name].[ext]'
+
+                  // only copy files matching this pattern
+                  //pattern: /\.(png|jpg|jpeg)$/
+              })
+
+    // .copyFiles([
+    //     {
+    //         from: 'node_modules/tinymce/skins',
+    //         to: 'js/skins'
+    //     },
+    //     {
+    //         from: './assets/images/',
+    //         to: 'images1/'
+    //     }
+    // ])
 
 let config = Encore.getWebpackConfig()
 

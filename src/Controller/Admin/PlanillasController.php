@@ -15,6 +15,7 @@ use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 use Knp\Snappy\Pdf;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,7 +30,7 @@ class PlanillasController extends AbstractController
 	 *
 	 * @Security("has_role('ROLE_ADMIN')")
 	 */
-	public function mail(StoreRepository $storeRepository, TransactionRepository $transactionRepository, Pdf $pdf, \Swift_Mailer $mailer): Response
+	public function mail(StoreRepository $storeRepository, TransactionRepository $transactionRepository, Pdf $pdf, \Swift_Mailer $mailer, KernelInterface $kernel): Response
 	{
 		$year  = date('Y');
 		$month = date('m');
@@ -38,7 +39,7 @@ class PlanillasController extends AbstractController
 		$html     = 'Attachment: ' . $fileName;
 
 		$document = $pdf->getOutputFromHtml(
-			$this->getPlanillasHtml($year, $month, $storeRepository, $transactionRepository)
+			$this->getPlanillasHtml($year, $month, $storeRepository, $transactionRepository, $kernel)
 		);
 
 		$message = (new \Swift_Message)
@@ -67,7 +68,7 @@ class PlanillasController extends AbstractController
 	 *
 	 * @Security("has_role('ROLE_ADMIN')")
 	 */
-	public function mailClients(StoreRepository $storeRepository, TransactionRepository $transactionRepository, Request $request, Pdf $pdf, \Swift_Mailer $mailer): Response
+	public function mailClients(StoreRepository $storeRepository, TransactionRepository $transactionRepository, Request $request, Pdf $pdf, \Swift_Mailer $mailer, KernelInterface $kernel): Response
 	{
 		$recipients = $request->get('recipients');
 
@@ -94,7 +95,7 @@ class PlanillasController extends AbstractController
 			}
 
 			$document = $pdf->getOutputFromHtml(
-				$this->getPlanillasHtml($year, $month, $storeRepository, $transactionRepository, $store->getId())
+				$this->getPlanillasHtml($year, $month, $storeRepository, $transactionRepository, $kernel, $store->getId())
 			);
 
 			$html = $this->renderView(
@@ -150,13 +151,13 @@ class PlanillasController extends AbstractController
 	 *
 	 * @Security("has_role('ROLE_ADMIN')")
 	 */
-	public function download(StoreRepository $storeRepository, TransactionRepository $transactionRepository, Pdf $pdf): PdfResponse
+	public function download(StoreRepository $storeRepository, TransactionRepository $transactionRepository, Pdf $pdf, KernelInterface $kernel): PdfResponse
 	{
 		$year  = date('Y');
 		$month = date('m');
 
 		$filename = sprintf('planillas-%d-%d.pdf', $year, $month);
-		$html     = $this->getPlanillasHtml($year, $month, $storeRepository, $transactionRepository);
+		$html     = $this->getPlanillasHtml($year, $month, $storeRepository, $transactionRepository, $kernel);
 
 		return new PdfResponse(
 			$pdf->getOutputFromHtml($html),
@@ -167,7 +168,7 @@ class PlanillasController extends AbstractController
 	/**
 	 * Get HTML
 	 */
-	private function getPlanillasHtml(int $year, int $month, StoreRepository $storeRepo, TransactionRepository $transactionRepo, int $storeId = 0): string
+	private function getPlanillasHtml(int $year, int $month, StoreRepository $storeRepo, TransactionRepository $transactionRepo, KernelInterface $kernel, int $storeId = 0): string
 	{
 		$stores = $storeRepo->findAll();
 
@@ -218,7 +219,7 @@ class PlanillasController extends AbstractController
 				'prevDate'  => $prevDate,
 				'stores'    => $selecteds,
 				'storeData' => $storeData,
-				'rootPath'  => $this->get('kernel')->getProjectDir() . '/public',
+				'rootPath'  => $kernel->getProjectDir() . '/public',
 			]
 		);
 	}
