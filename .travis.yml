@@ -11,6 +11,7 @@ matrix:
 
 before_script:
   - composer install
+  - npm i
   - npm run build
 
 script:
