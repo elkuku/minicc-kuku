@@ -33,6 +33,9 @@ services:
     App\Service\ShaFinder:
         $root: '%kernel.project_dir%'
 
+    App\Service\PDFHelper:
+        $root: '%kernel.project_dir%'
+
     App\Helper\GitLoader:
         arguments:
             ['%kernel.project_dir%']

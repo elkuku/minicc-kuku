@@ -12,6 +12,7 @@ use App\Entity\Store;
 use App\Entity\Transaction;
 use App\Repository\StoreRepository;
 use App\Repository\TransactionRepository;
+use App\Service\PDFHelper;
 use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 use Knp\Snappy\Pdf;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -110,7 +111,7 @@ class TransactionController extends AbstractController
 	 *
 	 * @Security("has_role('ROLE_ADMIN')")
 	 */
-	public function getStore(Store $store, int $year, TransactionRepository $transactionRepository, Pdf $pdf): PdfResponse
+	public function getStore(Store $store, int $year, TransactionRepository $transactionRepository, Pdf $pdf, PDFHelper $PDFHelper): PdfResponse
 	{
 		$html = $this->getTransactionsHtml($transactionRepository, $store, $year);
 
@@ -119,7 +120,7 @@ class TransactionController extends AbstractController
 		$header = $this->renderView(
 			'_header-pdf.html.twig',
 			[
-				'rootPath' => $this->get('kernel')->getProjectDir() . '/public',
+				'rootPath' => $PDFHelper->getRoot() . '/public',
 			]
 		);
 
