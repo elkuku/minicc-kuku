@@ -10,7 +10,6 @@ namespace App\Controller\Admin;
 
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -32,7 +31,11 @@ class TasksController extends AbstractController
 	 */
 	public function index(): Response
 	{
-		return $this->render('admin/tasks.html.twig');
+		return $this->render('admin/tasks.html.twig',
+			[
+				'currentYear' => (int) date('Y'),
+			]
+		);
 	}
 
 	/**

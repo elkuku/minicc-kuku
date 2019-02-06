@@ -14,16 +14,31 @@
                 <li class="list-group-item"><a href="{{ path('planillas-mail') }}">Mail Planillas</a></li>
                 <li class="list-group-item"><a href="{{ path('stores-transactions-pdf') }}">Transactions PDF</a></li>
             </ul>
+            <form action="{{ path('mail-annual-transactions') }}">
+                Send all transactions for year
+
+                <select name="year">
+                    {% for i in currentYear..2010 %}
+                    <option>{{ i }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit" class="btn btn-primary">Send</button>
+
+            </form>
         </div>
         <div class="card">
             <h5 class="card-header">Sync</h5>
             <h6 class="card-header">Export</h6>
             <ul class="list-group">
-                <li class="list-group-item"><a href="{{ path('backup') }}">Send Backup per e-mail</a></li>
-                <li class="list-group-item"><a href="{{ path('export-table', {'name': 'transaction'}) }}">Export
-                        Transactions</a></li>
-                <li class="list-group-item"><a href="{{ path('export-table', {'name': 'deposit'}) }}">Export
-                        Depositos</a></li>
+                <li class="list-group-item">
+                    <a href="{{ path('backup') }}">Send Backup per e-mail</a>
+                </li>
+                <li class="list-group-item">
+                    <a href="{{ path('export-table', {'name': 'transaction'}) }}">Export Transactions</a>
+                </li>
+                <li class="list-group-item">
+                    <a href="{{ path('export-table', {'name': 'deposit'}) }}">Export Depositos</a>
+                </li>
             </ul>
 
             <h6 class="card-header">Import</h6>

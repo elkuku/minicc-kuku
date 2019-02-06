@@ -15,11 +15,6 @@ class PDFHelper
 	 */
 	private $root;
 
-	/**
-	 * ShaFinder constructor.
-	 *
-	 * @param string $root
-	 */
 	public function __construct(string $root)
 	{
 		$this->root = $root;

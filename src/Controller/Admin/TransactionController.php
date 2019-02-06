@@ -139,6 +139,57 @@ class TransactionController extends AbstractController
 	}
 
 	/**
+	 * @Route("/mail-annual-transactions", name="mail-annual-transactions")
+	 *
+	 * @Security("has_role('ROLE_ADMIN')")
+	 */
+	public function mailStores(Request $request, TransactionRepository $transactionRepository,
+	                           StoreRepository $storeRepository, Pdf $pdf, \Swift_Mailer $mailer)
+	{
+		$year = (int) $request->get('year', date('Y'));
+
+		$htmlPages = [];
+
+		$stores = $storeRepository->findAll();
+
+		foreach ($stores as $store)
+		{
+			if ($store->getUserId())
+			{
+				$htmlPages[] = $this->getTransactionsHtml($transactionRepository, $store, $year);
+			}
+		}
+
+		$fileName = "movimientos-$year.pdf";
+
+		$attachment = new PdfResponse(
+			$pdf->getOutputFromHtml($htmlPages),
+			$fileName
+		);
+
+		try
+		{
+			$message = (new \Swift_Message)
+				->setSubject("Movimientos de los locales ano $year")
+				->setFrom('minicckuku@gmail.com')
+				->setTo('minicckuku@gmail.com')
+				->setBody($fileName)
+				->attach(new \Swift_Attachment($attachment, $fileName, 'application/pdf'));
+
+			$mailer->send($message);
+		}
+		catch (\Exception $exception)
+		{
+			$failures[] = $exception->getMessage();
+		}
+
+		$this->addFlash('success', 'Mail has been sent succesfully.');
+
+		return $this->redirectToRoute('welcome');
+
+	}
+
+	/**
 	 * @Route("/stores-transactions-pdf", name="stores-transactions-pdf")
 	 *
 	 * @Security("has_role('ROLE_ADMIN')")

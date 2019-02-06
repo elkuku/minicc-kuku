@@ -8,9 +8,6 @@
 
 namespace App\Service;
 
-/**
- * Class ShaFinder
- */
 class ShaFinder
 {
 	/**
@@ -18,11 +15,6 @@ class ShaFinder
 	 */
 	private $sha = 'n/a';
 
-	/**
-	 * ShaFinder constructor.
-	 *
-	 * @param string $root
-	 */
 	public function __construct(string $root)
 	{
 		if (file_exists($root . '/sha.txt'))
@@ -35,11 +27,6 @@ class ShaFinder
 		}
 	}
 
-	/**
-	 * Get the current SHA.
-	 *
-	 * @return string
-	 */
 	public function getSha(): string
 	{
 		return $this->sha;

@@ -60,7 +60,11 @@ class PlanillasController extends AbstractController
 			$this->addFlash('success', ($count > 1 ? $count . ' mails have been sent.' : 'One mail has been sent.'));
 		}
 
-		return $this->render('admin/tasks.html.twig');
+		return $this->render('admin/tasks.html.twig',
+			[
+				'currentYear' => (int) date('Y'),
+			]
+		);
 	}
 
 	/**
