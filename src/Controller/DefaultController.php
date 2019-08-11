@@ -41,8 +41,16 @@ class DefaultController extends AbstractController
 				$transaction = $saldo['data'];
 
 				$headers[] = 'Local ' . $transaction->getStore()->getId();
-				$data1[]   = round(-$saldo['amount'] / $taxService->getValueConTax($transaction->getStore()->getValAlq()), 1);
-				$data2[]   = -$saldo['amount'];
+				if ($taxService->getValueConTax($transaction->getStore()->getValAlq()))
+				{
+
+					$data1[] = round(-$saldo['amount'] / $taxService->getValueConTax($transaction->getStore()->getValAlq()), 1);
+				}
+				else
+				{
+					$data1[] = 0;
+				}
+				$data2[] = -$saldo['amount'];
 			}
 		}
 
