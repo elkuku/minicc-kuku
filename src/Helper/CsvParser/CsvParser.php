@@ -29,7 +29,8 @@ class CsvParser
 
 		$csvObject = new CsvObject;
 
-		$headVars = explode('","', trim(trim($contents[0]), '"'));
+		$headVars2 = explode('","', trim(trim($contents[0]), '"'));
+		$headVars = explode(',', trim(trim($contents[0]), '"'));
 
 		$csvObject->headVars = $headVars;
 
@@ -40,7 +41,8 @@ class CsvParser
 
 		foreach ($contents as $line)
 		{
-			$fields = explode('","', trim(trim($line), '"'));
+			$fields2 = explode('","', trim(trim($line), '"'));
+			$fields = explode(',', trim(trim($line), '"'));
 
 			$o = new \stdClass;
 

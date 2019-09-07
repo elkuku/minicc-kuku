@@ -88,26 +88,26 @@ class DepositController extends AbstractController
 
 		foreach ($csvData->lines as $line)
 		{
-			if (!isset($line->tipo))
+			if (!isset($line->descripcion))
 			{
 				continue;
 			}
 
-			if ('C' !== $line->tipo)
+			if ('DEPOSITO' !== $line->descripcion)
 			{
 				continue;
 			}
 
-			if (false !== strpos($line->concepto, 'INTERES'))
-			{
-				continue;
-			}
+//			if (false !== strpos($line->concepto, 'INTERES'))
+//			{
+//				continue;
+//			}
 
 			$deposit = (new Deposit)
 				->setEntity($entity)
 				->setDate(new \DateTime(str_replace('/', '-', $line->fecha)))
-				->setDocument($line->documento)
-				->setAmount($line->monto);
+				->setDocument($line->{'numero de documento'})
+				->setAmount($line->credito);
 
 			if (false === $depositRepository->has($deposit))
 			{
