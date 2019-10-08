@@ -8,6 +8,7 @@
     "ext-iconv": "*",
     "ext-json": "*",
     "ext-pcre": "*",
+    "ext-intl": "*",
     "doctrine/doctrine-fixtures-bundle": "^3.0",
     "elkuku/g11n-bundle": "^0.1.2",
     "elkuku/intl-numbers-to-words": "1.0",
