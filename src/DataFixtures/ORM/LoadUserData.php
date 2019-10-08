@@ -40,6 +40,7 @@ class LoadUserData implements FixtureInterface, ContainerAwareInterface
 		$user = new User;
 
 		$user->setName('admin')
+            ->setUsername('admin')
 			->setEmail('admin@a.b')
 			->setPlainPassword('test')
 			->setRole('ROLE_ADMIN')
