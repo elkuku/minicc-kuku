@@ -131,6 +131,9 @@
     "nette/robot-loader": {
         "version": "v3.1.0"
     },
+    "nette/schema": {
+        "version": "v1.0.1"
+    },
     "nette/utils": {
         "version": "v2.5.2"
     },
@@ -157,9 +160,6 @@
     },
     "psr/log": {
         "version": "1.0.2"
-    },
-    "psr/simple-cache": {
-        "version": "1.0.0"
     },
     "roave/security-advisories": {
         "version": "dev-master"
@@ -293,6 +293,9 @@
             "ref": "fadbfe33303a76e25cb63401050439aa9b1a9c7f"
         }
     },
+    "symfony/mime": {
+        "version": "v4.3.7"
+    },
     "symfony/options-resolver": {
         "version": "v4.0.0"
     },
@@ -308,14 +311,23 @@
     "symfony/polyfill-ctype": {
         "version": "v1.8.0"
     },
+    "symfony/polyfill-iconv": {
+        "version": "v1.12.0"
+    },
     "symfony/polyfill-intl-icu": {
         "version": "v1.6.0"
+    },
+    "symfony/polyfill-intl-idn": {
+        "version": "v1.12.0"
     },
     "symfony/polyfill-mbstring": {
         "version": "v1.6.0"
     },
     "symfony/polyfill-php72": {
         "version": "v1.6.0"
+    },
+    "symfony/polyfill-php73": {
+        "version": "v1.12.0"
     },
     "symfony/process": {
         "version": "v3.4.0"
