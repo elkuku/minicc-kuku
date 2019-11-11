@@ -49,3 +49,7 @@ services:
           # must match the value returned by the getName() method
             id: 'app.git_data_collector'
         public: false
+
+    App\DataFixtures\:
+        resource: '../src/DataFixtures'
+        tags: ['doctrine.fixture.orm']

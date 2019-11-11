@@ -61,7 +61,7 @@ class TransactionRepository extends ServiceEntityRepository
 	{
 		return $this->createQueryBuilder('t')
 			->select('t as data, SUM(t.amount) AS amount')
-			->groupBy('t.store')
+			->groupBy('t.store, t.id')
 			->getQuery()
 			->getResult();
 	}
