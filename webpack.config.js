@@ -6,7 +6,7 @@ const Encore = require('@symfony/webpack-encore')
 
 Encore
 
-// the project directory where compiled assets will be stored
+    // the project directory where compiled assets will be stored
     .setOutputPath('public/build/')
 
     // the public path used by the web server to access the previous directory
@@ -75,26 +75,20 @@ Encore
 
     // .addPlugin(new ImageminPlugin({test: /\.(jpe?g|png|gif|svg)$/i}))
 
-    .copyFiles({
+    .copyFiles(
+        [
+            {
+                from: 'node_modules/tinymce/skins',
+                to: 'js/skins/[path][name].[ext]'
+            },
+            {
                 from: './assets/images',
+                to: 'images/[path][name].[ext]'
 
-                 // optional target path, relative to the output dir
-                 to: 'images/[path][name].[ext]'
-
-                  // only copy files matching this pattern
-                  //pattern: /\.(png|jpg|jpeg)$/
-              })
-
-    // .copyFiles([
-    //     {
-    //         from: 'node_modules/tinymce/skins',
-    //         to: 'js/skins'
-    //     },
-    //     {
-    //         from: './assets/images/',
-    //         to: 'images1/'
-    //     }
-    // ])
+                // only copy files matching this pattern
+                //pattern: /\.(png|jpg|jpeg)$/
+            }
+        ])
 
 let config = Encore.getWebpackConfig()
 
