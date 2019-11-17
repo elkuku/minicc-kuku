@@ -113,6 +113,9 @@
     "league/flysystem": {
         "version": "1.0.45"
     },
+    "monolog/monolog": {
+        "version": "1.25.2"
+    },
     "nette/bootstrap": {
         "version": "v2.4.6"
     },
@@ -187,6 +190,18 @@
     },
     "swiftmailer/swiftmailer": {
         "version": "v6.0.2"
+    },
+    "symfony/apache-pack": {
+        "version": "1.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "1.0",
+            "ref": "c82bead70f9a4f656354a193df7bf0ca2114efa0"
+        },
+        "files": [
+            "public/.htaccess"
+        ]
     },
     "symfony/asset": {
         "version": "v4.0.0"
@@ -295,6 +310,23 @@
     },
     "symfony/mime": {
         "version": "v4.3.7"
+    },
+    "symfony/monolog-bridge": {
+        "version": "v4.3.8"
+    },
+    "symfony/monolog-bundle": {
+        "version": "3.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "3.3",
+            "ref": "6240c6d43e8237a32452f057f81816820fd56ab6"
+        },
+        "files": [
+            "config/packages/dev/monolog.yaml",
+            "config/packages/prod/monolog.yaml",
+            "config/packages/test/monolog.yaml"
+        ]
     },
     "symfony/options-resolver": {
         "version": "v4.0.0"
