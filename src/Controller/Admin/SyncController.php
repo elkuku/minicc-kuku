@@ -176,20 +176,14 @@ class SyncController extends AbstractController
 	 */
 	public function backup(\Swift_Mailer $mailer): Response
 	{
-		$pattern = '#mysql://(.+)\:(.+)@127.0.0.1:3306/(.+)#';
+		$parts = parse_url(getenv('DATABASE_URL'));
 
-		preg_match($pattern, getenv('DATABASE_URL'), $matches);
+		$hostname = $parts['host'];
+		$username = $parts['user'];
+		$password = $parts['pass'];
+		$database = ltrim($parts['path'], '/');
 
-		if (4 !== \count($matches))
-		{
-			throw new \UnexpectedValueException('Error parsing the database URL.');
-		}
-
-		$dbUser = $matches[1];
-		$dbPass = $matches[2];
-		$dbName = $matches[3];
-
-		$cmd = sprintf('mysqldump -u%s -p%s %s|gzip 2>&1', $dbUser, $dbPass, $dbName);
+		$cmd = sprintf('mysqldump -h %s -u %s -p%s %s|gzip 2>&1', $hostname, $username, $password, $database);
 
 		ob_start();
 		passthru($cmd, $retVal);
