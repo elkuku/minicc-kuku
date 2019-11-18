@@ -20,7 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * @Route("/users")
@@ -123,17 +123,17 @@ class UserController extends AbstractController
 
 		usort(
 			$users,
-			function ($a, $b) {
+			static function ($a, $b) {
 				$aId = 0;
 				$bId = 0;
 
-				/** @type \App\Entity\User $a */
+				/** @type User $a */
 				foreach ($a->getStores() as $store)
 				{
 					$aId = $store->getId();
 				}
 
-				/** @type \App\Entity\User $b */
+				/** @type User $b */
 				foreach ($b->getStores() as $store)
 				{
 					$bId = $store->getId();
@@ -152,7 +152,7 @@ class UserController extends AbstractController
 	 * // NOTE: Only admin can register new users !
 	 * @Security("has_role('ROLE_ADMIN')")
 	 */
-	public function new(UserPasswordEncoder $encoder, Request $request): Response
+	public function new(UserPasswordEncoderInterface $encoder, Request $request): Response
 	{
 		// Create a new blank user and process the form
 		$user = new User;
