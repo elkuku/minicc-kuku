@@ -16,6 +16,9 @@ use Knp\Snappy\Pdf;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,7 +33,7 @@ class PlanillasController extends AbstractController
 	 *
 	 * @Security("has_role('ROLE_ADMIN')")
 	 */
-	public function mail(StoreRepository $storeRepository, TransactionRepository $transactionRepository, Pdf $pdf, \Swift_Mailer $mailer, KernelInterface $kernel): Response
+	public function mail(StoreRepository $storeRepository, TransactionRepository $transactionRepository, Pdf $pdf, \Swift_Mailer $smailer, MailerInterface $mailer, KernelInterface $kernel): Response
 	{
 		$year  = date('Y');
 		$month = date('m');
@@ -42,23 +45,40 @@ class PlanillasController extends AbstractController
 			$this->getPlanillasHtml($year, $month, $storeRepository, $transactionRepository, $kernel)
 		);
 
-		$message = (new \Swift_Message)
-			->setSubject("Planillas $year-$month")
-			->setFrom('minicckuku@gmail.com')
-			->setTo('minicckuku@gmail.com')
-			->setBody($html)
-			->attach(new \Swift_Attachment($document, $fileName, 'application/pdf'));
+		$email = (new Email())
+			->from('minicckuku@gmail.com')
+			->to('minicckuku@gmail.com')
+			->subject("NEW Planillas $year-$month")
+			->html($html);
 
-		$count = $mailer->send($message);
+		try
+		{
+			$mailer->send($email);
+			$this->addFlash('success', 'Mail has been sent.');
+		}
+		catch (TransportExceptionInterface $e)
+		{
+			$this->addFlash('danger', 'ERROR sending mail: '.$e->getMessage());
+		}
 
-		if (!$count)
-		{
-			$this->addFlash('danger', 'There was an error sending mail...');
-		}
-		else
-		{
-			$this->addFlash('success', ($count > 1 ? $count . ' mails have been sent.' : 'One mail has been sent.'));
-		}
+//
+//		$message = (new \Swift_Message)
+//			->setSubject("Planillas $year-$month")
+//			->setFrom('minicckuku@gmail.com')
+//			->setTo('minicckuku@gmail.com')
+//			->setBody($html)
+//			->attach(new \Swift_Attachment($document, $fileName, 'application/pdf'));
+//
+//		$count = $mailer->send($message);
+//
+//		if (!$count)
+//		{
+//			$this->addFlash('danger', 'There was an error sending mail...');
+//		}
+//		else
+//		{
+//			$this->addFlash('success', ($count > 1 ? $count . ' mails have been sent.' : 'One mail has been sent.'));
+//		}
 
 		return $this->render('admin/tasks.html.twig',
 			[
