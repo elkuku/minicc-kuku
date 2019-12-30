@@ -31,7 +31,7 @@ class StoreController extends AbstractController
 
 	/**
 	 * @Route("/", name="stores-list")
-	 * @Security("has_role('ROLE_ADMIN')")
+	 * @Security("is_granted('ROLE_ADMIN')")
 	 */
 	public function index(StoreRepository $storeRepository): Response
 	{
@@ -40,7 +40,7 @@ class StoreController extends AbstractController
 
 	/**
 	 * @Route("/new", name="stores-add")
-	 * @Security("has_role('ROLE_ADMIN')")
+	 * @Security("is_granted('ROLE_ADMIN')")
 	 */
 	public function new(Request $request): Response
 	{
@@ -74,7 +74,7 @@ class StoreController extends AbstractController
 
 	/**
 	 * @Route("/edit/{id}", name="stores-edit")
-	 * @Security("has_role('ROLE_ADMIN')")
+	 * @Security("is_granted('ROLE_ADMIN')")
 	 */
 	public function edit(Store $store, Request $request): Response
 	{
@@ -107,7 +107,7 @@ class StoreController extends AbstractController
 
 	/**
 	 * @Route("/{id}", name="store-transactions")
-	 * @Security("has_role('ROLE_ADMIN')")
+	 * @Security("is_granted('ROLE_ADMIN')")
 	 */
 	public function show(TransactionRepository $transactionRepository, StoreRepository $storeRepository, Store $store,
 	                     Request $request, TaxService $taxService

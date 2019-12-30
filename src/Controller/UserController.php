@@ -30,7 +30,7 @@ class UserController extends AbstractController
 	/**
 	 * @Route("/", name="users-list")
 	 *
-	 * @Security("has_role('ROLE_ADMIN')")
+	 * @Security("is_granted('ROLE_ADMIN')")
 	 */
 	public function list(UserRepository $userRepo, UserStateRepository $stateRepo, Request $request): Response
 	{
@@ -55,7 +55,7 @@ class UserController extends AbstractController
 
 	/**
 	 * @Route("/edit/{id}", name="user-edit")
-	 * @Security("has_role('ROLE_ADMIN')")
+	 * @Security("is_granted('ROLE_ADMIN')")
 	 */
 	public function edit(User $client, Request $request): Response
 	{
@@ -87,7 +87,7 @@ class UserController extends AbstractController
 
 	/**
 	 * @Route("/pdf", name="pdf-users")
-	 * @Security("has_role('ROLE_ADMIN')")
+	 * @Security("is_granted('ROLE_ADMIN')")
 	 */
 	public function pdfList(UserRepository $userRepository): Response
 	{
@@ -102,7 +102,7 @@ class UserController extends AbstractController
 	/**
 	 * @Route("/ruclist", name="users-ruclist")
 	 *
-	 * @Security("has_role('ROLE_ADMIN')")
+	 * @Security("is_granted('ROLE_ADMIN')")
 	 */
 	public function rucList(UserRepository $userRepository, Pdf $pdf): PdfResponse
 	{
@@ -150,7 +150,7 @@ class UserController extends AbstractController
 	 * @Route("/new", name="register")
 	 *
 	 * // NOTE: Only admin can register new users !
-	 * @Security("has_role('ROLE_ADMIN')")
+	 * @Security("is_granted('ROLE_ADMIN')")
 	 */
 	public function new(UserPasswordEncoderInterface $encoder, Request $request): Response
 	{

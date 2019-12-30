@@ -25,7 +25,7 @@ class TasksController extends AbstractController
 {
 	/**
 	 * @Route("/admin-tasks", name="admin-tasks")
-	 * @Security("has_role('ROLE_ADMIN')")
+	 * @Security("is_granted('ROLE_ADMIN')")
 	 *
 	 * @return Response
 	 */
@@ -40,7 +40,7 @@ class TasksController extends AbstractController
 
 	/**
 	 * @Route("/console-view/{item}", name="console-view")
-	 * @Security("has_role('ROLE_ADMIN')")
+	 * @Security("is_granted('ROLE_ADMIN')")
 	 *
 	 * @param string  $item
 	 * @param Request $request
@@ -91,7 +91,7 @@ class TasksController extends AbstractController
 
 	/**
 	 * @Route("/sysinfo", name="sysinfo")
-	 * @Security("has_role('ROLE_ADMIN')")
+	 * @Security("is_granted('ROLE_ADMIN')")
 	 *
 	 * @return Response
 	 */

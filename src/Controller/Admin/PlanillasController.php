@@ -31,7 +31,7 @@ class PlanillasController extends AbstractController
 	/**
 	 * @Route("/planillas-mail", name="planillas-mail")
 	 *
-	 * @Security("has_role('ROLE_ADMIN')")
+	 * @Security("is_granted('ROLE_ADMIN')")
 	 */
 	public function mail(StoreRepository $storeRepository, TransactionRepository $transactionRepository, Pdf $pdf, \Swift_Mailer $smailer, MailerInterface $mailer, KernelInterface $kernel): Response
 	{
@@ -90,7 +90,7 @@ class PlanillasController extends AbstractController
 	/**
 	 * @Route("/planilla-mail", name="planilla-mail")
 	 *
-	 * @Security("has_role('ROLE_ADMIN')")
+	 * @Security("is_granted('ROLE_ADMIN')")
 	 */
 	public function mailClients(StoreRepository $storeRepository, TransactionRepository $transactionRepository, Request $request, Pdf $pdf, \Swift_Mailer $mailer, KernelInterface $kernel): Response
 	{
@@ -173,7 +173,7 @@ class PlanillasController extends AbstractController
 	/**
 	 * @Route("/planillas", name="planillas")
 	 *
-	 * @Security("has_role('ROLE_ADMIN')")
+	 * @Security("is_granted('ROLE_ADMIN')")
 	 */
 	public function download(StoreRepository $storeRepository, TransactionRepository $transactionRepository, Pdf $pdf, KernelInterface $kernel): PdfResponse
 	{

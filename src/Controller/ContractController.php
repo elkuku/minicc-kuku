@@ -33,7 +33,7 @@ class ContractController extends AbstractController
 	/**
 	 * @Route("/", name="contract-list")
 	 *
-	 * @Security("has_role('ROLE_ADMIN')")
+	 * @Security("is_granted('ROLE_ADMIN')")
 	 */
 	public function list(StoreRepository $storeRepository, UserRepository $userRepository, ContractRepository $contractRepository, Request $request
 	): Response
@@ -56,7 +56,7 @@ class ContractController extends AbstractController
 	/**
 	 * @Route("/new", name="contracts-new")
 	 *
-	 * @Security("has_role('ROLE_ADMIN')")
+	 * @Security("is_granted('ROLE_ADMIN')")
 	 */
 	public function new(StoreRepository $storeRepo, UserRepository $userRepo, ContractRepository $contractRepo, Request $request
 	): Response
@@ -112,7 +112,7 @@ class ContractController extends AbstractController
 	/**
 	 * @Route("/{id}", name="contracts-edit", requirements={"id"="\d+"})
 	 *
-	 * @Security("has_role('ROLE_ADMIN')")
+	 * @Security("is_granted('ROLE_ADMIN')")
 	 */
 	public function edit(Contract $contract, Request $request): Response
 	{
@@ -147,7 +147,7 @@ class ContractController extends AbstractController
 	/**
 	 * @Route("/delete/{id}", name="contracts-delete")
 	 *
-	 * @Security("has_role('ROLE_ADMIN')")
+	 * @Security("is_granted('ROLE_ADMIN')")
 	 */
 	public function delete(Contract $contract): Response
 	{
@@ -163,7 +163,7 @@ class ContractController extends AbstractController
 	/**
 	 * @Route("/template", name="contracts-template")
 	 *
-	 * @Security("has_role('ROLE_ADMIN')")
+	 * @Security("is_granted('ROLE_ADMIN')")
 	 */
 	public function template(ContractRepository $contractRepository, Request $request): Response
 	{
@@ -200,7 +200,7 @@ class ContractController extends AbstractController
 	/**
 	 * @Route("/generate/{id}", name="contract-generate", requirements={"id"="\d+"})
 	 *
-	 * @Security("has_role('ROLE_ADMIN')")
+	 * @Security("is_granted('ROLE_ADMIN')")
 	 */
 	public function generate(Contract $contract, Pdf $pdf): PdfResponse
 	{

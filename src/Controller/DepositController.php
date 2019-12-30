@@ -31,7 +31,7 @@ class DepositController extends AbstractController
 	/**
 	 * @Route("/", name="deposits")
 	 *
-	 * @Security("has_role('ROLE_ADMIN')")
+	 * @Security("is_granted('ROLE_ADMIN')")
 	 */
 	public function index(DepositRepository $depositRepository, Request $request): Response
 	{
@@ -53,7 +53,7 @@ class DepositController extends AbstractController
 	/**
 	 * @Route("/upload", name="upload-csv")
 	 *
-	 * @Security("has_role('ROLE_ADMIN')")
+	 * @Security("is_granted('ROLE_ADMIN')")
 	 */
 	public function uploadCSV(PaymentMethodRepository $paymentMethodRepository, DepositRepository $depositRepository,
 	                          Request $request
@@ -128,7 +128,7 @@ class DepositController extends AbstractController
 	/**
 	 * @Route("/lookup", name="lookup-depo")
 	 *
-	 * @Security("has_role('ROLE_ADMIN')")
+	 * @Security("is_granted('ROLE_ADMIN')")
 	 */
 	public function lookup(DepositRepository $depositRepository, Request $request): JsonResponse
 	{

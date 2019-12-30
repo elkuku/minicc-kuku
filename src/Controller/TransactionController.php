@@ -32,7 +32,7 @@ class TransactionController extends AbstractController
 	/**
 	 * @Route("/delete/{id}", name="transaction-delete")
 	 *
-	 * @Security("has_role('ROLE_ADMIN')")
+	 * @Security("is_granted('ROLE_ADMIN')")
 	 */
 	public function delete(Request $request, Transaction $transaction): Response
 	{
@@ -55,7 +55,7 @@ class TransactionController extends AbstractController
 	/**
 	 * @Route("/edit/{id}", name="transaction-edit")
 	 *
-	 * @Security("has_role('ROLE_ADMIN')")
+	 * @Security("is_granted('ROLE_ADMIN')")
 	 */
 	public function edit(Transaction $transaction, Request $request): Response
 	{
@@ -91,7 +91,7 @@ class TransactionController extends AbstractController
 	/**
 	 * @Route("/", name="transaction-rawlist")
 	 *
-	 * @Security("has_role('ROLE_ADMIN')")
+	 * @Security("is_granted('ROLE_ADMIN')")
 	 */
 	public function rawList(StoreRepository $storeRepo, TransactionRepository $transactionRepo, TransactionTypeRepository $transactionTypeRepo, Request $request): Response
 	{

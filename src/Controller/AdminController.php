@@ -81,7 +81,7 @@ class AdminController extends AbstractController
 	/**
 	 * @Route("/pay-day", name="pay-day")
 	 *
-	 * @Security("has_role('ROLE_ADMIN')")
+	 * @Security("is_granted('ROLE_ADMIN')")
 	 */
 	public function payDay(StoreRepository $storeRepository, PaymentMethodRepository $paymentMethodRepository,
 	                       TransactionTypeRepository $transactionTypeRepository, Request $request
@@ -154,7 +154,7 @@ class AdminController extends AbstractController
 	/**
 	 * @Route("/pagos-por-ano", name="pagos-por-ano")
 	 *
-	 * @Security("has_role('ROLE_ADMIN')")
+	 * @Security("is_granted('ROLE_ADMIN')")
 	 */
 	public function pagosPorAno(Request $request, TransactionRepository $repository): Response
 	{
@@ -172,7 +172,7 @@ class AdminController extends AbstractController
 	/**
 	 * @Route("/mail-list-transactions", name="mail-list-transactions")
 	 *
-	 * @Security("has_role('ROLE_ADMIN')")
+	 * @Security("is_granted('ROLE_ADMIN')")
 	 */
 	public function mailListTransactions(StoreRepository $storeRepository): Response
 	{
@@ -187,7 +187,7 @@ class AdminController extends AbstractController
 	/**
 	 * @Route("/mail-list-planillas", name="mail-list-planillas")
 	 *
-	 * @Security("has_role('ROLE_ADMIN')")
+	 * @Security("is_granted('ROLE_ADMIN')")
 	 */
 	public function mailListPlanillas(StoreRepository $storeRepository): Response
 	{

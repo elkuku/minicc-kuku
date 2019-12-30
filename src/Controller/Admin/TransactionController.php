@@ -28,7 +28,7 @@ class TransactionController extends AbstractController
 	/**
 	 * @Route("/mail-transactions", name="mail-transactions")
 	 *
-	 * @Security("has_role('ROLE_ADMIN')")
+	 * @Security("is_granted('ROLE_ADMIN')")
 	 */
 	public function mail(StoreRepository $storeRepository, TransactionRepository $transactionRepository, Request $request, Pdf $pdf, \Swift_Mailer $mailer)
 	{
@@ -109,7 +109,7 @@ class TransactionController extends AbstractController
 	/**
 	 * @Route("/store-transaction-pdf/{id}/{year}", name="store-transaction-pdf")
 	 *
-	 * @Security("has_role('ROLE_ADMIN')")
+	 * @Security("is_granted('ROLE_ADMIN')")
 	 */
 	public function getStore(Store $store, int $year, TransactionRepository $transactionRepository, Pdf $pdf, PDFHelper $PDFHelper): PdfResponse
 	{
@@ -141,7 +141,7 @@ class TransactionController extends AbstractController
 	/**
 	 * @Route("/mail-annual-transactions", name="mail-annual-transactions")
 	 *
-	 * @Security("has_role('ROLE_ADMIN')")
+	 * @Security("is_granted('ROLE_ADMIN')")
 	 */
 	public function mailStores(Request $request, TransactionRepository $transactionRepository,
 	                           StoreRepository $storeRepository, Pdf $pdf, \Swift_Mailer $mailer)
@@ -192,7 +192,7 @@ class TransactionController extends AbstractController
 	/**
 	 * @Route("/stores-transactions-pdf", name="stores-transactions-pdf")
 	 *
-	 * @Security("has_role('ROLE_ADMIN')")
+	 * @Security("is_granted('ROLE_ADMIN')")
 	 */
 	public function getStores(TransactionRepository $transactionRepository, StoreRepository $storeRepository, Pdf $pdf): PdfResponse
 	{

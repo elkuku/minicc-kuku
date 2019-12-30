@@ -25,7 +25,7 @@ class PaymentMethodController extends AbstractController
 	/**
 	 * @Route("/", name="payment-methods", methods="GET")
 	 *
-	 * @Security("has_role('ROLE_ADMIN')")
+	 * @Security("is_granted('ROLE_ADMIN')")
 	 */
 	public function index(PaymentMethodRepository $repository): Response
 	{
@@ -35,7 +35,7 @@ class PaymentMethodController extends AbstractController
 	/**
 	 * @Route("/new", name="payment-methods-new", methods="GET|POST")
 	 *
-	 * @Security("has_role('ROLE_ADMIN')")
+	 * @Security("is_granted('ROLE_ADMIN')")
 	 */
 	public function new(Request $request): Response
 	{
@@ -69,7 +69,7 @@ class PaymentMethodController extends AbstractController
 	/**
 	 * @Route("/edit/{id}", name="payment-methods-edit")
 	 *
-	 * @Security("has_role('ROLE_ADMIN')")
+	 * @Security("is_granted('ROLE_ADMIN')")
 	 */
 	public function edit(PaymentMethod $data, Request $request): Response
 	{
@@ -102,7 +102,7 @@ class PaymentMethodController extends AbstractController
 	/**
 	 * @Route("/delete/{id}", name="payment-methods-delete")
 	 *
-	 * @Security("has_role('ROLE_ADMIN')")
+	 * @Security("is_granted('ROLE_ADMIN')")
 	 */
 	public function delete(PaymentMethod $paymentMethod): Response
 	{
