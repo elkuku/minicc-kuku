@@ -1,5 +1,4 @@
 const $ = require('jquery')
-const g11n3t = require('g11n-js').g11n3t
 
 $('.addRow').on("click", function(){ addRow(this); })
 $('.searchDepId').on("click", function(){ searchDepId(this); })
@@ -26,7 +25,7 @@ function searchDepId(el) {
     let documentId = documentIdElement.val()
 
     if (!documentId) {
-        messageElement.html('<div class="alert alert-warning">' + g11n3t('Insert a document number') + '</div>');
+        messageElement.html('<div class="alert alert-warning">Insert a document number</div>');
         documentIdElement.focus();
         return false;
     }
@@ -46,7 +45,7 @@ function searchDepId(el) {
                 documentIdElement.focus();
             }
             else {
-                messageElement.html('<div class="alert alert-success">' + g11n3t('Deposit found') + '.</div>');
+                messageElement.html('<div class="alert alert-success">Deposit found</div>');
                 var depo = response.data[0];
                 documentIdElement.val(depo.document);
                 destElement.val(depo.id);

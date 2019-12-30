@@ -14,6 +14,8 @@ use App\Service\TaxService;
 use Psr\Container\ContainerInterface;
 use Symfony\Contracts\Service\ServiceSubscriberInterface;
 use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
+use Twig\TwigFunction;
 
 /**
  * Class AppExtension
@@ -39,12 +41,12 @@ class AppExtension extends AbstractExtension implements ServiceSubscriberInterfa
 	public function getFilters(): array
 	{
 		return [
-			new \Twig_SimpleFilter('price', [$this, 'priceFilter']),
-			new \Twig_SimpleFilter('conIva', [$this, 'conIvaFilter']),
-			new \Twig_SimpleFilter('taxFromTotal', [$this, 'taxFromTotalFilter']),
-			new \Twig_SimpleFilter('invert', [$this, 'invertFilter']),
-			new \Twig_SimpleFilter('cast_to_array', [$this, 'objectFilter']),
-			new \Twig_SimpleFilter('short_name', [$this, 'shortName']),
+			new TwigFilter('price', [$this, 'priceFilter']),
+			new TwigFilter('conIva', [$this, 'conIvaFilter']),
+			new TwigFilter('taxFromTotal', [$this, 'taxFromTotalFilter']),
+			new TwigFilter('invert', [$this, 'invertFilter']),
+			new TwigFilter('cast_to_array', [$this, 'objectFilter']),
+			new TwigFilter('short_name', [$this, 'shortName']),
 		];
 	}
 
@@ -54,9 +56,9 @@ class AppExtension extends AbstractExtension implements ServiceSubscriberInterfa
 	public function getFunctions(): array
 	{
 		return [
-			new \Twig_SimpleFunction('intlDate', [$this, 'intlDate']),
-			new \Twig_SimpleFunction('formatRUC', [$this, 'formatRUC']),
-			new \Twig_SimpleFunction('getSHA', [$this, 'getSHA']),
+			new TwigFunction('intlDate', [$this, 'intlDate']),
+			new TwigFunction('formatRUC', [$this, 'formatRUC']),
+			new TwigFunction('getSHA', [$this, 'getSHA']),
 		];
 	}
 

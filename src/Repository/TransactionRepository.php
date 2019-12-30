@@ -13,9 +13,9 @@ use App\Entity\Transaction;
 use App\Helper\Paginator\PaginatorOptions;
 use App\Helper\Paginator\PaginatorRepoTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Tools\Pagination\Paginator;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * TransactionRepository
@@ -31,7 +31,7 @@ class TransactionRepository extends ServiceEntityRepository
 {
 	use PaginatorRepoTrait;
 
-	public function __construct(RegistryInterface $registry)
+	public function __construct(ManagerRegistry $registry)
 	{
 		parent::__construct($registry, Transaction::class);
 	}

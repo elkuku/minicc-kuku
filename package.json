@@ -7,7 +7,6 @@
     "bootstrap": "^4.3.1",
     "chart.js": "^2.9.2",
     "copy-webpack-plugin": "^4.6.0",
-    "g11n-js": "^1.5.3",
     "imagemin-webpack-plugin": "^2.4.2",
     "jquery": "^3.4.1",
     "node-sass": "^4.13.0",

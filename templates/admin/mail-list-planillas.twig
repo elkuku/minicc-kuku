@@ -7,7 +7,7 @@
 {% block body %}
     <h1>Mail Planillas</h1>
     {% if stores is empty %}
-        <div class="alert alert-danger">{{ _('No stores defined') }}</div>
+        <div class="alert alert-danger">No stores defined</div>
     {% else %}
         <form method="post" action="{{ path('planilla-mail') }}">
             {{ storeUtil.table(stores) }}

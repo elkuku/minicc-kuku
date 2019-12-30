@@ -5,9 +5,9 @@
 {% block title %} {{ parent() }} - Cobrar alquileres{% endblock %}
 
 {% block body %}
-    <h1>{{ _('Mail Transactions') }}</h1>
+    <h1>Mail Transactions</h1>
     {% if stores is empty %}
-        <div class="alert alert-danger">{{ _('No stores defined') }}</div>
+        <div class="alert alert-danger">No stores defined</div>
     {% else %}
         <form method="post" action="{{ path('mail-transactions') }}">
             {{ storeUtil.table(stores) }}

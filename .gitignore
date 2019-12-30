@@ -20,4 +20,4 @@ yarn-error.log
 ###< symfony/webpack-encore-bundle ###
 
 /fakewebpack.config.js
-/local-test
+/tests_local

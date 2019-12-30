@@ -10,8 +10,8 @@ namespace App\Repository;
 
 use App\Entity\Store;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * TransactionRepository
@@ -25,7 +25,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class StoreRepository extends ServiceEntityRepository
 {
-	public function __construct(RegistryInterface $registry)
+	public function __construct(ManagerRegistry $registry)
 	{
 		parent::__construct($registry, Store::class);
 	}

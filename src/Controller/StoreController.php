@@ -115,8 +115,8 @@ class StoreController extends AbstractController
 	{
 		$year = (int) $request->get('year', date('Y'));
 
-		$this->addBreadcrumb(g11n3t('Stores'), 'stores-list')
-			->addBreadcrumb(g11n3t('Store %number%', ['%number%' => $store->getId()]));
+		$this->addBreadcrumb('Stores', 'stores-list')
+			->addBreadcrumb('Store '.$store->getId());
 
 		$transactions = $transactionRepository->findByStoreAndYear($store, $year);
 

@@ -12,7 +12,7 @@ use App\Entity\Deposit;
 use App\Helper\Paginator\PaginatorOptions;
 use App\Helper\Paginator\PaginatorRepoTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
  * DepositRepository
@@ -25,7 +25,7 @@ class DepositRepository extends ServiceEntityRepository
 {
 	use PaginatorRepoTrait;
 
-	public function __construct(RegistryInterface $registry)
+	public function __construct(ManagerRegistry $registry)
 	{
 		parent::__construct($registry, Deposit::class);
 	}

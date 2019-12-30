@@ -10,8 +10,8 @@
         <div class="navbar-nav">
             <ul class="nav navbar-nav">
 
-                <li class="nav-item"><a class="nav-link" href="{{ path('about') }}">{{ _('About') }}</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ path('contact') }}">{{ _('Contact') }}</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ path('about') }}">Sobre</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ path('contact') }}">Contacto</a></li>
 
                 {% if app.user and app.user.role == 'ROLE_ADMIN' %}
                     <li class="nav-item dropdown">
@@ -35,14 +35,14 @@
                         </div>
                     </li>
                     <li class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button">{{ _('Setup') }}</a>
+                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button">Setup</a>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="{{ path('stores-list') }}">{{ _('Stores') }}</a>
-                            <a class="dropdown-item" href="{{ path('users-list') }}">{{ _('Clients') }}</a>
-                            <a class="dropdown-item" href="{{ path('contract-list') }}">{{ _('Contracts') }}</a>
+                            <a class="dropdown-item" href="{{ path('stores-list') }}">Locales</a>
+                            <a class="dropdown-item" href="{{ path('users-list') }}">Clientes</a>
+                            <a class="dropdown-item" href="{{ path('contract-list') }}">Contratos</a>
                             <div class="dropdown-divider"></div>
                             <h6 class="dropdown-header">Params</h6>
-                            <a class="dropdown-item" href="{{ path('payment-methods') }}">{{ _('Payment Methods') }}</a>
+                            <a class="dropdown-item" href="{{ path('payment-methods') }}">Metodos de Pago</a>
                         </div>
                     </li>
                 {% endif %}
@@ -52,17 +52,14 @@
 
         <div class="ml-auto">
             {% if app.user %}
-                <a class="nav-link" accesskey="l" href="{{ path('logout') }}" title="{{ _('Logout') }}">
+                <a class="nav-link" accesskey="l" href="{{ path('logout') }}" title="Logout">
                     <span class="oi oi-account-logout"></span>
                 </a>
             {% else %}
-                <a class="nav-link" accesskey="l" href="{{ path('login') }}" title="{{ _('Login') }}">
+                <a class="nav-link" accesskey="l" href="{{ path('login') }}" title="Login">
                     <span class="oi oi-account-login"></span>
                 </a>
             {% endif %}
         </div>
-
-        {{ g11n.switcher(getLangs(), getCurrentLang()) }}
-
     </div>
 </nav>
