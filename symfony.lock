@@ -196,13 +196,17 @@
         "version": "v4.0.0-rc2"
     },
     "symfony/console": {
-        "version": "3.3",
+        "version": "4.4",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "master",
-            "version": "3.3",
-            "ref": "9f94d3ea453cd8a3b95db7f82592d7344fe3a76a"
-        }
+            "version": "4.4",
+            "ref": "fead3ab2e80622c61d13dac0d21a3430a45efae8"
+        },
+        "files": [
+            "bin/console",
+            "config/bootstrap.php"
+        ]
     },
     "symfony/contracts": {
         "version": "v1.0.1"
