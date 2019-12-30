@@ -1,25 +1,26 @@
 {
-  "description": "MiniCC KuKu Manager",
-  "license": "WTFPL",
-  "repository": "https://github.com/elkuku/minicc-kuku",
-  "dependencies": {
-    "@symfony/webpack-encore": "^0.28.0",
-    "bootstrap": "^4.3.1",
-    "chart.js": "^2.9.2",
-    "copy-webpack-plugin": "^4.6.0",
-    "imagemin-webpack-plugin": "^2.4.2",
-    "jquery": "^3.4.1",
-    "node-sass": "^4.13.0",
-    "open-iconic": "^1.1.1",
-    "popper.js": "^1.16.0",
-    "sass-loader": "^7.3.1",
-    "tinymce": "^4",
-    "webpack-notifier": "^1.8.0"
-  },
-  "scripts": {
-    "dev-server": "./node_modules/.bin/encore dev-server",
-    "dev": "./node_modules/.bin/encore dev",
-    "watch": "./node_modules/.bin/encore dev --watch",
-    "build": "./node_modules/.bin/encore production"
-  }
+    "devDependencies": {
+        "@symfony/webpack-encore": "^0.28.2",
+        "core-js": "^3.0.0",
+        "regenerator-runtime": "^0.13.2",
+        "webpack-notifier": "^1.6.0",
+        "bootstrap": "^4.3.1",
+        "chart.js": "^2.9.2",
+        "copy-webpack-plugin": "^4.6.0",
+        "imagemin-webpack-plugin": "^2.4.2",
+        "jquery": "^3.4.1",
+        "node-sass": "^4.13.0",
+        "open-iconic": "^1.1.1",
+        "popper.js": "^1.16.0",
+        "sass-loader": "^7.3.1",
+        "tinymce": "^4"
+    },
+    "license": "UNLICENSED",
+    "private": true,
+    "scripts": {
+        "dev-server": "encore dev-server",
+        "dev": "encore dev",
+        "watch": "encore dev --watch",
+        "build": "encore production --progress"
+    }
 }

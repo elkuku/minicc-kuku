@@ -1,3 +1,5 @@
+const $ = require('jquery')
+
 function drawChart(elemantId, title, labels, data) {
 
     let bgColors = [
