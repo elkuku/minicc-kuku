@@ -3,10 +3,7 @@
 {% block title %} {{ parent() }} - System Info{% endblock %}
 
 {% block body %}
-
     <h1>System Info</h1>
 
-    <ul>
-        <li>PHP Version: {{ info.phpVersion }}</li>
-    </ul>
+    <pre>{{ info }}</pre>
 {% endblock %}

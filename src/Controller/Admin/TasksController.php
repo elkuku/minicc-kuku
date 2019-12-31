@@ -65,7 +65,7 @@ class TasksController extends AbstractController
 				$command['command'] = 'doctrine:migrations:status';
 				break;
 			case 'security':
-				$command['command'] = 'security:check';
+				$command['command']  = 'security:check';
 				$command['lockfile'] = \dirname($kernel->getRootDir());
 				break;
 			default:
@@ -95,14 +95,23 @@ class TasksController extends AbstractController
 	 *
 	 * @return Response
 	 */
-	public function sysInfo(): Response
+	public function sysInfo(KernelInterface $kernel): Response
 	{
+		$application = new Application($kernel);
+		$application->setAutoExit(false);
+
+		$input = new ArrayInput([
+			'command' => 'about',
+		]);
+
+		$output = new BufferedOutput();
+
+		$application->run($input, $output);
+
 		return $this->render(
 			'admin/sysinfo.html.twig',
 			[
-				'info' => [
-					'phpVersion' => PHP_VERSION,
-				],
+				'info' => $output->fetch(),
 			]
 		);
 	}
