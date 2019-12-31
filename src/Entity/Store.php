@@ -104,7 +104,7 @@ class Store
 	 *
 	 * @ORM\Column(type="string", length=50)
 	 */
-	private $medElectrico;
+	private $medElectrico = 0;
 
 	/**
 	 * @var string
