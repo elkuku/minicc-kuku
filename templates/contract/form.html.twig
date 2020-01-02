@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} {{ parent() }} - About{% endblock %}
+{% block title %} {{ parent() }} - Contrato{% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
-    <script type="text/javascript" src="{{ asset('build/js/contract/form.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('build/js/taxcalc.js') }}"></script>
+    {{ encore_entry_script_tags('js/contract/form') }}
+    {{ encore_entry_script_tags('js/taxcalc') }}
 {% endblock %}
 {% block body %}
 

@@ -103,7 +103,7 @@ class ContractController extends AbstractController
 			[
 				'form'          => $form->createView(),
 				'data'          => $contract,
-				'ivaMultiplier' => getenv('value_iva'),
+				'ivaMultiplier' => $_ENV['value_iva'],
 				'title'         => 'Nuevo Contrato',
 			]
 		);
@@ -138,7 +138,7 @@ class ContractController extends AbstractController
 			[
 				'form'          => $form->createView(),
 				'data'          => $contract,
-				'ivaMultiplier' => getenv('value_iva'),
+				'ivaMultiplier' => $_ENV['value_iva'],
 				'title'         => 'Editar Contrato'
 			]
 		);
@@ -191,7 +191,7 @@ class ContractController extends AbstractController
 			[
 				'form'          => $form->createView(),
 				'data'          => $data,
-				'ivaMultiplier' => getenv('value_iva'),
+				'ivaMultiplier' => $_ENV['value_iva'],
 				'title'         => 'Plantilla'
 			]
 		);
