@@ -15,15 +15,15 @@ class ShaFinder
 	 */
 	private $sha = 'n/a';
 
-	public function __construct(string $root)
+	public function __construct(string $rootDir)
 	{
-		if (file_exists($root . '/sha.txt'))
+		if (file_exists($rootDir . '/sha.txt'))
 		{
-			$this->sha = file_get_contents($root . '/sha.txt') ?: 'n/a';
+			$this->sha = file_get_contents($rootDir . '/sha.txt') ?: 'n/a';
 		}
-		elseif (file_exists($root . '/.git/refs/heads/master'))
+		elseif (file_exists($rootDir . '/.git/refs/heads/master'))
 		{
-			$this->sha = file_get_contents($root . '/.git/refs/heads/master') ?: 'n/a';
+			$this->sha = file_get_contents($rootDir . '/.git/refs/heads/master') ?: 'n/a';
 		}
 	}
 

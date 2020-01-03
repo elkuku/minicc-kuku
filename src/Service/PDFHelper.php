@@ -15,9 +15,9 @@ class PDFHelper
 	 */
 	private $root;
 
-	public function __construct(string $root)
+	public function __construct(string $rootDir)
 	{
-		$this->root = $root;
+		$this->root = $rootDir;
 	}
 
 	public function getRoot(): string
