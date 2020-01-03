@@ -15,6 +15,10 @@ security:
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
 
+            guard:
+                authenticators:
+                    - App\Security\LoginFormAuthenticator
+
             form_login:
                 login_path: login
                 check_path: login

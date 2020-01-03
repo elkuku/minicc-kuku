@@ -36,7 +36,7 @@ class UserController extends AbstractController
 	{
 		$userState = (int) $request->get('user_state', 1);
 
-		$criteria = ['role' => 'ROLE_USER'];
+		$criteria = [];// ['role' => 'ROLE_USER'];
 
 		if ($userState)
 		{
