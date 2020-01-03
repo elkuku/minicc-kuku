@@ -27,11 +27,17 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 	private $router;
 	private $csrfTokenManager;
 
-	public function __construct(EntityManagerInterface $entityManager, RouterInterface $router, CsrfTokenManagerInterface $csrfTokenManager)
+	/**
+	 * @var string
+	 */
+	private $appEnv;
+
+	public function __construct(EntityManagerInterface $entityManager, RouterInterface $router, CsrfTokenManagerInterface $csrfTokenManager, string $appEnv)
 	{
 		$this->entityManager = $entityManager;
 		$this->router = $router;
 		$this->csrfTokenManager = $csrfTokenManager;
+		$this->appEnv = $appEnv;
 	}
 
 	public function supports(Request $request)
@@ -73,6 +79,11 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
 	public function checkCredentials($credentials, UserInterface $user)
 	{
+		if ('dev' !== $this->appEnv)
+		{
+			throw new \UnexpectedValueException('GTFO!');
+		}
+
 		return true;
 	}
 
