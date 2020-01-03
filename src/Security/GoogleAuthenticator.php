@@ -124,7 +124,7 @@ class GoogleAuthenticator extends SocialAuthenticator
 		}
 
 		// For example : return new RedirectResponse($this->urlGenerator->generate('some_route'));
-		return new RedirectResponse($this->urlGenerator->generate('default'));
+		return new RedirectResponse($this->urlGenerator->generate('welcome'));
 	}
 
 	/**
