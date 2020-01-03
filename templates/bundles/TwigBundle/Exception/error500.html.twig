@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Algo malo paso...</h1>
+
+    <p class="alert alert-danger">
+    {{ exception.message }}
+    </p>
+
+    <code>Code: 500</code>
+{% endblock %}
