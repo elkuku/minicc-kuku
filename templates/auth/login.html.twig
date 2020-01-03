@@ -32,7 +32,9 @@
 
             {% else %}
                 <div class="signin-providers">
-                    @TODO
+                    <a href="{{ path('connect_google_start') }}">
+                        Google
+                    </a>
                     {#                    <a href="{{ path('connect_google_start') }}" class="signin-provider-google">{{ 'Google Login'|trans }}</a>#}
                 </div>
             {% endif %}
