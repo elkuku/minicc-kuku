@@ -33,7 +33,7 @@ class PlanillasController extends AbstractController
 	 *
 	 * @Security("is_granted('ROLE_ADMIN')")
 	 */
-	public function mail(StoreRepository $storeRepository, TransactionRepository $transactionRepository, Pdf $pdf, \Swift_Mailer $smailer, MailerInterface $mailer, KernelInterface $kernel): Response
+	public function mail(StoreRepository $storeRepository, TransactionRepository $transactionRepository, Pdf $pdf, MailerInterface $mailer, KernelInterface $kernel): Response
 	{
 		$year  = date('Y');
 		$month = date('m');
@@ -49,7 +49,8 @@ class PlanillasController extends AbstractController
 			->from('minicckuku@gmail.com')
 			->to('minicckuku@gmail.com')
 			->subject("NEW Planillas $year-$month")
-			->html($html);
+			->html($html)
+			->attach($document, "planillas-$year-$month.pdf");
 
 		try
 		{
@@ -58,7 +59,7 @@ class PlanillasController extends AbstractController
 		}
 		catch (TransportExceptionInterface $e)
 		{
-			$this->addFlash('danger', 'ERROR sending mail: '.$e->getMessage());
+			$this->addFlash('danger', 'ERROR sending mail: ' . $e->getMessage());
 		}
 
 //
