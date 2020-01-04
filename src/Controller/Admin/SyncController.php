@@ -176,7 +176,7 @@ class SyncController extends AbstractController
 	 */
 	public function backup(\Swift_Mailer $mailer): Response
 	{
-		$parts = parse_url(getenv('DATABASE_URL'));
+		$parts = parse_url($_ENV['DATABASE_URL']);
 
 		$hostname = $parts['host'];
 		$username = $parts['user'];
