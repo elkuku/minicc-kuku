@@ -12,7 +12,7 @@ use League\OAuth2\Client\Provider\GoogleUser;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -46,7 +46,7 @@ class GoogleAuthenticator extends SocialAuthenticator
 	 */
 	private $session;
 
-	public function __construct(ClientRegistry $clientRegistry, EntityManagerInterface $em, UserRepository $userRepository, UrlGeneratorInterface $urlGenerator, Session $session)
+	public function __construct(ClientRegistry $clientRegistry, EntityManagerInterface $em, UserRepository $userRepository, UrlGeneratorInterface $urlGenerator, SessionInterface $session)
 	{
 		$this->clientRegistry = $clientRegistry;
 		$this->em = $em;
