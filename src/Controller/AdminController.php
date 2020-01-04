@@ -23,7 +23,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class AdminController
  */
-class Admin extends AbstractController
+class AdminController extends AbstractController
 {
 	/**
 	 * @Route("/cobrar", name="cobrar")
