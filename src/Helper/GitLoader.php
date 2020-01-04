@@ -12,9 +12,9 @@ class GitLoader
 {
 	private $projectDir;
 
-	public function __construct($projectDir)
+	public function __construct($rootDir)
 	{
-		$this->projectDir = $projectDir;
+		$this->projectDir = $rootDir;
 	}
 
 	public function getBranchName(): string

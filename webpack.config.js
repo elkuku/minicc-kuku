@@ -29,7 +29,6 @@ Encore
     .addEntry('js/taxcalc', './assets/js/taxcalc.js')
     .addEntry('js/admin/pagos-por-ano', './assets/js/admin/pagos-por-ano.js')
     .addEntry('js/admin/payday', './assets/js/admin/payday.js')
-    .addEntry('js/auth/login', './assets/js/auth/login.js')
     .addEntry('js/contract/form', './assets/js/contract/form.js')
     .addEntry('js/default/index-charts', './assets/js/default/index-charts.js')
     .addEntry('js/default/index', './assets/js/default/index.js')
@@ -90,9 +89,6 @@ Encore
             {
                 from: './assets/images',
                 to: 'images/[path][name].[ext]'
-
-                // only copy files matching this pattern
-                //pattern: /\.(png|jpg|jpeg)$/
             }
         ])
 ;
