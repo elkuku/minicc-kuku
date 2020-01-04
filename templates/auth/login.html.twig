@@ -18,8 +18,6 @@
             {% endif %}
 
             {% if 'dev' == app.environment %}
-            {% else %}
-
                 <div class="form-group">
                     <label for="email" class="col-md-4 control-label">e-mail</label>
                     <input id="email" class="form-control col-md-4" name="email" value="{{ last_username }}" autofocus>
@@ -30,13 +28,11 @@
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary">Login</button>
                 </div>
-
-{#            {% else %}#}
+            {% else %}
                 <div class="signin-providers">
-                    <a href="{{ path('connect_google_start') }}">
-                        Google
+                    <a href="{{ path('connect_google_start') }}" class="signin-provider-google">
+                        {{ 'Google Login'|trans }}
                     </a>
-                    {#                    <a href="{{ path('connect_google_start') }}" class="signin-provider-google">{{ 'Google Login'|trans }}</a>#}
                 </div>
             {% endif %}
         </form>
