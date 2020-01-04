@@ -12,6 +12,7 @@ use League\OAuth2\Client\Provider\GoogleUser;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -40,13 +41,18 @@ class GoogleAuthenticator extends SocialAuthenticator
 	 * @var UrlGeneratorInterface
 	 */
 	private $urlGenerator;
+	/**
+	 * @var Session
+	 */
+	private $session;
 
-	public function __construct(ClientRegistry $clientRegistry, EntityManagerInterface $em, UserRepository $userRepository, UrlGeneratorInterface $urlGenerator)
+	public function __construct(ClientRegistry $clientRegistry, EntityManagerInterface $em, UserRepository $userRepository, UrlGeneratorInterface $urlGenerator, Session $session)
 	{
 		$this->clientRegistry = $clientRegistry;
 		$this->em = $em;
 		$this->userRepository = $userRepository;
 		$this->urlGenerator = $urlGenerator;
+		$this->session = $session;
 	}
 
 	/**
@@ -123,7 +129,6 @@ class GoogleAuthenticator extends SocialAuthenticator
 			return new RedirectResponse($targetPath);
 		}
 
-		// For example : return new RedirectResponse($this->urlGenerator->generate('some_route'));
 		return new RedirectResponse($this->urlGenerator->generate('welcome'));
 	}
 
@@ -136,6 +141,8 @@ class GoogleAuthenticator extends SocialAuthenticator
 	public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
 	{
 		$message = strtr($exception->getMessageKey(), $exception->getMessageData());
+		$this->session->getFlashBag()->add('danger', $message);
+		return new RedirectResponse($this->urlGenerator->generate('login'));
 
 		return new Response($message, Response::HTTP_FORBIDDEN);
 	}
