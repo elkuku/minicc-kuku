@@ -30,8 +30,9 @@
                 </div>
             {% else %}
                 <div class="signin-providers">
-                    <a href="{{ path('connect_google_start') }}" class="signin-provider-google btn btn-primary">
-                        {{ 'Google Login'|trans }}
+                    <a href="{{ path('connect_google_start') }}" class="btn btn-primary">
+                        <span class="fa-google-plus-square"></span>
+                        {{ 'Login'|trans }}
                     </a>
                 </div>
             {% endif %}

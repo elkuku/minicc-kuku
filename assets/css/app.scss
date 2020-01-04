@@ -56,8 +56,11 @@ th {
   opacity: 0.8;
 }
 
-// Language switcher
-.g11n-switcher {
-  background-color: #313131;
-  color: limegreen;
+.fa-google-plus-square {
+  background-image: url("../images/Google_Icon.png");
+  height: 36px;
+  width: 36px;
+  background-size: 100% 100%;
+  margin-top: 3px;
+  display: inline-block;
 }
