@@ -32,6 +32,7 @@
     "symfony/orm-pack": "*",
     "symfony/process": "*",
     "symfony/security-bundle": "*",
+    "symfony/sendgrid-mailer": "5.*",
     "symfony/serializer-pack": "*",
     "symfony/string": "*",
     "symfony/swiftmailer-bundle": "^3.1",
