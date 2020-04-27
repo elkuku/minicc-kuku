@@ -66,6 +66,16 @@ class TransactionRepository extends ServiceEntityRepository
 			->getResult();
 	}
 
+	public function getSaldo(Store $store):string
+	{
+		return $this->createQueryBuilder('t')
+			->select('SUM(t.amount) AS amount')
+			->where('t.store = :store')
+			->setParameter('store', $store->getId())
+			->getQuery()
+			->getSingleScalarResult();
+	}
+
 	/**
 	 * @param Store   $store
 	 * @param integer $year

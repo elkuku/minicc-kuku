@@ -8,7 +8,7 @@
 
 namespace App\Controller;
 
-use App\Entity\Transaction;
+use App\Repository\StoreRepository;
 use App\Repository\TransactionRepository;
 use App\Service\TaxService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,45 +23,41 @@ class DefaultController extends AbstractController
 	/**
 	 * @Route("/", name="welcome")
 	 */
-	public function index(TransactionRepository $transactionRepository, TaxService $taxService): Response
+	public function index(StoreRepository $storeRepository, TransactionRepository $transactionRepository, TaxService $taxService): Response
 	{
-		$user    = $this->getUser();
-		$headers = [];
-		$data1   = [];
-		$data2   = [];
-		$saldos  = null;
+		$user      = $this->getUser();
+		$balances  = null;
+		$chartData = [];
 
 		if ($user)
 		{
-			$saldos = $transactionRepository->getSaldos();
-
-			foreach ($saldos as $saldo)
+			foreach ($storeRepository->getActive() as $store)
 			{
-				/** @var Transaction $transaction */
-				$transaction = $saldo['data'];
+				$balance                = $transactionRepository->getSaldo($store);
+				$chartData['headers'][] = 'Local ' . $store->getId();
+				$valAlq                 = $taxService->getValueConTax($store->getValAlq());
 
-				$headers[] = 'Local ' . $transaction->getStore()->getId();
-				if ($taxService->getValueConTax($transaction->getStore()->getValAlq()))
-				{
+				$chartData['monthsDebt'][] = $valAlq ? round(-$balance / $valAlq, 1) : 0;
+				$chartData['balances'][]   = -$balance;
 
-					$data1[] = round(-$saldo['amount'] / $taxService->getValueConTax($transaction->getStore()->getValAlq()), 1);
-				}
-				else
-				{
-					$data1[] = 0;
-				}
-				$data2[] = -$saldo['amount'];
+				$s         = new \stdClass();
+				$s->amount = $balance;
+				$s->store  = $store;
+
+				$balances[] = $s;
 			}
 		}
 
 		return $this->render(
 			'default/index.html.twig',
 			[
-				'stores'        => $user ? $user->getStores() : null,
-				'saldos'        => $saldos,
-				'chart_headers' => json_encode($headers),
-				'chart_data1'   => json_encode($data1),
-				'chart_data2'   => json_encode($data2),
+				'stores'    => $user ? $user->getStores() : null,
+				'balances'  => $balances,
+				'chartData' => [
+					'headers'    => json_encode($chartData['headers']),
+					'monthsDebt' => json_encode($chartData['monthsDebt']),
+					'balances'   => json_encode($chartData['balances'])
+				],
 			]
 		);
 	}
