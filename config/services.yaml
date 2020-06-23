@@ -10,7 +10,6 @@ services:
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
-        public: false
         bind:
             $rootDir: '%kernel.project_dir%'
             $appEnv: '%env(APP_ENV)%'
