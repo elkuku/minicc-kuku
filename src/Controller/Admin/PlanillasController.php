@@ -62,30 +62,7 @@ class PlanillasController extends AbstractController
 			$this->addFlash('danger', 'ERROR sending mail: ' . $e->getMessage());
 		}
 
-//
-//		$message = (new \Swift_Message)
-//			->setSubject("Planillas $year-$month")
-//			->setFrom('minicckuku@gmail.com')
-//			->setTo('minicckuku@gmail.com')
-//			->setBody($html)
-//			->attach(new \Swift_Attachment($document, $fileName, 'application/pdf'));
-//
-//		$count = $mailer->send($message);
-//
-//		if (!$count)
-//		{
-//			$this->addFlash('danger', 'There was an error sending mail...');
-//		}
-//		else
-//		{
-//			$this->addFlash('success', ($count > 1 ? $count . ' mails have been sent.' : 'One mail has been sent.'));
-//		}
-
-		return $this->render('admin/tasks.html.twig',
-			[
-				'currentYear' => (int) date('Y'),
-			]
-		);
+		return $this->render('admin/tasks.html.twig');
 	}
 
 	/**

@@ -28,6 +28,7 @@ class TwigEventSubscriber implements EventSubscriberInterface
     public function onKernelController(ControllerEvent $event): void
     {
         $this->twig->addGlobal('systemUsers', $this->userRepository->findActiveUsers());
+        $this->twig->addGlobal('currentYear', date('Y'));
     }
 
     public static function getSubscribedEvents(): array
