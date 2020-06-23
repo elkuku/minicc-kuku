@@ -13,52 +13,52 @@ namespace App\Service;
  */
 class TaxService
 {
-	/**
-	 * @var integer
-	 */
-	private $taxValue;
+    /**
+     * @var integer
+     */
+    private $taxValue;
 
-	/**
-	 * TaxService constructor.
-	 *
-	 * @param integer $taxValue
-	 */
-	public function __construct($taxValue)
-	{
-		$this->taxValue = $taxValue;
-	}
+    /**
+     * TaxService constructor.
+     *
+     * @param integer $taxValue
+     */
+    public function __construct($taxValue)
+    {
+        $this->taxValue = $taxValue;
+    }
 
-	/**
-	 * @return int
-	 */
-	public function getTaxValue(): int
-	{
-		return $this->taxValue;
-	}
+    /**
+     * @return int
+     */
+    public function getTaxValue(): int
+    {
+        return $this->taxValue;
+    }
 
-	/**
-	 * Add the tax value to a given amount.
-	 *
-	 * @param float $value
-	 *
-	 * @return float
-	 */
-	public function getValueConTax(float $value): float
-	{
-		return round($value * (1 + $this->taxValue / 100), 2);
-	}
+    /**
+     * Add the tax value to a given amount.
+     *
+     * @param float $value
+     *
+     * @return float
+     */
+    public function getValueConTax(float $value): float
+    {
+        return round($value * (1 + $this->taxValue / 100), 2);
+    }
 
-	/**
-	 * Get the tax amount from total value.
-	 *
-	 * @param float $total
-	 *
-	 * @return float
-	 */
-	public function getTaxFromTotal(float $total): float
-	{
-		$base = $total / (1 + $this->taxValue / 100);
+    /**
+     * Get the tax amount from total value.
+     *
+     * @param float $total
+     *
+     * @return float
+     */
+    public function getTaxFromTotal(float $total): float
+    {
+        $base = $total / (1 + $this->taxValue / 100);
 
-		return $total - $base;
-	}
+        return $total - $base;
+    }
 }

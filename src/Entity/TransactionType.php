@@ -15,49 +15,49 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class TransactionType
 {
-	/**
-	 * @ORM\Id()
-	 * @ORM\GeneratedValue()
-	 * @ORM\Column(type="integer")
-	 */
-	private $id;
+    /**
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
+     */
+    private $id;
 
-	/**
-	 * @ORM\Column(type="string", length=150, nullable=false)
-	 */
-	private $name;
+    /**
+     * @ORM\Column(type="string", length=150, nullable=false)
+     */
+    private $name;
 
-	/**
-	 * Get id
-	 *
-	 * @return integer
-	 */
-	public function getId(): int
-	{
-		return $this->id;
-	}
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
 
-	/**
-	 * Set name
-	 *
-	 * @param string $name
-	 *
-	 * @return TransactionType
-	 */
-	public function setName($name): TransactionType
-	{
-		$this->name = $name;
+    /**
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return TransactionType
+     */
+    public function setName($name): TransactionType
+    {
+        $this->name = $name;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Get name
-	 *
-	 * @return string
-	 */
-	public function getName(): string
-	{
-		return $this->name;
-	}
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
 }

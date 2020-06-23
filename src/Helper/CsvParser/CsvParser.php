@@ -13,54 +13,50 @@ namespace App\Helper\CsvParser;
  */
 class CsvParser
 {
-	/**
-	 * A simple method to parse a specific CSV file.
-	 *
-	 * @param array $contents File contents.
-	 *
-	 * @return CsvObject
-	 */
-	public function parseCSV(array $contents): CsvObject
-	{
-		if (!$contents)
-		{
-			throw new \UnexpectedValueException('CSV file is empty');
-		}
+    /**
+     * A simple method to parse a specific CSV file.
+     *
+     * @param array $contents File contents.
+     *
+     * @return CsvObject
+     */
+    public function parseCSV(array $contents): CsvObject
+    {
+        if (!$contents) {
+            throw new \UnexpectedValueException('CSV file is empty');
+        }
 
-		$csvObject = new CsvObject;
+        $csvObject = new CsvObject;
 
-		$headVars2 = explode('","', trim(trim($contents[0]), '"'));
-		$headVars = explode(',', trim(trim($contents[0]), '"'));
+        $headVars2 = explode('","', trim(trim($contents[0]), '"'));
+        $headVars = explode(',', trim(trim($contents[0]), '"'));
 
-		$csvObject->headVars = $headVars;
+        $csvObject->headVars = $headVars;
 
-		$lines = [];
+        $lines = [];
 
-		// Strip header
-		unset($contents[0]);
+        // Strip header
+        unset($contents[0]);
 
-		foreach ($contents as $line)
-		{
-			$fields2 = explode('","', trim(trim($line), '"'));
-			$fields = explode(',', trim(trim($line), '"'));
+        foreach ($contents as $line) {
+            $fields2 = explode('","', trim(trim($line), '"'));
+            $fields = explode(',', trim(trim($line), '"'));
 
-			$o = new \stdClass;
+            $o = new \stdClass;
 
-			foreach ($fields as $i => $field)
-			{
-				if (!isset($headVars[$i]))
-				{
-					throw new \RuntimeException('Malformed CSV file.');
-				}
+            foreach ($fields as $i => $field) {
+                if (!isset($headVars[$i])) {
+                    throw new \RuntimeException('Malformed CSV file.');
+                }
 
-				$o->{strtolower($headVars[$i])} = trim($field);
-			}
+                $o->{strtolower($headVars[$i])} = trim($field);
+            }
 
-			$lines[] = $o;
-		}
+            $lines[] = $o;
+        }
 
-		$csvObject->lines = $lines;
+        $csvObject->lines = $lines;
 
-		return $csvObject;
-	}
+        return $csvObject;
+    }
 }

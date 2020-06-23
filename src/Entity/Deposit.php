@@ -17,163 +17,163 @@ use JsonSerializable;
  */
 class Deposit implements JsonSerializable
 {
-	/**
-	 * @ORM\Id()
-	 * @ORM\GeneratedValue()
-	 * @ORM\Column(type="integer")
-	 */
-	private $id;
+    /**
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
+     */
+    private $id;
 
-	/**
-	 * @var PaymentMethod
-	 * @ManyToOne(targetEntity="PaymentMethod")
-	 */
-	private $entity;
+    /**
+     * @var PaymentMethod
+     * @ManyToOne(targetEntity="PaymentMethod")
+     */
+    private $entity;
 
-	/**
-	 * @var \DateTime
-	 *
-	 * @ORM\Column(type="date", nullable=false)
-	 */
-	private $date;
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(type="date", nullable=false)
+     */
+    private $date;
 
-	/**
-	 * @ORM\Column(type="string", length=150, nullable=false)
-	 */
-	private $document;
+    /**
+     * @ORM\Column(type="string", length=150, nullable=false)
+     */
+    private $document;
 
-	/**
-	 * @ORM\Column(type="decimal", precision=13, scale=2, nullable=false)
-	 */
-	private $amount;
+    /**
+     * @ORM\Column(type="decimal", precision=13, scale=2, nullable=false)
+     */
+    private $amount;
 
-	/**
-	 * Get id
-	 *
-	 * @return integer
-	 */
-	public function getId(): int
-	{
-		return $this->id;
-	}
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
 
-	/**
-	 * Set entity
-	 *
-	 * @param PaymentMethod $entity
-	 *
-	 * @return Deposit
-	 */
-	public function setEntity(PaymentMethod $entity): Deposit
-	{
-		if (1 === $entity->getId())
-		{
-			throw new \UnexpectedValueException(
-				'The entity with ID "1" is supposed to be the BAR payment method!'
-			);
-		}
+    /**
+     * Set entity
+     *
+     * @param PaymentMethod $entity
+     *
+     * @return Deposit
+     */
+    public function setEntity(PaymentMethod $entity): Deposit
+    {
+        if (1 === $entity->getId()) {
+            throw new \UnexpectedValueException(
+                'The entity with ID "1" is supposed to be the BAR payment method!'
+            );
+        }
 
-		$this->entity = $entity;
+        $this->entity = $entity;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Get entity
-	 *
-	 * @return PaymentMethod
-	 */
-	public function getEntity(): PaymentMethod
-	{
-		return $this->entity;
-	}
+    /**
+     * Get entity
+     *
+     * @return PaymentMethod
+     */
+    public function getEntity(): PaymentMethod
+    {
+        return $this->entity;
+    }
 
-	/**
-	 * Set date
-	 *
-	 * @param \DateTime $date
-	 *
-	 * @return Deposit
-	 */
-	public function setDate(\DateTime $date): Deposit
-	{
-		$this->date = $date;
+    /**
+     * Set date
+     *
+     * @param \DateTime $date
+     *
+     * @return Deposit
+     */
+    public function setDate(\DateTime $date): Deposit
+    {
+        $this->date = $date;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Get date
-	 *
-	 * @return \DateTime
-	 */
-	public function getDate(): \DateTime
-	{
-		return $this->date;
-	}
+    /**
+     * Get date
+     *
+     * @return \DateTime
+     */
+    public function getDate(): \DateTime
+    {
+        return $this->date;
+    }
 
-	/**
-	 * Set document
-	 *
-	 * @param string $document
-	 *
-	 * @return Deposit
-	 */
-	public function setDocument($document): Deposit
-	{
-		$this->document = $document;
+    /**
+     * Set document
+     *
+     * @param string $document
+     *
+     * @return Deposit
+     */
+    public function setDocument($document): Deposit
+    {
+        $this->document = $document;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Get document
-	 *
-	 * @return string
-	 */
-	public function getDocument(): string
-	{
-		return $this->document;
-	}
+    /**
+     * Get document
+     *
+     * @return string
+     */
+    public function getDocument(): string
+    {
+        return $this->document;
+    }
 
-	/**
-	 * Set amount
-	 *
-	 * @param string $amount
-	 *
-	 * @return Deposit
-	 */
-	public function setAmount($amount): Deposit
-	{
-		$this->amount = $amount;
+    /**
+     * Set amount
+     *
+     * @param string $amount
+     *
+     * @return Deposit
+     */
+    public function setAmount($amount): Deposit
+    {
+        $this->amount = $amount;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Get amount
-	 *
-	 * @return string
-	 */
-	public function getAmount(): string
-	{
-		return $this->amount;
-	}
+    /**
+     * Get amount
+     *
+     * @return string
+     */
+    public function getAmount(): string
+    {
+        return $this->amount;
+    }
 
-	/**
-	 * Specify data which should be serialized to JSON
-	 * @link  http://php.net/manual/en/jsonserializable.jsonserialize.php
-	 * @return mixed data which can be serialized by <b>json_encode</b>,
-	 * which is a value of any type other than a resource.
-	 * @since 5.4.0
-	 */
-	public function jsonSerialize()
-	{
-		return [
-			'id'       => $this->id,
-			'amount'   => $this->amount,
-			'document' => $this->document,
-			'date'     => $this->date->format('Y-m-d'),
-		];
-	}
+    /**
+     * Specify data which should be serialized to JSON
+     *
+     * @link  http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     * @since 5.4.0
+     */
+    public function jsonSerialize()
+    {
+        return [
+            'id'       => $this->id,
+            'amount'   => $this->amount,
+            'document' => $this->document,
+            'date'     => $this->date->format('Y-m-d'),
+        ];
+    }
 }

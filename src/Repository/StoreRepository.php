@@ -25,20 +25,20 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class StoreRepository extends ServiceEntityRepository
 {
-	public function __construct(ManagerRegistry $registry)
-	{
-		parent::__construct($registry, Store::class);
-	}
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, Store::class);
+    }
 
-	/**
-	 * @return Store[]
-	 */
-	public function getActive(): array
-	{
-		return $this->createQueryBuilder('s')
-			->where('s.valAlq > :val')
-			->setParameter('val', 0)
-			->getQuery()
-			->getResult();
-	}
+    /**
+     * @return Store[]
+     */
+    public function getActive(): array
+    {
+        return $this->createQueryBuilder('s')
+            ->where('s.valAlq > :val')
+            ->setParameter('val', 0)
+            ->getQuery()
+            ->getResult();
+    }
 }

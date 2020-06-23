@@ -22,36 +22,36 @@ use App\Entity\User;
  */
 class UserType extends AbstractType
 {
-	/**
-	 * @param FormBuilderInterface $builder
-	 * @param array                $options
-	 */
-	public function buildForm(FormBuilderInterface $builder, array $options): void
-	{
-		$builder
-			->add('name', TextType::class)
-			->add('username', TextType::class)
-			->add('email', EmailType::class)
-			->add(
-				'plainPassword',
-				RepeatedType::class,
-				[
-					'type'           => PasswordType::class,
-					'first_options'  => ['label' => 'Password'],
-					'second_options' => ['label' => 'Confirm Password'],
-				]
-			);
-	}
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array                $options
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        $builder
+            ->add('name', TextType::class)
+            ->add('username', TextType::class)
+            ->add('email', EmailType::class)
+            ->add(
+                'plainPassword',
+                RepeatedType::class,
+                [
+                    'type'           => PasswordType::class,
+                    'first_options'  => ['label' => 'Password'],
+                    'second_options' => ['label' => 'Confirm Password'],
+                ]
+            );
+    }
 
-	/**
-	 * @param OptionsResolver $resolver
-	 */
-	public function configureOptions(OptionsResolver $resolver): void
-	{
-		$resolver->setDefaults(
-			[
-				'data_class' => User::class,
-			]
-		);
-	}
+    /**
+     * @param OptionsResolver $resolver
+     */
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefaults(
+            [
+                'data_class' => User::class,
+            ]
+        );
+    }
 }

@@ -16,11 +16,11 @@ use Symfony\Component\Form\FormBuilderInterface;
  */
 class PaymentMethodType extends AbstractType
 {
-	/**
-	 * {@inheritdoc}
-	 */
-	public function buildForm(FormBuilderInterface $builder, array $options): void
-	{
-		$builder->add('name');
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        $builder->add('name');
+    }
 }

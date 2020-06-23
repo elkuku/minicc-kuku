@@ -17,22 +17,21 @@ use Doctrine\Common\Persistence\ObjectManager;
  */
 class LoadUserGenderData implements FixtureInterface
 {
-	/**
-	 * {@inheritdoc}
-	 */
-	public function load(ObjectManager $manager): void
-	{
-		$names = ['Sr', 'Sra'];
+    /**
+     * {@inheritdoc}
+     */
+    public function load(ObjectManager $manager): void
+    {
+        $names = ['Sr', 'Sra'];
 
-		foreach ($names as $name)
-		{
-			$userGender = new UserGender;
+        foreach ($names as $name) {
+            $userGender = new UserGender;
 
-			$userGender->setName($name);
+            $userGender->setName($name);
 
-			$manager->persist($userGender);
-		}
+            $manager->persist($userGender);
+        }
 
-		$manager->flush();
-	}
+        $manager->flush();
+    }
 }

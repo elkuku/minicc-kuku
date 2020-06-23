@@ -17,16 +17,20 @@ use Doctrine\Common\Persistence\ObjectManager;
  */
 class LoadContractTemplateData implements FixtureInterface
 {
-	/**
-	 * {@inheritdoc}
-	 */
-	public function load(ObjectManager $manager): void
-	{
-		$contract = new Contract;
+    /**
+     * {@inheritdoc}
+     */
+    public function load(ObjectManager $manager): void
+    {
+        $contract = new Contract;
 
-		$contract->setText(file_get_contents(__DIR__ . '/../contract-template.html'));
+        $contract->setText(
+            file_get_contents(
+                __DIR__.'/../contract-template.html'
+            )
+        );
 
-		$manager->persist($contract);
-		$manager->flush();
-	}
+        $manager->persist($contract);
+        $manager->flush();
+    }
 }

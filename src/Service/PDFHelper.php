@@ -10,18 +10,18 @@ namespace App\Service;
 
 class PDFHelper
 {
-	/**
-	 * @var string
-	 */
-	private $root;
+    /**
+     * @var string
+     */
+    private $root;
 
-	public function __construct(string $rootDir)
-	{
-		$this->root = $rootDir;
-	}
+    public function __construct(string $rootDir)
+    {
+        $this->root = $rootDir;
+    }
 
-	public function getRoot(): string
-	{
-		return $this->root;
-	}
+    public function getRoot(): string
+    {
+        return $this->root;
+    }
 }

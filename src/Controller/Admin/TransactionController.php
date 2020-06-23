@@ -25,223 +25,211 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
  */
 class TransactionController extends AbstractController
 {
-	/**
-	 * @Route("/mail-transactions", name="mail-transactions")
-	 *
-	 * @Security("is_granted('ROLE_ADMIN')")
-	 */
-	public function mail(StoreRepository $storeRepository, TransactionRepository $transactionRepository, Request $request, Pdf $pdf, \Swift_Mailer $mailer)
-	{
-		$recipients = $request->get('recipients');
+    /**
+     * @Route("/mail-transactions", name="mail-transactions")
+     *
+     * @Security("is_granted('ROLE_ADMIN')")
+     */
+    public function mail(StoreRepository $storeRepository, TransactionRepository $transactionRepository, Request $request, Pdf $pdf, \Swift_Mailer $mailer)
+    {
+        $recipients = $request->get('recipients');
 
-		$year = (int) date('Y');
+        $year = (int)date('Y');
 
-		if (!$recipients)
-		{
-			$this->addFlash('warning', 'No recipients selected');
+        if (!$recipients) {
+            $this->addFlash('warning', 'No recipients selected');
 
-			return $this->redirectToRoute('mail-list-transactions');
-		}
+            return $this->redirectToRoute('mail-list-transactions');
+        }
 
-		$stores    = $storeRepository->getActive();
-		$failures  = [];
-		$successes = [];
+        $stores = $storeRepository->getActive();
+        $failures = [];
+        $successes = [];
 
-		foreach ($stores as $store)
-		{
-			if (!array_key_exists($store->getId(), $recipients))
-			{
-				continue;
-			}
+        foreach ($stores as $store) {
+            if (!array_key_exists($store->getId(), $recipients)) {
+                continue;
+            }
 
-			$fileName = "movimientos-{$store->getId()}-$year.pdf";
-			$html     = $this->renderView(
-				'_mail/client-transactions.twig',
-				[
-					'user'     => $store->getUser(),
-					'store'    => $store,
-					'fileName' => $fileName,
-				]
-			);
+            $fileName = "movimientos-{$store->getId()}-$year.pdf";
+            $html = $this->renderView(
+                '_mail/client-transactions.twig',
+                [
+                    'user'     => $store->getUser(),
+                    'store'    => $store,
+                    'fileName' => $fileName,
+                ]
+            );
 
-			$document = $pdf->getOutputFromHtml(
-				$this->getTransactionsHtml($transactionRepository, $store, $year)
-			);
+            $document = $pdf->getOutputFromHtml(
+                $this->getTransactionsHtml($transactionRepository, $store, $year)
+            );
 
-			$count = 0;
+            $count = 0;
 
-			try
-			{
-				$message = (new \Swift_Message)
-					->setSubject("Movimientos del local {$store->getId()} ano $year")
-					->setFrom('minicckuku@gmail.com')
-					->setTo($store->getUser()->getEmail())
-					->setBody($html)
-					->attach(new \Swift_Attachment($document, $fileName, 'application/pdf'));
+            try {
+                $message = (new \Swift_Message)
+                    ->setSubject("Movimientos del local {$store->getId()} ano $year")
+                    ->setFrom('minicckuku@gmail.com')
+                    ->setTo($store->getUser()->getEmail())
+                    ->setBody($html)
+                    ->attach(new \Swift_Attachment($document, $fileName, 'application/pdf'));
 
-				$count       = $mailer->send($message);
-				$successes[] = $store->getId();
-			}
-			catch (\Exception $exception)
-			{
-				$failures[] = $exception->getMessage();
-			}
+                $count = $mailer->send($message);
+                $successes[] = $store->getId();
+            } catch (\Exception $exception) {
+                $failures[] = $exception->getMessage();
+            }
 
-			if (0 === $count)
-			{
-				$failures[] = 'Unable to send the message to store: ' . $store->getId();
-			}
-		}
+            if (0 === $count) {
+                $failures[] = 'Unable to send the message to store: '
+                    .$store->getId();
+            }
+        }
 
-		if ($failures)
-		{
-			$this->addFlash('warning', implode('<br>', $failures));
-		}
+        if ($failures) {
+            $this->addFlash('warning', implode('<br>', $failures));
+        }
 
-		if ($successes)
-		{
-			$this->addFlash('success', 'Mails have been sent to stores: ' . implode(', ', $successes));
-		}
+        if ($successes) {
+            $this->addFlash(
+                'success', 'Mails have been sent to stores: '
+                .implode(', ', $successes)
+            );
+        }
 
-		return $this->redirectToRoute('welcome');
-	}
+        return $this->redirectToRoute('welcome');
+    }
 
-	/**
-	 * @Route("/store-transaction-pdf/{id}/{year}", name="store-transaction-pdf")
-	 *
-	 * @Security("is_granted('ROLE_ADMIN')")
-	 */
-	public function getStore(Store $store, int $year, TransactionRepository $transactionRepository, Pdf $pdf, PDFHelper $PDFHelper): PdfResponse
-	{
-		$html = $this->getTransactionsHtml($transactionRepository, $store, $year);
+    /**
+     * @Route("/store-transaction-pdf/{id}/{year}", name="store-transaction-pdf")
+     *
+     * @Security("is_granted('ROLE_ADMIN')")
+     */
+    public function getStore(Store $store, int $year, TransactionRepository $transactionRepository, Pdf $pdf, PDFHelper $PDFHelper): PdfResponse
+    {
+        $html = $this->getTransactionsHtml($transactionRepository, $store, $year);
 
-		$filename = sprintf('movimientos-%d-local-%d-%s.pdf', $year, $store->getId(), date('Y-m-d'));
+        $filename = sprintf('movimientos-%d-local-%d-%s.pdf', $year, $store->getId(), date('Y-m-d'));
 
-		$header = $this->renderView(
-			'_header-pdf.html.twig',
-			[
-				'rootPath' => $PDFHelper->getRoot() . '/public',
-			]
-		);
+        $header = $this->renderView(
+            '_header-pdf.html.twig',
+            [
+                'rootPath' => $PDFHelper->getRoot().'/public',
+            ]
+        );
 
-		$footer = $this->renderView('_footer-pdf.html.twig');
+        $footer = $this->renderView('_footer-pdf.html.twig');
 
-		return new PdfResponse(
-			$pdf->getOutputFromHtml(
-				$html,
-				[
-					'footer-html' => $footer,
-					'header-html' => $header,
-				]
-			),
-			$filename
-		);
-	}
+        return new PdfResponse(
+            $pdf->getOutputFromHtml(
+                $html,
+                [
+                    'footer-html' => $footer,
+                    'header-html' => $header,
+                ]
+            ),
+            $filename
+        );
+    }
 
-	/**
-	 * @Route("/mail-annual-transactions", name="mail-annual-transactions")
-	 *
-	 * @Security("is_granted('ROLE_ADMIN')")
-	 */
-	public function mailStores(Request $request, TransactionRepository $transactionRepository,
-	                           StoreRepository $storeRepository, Pdf $pdf, \Swift_Mailer $mailer)
-	{
-		$year = (int) $request->get('year', date('Y'));
+    /**
+     * @Route("/mail-annual-transactions", name="mail-annual-transactions")
+     *
+     * @Security("is_granted('ROLE_ADMIN')")
+     */
+    public function mailStores(
+        Request $request, TransactionRepository $transactionRepository,
+        StoreRepository $storeRepository, Pdf $pdf, \Swift_Mailer $mailer
+    ) {
+        $year = (int)$request->get('year', date('Y'));
 
-		$htmlPages = [];
+        $htmlPages = [];
 
-		$stores = $storeRepository->findAll();
+        $stores = $storeRepository->findAll();
 
-		foreach ($stores as $store)
-		{
-			if ($store->getUserId())
-			{
-				$htmlPages[] = $this->getTransactionsHtml($transactionRepository, $store, $year);
-			}
-		}
+        foreach ($stores as $store) {
+            if ($store->getUserId()) {
+                $htmlPages[] = $this->getTransactionsHtml($transactionRepository, $store, $year);
+            }
+        }
 
-		$fileName = "movimientos-$year.pdf";
+        $fileName = "movimientos-$year.pdf";
 
-		$attachment = new PdfResponse(
-			$pdf->getOutputFromHtml($htmlPages),
-			$fileName
-		);
+        $attachment = new PdfResponse(
+            $pdf->getOutputFromHtml($htmlPages),
+            $fileName
+        );
 
-		try
-		{
-			$message = (new \Swift_Message)
-				->setSubject("Movimientos de los locales ano $year")
-				->setFrom('minicckuku@gmail.com')
-				->setTo('minicckuku@gmail.com')
-				->setBody($fileName)
-				->attach(new \Swift_Attachment($attachment, $fileName, 'application/pdf'));
+        try {
+            $message = (new \Swift_Message)
+                ->setSubject("Movimientos de los locales ano $year")
+                ->setFrom('minicckuku@gmail.com')
+                ->setTo('minicckuku@gmail.com')
+                ->setBody($fileName)
+                ->attach(new \Swift_Attachment($attachment, $fileName, 'application/pdf'));
 
-			$mailer->send($message);
-		}
-		catch (\Exception $exception)
-		{
-			$failures[] = $exception->getMessage();
-		}
+            $mailer->send($message);
+        } catch (\Exception $exception) {
+            $failures[] = $exception->getMessage();
+        }
 
-		$this->addFlash('success', 'Mail has been sent succesfully.');
+        $this->addFlash('success', 'Mail has been sent succesfully.');
 
-		return $this->redirectToRoute('welcome');
+        return $this->redirectToRoute('welcome');
+    }
 
-	}
+    /**
+     * @Route("/stores-transactions-pdf", name="stores-transactions-pdf")
+     *
+     * @Security("is_granted('ROLE_ADMIN')")
+     */
+    public function getStores(TransactionRepository $transactionRepository, StoreRepository $storeRepository, Pdf $pdf): PdfResponse
+    {
+        $htmlPages = [];
 
-	/**
-	 * @Route("/stores-transactions-pdf", name="stores-transactions-pdf")
-	 *
-	 * @Security("is_granted('ROLE_ADMIN')")
-	 */
-	public function getStores(TransactionRepository $transactionRepository, StoreRepository $storeRepository, Pdf $pdf): PdfResponse
-	{
-		$htmlPages = [];
+        $year = (int)date('Y');
 
-		$year = (int) date('Y');
+        $stores = $storeRepository->findAll();
 
-		$stores = $storeRepository->findAll();
+        foreach ($stores as $store) {
+            if ($store->getUserId()) {
+                $htmlPages[] = $this->getTransactionsHtml($transactionRepository, $store, $year);
+            }
+        }
 
-		foreach ($stores as $store)
-		{
-			if ($store->getUserId())
-			{
-				$htmlPages[] = $this->getTransactionsHtml($transactionRepository, $store, $year);
-			}
-		}
+        $filename = sprintf('movimientos-%d-%s.pdf', $year, date('Y-m-d'));
 
-		$filename = sprintf('movimientos-%d-%s.pdf', $year, date('Y-m-d'));
+        return new PdfResponse(
+            $pdf->getOutputFromHtml($htmlPages),
+            $filename
+        );
+    }
 
-		return new PdfResponse(
-			$pdf->getOutputFromHtml($htmlPages),
-			$filename
-		);
-	}
+    /**
+     * Get HTML.
+     */
+    private function getTransactionsHtml(TransactionRepository $transactionRepository, Store $store, int $year, int $transactionsPerPage = 42): string
+    {
+        $transactions = $transactionRepository->findByStoreAndYear($store, $year);
 
-	/**
-	 * Get HTML.
-	 */
-	private function getTransactionsHtml(TransactionRepository $transactionRepository, Store $store, int $year, int $transactionsPerPage = 42): string
-	{
-		$transactions = $transactionRepository->findByStoreAndYear($store, $year);
+        $pages = (int)(\count($transactions) / $transactionsPerPage) + 1;
+        $fillers = $transactionsPerPage - (\count($transactions) - ($pages - 1)
+                * $transactionsPerPage);
 
-		$pages   = (int) (\count($transactions) / $transactionsPerPage) + 1;
-		$fillers = $transactionsPerPage - (\count($transactions) - ($pages - 1) * $transactionsPerPage);
+        for ($i = 1; $i < $fillers; $i++) {
+            $transaction = new Transaction;
+            $transactions[] = $transaction;
+        }
 
-		for ($i = 1; $i < $fillers; $i++)
-		{
-			$transaction    = new Transaction;
-			$transactions[] = $transaction;
-		}
-
-		return $this->renderView(
-			'stores/transactions-pdf.html.twig',
-			[
-				'saldoAnterior' => $transactionRepository->getSaldoAnterior($store, $year),
-				'transactions'  => $transactions,
-				'store'         => $store,
-				'year'          => $year,
-			]
-		);
-	}
+        return $this->renderView(
+            'stores/transactions-pdf.html.twig',
+            [
+                'saldoAnterior' => $transactionRepository->getSaldoAnterior($store, $year),
+                'transactions'  => $transactions,
+                'store'         => $store,
+                'year'          => $year,
+            ]
+        );
+    }
 }

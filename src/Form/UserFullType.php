@@ -23,56 +23,56 @@ use App\Entity\User;
  */
 class UserFullType extends AbstractType
 {
-	/**
-	 * {@inheritdoc}
-	 */
-	public function buildForm(FormBuilderInterface $builder, array $options): void
-	{
-		$builder
-			->add(
-				'state',
-				EntityType::class,
-				array(
-					'class'        => 'App:UserState',
-					'choice_label' => 'name',
-				)
-			)
-			->add(
-				'gender',
-				EntityType::class,
-				array(
-					'class'        => 'App:UserGender',
-					'choice_label' => 'name',
-				)
-			)
-			->add('name', TextType::class)
-			->add('email', EmailType::class)
-			->add('inqCi')
-			->add('inqRuc', null, ['required' => false])
-			->add('telefono', null, ['required' => false])
-			->add('telefono2', null, ['required' => false])
-			->add('direccion', null, ['required' => false])
-			->add(
-				'plainPassword',
-				RepeatedType::class,
-				[
-					'type'           => PasswordType::class,
-					'first_options'  => ['label' => 'Password'],
-					'second_options' => ['label' => 'Confirm Password'],
-					'required'       => false,
-				]
-			);
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        $builder
+            ->add(
+                'state',
+                EntityType::class,
+                array(
+                    'class'        => 'App:UserState',
+                    'choice_label' => 'name',
+                )
+            )
+            ->add(
+                'gender',
+                EntityType::class,
+                array(
+                    'class'        => 'App:UserGender',
+                    'choice_label' => 'name',
+                )
+            )
+            ->add('name', TextType::class)
+            ->add('email', EmailType::class)
+            ->add('inqCi')
+            ->add('inqRuc', null, ['required' => false])
+            ->add('telefono', null, ['required' => false])
+            ->add('telefono2', null, ['required' => false])
+            ->add('direccion', null, ['required' => false])
+            ->add(
+                'plainPassword',
+                RepeatedType::class,
+                [
+                    'type'           => PasswordType::class,
+                    'first_options'  => ['label' => 'Password'],
+                    'second_options' => ['label' => 'Confirm Password'],
+                    'required'       => false,
+                ]
+            );
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function configureOptions(OptionsResolver $resolver): void
-	{
-		$resolver->setDefaults(
-			[
-				'data_class' => User::class,
-			]
-		);
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefaults(
+            [
+                'data_class' => User::class,
+            ]
+        );
+    }
 }

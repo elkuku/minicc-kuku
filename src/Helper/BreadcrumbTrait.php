@@ -13,44 +13,43 @@ namespace App\Helper;
  */
 trait BreadcrumbTrait
 {
-	/**
-	 * @var array
-	 */
-	private $breadcrumbs = [];
+    /**
+     * @var array
+     */
+    private $breadcrumbs = [];
 
-	/**
-	 * @param string $text
-	 * @param string $link
-	 *
-	 * @return $this
-	 */
-	protected function addBreadcrumb(string $text, string $link = ''): self
-	{
-		$this->initBreadcrumbs();
+    /**
+     * @param string $text
+     * @param string $link
+     *
+     * @return $this
+     */
+    protected function addBreadcrumb(string $text, string $link = ''): self
+    {
+        $this->initBreadcrumbs();
 
-		$this->breadcrumbs[$text] = $link;
+        $this->breadcrumbs[$text] = $link;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * @return array
-	 */
-	protected function getBreadcrumbs(): array
-	{
-		return $this->initBreadcrumbs()->breadcrumbs;
-	}
+    /**
+     * @return array
+     */
+    protected function getBreadcrumbs(): array
+    {
+        return $this->initBreadcrumbs()->breadcrumbs;
+    }
 
-	/**
-	 * @return $this
-	 */
-	private function initBreadcrumbs(): self
-	{
-		if (!$this->breadcrumbs)
-		{
-			$this->breadcrumbs = ['Home' => 'welcome'];
-		}
+    /**
+     * @return $this
+     */
+    private function initBreadcrumbs(): self
+    {
+        if (!$this->breadcrumbs) {
+            $this->breadcrumbs = ['Home' => 'welcome'];
+        }
 
-		return $this;
-	}
+        return $this;
+    }
 }

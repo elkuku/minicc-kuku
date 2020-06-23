@@ -27,160 +27,155 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
  */
 class UserController extends AbstractController
 {
-	/**
-	 * @Route("/", name="users-list")
-	 *
-	 * @Security("is_granted('ROLE_ADMIN')")
-	 */
-	public function list(UserRepository $userRepo, UserStateRepository $stateRepo, Request $request): Response
-	{
-		$userState = (int) $request->get('user_state', 1);
+    /**
+     * @Route("/", name="users-list")
+     *
+     * @Security("is_granted('ROLE_ADMIN')")
+     */
+    public function list(UserRepository $userRepo, UserStateRepository $stateRepo, Request $request): Response
+    {
+        $userState = (int)$request->get('user_state', 1);
 
-		$criteria = [];// ['role' => 'ROLE_USER'];
+        $criteria = [];// ['role' => 'ROLE_USER'];
 
-		if ($userState)
-		{
-			$criteria['state'] = $stateRepo->find($userState);
-		}
+        if ($userState) {
+            $criteria['state'] = $stateRepo->find($userState);
+        }
 
-		return $this->render(
-			'user/list.html.twig',
-			[
-				'users'     => $userRepo->findBy($criteria),
-				'userState' => $userState,
-				'states'    => $stateRepo->findAll(),
-			]
-		);
-	}
+        return $this->render(
+            'user/list.html.twig',
+            [
+                'users'     => $userRepo->findBy($criteria),
+                'userState' => $userState,
+                'states'    => $stateRepo->findAll(),
+            ]
+        );
+    }
 
-	/**
-	 * @Route("/edit/{id}", name="user-edit")
-	 * @Security("is_granted('ROLE_ADMIN')")
-	 */
-	public function edit(User $client, Request $request): Response
-	{
-		$form = $this->createForm(UserFullType::class, $client);
+    /**
+     * @Route("/edit/{id}", name="user-edit")
+     * @Security("is_granted('ROLE_ADMIN')")
+     */
+    public function edit(User $client, Request $request): Response
+    {
+        $form = $this->createForm(UserFullType::class, $client);
 
-		$form->handleRequest($request);
+        $form->handleRequest($request);
 
-		if ($form->isSubmitted() && $form->isValid())
-		{
-			$client = $form->getData();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $client = $form->getData();
 
-			$em = $this->getDoctrine()->getManager();
-			$em->persist($client);
-			$em->flush();
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($client);
+            $em->flush();
 
-			$this->addFlash('success', 'El usuario ha sido guardado');
+            $this->addFlash('success', 'El usuario ha sido guardado');
 
-			return $this->redirectToRoute('users-list');
-		}
+            return $this->redirectToRoute('users-list');
+        }
 
-		return $this->render(
-			'user/form.html.twig',
-			[
-				'form' => $form->createView(),
-				'data' => $client,
-			]
-		);
-	}
+        return $this->render(
+            'user/form.html.twig',
+            [
+                'form' => $form->createView(),
+                'data' => $client,
+            ]
+        );
+    }
 
-	/**
-	 * @Route("/pdf", name="pdf-users")
-	 * @Security("is_granted('ROLE_ADMIN')")
-	 */
-	public function pdfList(UserRepository $userRepository): Response
-	{
-		return $this->render(
-			'user/user-pdf-list.html.twig',
-			[
-				'users' => $this->getSortedUsers($userRepository),
-			]
-		);
-	}
+    /**
+     * @Route("/pdf", name="pdf-users")
+     * @Security("is_granted('ROLE_ADMIN')")
+     */
+    public function pdfList(UserRepository $userRepository): Response
+    {
+        return $this->render(
+            'user/user-pdf-list.html.twig',
+            [
+                'users' => $this->getSortedUsers($userRepository),
+            ]
+        );
+    }
 
-	/**
-	 * @Route("/ruclist", name="users-ruclist")
-	 *
-	 * @Security("is_granted('ROLE_ADMIN')")
-	 */
-	public function rucList(UserRepository $userRepository, Pdf $pdf): PdfResponse
-	{
-		$html = $this->renderView('user/ruclist.html.twig', ['users' => $this->getSortedUsers($userRepository)]);
+    /**
+     * @Route("/ruclist", name="users-ruclist")
+     *
+     * @Security("is_granted('ROLE_ADMIN')")
+     */
+    public function rucList(UserRepository $userRepository, Pdf $pdf): PdfResponse
+    {
+        $html = $this->renderView('user/ruclist.html.twig', ['users' => $this->getSortedUsers($userRepository)]);
 
-		return new PdfResponse(
-			$pdf->getOutputFromHtml($html),
-			sprintf('user-list-%s.pdf', date('Y-m-d'))
-		);
-	}
+        return new PdfResponse(
+            $pdf->getOutputFromHtml($html),
+            sprintf('user-list-%s.pdf', date('Y-m-d'))
+        );
+    }
 
-	/**
-	 * Sort users by their store number(s).
-	 */
-	private function getSortedUsers(UserRepository $userRepository): array
-	{
-		$users = $userRepository->findActiveUsers();
+    /**
+     * Sort users by their store number(s).
+     */
+    private function getSortedUsers(UserRepository $userRepository): array
+    {
+        $users = $userRepository->findActiveUsers();
 
-		usort(
-			$users,
-			static function ($a, $b) {
-				$aId = 0;
-				$bId = 0;
+        usort(
+            $users,
+            static function ($a, $b) {
+                $aId = 0;
+                $bId = 0;
 
-				/** @type User $a */
-				foreach ($a->getStores() as $store)
-				{
-					$aId = $store->getId();
-				}
+                /** @type User $a */
+                foreach ($a->getStores() as $store) {
+                    $aId = $store->getId();
+                }
 
-				/** @type User $b */
-				foreach ($b->getStores() as $store)
-				{
-					$bId = $store->getId();
-				}
+                /** @type User $b */
+                foreach ($b->getStores() as $store) {
+                    $bId = $store->getId();
+                }
 
-				return ($aId < $bId) ? -1 : 1;
-			}
-		);
+                return ($aId < $bId) ? -1 : 1;
+            }
+        );
 
-		return $users;
-	}
+        return $users;
+    }
 
-	/**
-	 * @Route("/new", name="register")
-	 *
-	 * // NOTE: Only admin can register new users !
-	 * @Security("is_granted('ROLE_ADMIN')")
-	 */
-	public function new(UserPasswordEncoderInterface $encoder, Request $request): Response
-	{
-		// Create a new blank user and process the form
-		$user = new User;
-		$form = $this->createForm(UserType::class, $user);
-		$form->handleRequest($request);
+    /**
+     * @Route("/new", name="register")
+     *
+     * // NOTE: Only admin can register new users !
+     * @Security("is_granted('ROLE_ADMIN')")
+     */
+    public function new(UserPasswordEncoderInterface $encoder, Request $request): Response
+    {
+        // Create a new blank user and process the form
+        $user = new User;
+        $form = $this->createForm(UserType::class, $user);
+        $form->handleRequest($request);
 
-		if ($form->isSubmitted() && $form->isValid())
-		{
-			// Encode the new users password
-			$password = $encoder->encodePassword($user, $user->getPlainPassword());
-			$user->setPassword($password);
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Encode the new users password
+            $password = $encoder->encodePassword($user, $user->getPlainPassword());
+            $user->setPassword($password);
 
-			// Set their role
-			$user->setRole('ROLE_USER');
+            // Set their role
+            $user->setRole('ROLE_USER');
 
-			// Save
-			$em = $this->getDoctrine()->getManager();
-			$em->persist($user);
-			$em->flush();
+            // Save
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
 
-			return $this->redirectToRoute('login');
-		}
+            return $this->redirectToRoute('login');
+        }
 
-		return $this->render(
-			'auth/register.html.twig',
-			[
-				'form' => $form->createView(),
-			]
-		);
-	}
+        return $this->render(
+            'auth/register.html.twig',
+            [
+                'form' => $form->createView(),
+            ]
+        );
+    }
 }

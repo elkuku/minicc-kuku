@@ -26,146 +26,140 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class DepositController extends AbstractController
 {
-	use PaginatorTrait;
+    use PaginatorTrait;
 
-	/**
-	 * @Route("/", name="deposits")
-	 *
-	 * @Security("is_granted('ROLE_ADMIN')")
-	 */
-	public function index(DepositRepository $depositRepository, Request $request): Response
-	{
-		$paginatorOptions = $this->getPaginatorOptions($request);
+    /**
+     * @Route("/", name="deposits")
+     *
+     * @Security("is_granted('ROLE_ADMIN')")
+     */
+    public function index(DepositRepository $depositRepository, Request $request): Response
+    {
+        $paginatorOptions = $this->getPaginatorOptions($request);
 
-		$deposits = $depositRepository->getPaginatedList($paginatorOptions);
+        $deposits = $depositRepository->getPaginatedList($paginatorOptions);
 
-		$paginatorOptions->setMaxPages(ceil(\count($deposits) / $paginatorOptions->getLimit()));
+        $paginatorOptions->setMaxPages(
+            ceil(
+                \count($deposits) / $paginatorOptions->getLimit()
+            )
+        );
 
-		return $this->render(
-			'deposit/list.html.twig',
-			[
-				'deposits'         => $deposits,
-				'paginatorOptions' => $paginatorOptions,
-			]
-		);
-	}
+        return $this->render(
+            'deposit/list.html.twig',
+            [
+                'deposits'         => $deposits,
+                'paginatorOptions' => $paginatorOptions,
+            ]
+        );
+    }
 
-	/**
-	 * @Route("/upload", name="upload-csv")
-	 *
-	 * @Security("is_granted('ROLE_ADMIN')")
-	 */
-	public function uploadCSV(PaymentMethodRepository $paymentMethodRepository, DepositRepository $depositRepository,
-	                          Request $request
-	): RedirectResponse
-	{
-		$csvFile = $request->files->get('csv_file');
+    /**
+     * @Route("/upload", name="upload-csv")
+     *
+     * @Security("is_granted('ROLE_ADMIN')")
+     */
+    public function uploadCSV(
+        PaymentMethodRepository $paymentMethodRepository, DepositRepository $depositRepository,
+        Request $request
+    ): RedirectResponse {
+        $csvFile = $request->files->get('csv_file');
 
-		if (!$csvFile)
-		{
-			throw new \RuntimeException('No CSV file recieved.');
-		}
+        if (!$csvFile) {
+            throw new \RuntimeException('No CSV file recieved.');
+        }
 
-		$path = $csvFile->getRealPath();
+        $path = $csvFile->getRealPath();
 
-		if (!$path)
-		{
-			throw new \RuntimeException('Invalid CSV file.');
-		}
+        if (!$path) {
+            throw new \RuntimeException('Invalid CSV file.');
+        }
 
-		$csvData = (new CsvParser)->parseCSV(file($path));
+        $csvData = (new CsvParser)->parseCSV(file($path));
 
-		$entity = $paymentMethodRepository->find(2);
+        $entity = $paymentMethodRepository->find(2);
 
-		if (!$entity)
-		{
-			throw new \UnexpectedValueException('Invalid entity');
-		}
+        if (!$entity) {
+            throw new \UnexpectedValueException('Invalid entity');
+        }
 
-		$em = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getManager();
 
-		$insertCount = 0;
+        $insertCount = 0;
 
-		foreach ($csvData->lines as $line)
-		{
-			if (!isset($line->descripcion))
-			{
-				continue;
-			}
+        foreach ($csvData->lines as $line) {
+            if (!isset($line->descripcion)) {
+                continue;
+            }
 
-			if ('DEPOSITO' !== $line->descripcion)
-			{
-				continue;
-			}
+            if ('DEPOSITO' !== $line->descripcion) {
+                continue;
+            }
 
-//			if (false !== strpos($line->concepto, 'INTERES'))
-//			{
-//				continue;
-//			}
+            //			if (false !== strpos($line->concepto, 'INTERES'))
+            //			{
+            //				continue;
+            //			}
 
-			$deposit = (new Deposit)
-				->setEntity($entity)
-				->setDate(new \DateTime(str_replace('/', '-', $line->fecha)))
-				->setDocument($line->{'numero de documento'})
-				->setAmount($line->credito);
+            $deposit = (new Deposit)
+                ->setEntity($entity)
+                ->setDate(new \DateTime(str_replace('/', '-', $line->fecha)))
+                ->setDocument($line->{'numero de documento'})
+                ->setAmount($line->credito);
 
-			if (false === $depositRepository->has($deposit))
-			{
-				$em->persist($deposit);
-				$insertCount++;
+            if (false === $depositRepository->has($deposit)) {
+                $em->persist($deposit);
+                $insertCount++;
 
-				continue;
-			}
-		}
+                continue;
+            }
+        }
 
-		$em->flush();
+        $em->flush();
 
-		$this->addFlash(($insertCount ? 'success' : 'warning'), 'Depositos insertados: ' . $insertCount);
+        $this->addFlash(
+            ($insertCount ? 'success' : 'warning'), 'Depositos insertados: '
+            .$insertCount
+        );
 
-		return $this->redirectToRoute('deposits');
-	}
+        return $this->redirectToRoute('deposits');
+    }
 
-	/**
-	 * @Route("/lookup", name="lookup-depo")
-	 *
-	 * @Security("is_granted('ROLE_ADMIN')")
-	 */
-	public function lookup(DepositRepository $depositRepository, Request $request): JsonResponse
-	{
-		$documentId = $request->get('document_id');
+    /**
+     * @Route("/lookup", name="lookup-depo")
+     *
+     * @Security("is_granted('ROLE_ADMIN')")
+     */
+    public function lookup(DepositRepository $depositRepository, Request $request): JsonResponse
+    {
+        $documentId = $request->get('document_id');
 
-		$deposits = $depositRepository->lookup($documentId);
+        $deposits = $depositRepository->lookup($documentId);
 
-		$response = [
-			'error' => '',
-			'data'  => '',
-		];
+        $response = [
+            'error' => '',
+            'data'  => '',
+        ];
 
-		if (!$deposits)
-		{
-			$response['error'] = 'No se encontró ninún depósito con este número!';
-		}
-		elseif (\count($deposits) > 1)
-		{
-			$ids = [];
-			/** @type Deposit $d */
-			foreach ($deposits as $deposit)
-			{
-				$d     = $deposit[0];
-				$ids[] = $d->getDocument();
-			}
+        if (!$deposits) {
+            $response['error'] = 'No se encontró ninún depósito con este número!';
+        } elseif (\count($deposits) > 1) {
+            $ids = [];
+            /** @type Deposit $d */
+            foreach ($deposits as $deposit) {
+                $d = $deposit[0];
+                $ids[] = $d->getDocument();
+            }
 
-			$response['error'] = 'Ambiguous selection. Found: ' . implode(' ', $ids);
-		}
-		elseif ($deposits[0]['tr_id'])
-		{
-			$response['error'] = 'Deposito ALREADY ASSIGNED!: ' . $deposits[0]['tr_id'];
-		}
-		else
-		{
-			$response['data'] = $deposits[0];
-		}
+            $response['error'] = 'Ambiguous selection. Found: '
+                .implode(' ', $ids);
+        } elseif ($deposits[0]['tr_id']) {
+            $response['error'] = 'Deposito ALREADY ASSIGNED!: '
+                .$deposits[0]['tr_id'];
+        } else {
+            $response['data'] = $deposits[0];
+        }
 
-		return new JsonResponse($response);
-	}
+        return new JsonResponse($response);
+    }
 }

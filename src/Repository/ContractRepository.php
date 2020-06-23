@@ -21,54 +21,52 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  */
 class ContractRepository extends ServiceEntityRepository
 {
-	public function __construct(ManagerRegistry $registry)
-	{
-		parent::__construct($registry, Contract::class);
-	}
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, Contract::class);
+    }
 
-	/**
-	 * @param int $storeId
-	 * @param int $year
-	 *
-	 * @return Contract[]
-	 */
-	public function findContracts($storeId = 0, $year = 0): array
-	{
-		$query = $this->createQueryBuilder('c');
+    /**
+     * @param int $storeId
+     * @param int $year
+     *
+     * @return Contract[]
+     */
+    public function findContracts($storeId = 0, $year = 0): array
+    {
+        $query = $this->createQueryBuilder('c');
 
-		$query->where('c.id > 1');
+        $query->where('c.id > 1');
 
-		if ($storeId)
-		{
-			$query->andWhere('c.storeNumber = :storeId')
-				->setParameter('storeId', $storeId);
-		}
+        if ($storeId) {
+            $query->andWhere('c.storeNumber = :storeId')
+                ->setParameter('storeId', $storeId);
+        }
 
-		if ($year)
-		{
-			$query->andWhere('YEAR(c.date) = :year')
-				->setParameter('year', $year);
-		}
+        if ($year) {
+            $query->andWhere('YEAR(c.date) = :year')
+                ->setParameter('year', $year);
+        }
 
-		$query->addOrderBy('c.date', 'DESC');
-		$query->addOrderBy('c.storeNumber', 'ASC');
+        $query->addOrderBy('c.date', 'DESC');
+        $query->addOrderBy('c.storeNumber', 'ASC');
 
-		return $query
-			->getQuery()
-			->getResult();
-	}
+        return $query
+            ->getQuery()
+            ->getResult();
+    }
 
-	/**
-	 * @return mixed
-	 */
-	public function findPlantilla()
-	{
-		$data = $this->matching(
-			Criteria::create()->where(
-				Criteria::expr()->eq('id', 1)
-			)
-		);
+    /**
+     * @return mixed
+     */
+    public function findPlantilla()
+    {
+        $data = $this->matching(
+            Criteria::create()->where(
+                Criteria::expr()->eq('id', 1)
+            )
+        );
 
-		return $data[0];
-	}
+        return $data[0];
+    }
 }

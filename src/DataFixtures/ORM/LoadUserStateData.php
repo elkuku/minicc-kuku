@@ -17,22 +17,21 @@ use Doctrine\Common\Persistence\ObjectManager;
  */
 class LoadUserStateData implements FixtureInterface
 {
-	/**
-	 * {@inheritdoc}
-	 */
-	public function load(ObjectManager $manager): void
-	{
-		$names = ['Activo', 'Inactivo'];
+    /**
+     * {@inheritdoc}
+     */
+    public function load(ObjectManager $manager): void
+    {
+        $names = ['Activo', 'Inactivo'];
 
-		foreach ($names as $name)
-		{
-			$userState = new UserState;
+        foreach ($names as $name) {
+            $userState = new UserState;
 
-			$userState->setName($name);
+            $userState->setName($name);
 
-			$manager->persist($userState);
-		}
+            $manager->persist($userState);
+        }
 
-		$manager->flush();
-	}
+        $manager->flush();
+    }
 }

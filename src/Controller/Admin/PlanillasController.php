@@ -28,201 +28,188 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class PlanillasController extends AbstractController
 {
-	/**
-	 * @Route("/planillas-mail", name="planillas-mail")
-	 *
-	 * @Security("is_granted('ROLE_ADMIN')")
-	 */
-	public function mail(StoreRepository $storeRepository, TransactionRepository $transactionRepository, Pdf $pdf, MailerInterface $mailer, KernelInterface $kernel): Response
-	{
-		$year  = date('Y');
-		$month = date('m');
+    /**
+     * @Route("/planillas-mail", name="planillas-mail")
+     *
+     * @Security("is_granted('ROLE_ADMIN')")
+     */
+    public function mail(StoreRepository $storeRepository, TransactionRepository $transactionRepository, Pdf $pdf, MailerInterface $mailer, KernelInterface $kernel): Response
+    {
+        $year = date('Y');
+        $month = date('m');
 
-		$fileName = "planillas-$year-$month.pdf";
-		$html     = 'Attachment: ' . $fileName;
+        $fileName = "planillas-$year-$month.pdf";
+        $html = 'Attachment: '.$fileName;
 
-		$document = $pdf->getOutputFromHtml(
-			$this->getPlanillasHtml($year, $month, $storeRepository, $transactionRepository, $kernel)
-		);
+        $document = $pdf->getOutputFromHtml(
+            $this->getPlanillasHtml($year, $month, $storeRepository, $transactionRepository, $kernel)
+        );
 
-		$email = (new Email())
-			->from('minicckuku@gmail.com')
-			->to('minicckuku@gmail.com')
-			->subject("NEW Planillas $year-$month")
-			->html($html)
-			->attach($document, "planillas-$year-$month.pdf");
+        $email = (new Email())
+            ->from('minicckuku@gmail.com')
+            ->to('minicckuku@gmail.com')
+            ->subject("NEW Planillas $year-$month")
+            ->html($html)
+            ->attach($document, "planillas-$year-$month.pdf");
 
-		try
-		{
-			$mailer->send($email);
-			$this->addFlash('success', 'Mail has been sent.');
-		}
-		catch (TransportExceptionInterface $e)
-		{
-			$this->addFlash('danger', 'ERROR sending mail: ' . $e->getMessage());
-		}
+        try {
+            $mailer->send($email);
+            $this->addFlash('success', 'Mail has been sent.');
+        } catch (TransportExceptionInterface $e) {
+            $this->addFlash('danger', 'ERROR sending mail: '.$e->getMessage());
+        }
 
-		return $this->render('admin/tasks.html.twig');
-	}
+        return $this->render('admin/tasks.html.twig');
+    }
 
-	/**
-	 * @Route("/planilla-mail", name="planilla-mail")
-	 *
-	 * @Security("is_granted('ROLE_ADMIN')")
-	 */
-	public function mailClients(StoreRepository $storeRepository, TransactionRepository $transactionRepository, Request $request, Pdf $pdf, \Swift_Mailer $mailer, KernelInterface $kernel): Response
-	{
-		$recipients = $request->get('recipients');
+    /**
+     * @Route("/planilla-mail", name="planilla-mail")
+     *
+     * @Security("is_granted('ROLE_ADMIN')")
+     */
+    public function mailClients(StoreRepository $storeRepository, TransactionRepository $transactionRepository, Request $request, Pdf $pdf, \Swift_Mailer $mailer, KernelInterface $kernel): Response
+    {
+        $recipients = $request->get('recipients');
 
-		if (!$recipients)
-		{
-			$this->addFlash('warning', 'No recipients selected');
+        if (!$recipients) {
+            $this->addFlash('warning', 'No recipients selected');
 
-			return $this->redirectToRoute('mail-list-transactions');
-		}
+            return $this->redirectToRoute('mail-list-transactions');
+        }
 
-		$year  = date('Y');
-		$month = date('m');
+        $year = date('Y');
+        $month = date('m');
 
-		$fileName  = "planilla-$year-$month.pdf";
-		$stores    = $storeRepository->getActive();
-		$failures  = [];
-		$successes = [];
+        $fileName = "planilla-$year-$month.pdf";
+        $stores = $storeRepository->getActive();
+        $failures = [];
+        $successes = [];
 
-		foreach ($stores as $store)
-		{
-			if (!array_key_exists($store->getId(), $recipients))
-			{
-				continue;
-			}
+        foreach ($stores as $store) {
+            if (!array_key_exists($store->getId(), $recipients)) {
+                continue;
+            }
 
-			$document = $pdf->getOutputFromHtml(
-				$this->getPlanillasHtml($year, $month, $storeRepository, $transactionRepository, $kernel, $store->getId())
-			);
+            $document = $pdf->getOutputFromHtml(
+                $this->getPlanillasHtml($year, $month, $storeRepository, $transactionRepository, $kernel, $store->getId())
+            );
 
-			$html = $this->renderView(
-				'_mail/client-planillas.twig',
-				[
-					'user'     => $store->getUser(),
-					'store'    => $store,
-					'factDate' => "$year-$month-1",
-					'fileName' => $fileName,
-				]
-			);
+            $html = $this->renderView(
+                '_mail/client-planillas.twig',
+                [
+                    'user'     => $store->getUser(),
+                    'store'    => $store,
+                    'factDate' => "$year-$month-1",
+                    'fileName' => $fileName,
+                ]
+            );
 
-			$count = 0;
+            $count = 0;
 
-			try
-			{
-				$message = (new \Swift_Message)
-					->setSubject("Planilla Local {$store->getId()} ($month - $year)")
-					->setFrom('minicckuku@gmail.com')
-					->setTo($store->getUser()->getEmail())
-					->setBody($html)
-					->attach(new \Swift_Attachment($document, $fileName, 'application/pdf'));
+            try {
+                $message = (new \Swift_Message)
+                    ->setSubject("Planilla Local {$store->getId()} ($month - $year)")
+                    ->setFrom('minicckuku@gmail.com')
+                    ->setTo($store->getUser()->getEmail())
+                    ->setBody($html)
+                    ->attach(new \Swift_Attachment($document, $fileName, 'application/pdf'));
 
-				$count       = $mailer->send($message);
-				$successes[] = $store->getId();
-			}
-			catch (\Exception $exception)
-			{
-				$failures[] = $exception->getMessage();
-			}
+                $count = $mailer->send($message);
+                $successes[] = $store->getId();
+            } catch (\Exception $exception) {
+                $failures[] = $exception->getMessage();
+            }
 
-			if (0 === $count)
-			{
-				$failures[] = 'Unable to send the message to store: ' . $store->getId();
-			}
-		}
+            if (0 === $count) {
+                $failures[] = 'Unable to send the message to store: '
+                    .$store->getId();
+            }
+        }
 
-		if ($failures)
-		{
-			$this->addFlash('warning', implode('<br>', $failures));
-		}
+        if ($failures) {
+            $this->addFlash('warning', implode('<br>', $failures));
+        }
 
-		if ($successes)
-		{
-			$this->addFlash('success', 'Mails have been sent to stores: ' . implode(', ', $successes));
-		}
+        if ($successes) {
+            $this->addFlash(
+                'success', 'Mails have been sent to stores: '
+                .implode(', ', $successes)
+            );
+        }
 
-		return $this->redirectToRoute('welcome');
-	}
+        return $this->redirectToRoute('welcome');
+    }
 
-	/**
-	 * @Route("/planillas", name="planillas")
-	 *
-	 * @Security("is_granted('ROLE_ADMIN')")
-	 */
-	public function download(StoreRepository $storeRepository, TransactionRepository $transactionRepository, Pdf $pdf, KernelInterface $kernel): PdfResponse
-	{
-		$year  = date('Y');
-		$month = date('m');
+    /**
+     * @Route("/planillas", name="planillas")
+     *
+     * @Security("is_granted('ROLE_ADMIN')")
+     */
+    public function download(StoreRepository $storeRepository, TransactionRepository $transactionRepository, Pdf $pdf, KernelInterface $kernel): PdfResponse
+    {
+        $year = date('Y');
+        $month = date('m');
 
-		$filename = sprintf('planillas-%d-%d.pdf', $year, $month);
-		$html     = $this->getPlanillasHtml($year, $month, $storeRepository, $transactionRepository, $kernel);
+        $filename = sprintf('planillas-%d-%d.pdf', $year, $month);
+        $html = $this->getPlanillasHtml($year, $month, $storeRepository, $transactionRepository, $kernel);
 
-		return new PdfResponse(
-			$pdf->getOutputFromHtml($html),
-			$filename
-		);
-	}
+        return new PdfResponse(
+            $pdf->getOutputFromHtml($html),
+            $filename
+        );
+    }
 
-	/**
-	 * Get HTML
-	 */
-	private function getPlanillasHtml(int $year, int $month, StoreRepository $storeRepo, TransactionRepository $transactionRepo, KernelInterface $kernel, int $storeId = 0): string
-	{
-		$stores = $storeRepo->findAll();
+    /**
+     * Get HTML
+     */
+    private function getPlanillasHtml(int $year, int $month, StoreRepository $storeRepo, TransactionRepository $transactionRepo, KernelInterface $kernel, int $storeId = 0): string
+    {
+        $stores = $storeRepo->findAll();
 
-		$factDate = $year . '-' . $month . '-1';
+        $factDate = $year.'-'.$month.'-1';
 
-		if (1 === $month)
-		{
-			$prevYear  = $year - 1;
-			$prevMonth = 12;
-		}
-		else
-		{
-			$prevYear  = $year;
-			$prevMonth = $month - 1;
-		}
+        if (1 === $month) {
+            $prevYear = $year - 1;
+            $prevMonth = 12;
+        } else {
+            $prevYear = $year;
+            $prevMonth = $month - 1;
+        }
 
-		$prevDate = $prevYear . '-' . $prevMonth . '-01';
+        $prevDate = $prevYear.'-'.$prevMonth.'-01';
 
-		$storeData = [];
-		$selecteds = [];
+        $storeData = [];
+        $selecteds = [];
 
-		/** @type Store $store */
-		foreach ($stores as $store)
-		{
-			if ($storeId && $store->getId() !== $storeId)
-			{
-				continue;
-			}
+        /** @type Store $store */
+        foreach ($stores as $store) {
+            if ($storeId && $store->getId() !== $storeId) {
+                continue;
+            }
 
-			$storeData[$store->getId()]['saldoIni'] = $transactionRepo->getSaldoALaFecha(
-				$store,
-				$prevYear . '-' . $prevMonth . '-01'
-			);
+            $storeData[$store->getId()]['saldoIni'] = $transactionRepo->getSaldoALaFecha(
+                $store,
+                $prevYear.'-'.$prevMonth.'-01'
+            );
 
-			$storeData[$store->getId()]['transactions'] = $transactionRepo->findMonthPayments(
-				$store,
-				$prevMonth,
-				$prevYear
-			);
+            $storeData[$store->getId()]['transactions'] = $transactionRepo->findMonthPayments(
+                $store,
+                $prevMonth,
+                $prevYear
+            );
 
-			$selecteds[] = $store;
-		}
+            $selecteds[] = $store;
+        }
 
-		return $this->renderView(
-			'admin/planillas-pdf.html.twig',
-			[
-				'factDate'  => $factDate,
-				'prevDate'  => $prevDate,
-				'stores'    => $selecteds,
-				'storeData' => $storeData,
-				'rootPath'  => $kernel->getProjectDir() . '/public',
-			]
-		);
-	}
+        return $this->renderView(
+            'admin/planillas-pdf.html.twig',
+            [
+                'factDate'  => $factDate,
+                'prevDate'  => $prevDate,
+                'stores'    => $selecteds,
+                'storeData' => $storeData,
+                'rootPath'  => $kernel->getProjectDir().'/public',
+            ]
+        );
+    }
 }

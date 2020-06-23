@@ -20,20 +20,21 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  */
 class UserRepository extends ServiceEntityRepository
 {
-	public function __construct(ManagerRegistry $registry)
-	{
-		parent::__construct($registry, User::class);
-	}
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, User::class);
+    }
 
-	/**
-	 * Find all active users.
-	 * @return User[]
-	 */
-	public function findActiveUsers(): array
-	{
-		return $this->findBy(
-			['role' => 'ROLE_USER', 'state' => 1],
-			['name' => 'ASC']
-		);
-	}
+    /**
+     * Find all active users.
+     *
+     * @return User[]
+     */
+    public function findActiveUsers(): array
+    {
+        return $this->findBy(
+            ['role' => 'ROLE_USER', 'state' => 1],
+            ['name' => 'ASC']
+        );
+    }
 }

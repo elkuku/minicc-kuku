@@ -19,230 +19,208 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class SyncController extends AbstractController
 {
-	/**
-	 * @Route("/export-table/{name}", name="export-table")
-	 * @Security("is_granted('ROLE_ADMIN')")
-	 *
-	 * @param string $name
-	 *
-	 * @return Response
-	 */
-	public function export(string $name): Response
-	{
-		$content  = json_encode($this->getTableData($name));
-		$filename = sprintf('export-%s-%s.json', $name, date('Y-m-d'));
+    /**
+     * @Route("/export-table/{name}", name="export-table")
+     * @Security("is_granted('ROLE_ADMIN')")
+     *
+     * @param string $name
+     *
+     * @return Response
+     */
+    public function export(string $name): Response
+    {
+        $content = json_encode($this->getTableData($name));
+        $filename = sprintf('export-%s-%s.json', $name, date('Y-m-d'));
 
-		return new Response(
-			$content,
-			200,
-			[
-				'Content-Type'        => 'application/txt',
-				'Content-Disposition' => sprintf('attachment; filename="%s"', $filename),
-			]
-		);
-	}
+        return new Response(
+            $content,
+            200,
+            [
+                'Content-Type'        => 'application/txt',
+                'Content-Disposition' => sprintf('attachment; filename="%s"', $filename),
+            ]
+        );
+    }
 
-	/**
-	 * @Route("/import-table", name="import-table")
-	 * @Security("is_granted('ROLE_ADMIN')")
-	 *
-	 * @param Request $request
-	 *
-	 * @return Response
-	 * @throws \Doctrine\DBAL\DBALException
-	 */
-	public function import(Request $request): Response
-	{
-		$file = $request->files->get('file');
+    /**
+     * @Route("/import-table", name="import-table")
+     * @Security("is_granted('ROLE_ADMIN')")
+     *
+     * @param Request $request
+     *
+     * @return Response
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    public function import(Request $request): Response
+    {
+        $file = $request->files->get('file');
 
-		if (!$file)
-		{
-			$this->addFlash('danger', 'No file received.');
+        if (!$file) {
+            $this->addFlash('danger', 'No file received.');
 
-			return $this->redirectToRoute('admin-tasks');
-		}
+            return $this->redirectToRoute('admin-tasks');
+        }
 
-		$path = $file->getRealPath();
+        $path = $file->getRealPath();
 
-		if (!$path)
-		{
-			$this->addFlash('danger', 'Invalid file.');
+        if (!$path) {
+            $this->addFlash('danger', 'Invalid file.');
 
-			return $this->redirectToRoute('admin-tasks');
-		}
+            return $this->redirectToRoute('admin-tasks');
+        }
 
-		$parts = explode('-', $file->getClientOriginalName());
+        $parts = explode('-', $file->getClientOriginalName());
 
-		if (\count($parts) < 2)
-		{
-			$this->addFlash('danger', 'Invalid filename should be "export-{TABLE_NAME}-{DATE}.json".');
+        if (\count($parts) < 2) {
+            $this->addFlash('danger', 'Invalid filename should be "export-{TABLE_NAME}-{DATE}.json".');
 
-			return $this->redirectToRoute('admin-tasks');
-		}
+            return $this->redirectToRoute('admin-tasks');
+        }
 
-		$tableName = $parts[1];
+        $tableName = $parts[1];
 
-		$newData = json_decode(file_get_contents($path));
+        $newData = json_decode(file_get_contents($path));
 
-		$oldData = $this->getTableData($tableName);
+        $oldData = $this->getTableData($tableName);
 
-		foreach ($newData as $i => $newItem)
-		{
-			foreach ($oldData as $io => $oldItem)
-			{
-				if ($oldItem['id'] === $newItem->id)
-				{
-					foreach ($newItem as $prop => $value)
-					{
-						if ($oldItem[$prop] !== $value)
-						{
-							throw new \UnexpectedValueException('Data inconsistency.');
-						}
-					}
+        foreach ($newData as $i => $newItem) {
+            foreach ($oldData as $io => $oldItem) {
+                if ($oldItem['id'] === $newItem->id) {
+                    foreach ($newItem as $prop => $value) {
+                        if ($oldItem[$prop] !== $value) {
+                            throw new \UnexpectedValueException('Data inconsistency.');
+                        }
+                    }
 
-					unset($newData[$i]);
-					continue 2;
-				}
-			}
-		}
+                    unset($newData[$i]);
+                    continue 2;
+                }
+            }
+        }
 
-		if (!\count($newData))
-		{
-			$this->addFlash('success', 'Everything is in Sync :)');
+        if (!\count($newData)) {
+            $this->addFlash('success', 'Everything is in Sync :)');
 
-			return $this->redirectToRoute('admin-tasks');
-		}
+            return $this->redirectToRoute('admin-tasks');
+        }
 
-		$queryLines   = [];
-		$queryLines[] = "INSERT INTO $tableName\n";
+        $queryLines = [];
+        $queryLines[] = "INSERT INTO $tableName\n";
 
-		$keys = [];
+        $keys = [];
 
-		foreach (reset($newData) as $prop => $value)
-		{
-			$keys[] = $prop;
-		}
+        foreach (reset($newData) as $prop => $value) {
+            $keys[] = $prop;
+        }
 
-		$queryLines[] = '(' . implode(', ', $keys) . ")\n";
+        $queryLines[] = '('.implode(', ', $keys).")\n";
 
-		$queryLines[] = "VALUES\n";
+        $queryLines[] = "VALUES\n";
 
-		$values = [];
+        $values = [];
 
-		foreach ($newData as $item)
-		{
-			$valueLine = '';
+        foreach ($newData as $item) {
+            $valueLine = '';
 
-			foreach ($item as $prop => $value)
-			{
-				if (null === $value)
-				{
-					$valueLine .= 'null, ';
-				}
-				elseif (strpos($value, '-') || strpos($value, '.'))
-				{
-					$valueLine .= "'$value', ";
-				}
-				else
-				{
-					$valueLine .= $value . ', ';
-				}
-			}
+            foreach ($item as $prop => $value) {
+                if (null === $value) {
+                    $valueLine .= 'null, ';
+                } elseif (strpos($value, '-') || strpos($value, '.')) {
+                    $valueLine .= "'$value', ";
+                } else {
+                    $valueLine .= $value.', ';
+                }
+            }
 
-			$values[] = sprintf('(%s)', trim($valueLine, ', '));
-		}
+            $values[] = sprintf('(%s)', trim($valueLine, ', '));
+        }
 
-		$queryLines[] = implode(",\n", $values) . ';';
+        $queryLines[] = implode(",\n", $values).';';
 
-		$query = implode('', $queryLines);
+        $query = implode('', $queryLines);
 
-		/** @type \Doctrine\ORM\EntityManager $em */
-		$em = $this->getDoctrine()->getManager();
+        /** @type \Doctrine\ORM\EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
 
-		/** @type \Doctrine\DBAL\Statement $statement */
-		$statement = $em->getConnection()->prepare($query);
-		$statement->execute();
+        /** @type \Doctrine\DBAL\Statement $statement */
+        $statement = $em->getConnection()->prepare($query);
+        $statement->execute();
 
-		$this->addFlash('success', \count($newData) . ' lines inserted');
+        $this->addFlash('success', \count($newData).' lines inserted');
 
-		return $this->redirectToRoute('admin-tasks');
-	}
+        return $this->redirectToRoute('admin-tasks');
+    }
 
-	/**
-	 * @Route("/backup", name="backup")
-	 * @Security("is_granted('ROLE_ADMIN')")
-	 *
-	 * @return Response
-	 */
-	public function backup(\Swift_Mailer $mailer): Response
-	{
-		$parts = parse_url($_ENV['DATABASE_URL']);
+    /**
+     * @Route("/backup", name="backup")
+     * @Security("is_granted('ROLE_ADMIN')")
+     *
+     * @return Response
+     */
+    public function backup(\Swift_Mailer $mailer): Response
+    {
+        $parts = parse_url($_ENV['DATABASE_URL']);
 
-		$hostname = $parts['host'];
-		$username = $parts['user'];
-		$password = $parts['pass'];
-		$database = ltrim($parts['path'], '/');
+        $hostname = $parts['host'];
+        $username = $parts['user'];
+        $password = $parts['pass'];
+        $database = ltrim($parts['path'], '/');
 
-		$cmd = sprintf('mysqldump -h %s -u %s -p%s %s|gzip 2>&1', $hostname, $username, $password, $database);
+        $cmd = sprintf('mysqldump -h %s -u %s -p%s %s|gzip 2>&1', $hostname, $username, $password, $database);
 
-		ob_start();
-		passthru($cmd, $retVal);
-		$gzip = ob_get_clean();
+        ob_start();
+        passthru($cmd, $retVal);
+        $gzip = ob_get_clean();
 
-		if ($retVal)
-		{
-			throw new \RuntimeException('Error creating DB backup: ' . $gzip);
-		}
+        if ($retVal) {
+            throw new \RuntimeException('Error creating DB backup: '.$gzip);
+        }
 
-		$fileName = date('Y-m-d') . '_backup.gz';
-		$mime     = 'application/x-gzip';
+        $fileName = date('Y-m-d').'_backup.gz';
+        $mime = 'application/x-gzip';
 
-		$message = (new \Swift_Message('Backup', '<h3>Backup</h3>Date: ' . date('Y-m-d'), 'text/html'))
-			->attach(new \Swift_Attachment($gzip, $fileName, $mime))
-			->setFrom('minicckuku@gmail.com')
-			->setTo('minicckuku@gmail.com');
+        $message = (new \Swift_Message(
+            'Backup', '<h3>Backup</h3>Date: '.date('Y-m-d'), 'text/html'
+        ))
+            ->attach(new \Swift_Attachment($gzip, $fileName, $mime))
+            ->setFrom('minicckuku@gmail.com')
+            ->setTo('minicckuku@gmail.com');
 
-		$count = $mailer->send($message);
+        $count = $mailer->send($message);
 
-		if (!$count)
-		{
-			$this->addFlash('danger', 'There was an error sending the message...');
-		}
-		else
-		{
-			$this->addFlash('success', 'Backup has been sent to your inbox.');
-		}
+        if (!$count) {
+            $this->addFlash('danger', 'There was an error sending the message...');
+        } else {
+            $this->addFlash('success', 'Backup has been sent to your inbox.');
+        }
 
-		return $this->redirectToRoute('admin-tasks');
-	}
+        return $this->redirectToRoute('admin-tasks');
+    }
 
-	/**
-	 * @param string $tableName
-	 *
-	 * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
-	 */
-	private function getTableData($tableName)
-	{
-		try
-		{
-			/** @type \Doctrine\ORM\EntityManager $em */
-			$em = $this->getDoctrine()->getManager();
+    /**
+     * @param string $tableName
+     *
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    private function getTableData($tableName)
+    {
+        try {
+            /** @type \Doctrine\ORM\EntityManager $em */
+            $em = $this->getDoctrine()->getManager();
 
-			$query = "SELECT * FROM $tableName;";
+            $query = "SELECT * FROM $tableName;";
 
-			/** @type \Doctrine\DBAL\Statement $statement */
-			$statement = $em->getConnection()->prepare($query);
-			$statement->execute();
+            /** @type \Doctrine\DBAL\Statement $statement */
+            $statement = $em->getConnection()->prepare($query);
+            $statement->execute();
 
-			$result = $statement->fetchAll();
-		}
-		catch (\Exception $exception)
-		{
-			$this->addFlash('danger', 'There was an error...');
+            $result = $statement->fetchAll();
+        } catch (\Exception $exception) {
+            $this->addFlash('danger', 'There was an error...');
 
-			return $this->redirectToRoute('admin-tasks');
-		}
+            return $this->redirectToRoute('admin-tasks');
+        }
 
-		return $result;
-	}
+        return $result;
+    }
 }

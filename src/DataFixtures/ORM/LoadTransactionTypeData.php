@@ -17,22 +17,21 @@ use Doctrine\Common\Persistence\ObjectManager;
  */
 class LoadTransactionTypeData implements FixtureInterface
 {
-	/**
-	 * {@inheritdoc}
-	 */
-	public function load(ObjectManager $manager): void
-	{
-		$names = ['Alquiler', 'Pago', 'Saldo Inicial', 'Ajuste'];
+    /**
+     * {@inheritdoc}
+     */
+    public function load(ObjectManager $manager): void
+    {
+        $names = ['Alquiler', 'Pago', 'Saldo Inicial', 'Ajuste'];
 
-		foreach ($names as $name)
-		{
-			$transactionType = new TransactionType;
+        foreach ($names as $name) {
+            $transactionType = new TransactionType;
 
-			$transactionType->setName($name);
+            $transactionType->setName($name);
 
-			$manager->persist($transactionType);
-		}
+            $manager->persist($transactionType);
+        }
 
-		$manager->flush();
-	}
+        $manager->flush();
+    }
 }

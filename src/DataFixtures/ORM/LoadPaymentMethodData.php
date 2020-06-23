@@ -17,22 +17,21 @@ use Doctrine\Common\Persistence\ObjectManager;
  */
 class LoadPaymentMethodData implements FixtureInterface
 {
-	/**
-	 * {@inheritdoc}
-	 */
-	public function load(ObjectManager $manager): void
-	{
-		$names = ['Bar', 'pch-765', 'gye-1005345'];
+    /**
+     * {@inheritdoc}
+     */
+    public function load(ObjectManager $manager): void
+    {
+        $names = ['Bar', 'pch-765', 'gye-1005345'];
 
-		foreach ($names as $name)
-		{
-			$paymentMethod = new PaymentMethod;
+        foreach ($names as $name) {
+            $paymentMethod = new PaymentMethod;
 
-			$paymentMethod->setName($name);
+            $paymentMethod->setName($name);
 
-			$manager->persist($paymentMethod);
-		}
+            $manager->persist($paymentMethod);
+        }
 
-		$manager->flush();
-	}
+        $manager->flush();
+    }
 }
