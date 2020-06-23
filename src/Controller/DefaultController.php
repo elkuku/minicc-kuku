@@ -20,61 +20,65 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class DefaultController extends AbstractController
 {
-	/**
-	 * @Route("/", name="welcome")
-	 */
-	public function index(StoreRepository $storeRepository, TransactionRepository $transactionRepository, TaxService $taxService): Response
-	{
-		$user      = $this->getUser();
-		$balances  = null;
-		$chartData = [];
+    /**
+     * @Route("/", name="welcome")
+     */
+    public function index(StoreRepository $storeRepository, TransactionRepository $transactionRepository, TaxService $taxService): Response
+    {
+        $user = $this->getUser();
+        $balances = null;
+        $chartData = [
+            'headers'    => [],
+            'monthsDebt' => [],
+            'balances'   => [],
+        ];
 
-		if ($user)
-		{
-			foreach ($storeRepository->getActive() as $store)
-			{
-				$balance                = $transactionRepository->getSaldo($store);
-				$chartData['headers'][] = 'Local ' . $store->getId();
-				$valAlq                 = $taxService->getValueConTax($store->getValAlq());
+        if ($user) {
+            foreach ($storeRepository->getActive() as $store) {
+                $balance = $transactionRepository->getSaldo($store);
+                $chartData['headers'][] = 'Local '.$store->getId();
+                $valAlq = $taxService->getValueConTax($store->getValAlq());
 
-				$chartData['monthsDebt'][] = $valAlq ? round(-$balance / $valAlq, 1) : 0;
-				$chartData['balances'][]   = -$balance;
+                $chartData['monthsDebt'][] = $valAlq ? round(
+                    -$balance / $valAlq, 1
+                ) : 0;
+                $chartData['balances'][] = -$balance;
 
-				$s         = new \stdClass();
-				$s->amount = $balance;
-				$s->store  = $store;
+                $s = new \stdClass();
+                $s->amount = $balance;
+                $s->store = $store;
 
-				$balances[] = $s;
-			}
-		}
+                $balances[] = $s;
+            }
+        }
 
-		return $this->render(
-			'default/index.html.twig',
-			[
-				'stores'    => $user ? $user->getStores() : null,
-				'balances'  => $balances,
-				'chartData' => [
-					'headers'    => json_encode($chartData['headers']),
-					'monthsDebt' => json_encode($chartData['monthsDebt']),
-					'balances'   => json_encode($chartData['balances'])
-				],
-			]
-		);
-	}
+        return $this->render(
+            'default/index.html.twig',
+            [
+                'stores'    => $user ? $user->getStores() : null,
+                'balances'  => $balances,
+                'chartData' => [
+                    'headers'    => json_encode($chartData['headers']),
+                    'monthsDebt' => json_encode($chartData['monthsDebt']),
+                    'balances'   => json_encode($chartData['balances']),
+                ],
+            ]
+        );
+    }
 
-	/**
-	 * @Route("/about", name="about")
-	 */
-	public function about(): Response
-	{
-		return $this->render('default/about.html.twig');
-	}
+    /**
+     * @Route("/about", name="about")
+     */
+    public function about(): Response
+    {
+        return $this->render('default/about.html.twig');
+    }
 
-	/**
-	 * @Route("/contact", name="contact")
-	 */
-	public function contact(): Response
-	{
-		return $this->render('default/contact.html.twig');
-	}
+    /**
+     * @Route("/contact", name="contact")
+     */
+    public function contact(): Response
+    {
+        return $this->render('default/contact.html.twig');
+    }
 }
