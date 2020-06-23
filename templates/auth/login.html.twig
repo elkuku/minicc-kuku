@@ -20,7 +20,8 @@
             {% if 'dev' == app.environment %}
                 <div class="form-group">
                     <label for="email" class="col-md-4 control-label">e-mail</label>
-                    <input id="email" class="form-control col-md-4" name="email" value="{{ last_username }}" required autofocus>
+                    <input id="email" class="form-control col-md-4" name="email" value="{{ last_username }}" required
+                           autofocus>
                 </div>
 
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
