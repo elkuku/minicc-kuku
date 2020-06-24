@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: elkuku
- * Date: 19.03.17
- * Time: 12:40
- */
 
 namespace App\Controller;
 
@@ -20,14 +14,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * Class AdminController
- */
 class AdminController extends AbstractController
 {
     /**
      * @Route("/cobrar", name="cobrar")
-     *
      * @Security("is_granted('ROLE_ADMIN')")
      */
     public function cobrar(
@@ -76,7 +66,6 @@ class AdminController extends AbstractController
 
     /**
      * @Route("/pay-day", name="pay-day")
-     *
      * @Security("is_granted('ROLE_ADMIN')")
      */
     public function payDay(
@@ -143,7 +132,6 @@ class AdminController extends AbstractController
 
     /**
      * @Route("/pagos-por-ano", name="pagos-por-ano")
-     *
      * @Security("is_granted('ROLE_ADMIN')")
      */
     public function pagosPorAno(Request $request, TransactionRepository $repository): Response
@@ -161,7 +149,6 @@ class AdminController extends AbstractController
 
     /**
      * @Route("/mail-list-transactions", name="mail-list-transactions")
-     *
      * @Security("is_granted('ROLE_ADMIN')")
      */
     public function mailListTransactions(StoreRepository $storeRepository): Response
@@ -176,7 +163,6 @@ class AdminController extends AbstractController
 
     /**
      * @Route("/mail-list-planillas", name="mail-list-planillas")
-     *
      * @Security("is_granted('ROLE_ADMIN')")
      */
     public function mailListPlanillas(StoreRepository $storeRepository): Response

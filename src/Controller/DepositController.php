@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: elkuku
- * Date: 19.03.17
- * Time: 12:40
- */
 
 namespace App\Controller;
 
@@ -30,7 +24,6 @@ class DepositController extends AbstractController
 
     /**
      * @Route("/", name="deposits")
-     *
      * @Security("is_granted('ROLE_ADMIN')")
      */
     public function index(DepositRepository $depositRepository, Request $request): Response
@@ -56,7 +49,6 @@ class DepositController extends AbstractController
 
     /**
      * @Route("/upload", name="upload-csv")
-     *
      * @Security("is_granted('ROLE_ADMIN')")
      */
     public function uploadCSV(
@@ -127,7 +119,6 @@ class DepositController extends AbstractController
 
     /**
      * @Route("/lookup", name="lookup-depo")
-     *
      * @Security("is_granted('ROLE_ADMIN')")
      */
     public function lookup(DepositRepository $depositRepository, Request $request): JsonResponse

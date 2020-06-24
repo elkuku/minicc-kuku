@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: elkuku
- * Date: 19.03.17
- * Time: 12:40
- */
 
 namespace App\Controller;
 
@@ -22,17 +16,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Twig\Environment;
 
 /**
- * Class ContractController
- *
  * @Route("contracts")
  */
 class ContractController extends AbstractController
 {
     /**
      * @Route("/", name="contract-list")
-     *
      * @Security("is_granted('ROLE_ADMIN')")
      */
     public function list(StoreRepository $storeRepository, UserRepository $userRepository, ContractRepository $contractRepository, Request $request
@@ -54,7 +46,6 @@ class ContractController extends AbstractController
 
     /**
      * @Route("/new", name="contracts-new")
-     *
      * @Security("is_granted('ROLE_ADMIN')")
      */
     public function new(StoreRepository $storeRepo, UserRepository $userRepo, ContractRepository $contractRepo, Request $request
@@ -106,7 +97,6 @@ class ContractController extends AbstractController
 
     /**
      * @Route("/{id}", name="contracts-edit", requirements={"id"="\d+"})
-     *
      * @Security("is_granted('ROLE_ADMIN')")
      */
     public function edit(Contract $contract, Request $request): Response
@@ -140,7 +130,6 @@ class ContractController extends AbstractController
 
     /**
      * @Route("/delete/{id}", name="contracts-delete")
-     *
      * @Security("is_granted('ROLE_ADMIN')")
      */
     public function delete(Contract $contract): Response
@@ -156,7 +145,6 @@ class ContractController extends AbstractController
 
     /**
      * @Route("/template", name="contracts-template")
-     *
      * @Security("is_granted('ROLE_ADMIN')")
      */
     public function template(ContractRepository $contractRepository, Request $request): Response
@@ -192,7 +180,6 @@ class ContractController extends AbstractController
 
     /**
      * @Route("/generate/{id}", name="contract-generate", requirements={"id"="\d+"})
-     *
      * @Security("is_granted('ROLE_ADMIN')")
      */
     public function generate(Contract $contract, Pdf $pdf): PdfResponse
@@ -232,7 +219,7 @@ class ContractController extends AbstractController
 
         $html = str_replace(array_keys($searchReplace), $searchReplace, $contract->getText());
 
-        /** @var \Twig_Environment $twig */
+        /** @var Environment $twig */
         $twig = clone $this->get('twig');
 
         return new PdfResponse(

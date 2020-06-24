@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: elkuku
- * Date: 19.03.17
- * Time: 12:40
- */
 
 namespace App\Controller\Admin;
 
@@ -23,14 +17,10 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Response;
 
-/**
- * Class PlanillasController
- */
 class PlanillasController extends AbstractController
 {
     /**
      * @Route("/planillas-mail", name="planillas-mail")
-     *
      * @Security("is_granted('ROLE_ADMIN')")
      */
     public function mail(StoreRepository $storeRepository, TransactionRepository $transactionRepository, Pdf $pdf, MailerInterface $mailer, KernelInterface $kernel): Response
@@ -64,7 +54,6 @@ class PlanillasController extends AbstractController
 
     /**
      * @Route("/planilla-mail", name="planilla-mail")
-     *
      * @Security("is_granted('ROLE_ADMIN')")
      */
     public function mailClients(StoreRepository $storeRepository, TransactionRepository $transactionRepository, Request $request, Pdf $pdf, \Swift_Mailer $mailer, KernelInterface $kernel): Response
@@ -142,7 +131,6 @@ class PlanillasController extends AbstractController
 
     /**
      * @Route("/planillas", name="planillas")
-     *
      * @Security("is_granted('ROLE_ADMIN')")
      */
     public function download(StoreRepository $storeRepository, TransactionRepository $transactionRepository, Pdf $pdf, KernelInterface $kernel): PdfResponse
@@ -159,9 +147,6 @@ class PlanillasController extends AbstractController
         );
     }
 
-    /**
-     * Get HTML
-     */
     private function getPlanillasHtml(int $year, int $month, StoreRepository $storeRepo, TransactionRepository $transactionRepo, KernelInterface $kernel, int $storeId = 0): string
     {
         $stores = $storeRepo->findAll();

@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: test
- * Date: 08/07/18
- * Time: 18:03
- */
 
 namespace App\DataCollector;
 
@@ -22,7 +16,7 @@ class GitDataCollector extends DataCollector
         $this->gitLoader = $gitLoader;
     }
 
-    public function collect(Request $request, Response $response, \Throwable $exception = null)
+    public function collect(Request $request, Response $response, \Throwable $exception = null): void
     {
         $this->data = [
             'git_branch'          => $this->gitLoader->getBranchName(),
@@ -31,12 +25,12 @@ class GitDataCollector extends DataCollector
         ];
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'app.git_data_collector';
     }
 
-    public function reset()
+    public function reset(): void
     {
         $this->data = array();
     }

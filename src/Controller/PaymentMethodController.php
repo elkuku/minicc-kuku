@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: elkuku
- * Date: 19.03.17
- * Time: 12:40
- */
 
 namespace App\Controller;
 
@@ -24,7 +18,6 @@ class PaymentMethodController extends AbstractController
 {
     /**
      * @Route("/", name="payment-methods", methods="GET")
-     *
      * @Security("is_granted('ROLE_ADMIN')")
      */
     public function index(PaymentMethodRepository $repository): Response
@@ -34,7 +27,6 @@ class PaymentMethodController extends AbstractController
 
     /**
      * @Route("/new", name="payment-methods-new", methods="GET|POST")
-     *
      * @Security("is_granted('ROLE_ADMIN')")
      */
     public function new(Request $request): Response
@@ -67,7 +59,6 @@ class PaymentMethodController extends AbstractController
 
     /**
      * @Route("/edit/{id}", name="payment-methods-edit")
-     *
      * @Security("is_granted('ROLE_ADMIN')")
      */
     public function edit(PaymentMethod $data, Request $request): Response
@@ -99,7 +90,6 @@ class PaymentMethodController extends AbstractController
 
     /**
      * @Route("/delete/{id}", name="payment-methods-delete")
-     *
      * @Security("is_granted('ROLE_ADMIN')")
      */
     public function delete(PaymentMethod $paymentMethod): Response

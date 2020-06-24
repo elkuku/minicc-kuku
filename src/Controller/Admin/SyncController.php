@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: elkuku
- * Date: 19.03.17
- * Time: 12:40
- */
 
 namespace App\Controller\Admin;
 
@@ -14,18 +8,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-/**
- * Class SyncController
- */
 class SyncController extends AbstractController
 {
     /**
      * @Route("/export-table/{name}", name="export-table")
      * @Security("is_granted('ROLE_ADMIN')")
-     *
-     * @param string $name
-     *
-     * @return Response
      */
     public function export(string $name): Response
     {
@@ -45,11 +32,6 @@ class SyncController extends AbstractController
     /**
      * @Route("/import-table", name="import-table")
      * @Security("is_granted('ROLE_ADMIN')")
-     *
-     * @param Request $request
-     *
-     * @return Response
-     * @throws \Doctrine\DBAL\DBALException
      */
     public function import(Request $request): Response
     {
@@ -154,8 +136,6 @@ class SyncController extends AbstractController
     /**
      * @Route("/backup", name="backup")
      * @Security("is_granted('ROLE_ADMIN')")
-     *
-     * @return Response
      */
     public function backup(\Swift_Mailer $mailer): Response
     {
@@ -198,8 +178,6 @@ class SyncController extends AbstractController
     }
 
     /**
-     * @param string $tableName
-     *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     private function getTableData($tableName)

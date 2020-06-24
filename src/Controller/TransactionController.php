@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: elkuku
- * Date: 19.03.17
- * Time: 12:40
- */
 
 namespace App\Controller;
 
@@ -21,8 +15,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Class TransactionController
- *
  * @Route("/transactions")
  */
 class TransactionController extends AbstractController
@@ -31,7 +23,6 @@ class TransactionController extends AbstractController
 
     /**
      * @Route("/delete/{id}", name="transaction-delete")
-     *
      * @Security("is_granted('ROLE_ADMIN')")
      */
     public function delete(Request $request, Transaction $transaction): Response
@@ -53,7 +44,6 @@ class TransactionController extends AbstractController
 
     /**
      * @Route("/edit/{id}", name="transaction-edit")
-     *
      * @Security("is_granted('ROLE_ADMIN')")
      */
     public function edit(Transaction $transaction, Request $request): Response
@@ -92,7 +82,6 @@ class TransactionController extends AbstractController
 
     /**
      * @Route("/", name="transaction-rawlist")
-     *
      * @Security("is_granted('ROLE_ADMIN')")
      */
     public function rawList(StoreRepository $storeRepo, TransactionRepository $transactionRepo, TransactionTypeRepository $transactionTypeRepo, Request $request): Response

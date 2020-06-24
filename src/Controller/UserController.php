@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: elkuku
- * Date: 19.03.17
- * Time: 12:40
- */
 
 namespace App\Controller;
 
@@ -29,7 +23,6 @@ class UserController extends AbstractController
 {
     /**
      * @Route("/", name="users-list")
-     *
      * @Security("is_granted('ROLE_ADMIN')")
      */
     public function list(UserRepository $userRepo, UserStateRepository $stateRepo, Request $request): Response
@@ -99,7 +92,6 @@ class UserController extends AbstractController
 
     /**
      * @Route("/ruclist", name="users-ruclist")
-     *
      * @Security("is_granted('ROLE_ADMIN')")
      */
     public function rucList(UserRepository $userRepository, Pdf $pdf): PdfResponse
@@ -110,36 +102,6 @@ class UserController extends AbstractController
             $pdf->getOutputFromHtml($html),
             sprintf('user-list-%s.pdf', date('Y-m-d'))
         );
-    }
-
-    /**
-     * Sort users by their store number(s).
-     */
-    private function getSortedUsers(UserRepository $userRepository): array
-    {
-        $users = $userRepository->findActiveUsers();
-
-        usort(
-            $users,
-            static function ($a, $b) {
-                $aId = 0;
-                $bId = 0;
-
-                /** @type User $a */
-                foreach ($a->getStores() as $store) {
-                    $aId = $store->getId();
-                }
-
-                /** @type User $b */
-                foreach ($b->getStores() as $store) {
-                    $bId = $store->getId();
-                }
-
-                return ($aId < $bId) ? -1 : 1;
-            }
-        );
-
-        return $users;
     }
 
     /**
@@ -177,5 +139,32 @@ class UserController extends AbstractController
                 'form' => $form->createView(),
             ]
         );
+    }
+
+    private function getSortedUsers(UserRepository $userRepository): array
+    {
+        $users = $userRepository->findActiveUsers();
+
+        usort(
+            $users,
+            static function ($a, $b) {
+                $aId = 0;
+                $bId = 0;
+
+                /** @type User $a */
+                foreach ($a->getStores() as $store) {
+                    $aId = $store->getId();
+                }
+
+                /** @type User $b */
+                foreach ($b->getStores() as $store) {
+                    $bId = $store->getId();
+                }
+
+                return ($aId < $bId) ? -1 : 1;
+            }
+        );
+
+        return $users;
     }
 }
