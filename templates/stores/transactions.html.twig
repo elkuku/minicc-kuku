@@ -12,32 +12,34 @@
     {% include('_breadcrumbs.html.twig') %}
 
     <div class="float-right btn-group">
-        <a href="{{ path('stores-edit', {'id': store.id}) }}" class="btn btn-outline-warning" title="Edit Local">
-            <span class="oi oi-pencil"></span>
-        </a>
         <a href="{{ path('store-transaction-pdf', {'id': store.id, 'year': year}) }}"
            class="btn btn-outline-success" title="Export">
             <span class="oi oi-file"></span>
         </a>
-        {% if store.id > 1 %}
-            <a title="Local anterior" href="{{ path('store-transactions', {'id': store.id - 1}) }}"
-               class="btn btn-outline-info">
-                <span class="oi oi-chevron-left"></span>
+        {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('stores-edit', {'id': store.id}) }}" class="btn btn-outline-warning" title="Edit Local">
+                <span class="oi oi-pencil"></span>
             </a>
-        {% else %}
-            <div title="Este es el primer local" class="btn btn-disabled">
-                <span class="oi oi-chevron-left"></span>
-            </div>
-        {% endif %}
-        {% if store.id < stores|length %}
-            <a title="Local siguiente" href="{{ path('store-transactions', {'id': store.id + 1}) }}"
-               class="btn btn-outline-info">
-                <span class="oi oi-chevron-right"></span>
-            </a>
-        {% else %}
-            <div title="Este es el ultimo local" class="btn btn-disabled">
-                <span class="oi oi-chevron-right"></span>
-            </div>
+            {% if store.id > 1 %}
+                <a title="Local anterior" href="{{ path('store-transactions', {'id': store.id - 1}) }}"
+                   class="btn btn-outline-info">
+                    <span class="oi oi-chevron-left"></span>
+                </a>
+            {% else %}
+                <div title="Este es el primer local" class="btn btn-disabled">
+                    <span class="oi oi-chevron-left"></span>
+                </div>
+            {% endif %}
+            {% if store.id < stores|length %}
+                <a title="Local siguiente" href="{{ path('store-transactions', {'id': store.id + 1}) }}"
+                   class="btn btn-outline-info">
+                    <span class="oi oi-chevron-right"></span>
+                </a>
+            {% else %}
+                <div title="Este es el ultimo local" class="btn btn-disabled">
+                    <span class="oi oi-chevron-right"></span>
+                </div>
+            {% endif %}
         {% endif %}
     </div>
 
@@ -60,7 +62,9 @@
                 <th>Detalle</th>
                 <th class="text-right">Monto</th>
                 <th class="text-right">Saldo</th>
-                <th class="text-center">Actions</th>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <th class="text-center">Actions</th>
+                {% endif %}
             </tr>
             </thead>
             <tbody>
@@ -70,7 +74,9 @@
                 <td>Saldo Anterior</td>
                 <td class="text-right">{{ saldoAnterior|price|raw }}</td>
                 <td class="text-right">{{ saldoAnterior|price|raw }}</td>
+                {% if is_granted('ROLE_ADMIN') %}
                 <td></td>
+                {% endif %}
             </tr>
             {% set saldo = saldoAnterior %}
             {% for transaction in transactions %}
@@ -82,17 +88,21 @@
                 {% else %}
                     {% set style = '' %}
                 {% endif %}
-                <tr{{ style|raw }}>
-                    <td>{{ intlDate(transaction.date, 'MMMM d') }}</td>
-                    <td>{{ transaction.user.name }}</td>
-                    <td>{{ transaction.type.name }}</td>
-                    <td class="text-right">{{ transaction.amount|price|raw }}</td>
-                    <td class="text-right">{{ saldo|price|raw }}</td>
-                    <td>
-                        <a href="{{ path('transaction-edit', {'id': transaction.id, 'view': 'stores/'~store.id}) }}">Edit</a>
-                        <a href="{{ path('transaction-delete', {'id': transaction.id, 'view': 'stores/'~store.id}) }}">Delete</a>
-                    </td>
-                </tr>
+                {% if is_granted('ROLE_ADMIN') or transaction.user == app.user %}
+                    <tr{{ style|raw }}>
+                        <td>{{ intlDate(transaction.date, 'MMMM d') }}</td>
+                        <td>{{ transaction.user.name }}</td>
+                        <td>{{ transaction.type.name }}</td>
+                        <td class="text-right">{{ transaction.amount|price|raw }}</td>
+                        <td class="text-right">{{ saldo|price|raw }}</td>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <td>
+                                <a href="{{ path('transaction-edit', {'id': transaction.id, 'view': 'stores/'~store.id}) }}">Edit</a>
+                                <a href="{{ path('transaction-delete', {'id': transaction.id, 'view': 'stores/'~store.id}) }}">Delete</a>
+                            </td>
+                        {% endif %}
+                    </tr>
+                {% endif %}
             {% else %}
                 <tr>
                     <td colspan="6" class="alert-warning text-center">No Transactions found</td>

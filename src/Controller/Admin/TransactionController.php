@@ -93,10 +93,11 @@ class TransactionController extends AbstractController
 
     /**
      * @Route("/store-transaction-pdf/{id}/{year}", name="store-transaction-pdf")
-     * @Security("is_granted('ROLE_ADMIN')")
      */
     public function getStore(Store $store, int $year, TransactionRepository $transactionRepository, Pdf $pdf, PDFHelper $PDFHelper): PdfResponse
     {
+        $this->denyAccessUnlessGranted('export', $store);
+
         $html = $this->getTransactionsHtml($transactionRepository, $store, $year);
 
         $filename = sprintf('movimientos-%d-local-%d-%s.pdf', $year, $store->getId(), date('Y-m-d'));

@@ -30,9 +30,9 @@ class DefaultController extends AbstractController
                 $chartData['headers'][] = 'Local '.$store->getId();
                 $valAlq = $taxService->getValueConTax($store->getValAlq());
 
-                $chartData['monthsDebt'][] = $valAlq ? round(
-                    -$balance / $valAlq, 1
-                ) : 0;
+                $chartData['monthsDebt'][] = $valAlq
+                    ? round(-$balance / $valAlq, 1)
+                    : 0;
                 $chartData['balances'][] = -$balance;
 
                 $s = new \stdClass();

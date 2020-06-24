@@ -98,12 +98,14 @@ class StoreController extends AbstractController
 
     /**
      * @Route("/{id}", name="store-transactions")
-     * @Security("is_granted('ROLE_ADMIN')")
+     * Security("is_granted('ROLE_ADMIN')")
      */
     public function show(
         TransactionRepository $transactionRepository, StoreRepository $storeRepository, Store $store,
         Request $request, TaxService $taxService
     ): Response {
+        $this->denyAccessUnlessGranted('view', $store);
+
         $year = (int)$request->get('year', date('Y'));
 
         $this->addBreadcrumb('Stores', 'stores-list')

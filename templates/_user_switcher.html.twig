@@ -1,3 +1,4 @@
+{% if app.user %}
 <select name="userswitch" id="userSwitch" class="form-control col-sm-2 btn-dark">
     <option value="">Switch user...</option>
     {% if is_granted('IS_IMPERSONATOR') %}
@@ -16,3 +17,4 @@
         </option>
     {% endfor %}
 </select>
+{% endif %}

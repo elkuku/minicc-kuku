@@ -55,7 +55,7 @@
                 </div>
             </div>
         {% else %}
-            <div class="panel-heading">Bienvenido {{ app.user.name }}</div>
+            <h3>Bienvenido {{ app.user.name }}</h3>
             {% if stores.count() %}
                 <table class="table">
                     <tr>
@@ -63,13 +63,29 @@
                         <th>Destino</th>
                         <th>Saldo</th>
                     </tr>
+                    {% set saldo = 0 %}
                     {% for store in stores %}
                         <tr>
                             <td>{{ store.id }}</td>
-                            <td>{{ store.destination }}</td>
-                            <td></td>
+                            <td>
+                                <a href="{{ path('store-transactions', {'id': store.id}) }}">
+                                    {{ store.destination }}
+                                </a>
+                            </td>
+                            <td class="text-right">
+                                {% for balance in balances %}
+                                    {% if balance.store.id == store.id %}
+                                        {{ balance.amount }}
+                                        {% set saldo = saldo + balance.amount %}
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
                         </tr>
                     {% endfor %}
+                    <tr>
+                        <td colspan="2" class="text-right">Saldo:</td>
+                        <td class="text-right">{{ saldo }}</td>
+                    </tr>
                 </table>
             {% else %}
                 <h4>Usted no tiene ningun local asignado!</h4>
