@@ -61,7 +61,7 @@
                     <tr>
                         <th>Numero</th>
                         <th>Destino</th>
-                        <th>Saldo</th>
+                        <th class="text-right">Saldo</th>
                     </tr>
                     {% set saldo = 0 %}
                     {% for store in stores %}
@@ -75,7 +75,7 @@
                             <td class="text-right">
                                 {% for balance in balances %}
                                     {% if balance.store.id == store.id %}
-                                        {{ balance.amount }}
+                                        {{ balance.amount|price|raw }}
                                         {% set saldo = saldo + balance.amount %}
                                     {% endif %}
                                 {% endfor %}
@@ -84,11 +84,12 @@
                     {% endfor %}
                     <tr>
                         <td colspan="2" class="text-right">Saldo:</td>
-                        <td class="text-right">{{ saldo }}</td>
+                        <td class="text-right"><b>{{ saldo|price|raw }}</b></td>
                     </tr>
                 </table>
             {% else %}
-                <h4>Usted no tiene ningun local asignado!</h4>
+                <h4>Usted no tiene local asignado!</h4>
+                Por favor contacte la administracion.
             {% endif %}
         {% endif %}
     {% endif %}

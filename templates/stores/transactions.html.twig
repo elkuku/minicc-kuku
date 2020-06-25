@@ -8,8 +8,9 @@
 {% endblock %}
 
 {% block body %}
-
+    {% if is_granted('ROLE_ADMIN') %}
     {% include('_breadcrumbs.html.twig') %}
+    {% endif %}
 
     <div class="float-right btn-group">
         <a href="{{ path('store-transaction-pdf', {'id': store.id, 'year': year}) }}"
@@ -58,7 +59,9 @@
                         {% endfor %}
                     </select>
                 </th>
+                {% if is_granted('ROLE_ADMIN') %}
                 <th>Inquilino</th>
+                {% endif %}
                 <th>Detalle</th>
                 <th class="text-right">Monto</th>
                 <th class="text-right">Saldo</th>
@@ -70,7 +73,9 @@
             <tbody>
             <tr class="table-primary">
                 <td>{{ intlDate(year~'-01-01', 'MMMM d') }}</td>
+                {% if is_granted('ROLE_ADMIN') %}
                 <td></td>
+                {% endif %}
                 <td>Saldo Anterior</td>
                 <td class="text-right">{{ saldoAnterior|price|raw }}</td>
                 <td class="text-right">{{ saldoAnterior|price|raw }}</td>
@@ -91,7 +96,9 @@
                 {% if is_granted('ROLE_ADMIN') or transaction.user == app.user %}
                     <tr{{ style|raw }}>
                         <td>{{ intlDate(transaction.date, 'MMMM d') }}</td>
+                {% if is_granted('ROLE_ADMIN') %}
                         <td>{{ transaction.user.name }}</td>
+                {% endif %}
                         <td>{{ transaction.type.name }}</td>
                         <td class="text-right">{{ transaction.amount|price|raw }}</td>
                         <td class="text-right">{{ saldo|price|raw }}</td>
