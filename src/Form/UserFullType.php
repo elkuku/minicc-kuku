@@ -52,16 +52,7 @@ class UserFullType extends AbstractType
             ->add('telefono', null, ['required' => false])
             ->add('telefono2', null, ['required' => false])
             ->add('direccion', null, ['required' => false])
-            ->add(
-                'plainPassword',
-                RepeatedType::class,
-                [
-                    'type'           => PasswordType::class,
-                    'first_options'  => ['label' => 'Password'],
-                    'second_options' => ['label' => 'Confirm Password'],
-                    'required'       => false,
-                ]
-            );
+;
     }
 
     /**

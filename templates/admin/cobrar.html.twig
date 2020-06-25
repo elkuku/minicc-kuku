@@ -17,26 +17,26 @@
                     <th>Monto</th>
                 </tr>
                 </thead>
-
                 <tbody>
                 {% for store in stores %}
-
                     <tr>
                         <td class="text-center">{{ store.id }}</td>
                         <td>{{ store.destination }}</td>
-                        <td>{{ store.user.name|short_name }}</td>
+                        <td>{{ store.user ? store.user.name|short_name : 'desocupado' }}</td>
                         <td>
-                            <input type="hidden" name="users[{{ store.id }}]"
-                                   value="{{ store.user ? store.user.id : 0 }}"/>
-                            <input class="form-control" type="text" name="values[{{ store.id }}]"
-                                   value="{{ store.valAlq|conIva|round(2) }}" size="7"
-                                   maxlength="7">
+                            {% if store.user %}
+                                <input type="hidden" name="users[{{ store.id }}]"
+                                       value="{{ store.user ? store.user.id : 0 }}"/>
+                                <input class="form-control" type="text" name="values[{{ store.id }}]"
+                                       value="{{ store.valAlq|conIva|round(2) }}" size="7"
+                                       maxlength="7">
+                            {% else %}
+                                :(
+                            {% endif %}
                         </td>
                     </tr>
-
                 {% endfor %}
                 </tbody>
-
                 <tfoot>
                 <tr>
                     <td>
@@ -46,8 +46,8 @@
                         <input name="date_cobro" id="date_cobro" type="date" class="form-control"
                                required="required"/>
                     </td>
-                    <td colspan="2">
-                        <button type="submit" class="btn btn-success">A Cobrar...</button>
+                    <td colspan="2" class="text-center">
+                        <button type="submit" class="btn btn-success">A Cobrar...!</button>
                     </td>
                 </tr>
                 </tfoot>

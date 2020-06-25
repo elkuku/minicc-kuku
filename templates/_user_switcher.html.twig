@@ -1,20 +1,21 @@
 {% if app.user %}
-<select name="userswitch" id="userSwitch" class="form-control col-sm-2 btn-dark">
-    <option value="">Switch user...</option>
-    {% if is_granted('IS_IMPERSONATOR') %}
-        <option value="{{ path('welcome', {'_switch_user': '_exit'}) }}">EXIT</option>
-    {% endif %}
-    {% for user in systemUsers %}
-        {% set uri = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all|merge({'_switch_user': user.email }))) %}
-        {% set selected = '' %}
+    <select name="userswitch" id="userSwitch" class="form-control col-sm-2 btn-dark">
         {% if is_granted('IS_IMPERSONATOR') %}
-            {% if user.email == app.user.email %}
-                {% set selected = ' selected="selected"' %}
-            {% endif %}
+            <option value="{{ path('welcome', {'_switch_user': '_exit'}) }}">EXIT</option>
+        {% else %}
+            <option value="">Switch user...</option>
         {% endif %}
-        <option value="{{ uri }}" {{ selected }}>
-            {{ user.name }} ({{ user.email }})
-        </option>
-    {% endfor %}
-</select>
+        {% for user in systemUsers %}
+            {% set uri = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all|merge({'_switch_user': user.email }))) %}
+            {% set selected = '' %}
+            {% if is_granted('IS_IMPERSONATOR') %}
+                {% if user.email == app.user.email %}
+                    {% set selected = ' selected="selected"' %}
+                {% endif %}
+            {% endif %}
+            <option value="{{ uri }}" {{ selected }}>
+                {{ user.name }} ({{ user.email }})
+            </option>
+        {% endfor %}
+    </select>
 {% endif %}

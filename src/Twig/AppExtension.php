@@ -104,7 +104,6 @@ class AppExtension extends AbstractExtension
      */
     public function intlDate($date, $format = "d 'de' MMMM YYYY", $lang = 'es_ES'): string
     {
-        /** @noinspection PhpUndefinedClassInspection */
         $formatter = new \IntlDateFormatter('ES_es', \IntlDateFormatter::LONG, \IntlDateFormatter::NONE);
 
         $dateTime = \is_object($date) ? $date : new \DateTime($date);

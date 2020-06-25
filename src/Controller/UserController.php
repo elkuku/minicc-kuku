@@ -110,18 +110,14 @@ class UserController extends AbstractController
      * // NOTE: Only admin can register new users !
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function new(UserPasswordEncoderInterface $encoder, Request $request): Response
+    public function new(Request $request): Response
     {
         // Create a new blank user and process the form
         $user = new User;
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(UserFullType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Encode the new users password
-            $password = $encoder->encodePassword($user, $user->getPlainPassword());
-            $user->setPassword($password);
-
             // Set their role
             $user->setRole('ROLE_USER');
 
@@ -130,13 +126,16 @@ class UserController extends AbstractController
             $em->persist($user);
             $em->flush();
 
-            return $this->redirectToRoute('login');
+            $this->addFlash('success', 'El usuario ha sido creado');
+
+            return $this->redirectToRoute('users-list');
         }
 
         return $this->render(
-            'auth/register.html.twig',
+            'user/form.html.twig',
             [
                 'form' => $form->createView(),
+                'data' => $user,
             ]
         );
     }

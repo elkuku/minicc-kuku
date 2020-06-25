@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: elkuku
- * Date: 19.03.17
- * Time: 12:40
- */
 
 namespace App\Entity;
 
@@ -13,7 +7,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -42,11 +35,6 @@ class User implements UserInterface, \Serializable
     private $email;
 
     /**
-     * @ORM\Column(type="string", length=20, unique=true)
-     */
-    private $username;
-
-    /**
      * @ORM\Column(type="string", length=40)
      */
     private $name;
@@ -55,18 +43,6 @@ class User implements UserInterface, \Serializable
      * @ORM\Column(type="string", length=50)
      */
     private $role = 'ROLE_USER';
-
-    /**
-     * @var string
-     *
-     * @Assert\Length(max=4096)
-     */
-    private $plainPassword;
-
-    /**
-     * @ORM\Column(type="string", length=64)
-     */
-    private $password;
 
     /**
      * @var UserGender
@@ -86,32 +62,27 @@ class User implements UserInterface, \Serializable
     private $state;
 
     /**
-     * @ORM\Column(type="boolean")
-     */
-    private $isEnabled = true;
-
-    /**
      * @ORM\Column(type="string", length=50, nullable=false)
      */
     private $inqCi = '';
 
     /**
-     * @ORM\Column(type="string", length=13, nullable=false)
+     * @ORM\Column(type="string", length=13, nullable=true)
      */
     private $inqRuc = '';
 
     /**
-     * @ORM\Column(type="string", length=25, nullable=false)
+     * @ORM\Column(type="string", length=25, nullable=true)
      */
     private $telefono = '';
 
     /**
-     * @ORM\Column(type="string", length=25, nullable=false)
+     * @ORM\Column(type="string", length=25, nullable=true)
      */
     private $telefono2 = '';
 
     /**
-     * @ORM\Column(type="string", length=250, nullable=false)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $direccion = '';
 
@@ -145,7 +116,7 @@ class User implements UserInterface, \Serializable
      *
      * @return $this
      */
-    public function setRole(string $role = null)
+    public function setRole(string $role = null): self
     {
         $this->role = $role;
 
@@ -156,7 +127,7 @@ class User implements UserInterface, \Serializable
      * {@inheritdoc}
      * @return (Role|string)[] The user roles
      */
-    public function getRoles()
+    public function getRoles():array
     {
         return [$this->getRole()];
     }
@@ -164,7 +135,7 @@ class User implements UserInterface, \Serializable
     /**
      * @return int
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -174,27 +145,21 @@ class User implements UserInterface, \Serializable
      *
      * @return $this
      */
-    public function setName($name)
+    public function setName($name): self
     {
         $this->name = $name;
 
         return $this;
     }
 
-    /**
-     * getName
-     */
-    public function getName()
+    public function getName():?string
     {
         return $this->name;
     }
 
-    /**
-     * @return string
-     */
-    public function getUsername()
+    public function getUsername():string
     {
-        return $this->username;
+        return $this->email;
     }
 
     /**
@@ -222,37 +187,7 @@ class User implements UserInterface, \Serializable
      */
     public function getPassword()
     {
-        return $this->password;
-    }
-
-    /**
-     * @param string $password
-     *
-     * @return $this
-     */
-    public function setPassword($password)
-    {
-        $this->password = $password;
-
-        return $this;
-    }
-
-    /**
-     * getPlainPassword
-     */
-    public function getPlainPassword()
-    {
-        return $this->plainPassword;
-    }
-
-    /**
-     * setPlainPassword
-     */
-    public function setPlainPassword(string $plainPassword)
-    {
-        $this->plainPassword = $plainPassword;
-
-        return $this;
+        return null;
     }
 
     /**
@@ -462,18 +397,6 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * @param string $username
-     *
-     * @return User
-     */
-    public function setUsername($username)
-    {
-        $this->username = $username;
-
-        return $this;
-    }
-
-    /**
      * String representation of object
      *
      * @link  http://php.net/manual/en/serializable.serialize.php
@@ -484,9 +407,7 @@ class User implements UserInterface, \Serializable
         return serialize(
             [
                 $this->id,
-                $this->username,
-                $this->password,
-                $this->isEnabled,
+                $this->email,
             ]
         );
     }
@@ -504,82 +425,8 @@ class User implements UserInterface, \Serializable
     {
         list (
             $this->id,
-            $this->username,
-            $this->password,
-            $this->isEnabled,
+            $this->email,
             )
             = unserialize($serialized);
-    }
-
-    /**
-     * Checks whether the user's account has expired.
-     *
-     * Internally, if this method returns false, the authentication system
-     * will throw an AccountExpiredException and prevent login.
-     *
-     * @return bool true if the user's account is non expired, false otherwise
-     *
-     * @see AccountExpiredException
-     */
-    public function isAccountNonExpired()
-    {
-        return true;
-    }
-
-    /**
-     * Checks whether the user is locked.
-     *
-     * Internally, if this method returns false, the authentication system
-     * will throw a LockedException and prevent login.
-     *
-     * @return bool true if the user is not locked, false otherwise
-     *
-     * @see LockedException
-     */
-    public function isAccountNonLocked()
-    {
-        return true;
-    }
-
-    /**
-     * Checks whether the user's credentials (password) has expired.
-     *
-     * Internally, if this method returns false, the authentication system
-     * will throw a CredentialsExpiredException and prevent login.
-     *
-     * @return bool true if the user's credentials are non expired, false otherwise
-     *
-     * @see CredentialsExpiredException
-     */
-    public function isCredentialsNonExpired()
-    {
-        return true;
-    }
-
-    /**
-     * Checks whether the user is enabled.
-     *
-     * Internally, if this method returns false, the authentication system
-     * will throw a DisabledException and prevent login.
-     *
-     * @return bool true if the user is enabled, false otherwise
-     *
-     * @see DisabledException
-     */
-    public function isEnabled()
-    {
-        return $this->isEnabled;
-    }
-
-    /**
-     * @param boolean $isEnabled
-     *
-     * @return User
-     */
-    public function setIsEnabled(bool $isEnabled): self
-    {
-        $this->isEnabled = $isEnabled;
-
-        return $this;
     }
 }
