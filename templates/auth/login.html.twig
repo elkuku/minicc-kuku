@@ -9,36 +9,38 @@
 
 {% block body %}
     <div class="jumbotron">
-        <h1>Login</h1>
-        <form class="form-horizontal" role="form" method="post" action="{{ path('login') }}">
-            {% if error %}
-                <div class="alert alert-danger">
-                    {{ error.message }}
-                </div>
-            {% endif %}
+        <div class="row">
+            <div class="col">
+                <h2>Login</h2>
+                <a href="{{ path('connect_google_start') }}" title="Google Login">
+                    <img src="{{ asset('build/images/login-buttons/btn_google_signin_dark_normal_web.png') }}"
+                         alt="Google Login">
+                </a>
+            </div>
+            <div class="col">
+                {% if 'dev' == app.environment %}
+                    <h2>Dev</h2>
+                    <form class="form-inline" role="form" method="post" action="{{ path('login') }}">
+                        {% if error %}
+                            <div class="alert alert-danger">
+                                {{ error.message }}
+                            </div>
+                        {% endif %}
 
-            {% if 'dev' == app.environment %}
-                <div class="form-group">
-                    <label for="email" class="col-md-4 control-label">e-mail</label>
-                    <input id="email" class="form-control col-md-4" name="email" value="{{ last_username }}" required
-                           autofocus>
-                </div>
+                        <div class="form-group">
+                            {# <label for="email" class="col-md-4 control-label">e-mail</label> #}
+                            <input id="email" class="form-control" name="email" value="{{ last_username }}"
+                                   placeholder="e-mail" required autofocus>
+                        </div>
 
-                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary">Login</button>
-                </div>
-            {% else %}
-            {% endif %}
-        </form>
-
-        <div class="signin-providers">
-            <a href="{{ path('connect_google_start') }}" class="btn btn-primary">
-                <span class="fa-google-plus-square"></span>
-                {{ 'Login'|trans }}
-            </a>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">Login</button>
+                        </div>
+                    </form>
+                {% endif %}
+            </div>
         </div>
-
     </div>
 {% endblock %}
