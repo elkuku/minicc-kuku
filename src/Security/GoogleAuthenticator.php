@@ -9,13 +9,16 @@ use KnpU\OAuth2ClientBundle\Security\Authenticator\SocialAuthenticator;
 use KnpU\OAuth2ClientBundle\Client\Provider\GoogleClient;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use League\OAuth2\Client\Provider\GoogleUser;
+use League\OAuth2\Client\Token\AccessToken;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
@@ -26,21 +29,21 @@ class GoogleAuthenticator extends SocialAuthenticator
     /**
      * @var ClientRegistry
      */
-    private $clientRegistry;
+    private ClientRegistry $clientRegistry;
 
     /**
      * @var EntityManagerInterface
      */
-    private $em;
+    private EntityManagerInterface $em;
 
     /**
      * @var UserRepository
      */
-    private $userRepository;
+    private UserRepository $userRepository;
     /**
      * @var UrlGeneratorInterface
      */
-    private $urlGenerator;
+    private UrlGeneratorInterface $urlGenerator;
     /**
      * @var Session
      */
@@ -60,7 +63,7 @@ class GoogleAuthenticator extends SocialAuthenticator
      *
      * @return bool
      */
-    public function supports(Request $request)
+    public function supports(Request $request):bool
     {
         // continue ONLY if the current ROUTE matches the check ROUTE
         return $request->attributes->get('_route') === 'connect_google_check';
@@ -69,7 +72,7 @@ class GoogleAuthenticator extends SocialAuthenticator
     /**
      * @param Request $request
      *
-     * @return \League\OAuth2\Client\Token\AccessToken|mixed
+     * @return AccessToken|mixed
      */
     public function getCredentials(Request $request)
     {
@@ -82,7 +85,7 @@ class GoogleAuthenticator extends SocialAuthenticator
      * @param mixed                 $credentials
      * @param UserProviderInterface $userProvider
      *
-     * @return User|null|object|\Symfony\Component\Security\Core\User\UserInterface
+     * @return User|null|object|UserInterface
      */
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
@@ -158,7 +161,7 @@ class GoogleAuthenticator extends SocialAuthenticator
      *
      * @return RedirectResponse
      */
-    public function start(Request $request, AuthenticationException $authException = null)
+    public function start(Request $request, AuthenticationException $authException = null): RedirectResponse
     {
         return new RedirectResponse(
             '/connect/', // might be the site, where users choose their oauth provider

@@ -18,19 +18,16 @@ use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticator;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
+use UnexpectedValueException;
 
 class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 {
     use TargetPathTrait;
 
-    private $entityManager;
-    private $router;
-    private $csrfTokenManager;
-
-    /**
-     * @var string
-     */
-    private $appEnv;
+    private EntityManagerInterface $entityManager;
+    private RouterInterface $router;
+    private CsrfTokenManagerInterface $csrfTokenManager;
+    private string $appEnv;
 
     public function __construct(EntityManagerInterface $entityManager, RouterInterface $router, CsrfTokenManagerInterface $csrfTokenManager, string $appEnv)
     {
@@ -40,7 +37,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         $this->appEnv = $appEnv;
     }
 
-    public function supports(Request $request)
+    public function supports(Request $request):bool
     {
         return 'login' === $request->attributes->get('_route')
             && $request->isMethod('POST');
@@ -64,7 +61,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     {
         $token = new CsrfToken('authenticate', $credentials['csrf_token']);
         if (!$this->csrfTokenManager->isTokenValid($token)) {
-            throw new InvalidCsrfTokenException();
+            throw new InvalidCsrfTokenException('Invalid token');
         }
 
         $user = $this->entityManager->getRepository(User::class)
@@ -78,10 +75,10 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         return $user;
     }
 
-    public function checkCredentials($credentials, UserInterface $user)
+    public function checkCredentials($credentials, UserInterface $user):bool
     {
         if ('dev' !== $this->appEnv) {
-            throw new \UnexpectedValueException('GTFO!');
+            throw new UnexpectedValueException('GTFO!');
         }
 
         return true;
@@ -96,7 +93,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         return new RedirectResponse($this->router->generate('welcome'));
     }
 
-    protected function getLoginUrl()
+    protected function getLoginUrl():string
     {
         return $this->router->generate('login');
     }

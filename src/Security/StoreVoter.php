@@ -4,6 +4,7 @@ namespace App\Security;
 
 use App\Entity\Store;
 use App\Entity\User;
+use LogicException;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Security;
@@ -17,7 +18,7 @@ class StoreVoter extends Voter
     /**
      * @var Security
      */
-    private $security;
+    private Security $security;
 
     public function __construct(Security $security)
     {
@@ -63,15 +64,15 @@ class StoreVoter extends Voter
                 return $this->canEdit($store, $user);
         }
 
-        throw new \LogicException('This code should not be reached!');
+        throw new LogicException('This code should not be reached!');
     }
 
-    private function canView(Store $store, User $user)
+    private function canView(Store $store, User $user): bool
     {
         return $store->getUser() === $user;
     }
 
-    private function canEdit(Store $store, User $user)
+    private function canEdit(Store $store, User $user): bool
     {
         return $this->security->isGranted('ROLE_ADMIN');
     }

@@ -12,12 +12,12 @@ class TwigEventSubscriber implements EventSubscriberInterface
     /**
      * @var Environment
      */
-    private $twig;
+    private Environment $twig;
 
     /**
      * @var UserRepository
      */
-    private $userRepository;
+    private UserRepository $userRepository;
 
     public function __construct(Environment $twig, UserRepository $userRepository)
     {

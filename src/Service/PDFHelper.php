@@ -10,10 +10,7 @@ namespace App\Service;
 
 class PDFHelper
 {
-    /**
-     * @var string
-     */
-    private $root;
+    private string $root;
 
     public function __construct(string $rootDir)
     {

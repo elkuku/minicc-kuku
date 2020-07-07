@@ -13,7 +13,7 @@ class ShaFinder
     /**
      * @var string
      */
-    private $sha = 'n/a';
+    private string $sha = 'n/a';
 
     public function __construct(string $rootDir)
     {

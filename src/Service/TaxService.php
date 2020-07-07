@@ -16,7 +16,7 @@ class TaxService
     /**
      * @var integer
      */
-    private $taxValue;
+    private int $taxValue;
 
     /**
      * TaxService constructor.

@@ -7,10 +7,10 @@ class CsvObject
     /**
      * @var array
      */
-    public $headVars = [];
+    public array $headVars = [];
 
     /**
      * @var array
      */
-    public $lines = [];
+    public array $lines = [];
 }

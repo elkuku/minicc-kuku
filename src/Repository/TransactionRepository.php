@@ -15,7 +15,10 @@ use App\Helper\Paginator\PaginatorRepoTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use function count;
 
 /**
  * TransactionRepository
@@ -66,6 +69,10 @@ class TransactionRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    /**
+     * @throws NoResultException
+     * @throws NonUniqueResultException
+     */
     public function getSaldo(Store $store): string
     {
         return $this->createQueryBuilder('t')
@@ -77,10 +84,9 @@ class TransactionRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param Store   $store
-     * @param integer $year
-     *
-     * @return mixed
+     * @return int|mixed|string
+     * @throws NoResultException
+     * @throws NonUniqueResultException
      */
     public function getSaldoAnterior(Store $store, $year)
     {
@@ -97,10 +103,9 @@ class TransactionRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param Store  $store
-     * @param string $date
-     *
-     * @return mixed
+     * @return int|mixed|string
+     * @throws NoResultException
+     * @throws NonUniqueResultException
      */
     public function getSaldoALaFecha(Store $store, $date)
     {
@@ -151,7 +156,7 @@ class TransactionRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
 
-        if (!\count($transactions)) {
+        if (!count($transactions)) {
             return [];
         }
 

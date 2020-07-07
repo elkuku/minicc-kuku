@@ -16,7 +16,7 @@ trait BreadcrumbTrait
     /**
      * @var array
      */
-    private $breadcrumbs = [];
+    private array $breadcrumbs = [];
 
     /**
      * @param string $text

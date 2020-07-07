@@ -13,6 +13,7 @@ use App\Helper\Paginator\PaginatorOptions;
 use App\Helper\Paginator\PaginatorRepoTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
  * DepositRepository
@@ -48,9 +49,9 @@ class DepositRepository extends ServiceEntityRepository
     /**
      * @param PaginatorOptions $options
      *
-     * @return \Doctrine\ORM\Tools\Pagination\Paginator
+     * @return Paginator
      */
-    public function getPaginatedList(PaginatorOptions $options): \Doctrine\ORM\Tools\Pagination\Paginator
+    public function getPaginatedList(PaginatorOptions $options): Paginator
     {
         $query = $this->createQueryBuilder('d')
             ->orderBy('d.'.$options->getOrder(), $options->getOrderDir());

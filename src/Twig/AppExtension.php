@@ -11,11 +11,18 @@ namespace App\Twig;
 use App\Entity\User;
 use App\Service\ShaFinder;
 use App\Service\TaxService;
+use DateTime;
+use Exception;
+use IntlDateFormatter;
 use Psr\Container\ContainerInterface;
 use Symfony\Contracts\Service\ServiceSubscriberInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
+use function count;
+use function get_class;
+use function is_object;
+use function strlen;
 
 /**
  * Class AppExtension
@@ -26,7 +33,7 @@ class AppExtension extends AbstractExtension
     /**
      * @var ContainerInterface
      */
-    private $container;
+    private ContainerInterface $container;
 
     /**
      * AppExtension constructor.
@@ -101,12 +108,13 @@ class AppExtension extends AbstractExtension
      * @param string $lang
      *
      * @return string
+     * @throws Exception
      */
     public function intlDate($date, $format = "d 'de' MMMM YYYY", $lang = 'es_ES'): string
     {
-        $formatter = new \IntlDateFormatter('ES_es', \IntlDateFormatter::LONG, \IntlDateFormatter::NONE);
+        $formatter = new IntlDateFormatter('ES_es', IntlDateFormatter::LONG, IntlDateFormatter::NONE);
 
-        $dateTime = \is_object($date) ? $date : new \DateTime($date);
+        $dateTime = is_object($date) ? $date : new DateTime($date);
 
         return $formatter->formatObject($dateTime, $format, $lang);
     }
@@ -123,7 +131,7 @@ class AppExtension extends AbstractExtension
         $array = (array)$classObject;
         $response = [];
 
-        $className = \get_class($classObject);
+        $className = get_class($classObject);
 
         foreach ($array as $k => $v) {
             $response[trim(str_replace($className, '', $k))] = $v;
@@ -144,17 +152,17 @@ class AppExtension extends AbstractExtension
         // E.g. Juan José Perez Pillo
         $parts = explode(' ', $longName);
 
-        if (2 === \count($parts)) {
+        if (2 === count($parts)) {
             // Juan Perez => Juan Perez
             return $longName;
         }
 
-        if (3 === \count($parts)) {
+        if (3 === count($parts)) {
             // Juan José Perez => Juan Perez
             return $parts[0].' '.$parts[2];
         }
 
-        if (4 === \count($parts)) {
+        if (4 === count($parts)) {
             // Juan José Perez Pillo => Juan Perez
             return $parts[0].' '.$parts[2];
         }
@@ -194,7 +202,7 @@ class AppExtension extends AbstractExtension
         if ($user->getInqRuc()) {
             $ruc = $user->getInqRuc();
 
-            if (13 === \strlen($ruc)) {
+            if (13 === strlen($ruc)) {
                 $rucs = str_split($ruc, 10);
 
                 $ruc = chunk_split($rucs[0], 3, ' ').' '.$rucs[1];

@@ -8,9 +8,12 @@
 
 namespace App\Helper;
 
+use RuntimeException;
+use function is_array;
+
 class GitLoader
 {
-    private $projectDir;
+    private string $projectDir;
 
     public function __construct($rootDir)
     {
@@ -25,7 +28,7 @@ class GitLoader
         $stringFromFile = file_exists($gitHeadFile)
             ? file($gitHeadFile, FILE_USE_INCLUDE_PATH) : '';
 
-        if ($stringFromFile !== 0 && \is_array($stringFromFile)) {
+        if ($stringFromFile !== 0 && is_array($stringFromFile)) {
             // Get the string from the array
             $firstLine = $stringFromFile[0];
 
@@ -44,7 +47,7 @@ class GitLoader
         $commitMessage = file_exists($gitCommitMessageFile)
             ? file($gitCommitMessageFile, FILE_USE_INCLUDE_PATH) : '';
 
-        return \is_array($commitMessage) ? trim($commitMessage[0]) : '';
+        return is_array($commitMessage) ? trim($commitMessage[0]) : '';
     }
 
     public function getLastCommitDetail(): array
@@ -58,7 +61,7 @@ class GitLoader
             )
         );
 
-        preg_match("/([\w]+) ([\w]+) ([\w\s]+) (<[\w\.@]+>) ([\d]+) ([\d-]+)\tcommit: ([\w\s]+)/", end($gitLogs), $matches);
+        preg_match("/([\w]+) ([\w]+) ([\w\s]+) (<[\w.@]+>) ([\d]+) ([\d-]+)\tcommit: ([\w\s]+)/", end($gitLogs), $matches);
 
         $logs = [];
 
@@ -77,7 +80,7 @@ class GitLoader
      *
      * @return string
      *
-     * @throws \RuntimeException
+     * @throws RuntimeException
      */
     protected function execCommand($command): string
     {
@@ -87,10 +90,10 @@ class GitLoader
         if ($status) {
             // Command exited with a status != 0
             if ($lastLine) {
-                throw new \RuntimeException($lastLine);
+                throw new RuntimeException($lastLine);
             }
 
-            throw new \RuntimeException('An unknown error occurred');
+            throw new RuntimeException('An unknown error occurred');
         }
 
         ob_end_clean();
