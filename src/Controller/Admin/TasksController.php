@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -11,6 +12,8 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use UnexpectedValueException;
+use function dirname;
 
 class TasksController extends AbstractController
 {
@@ -26,6 +29,7 @@ class TasksController extends AbstractController
     /**
      * @Route("/console-view/{item}", name="console-view")
      * @Security("is_granted('ROLE_ADMIN')")
+     * @throws Exception
      */
     public function consoleView(string $item, Request $request, KernelInterface $kernel): Response
     {
@@ -44,10 +48,10 @@ class TasksController extends AbstractController
                 break;
             case 'security':
                 $command['command'] = 'security:check';
-                $command['lockfile'] = \dirname($kernel->getProjectDir());
+                $command['lockfile'] = dirname($kernel->getProjectDir());
                 break;
             default:
-                throw new \UnexpectedValueException('Unknown command');
+                throw new UnexpectedValueException('Unknown command');
         }
 
         $application = new Application($kernel);
@@ -70,6 +74,7 @@ class TasksController extends AbstractController
     /**
      * @Route("/sysinfo", name="sysinfo")
      * @Security("is_granted('ROLE_ADMIN')")
+     * @throws Exception
      */
     public function sysInfo(KernelInterface $kernel): Response
     {

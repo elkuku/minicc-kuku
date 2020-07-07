@@ -2,11 +2,22 @@
 
 namespace App\Controller\Admin;
 
+use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Statement;
+use Doctrine\ORM\EntityManager;
+use Exception;
+use RuntimeException;
+use Swift_Attachment;
+use Swift_Mailer;
+use Swift_Message;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use UnexpectedValueException;
+use function count;
 
 class SyncController extends AbstractController
 {
@@ -32,6 +43,7 @@ class SyncController extends AbstractController
     /**
      * @Route("/import-table", name="import-table")
      * @Security("is_granted('ROLE_ADMIN')")
+     * @throws DBALException
      */
     public function import(Request $request): Response
     {
@@ -53,7 +65,7 @@ class SyncController extends AbstractController
 
         $parts = explode('-', $file->getClientOriginalName());
 
-        if (\count($parts) < 2) {
+        if (count($parts) < 2) {
             $this->addFlash('danger', 'Invalid filename should be "export-{TABLE_NAME}-{DATE}.json".');
 
             return $this->redirectToRoute('admin-tasks');
@@ -70,7 +82,7 @@ class SyncController extends AbstractController
                 if ($oldItem['id'] === $newItem->id) {
                     foreach ($newItem as $prop => $value) {
                         if ($oldItem[$prop] !== $value) {
-                            throw new \UnexpectedValueException('Data inconsistency.');
+                            throw new UnexpectedValueException('Data inconsistency.');
                         }
                     }
 
@@ -80,7 +92,7 @@ class SyncController extends AbstractController
             }
         }
 
-        if (!\count($newData)) {
+        if (!count($newData)) {
             $this->addFlash('success', 'Everything is in Sync :)');
 
             return $this->redirectToRoute('admin-tasks');
@@ -121,14 +133,14 @@ class SyncController extends AbstractController
 
         $query = implode('', $queryLines);
 
-        /** @type \Doctrine\ORM\EntityManager $em */
+        /** @type EntityManager $em */
         $em = $this->getDoctrine()->getManager();
 
-        /** @type \Doctrine\DBAL\Statement $statement */
+        /** @type Statement $statement */
         $statement = $em->getConnection()->prepare($query);
         $statement->execute();
 
-        $this->addFlash('success', \count($newData).' lines inserted');
+        $this->addFlash('success', count($newData).' lines inserted');
 
         return $this->redirectToRoute('admin-tasks');
     }
@@ -137,7 +149,7 @@ class SyncController extends AbstractController
      * @Route("/backup", name="backup")
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function backup(\Swift_Mailer $mailer): Response
+    public function backup(Swift_Mailer $mailer): Response
     {
         $parts = parse_url($_ENV['DATABASE_URL']);
 
@@ -153,16 +165,16 @@ class SyncController extends AbstractController
         $gzip = ob_get_clean();
 
         if ($retVal) {
-            throw new \RuntimeException('Error creating DB backup: '.$gzip);
+            throw new RuntimeException('Error creating DB backup: '.$gzip);
         }
 
         $fileName = date('Y-m-d').'_backup.gz';
         $mime = 'application/x-gzip';
 
-        $message = (new \Swift_Message(
+        $message = (new Swift_Message(
             'Backup', '<h3>Backup</h3>Date: '.date('Y-m-d'), 'text/html'
         ))
-            ->attach(new \Swift_Attachment($gzip, $fileName, $mime))
+            ->attach(new Swift_Attachment($gzip, $fileName, $mime))
             ->setFrom('minicckuku@gmail.com')
             ->setTo('minicckuku@gmail.com');
 
@@ -178,22 +190,22 @@ class SyncController extends AbstractController
     }
 
     /**
-     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @return array|RedirectResponse
      */
     private function getTableData($tableName)
     {
         try {
-            /** @type \Doctrine\ORM\EntityManager $em */
+            /** @type EntityManager $em */
             $em = $this->getDoctrine()->getManager();
 
             $query = "SELECT * FROM $tableName;";
 
-            /** @type \Doctrine\DBAL\Statement $statement */
+            /** @type Statement $statement */
             $statement = $em->getConnection()->prepare($query);
             $statement->execute();
 
             $result = $statement->fetchAll();
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $this->addFlash('danger', 'There was an error...');
 
             return $this->redirectToRoute('admin-tasks');

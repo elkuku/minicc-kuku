@@ -2,11 +2,14 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Store;
 use App\Repository\StoreRepository;
 use App\Repository\TransactionRepository;
+use Exception;
 use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 use Knp\Snappy\Pdf;
+use Swift_Attachment;
+use Swift_Mailer;
+use Swift_Message;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -56,7 +59,7 @@ class PlanillasController extends AbstractController
      * @Route("/planilla-mail", name="planilla-mail")
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function mailClients(StoreRepository $storeRepository, TransactionRepository $transactionRepository, Request $request, Pdf $pdf, \Swift_Mailer $mailer, KernelInterface $kernel): Response
+    public function mailClients(StoreRepository $storeRepository, TransactionRepository $transactionRepository, Request $request, Pdf $pdf, Swift_Mailer $mailer, KernelInterface $kernel): Response
     {
         $recipients = $request->get('recipients');
 
@@ -96,16 +99,16 @@ class PlanillasController extends AbstractController
             $count = 0;
 
             try {
-                $message = (new \Swift_Message)
+                $message = (new Swift_Message)
                     ->setSubject("Planilla Local {$store->getId()} ($month - $year)")
                     ->setFrom('minicckuku@gmail.com')
                     ->setTo($store->getUser()->getEmail())
                     ->setBody($html)
-                    ->attach(new \Swift_Attachment($document, $fileName, 'application/pdf'));
+                    ->attach(new Swift_Attachment($document, $fileName, 'application/pdf'));
 
                 $count = $mailer->send($message);
                 $successes[] = $store->getId();
-            } catch (\Exception $exception) {
+            } catch (Exception $exception) {
                 $failures[] = $exception->getMessage();
             }
 
@@ -166,7 +169,6 @@ class PlanillasController extends AbstractController
         $storeData = [];
         $selecteds = [];
 
-        /** @type Store $store */
         foreach ($stores as $store) {
             if ($storeId && $store->getId() !== $storeId) {
                 continue;

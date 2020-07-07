@@ -8,17 +8,21 @@ use App\Repository\StoreRepository;
 use App\Repository\TransactionRepository;
 use App\Repository\TransactionTypeRepository;
 use App\Repository\UserRepository;
+use DateTime;
+use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use UnexpectedValueException;
 
 class AdminController extends AbstractController
 {
     /**
      * @Route("/cobrar", name="cobrar")
      * @Security("is_granted('ROLE_ADMIN')")
+     * @throws Exception
      */
     public function cobrar(
         StoreRepository $storeRepository, UserRepository $userRepository,
@@ -34,7 +38,7 @@ class AdminController extends AbstractController
             $type = $transactionTypeRepository->find(1);
 
             if (!$type) {
-                throw new \UnexpectedValueException('Invalid transaction type');
+                throw new UnexpectedValueException('Invalid transaction type');
             }
 
             foreach ($values as $storeId => $value) {
@@ -44,7 +48,7 @@ class AdminController extends AbstractController
                 }
 
                 $transaction = (new Transaction)
-                    ->setDate(new \DateTime($request->request->get('date_cobro')))
+                    ->setDate(new DateTime($request->request->get('date_cobro')))
                     ->setStore($storeRepository->find((int)$storeId))
                     ->setUser($userRepository->find((int)$users[$storeId]))
                     ->setType($type)
@@ -67,6 +71,7 @@ class AdminController extends AbstractController
     /**
      * @Route("/pay-day", name="pay-day")
      * @Security("is_granted('ROLE_ADMIN')")
+     * @throws Exception
      */
     public function payDay(
         StoreRepository $storeRepository, PaymentMethodRepository $paymentMethodRepository,
@@ -89,7 +94,7 @@ class AdminController extends AbstractController
         $type = $transactionTypeRepository->findOneBy(['name' => 'Pago']);
 
         if (!$type) {
-            throw new \UnexpectedValueException('Invalid transaction type');
+            throw new UnexpectedValueException('Invalid transaction type');
         }
 
         foreach ($payments['date_cobro'] as $i => $dateCobro) {
@@ -106,11 +111,11 @@ class AdminController extends AbstractController
             $method = $paymentMethodRepository->find((int)$payments['method'][$i]);
 
             if (!$method) {
-                throw new \UnexpectedValueException('Invalid payment method.');
+                throw new UnexpectedValueException('Invalid payment method.');
             }
 
             $transaction = (new Transaction)
-                ->setDate(new \DateTime($dateCobro))
+                ->setDate(new DateTime($dateCobro))
                 ->setStore($store)
                 ->setUser($store->getUser())
                 ->setType($type)

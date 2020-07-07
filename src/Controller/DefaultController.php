@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Repository\StoreRepository;
 use App\Repository\TransactionRepository;
 use App\Service\TaxService;
+use stdClass;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -35,7 +36,7 @@ class DefaultController extends AbstractController
                     : 0;
                 $chartData['balances'][] = -$balance;
 
-                $s = new \stdClass();
+                $s = new stdClass();
                 $s->amount = $balance;
                 $s->store = $store;
 

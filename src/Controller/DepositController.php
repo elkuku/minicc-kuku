@@ -7,6 +7,9 @@ use App\Helper\CsvParser\CsvParser;
 use App\Helper\Paginator\PaginatorTrait;
 use App\Repository\DepositRepository;
 use App\Repository\PaymentMethodRepository;
+use DateTime;
+use Exception;
+use RuntimeException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -14,6 +17,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use UnexpectedValueException;
+use function count;
 
 /**
  * @Route("/deposits")
@@ -34,7 +39,7 @@ class DepositController extends AbstractController
 
         $paginatorOptions->setMaxPages(
             ceil(
-                \count($deposits) / $paginatorOptions->getLimit()
+                count($deposits) / $paginatorOptions->getLimit()
             )
         );
 
@@ -50,6 +55,7 @@ class DepositController extends AbstractController
     /**
      * @Route("/upload", name="upload-csv")
      * @Security("is_granted('ROLE_ADMIN')")
+     * @throws Exception
      */
     public function uploadCSV(
         PaymentMethodRepository $paymentMethodRepository, DepositRepository $depositRepository,
@@ -58,13 +64,13 @@ class DepositController extends AbstractController
         $csvFile = $request->files->get('csv_file');
 
         if (!$csvFile) {
-            throw new \RuntimeException('No CSV file recieved.');
+            throw new RuntimeException('No CSV file recieved.');
         }
 
         $path = $csvFile->getRealPath();
 
         if (!$path) {
-            throw new \RuntimeException('Invalid CSV file.');
+            throw new RuntimeException('Invalid CSV file.');
         }
 
         $csvData = (new CsvParser)->parseCSV(file($path));
@@ -72,7 +78,7 @@ class DepositController extends AbstractController
         $entity = $paymentMethodRepository->find(2);
 
         if (!$entity) {
-            throw new \UnexpectedValueException('Invalid entity');
+            throw new UnexpectedValueException('Invalid entity');
         }
 
         $em = $this->getDoctrine()->getManager();
@@ -95,7 +101,7 @@ class DepositController extends AbstractController
 
             $deposit = (new Deposit)
                 ->setEntity($entity)
-                ->setDate(new \DateTime(str_replace('/', '-', $line->fecha)))
+                ->setDate(new DateTime(str_replace('/', '-', $line->fecha)))
                 ->setDocument($line->{'numero de documento'})
                 ->setAmount($line->credito);
 
@@ -134,7 +140,7 @@ class DepositController extends AbstractController
 
         if (!$deposits) {
             $response['error'] = 'No se encontró ninún depósito con este número!';
-        } elseif (\count($deposits) > 1) {
+        } elseif (count($deposits) > 1) {
             $ids = [];
             /** @type Deposit $d */
             foreach ($deposits as $deposit) {

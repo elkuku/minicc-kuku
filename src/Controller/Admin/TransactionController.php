@@ -7,12 +7,18 @@ use App\Entity\Transaction;
 use App\Repository\StoreRepository;
 use App\Repository\TransactionRepository;
 use App\Service\PDFHelper;
+use Exception;
 use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 use Knp\Snappy\Pdf;
+use Swift_Attachment;
+use Swift_Mailer;
+use Swift_Message;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use function count;
 
 class TransactionController extends AbstractController
 {
@@ -20,7 +26,7 @@ class TransactionController extends AbstractController
      * @Route("/mail-transactions", name="mail-transactions")
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function mail(StoreRepository $storeRepository, TransactionRepository $transactionRepository, Request $request, Pdf $pdf, \Swift_Mailer $mailer)
+    public function mail(StoreRepository $storeRepository, TransactionRepository $transactionRepository, Request $request, Pdf $pdf, Swift_Mailer $mailer): RedirectResponse
     {
         $recipients = $request->get('recipients');
 
@@ -58,16 +64,16 @@ class TransactionController extends AbstractController
             $count = 0;
 
             try {
-                $message = (new \Swift_Message)
+                $message = (new Swift_Message)
                     ->setSubject("Movimientos del local {$store->getId()} ano $year")
                     ->setFrom('minicckuku@gmail.com')
                     ->setTo($store->getUser()->getEmail())
                     ->setBody($html)
-                    ->attach(new \Swift_Attachment($document, $fileName, 'application/pdf'));
+                    ->attach(new Swift_Attachment($document, $fileName, 'application/pdf'));
 
                 $count = $mailer->send($message);
                 $successes[] = $store->getId();
-            } catch (\Exception $exception) {
+            } catch (Exception $exception) {
                 $failures[] = $exception->getMessage();
             }
 
@@ -129,8 +135,8 @@ class TransactionController extends AbstractController
      */
     public function mailStores(
         Request $request, TransactionRepository $transactionRepository,
-        StoreRepository $storeRepository, Pdf $pdf, \Swift_Mailer $mailer
-    ) {
+        StoreRepository $storeRepository, Pdf $pdf, Swift_Mailer $mailer
+    ): RedirectResponse {
         $year = (int)$request->get('year', date('Y'));
 
         $htmlPages = [];
@@ -151,15 +157,15 @@ class TransactionController extends AbstractController
         );
 
         try {
-            $message = (new \Swift_Message)
+            $message = (new Swift_Message)
                 ->setSubject("Movimientos de los locales ano $year")
                 ->setFrom('minicckuku@gmail.com')
                 ->setTo('minicckuku@gmail.com')
                 ->setBody($fileName)
-                ->attach(new \Swift_Attachment($attachment, $fileName, 'application/pdf'));
+                ->attach(new Swift_Attachment($attachment, $fileName, 'application/pdf'));
 
             $mailer->send($message);
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $failures[] = $exception->getMessage();
         }
 
@@ -198,8 +204,8 @@ class TransactionController extends AbstractController
     {
         $transactions = $transactionRepository->findByStoreAndYear($store, $year);
 
-        $pages = (int)(\count($transactions) / $transactionsPerPage) + 1;
-        $fillers = $transactionsPerPage - (\count($transactions) - ($pages - 1)
+        $pages = (int)(count($transactions) / $transactionsPerPage) + 1;
+        $fillers = $transactionsPerPage - (count($transactions) - ($pages - 1)
                 * $transactionsPerPage);
 
         for ($i = 1; $i < $fillers; $i++) {
