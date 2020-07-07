@@ -10,7 +10,7 @@ namespace App\DataFixtures\ORM;
 
 use App\Entity\UserGender;
 use Doctrine\Common\DataFixtures\FixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 /**
  * Class LoadTransactionTypeData

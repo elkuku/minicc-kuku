@@ -10,44 +10,17 @@ namespace App\DataFixtures\ORM;
 
 use App\Entity\User;
 use Doctrine\Common\DataFixtures\FixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Doctrine\Persistence\ObjectManager;
 
-/**
- * Class LoadPaymentMethodData
- */
-class LoadUserData implements FixtureInterface, ContainerAwareInterface
+class LoadUserData implements FixtureInterface
 {
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setContainer(ContainerInterface $container = null): void
-    {
-        $this->container = $container;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function load(ObjectManager $manager): void
     {
         $user = new User;
 
         $user->setName('admin')
-            ->setUsername('admin')
             ->setEmail('admin@a.b')
-            ->setPlainPassword('test')
-            ->setRole('ROLE_ADMIN')
-            ->setPassword(
-                $this->container->get('security.password_encoder')
-                    ->encodePassword($user, $user->getPlainPassword())
-            );
+            ->setRole('ROLE_ADMIN');
 
         $manager->persist($user);
         $manager->flush();
