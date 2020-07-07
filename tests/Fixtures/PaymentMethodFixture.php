@@ -8,11 +8,11 @@ use Doctrine\Persistence\ObjectManager;
 
 class PaymentMethodFixture extends Fixture
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $object = new PaymentMethod();
 
-	    $object->setName('TEST');
+        $object->setName('TEST');
 
         $manager->persist($object);
 

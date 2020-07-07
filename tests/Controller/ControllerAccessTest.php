@@ -8,12 +8,15 @@ use App\Tests\Fixtures\PaymentMethodFixture;
 use App\Tests\Fixtures\StoreFixture;
 use App\Tests\Fixtures\TransactionFixture;
 use App\Tests\Fixtures\UserFixture;
+use DirectoryIterator;
+use Exception;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 
 class ControllerAccessTest extends FixtureAwareTestCase
 {
     private $routeLoader;
 
-    private $exceptions
+    private array $exceptions
         = [
             'welcome' => [
                 'expected' => 200,
@@ -29,10 +32,10 @@ class ControllerAccessTest extends FixtureAwareTestCase
                 'expected' => 200,
             ],
 
-            'agent_add_comment'     => [
+            'agent_add_comment' => [
                 'method' => 'POST',
             ],
-            'agent_lookup'          => [
+            'agent_lookup' => [
                 'method' => 'POST',
             ],
             'comment_delete_inline' => [
@@ -40,7 +43,7 @@ class ControllerAccessTest extends FixtureAwareTestCase
             ],
         ];
 
-    protected $client;
+    protected KernelBrowser $client;
 
     protected function setUp(): void
     {
@@ -59,6 +62,9 @@ class ControllerAccessTest extends FixtureAwareTestCase
         $this->routeLoader = $kernel->getContainer()->get('routing.loader');
     }
 
+    /**
+     * @throws Exception
+     */
     private function loadRoutes($controllerName)
     {
         $routerClass = 'App\Controller\\'.$controllerName;
@@ -66,17 +72,23 @@ class ControllerAccessTest extends FixtureAwareTestCase
         if (class_exists($routerClass)) {
             return $this->routeLoader->load($routerClass);
         }
+
+        return false;
     }
 
+    /**
+     * @throws Exception
+     */
     public function testShowPage(): void
     {
         $path = __DIR__.'/../../src/Controller';
 
-        foreach (new \DirectoryIterator($path) as $item) {
+        foreach (new DirectoryIterator($path) as $item) {
             if (
                 $item->isDot()
                 || in_array(
-                    $item->getBasename(), ['.gitignore', 'GoogleController.php']
+                    $item->getBasename(),
+                    ['.gitignore', 'GoogleController.php']
                 )
             ) {
                 continue;
@@ -103,13 +115,25 @@ class ControllerAccessTest extends FixtureAwareTestCase
                 $defaultExpected = 302;
 
                 if (array_key_exists($routeName, $this->exceptions)) {
-                    if (array_key_exists('method', $this->exceptions[$routeName])) {
+                    if (array_key_exists(
+                        'method',
+                        $this->exceptions[$routeName]
+                    )
+                    ) {
                         $method = $this->exceptions[$routeName]['method'];
                     }
-                    if (array_key_exists('expected', $this->exceptions[$routeName])) {
+                    if (array_key_exists(
+                        'expected',
+                        $this->exceptions[$routeName]
+                    )
+                    ) {
                         $defaultExpected = $this->exceptions[$routeName]['expected'];
                     }
-                    if (array_key_exists('params', $this->exceptions[$routeName])) {
+                    if (array_key_exists(
+                        'params',
+                        $this->exceptions[$routeName]
+                    )
+                    ) {
                         $params = $this->exceptions[$routeName]['params'];
                         if (array_key_exists('id', $params)) {
                             $defaultId = $params['id'];

@@ -8,7 +8,7 @@ use Doctrine\Persistence\ObjectManager;
 
 class StoreFixture extends Fixture
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $object = new Store();
 

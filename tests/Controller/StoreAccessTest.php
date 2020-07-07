@@ -2,40 +2,25 @@
 
 namespace App\Tests\Controller;
 
-use App\Tests\FixtureAwareTestCase;
-use App\Tests\Fixtures\StoreFixture;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class StoreAccessTest  extends FixtureAwareTestCase
+class StoreAccessTest extends WebTestCase
 {
-    protected $client;
+    protected KernelBrowser $client;
 
-    protected function setUp(): void
+    public function testSomething(): void
     {
-        $this->client = static::createClient();
-        parent::setUp();
-        $kernel = static::bootKernel();
-
-        // $this->addFixture(new StoreFixture());
-        //
-        // $this->executeFixtures();
+        $client = static::createClient();
+        $client->request('GET', '/');
+        self::assertResponseIsSuccessful();
     }
 
-        public function testSomething()
+    public function testStoreAccess(): void
     {
-        $this->client->request('GET', '/');
-        $this->assertResponseIsSuccessful();
-        // $this->assertSelectorTextContains('h2', 'Give your feedback');
+        $client = static::createClient();
+
+        $client->request('GET', '/stores');
+        self::assertResponseRedirects();
     }
-
-    public function testStoreAccess()
-    {
-        // $client = static::createClient();
-
-        $em = self::$container->get('doctrine')->getManager();
-
-        $this->client->request('GET', '/stores');
-        $this->assertResponseRedirects();
-        // $this->assertSelectorTextContains('h2', 'Give your feedback');
-    }
-
 }

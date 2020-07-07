@@ -16,7 +16,7 @@ class DataFixtureTestCase extends WebTestCase
     protected static $application;
 
     /** @var  Client $client */
-    protected $client;
+    protected \Symfony\Bundle\FrameworkBundle\KernelBrowser $client;
 
     /** @var  EntityManager $entityManager */
     protected $entityManager;
@@ -34,13 +34,12 @@ class DataFixtureTestCase extends WebTestCase
             ->get('doctrine')
             ->getManager();
 
-
         // $this->client = static::createClient();
         // $this->container = $this->client->getContainer();
         // $this->entityManager = $this->container->get('doctrine.orm.entity_manager');
         // $this->entityManager = static::$container->get('doctrine.orm.entity_manager');
 
-        self::runCommand('doctrine:database:drop', ['--force' =>'--force']);
+        self::runCommand('doctrine:database:drop', ['--force' => '--force']);
         self::runCommand('doctrine:database:create');
         self::runCommand('doctrine:schema:create');
         // self::runCommand('doctrine:fixtures:load --append --no-interaction');

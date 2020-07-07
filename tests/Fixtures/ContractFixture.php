@@ -8,11 +8,11 @@ use Doctrine\Persistence\ObjectManager;
 
 class ContractFixture extends Fixture
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $object = new Contract();
 
-	    $object->setText('TEST');
+        $object->setText('TEST');
 
         $manager->persist($object);
 

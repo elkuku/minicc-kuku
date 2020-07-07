@@ -8,11 +8,11 @@ use Doctrine\Persistence\ObjectManager;
 
 class TransactionFixture extends Fixture
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         // $object = new Transaction();
         //
-	    // $object->setDate(new \DateTime());
+        // $object->setDate(new \DateTime());
         //
         // $manager->persist($object);
         //

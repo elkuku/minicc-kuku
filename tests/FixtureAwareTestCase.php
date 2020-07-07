@@ -5,8 +5,8 @@ namespace App\Tests;
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
+use Doctrine\ORM\EntityManager;
 use Symfony\Bridge\Doctrine\DataFixtures\ContainerAwareLoader;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
  * Class FixtureAwareTestCase
@@ -15,16 +15,10 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
  */
 abstract class FixtureAwareTestCase extends DataFixtureTestCase
 {
-    /**
-     * @var ORMExecutor
-     */
-    private $fixtureExecutor;
-    /**
-     * @var ContainerAwareLoader
-     */
-    private $fixtureLoader;
+    private ORMExecutor $fixtureExecutor;
+    private ContainerAwareLoader $fixtureLoader;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         static::bootKernel();
         parent::setUp();
@@ -55,10 +49,13 @@ abstract class FixtureAwareTestCase extends DataFixtureTestCase
     private function getFixtureExecutor(): ORMExecutor
     {
         if (!$this->fixtureExecutor) {
-            /** @var \Doctrine\ORM\EntityManager $entityManager */
+            /** @var EntityManager $entityManager */
             $entityManager = static::$kernel->getContainer()->get('doctrine')
                 ->getManager();
-            $this->fixtureExecutor = new ORMExecutor($entityManager, new ORMPurger($entityManager));
+            $this->fixtureExecutor = new ORMExecutor(
+                $entityManager,
+                new ORMPurger($entityManager)
+            );
         }
 
         return $this->fixtureExecutor;
@@ -70,7 +67,9 @@ abstract class FixtureAwareTestCase extends DataFixtureTestCase
     private function getFixtureLoader(): ContainerAwareLoader
     {
         if (!$this->fixtureLoader) {
-            $this->fixtureLoader = new ContainerAwareLoader(static::$kernel->getContainer());
+            $this->fixtureLoader = new ContainerAwareLoader(
+                static::$kernel->getContainer()
+            );
         }
 
         return $this->fixtureLoader;
