@@ -15,8 +15,8 @@
             <tr>
                 <td class="text-center">{{ store.id }}</td>
                 <td>{{ store.destination }}</td>
-                <td>{{ store.user.name|short_name }}</td>
-                <td>{{ store.user.email }}</td>
+                <td>{{ store.user ? store.user.name|short_name : 'n/a' }}</td>
+                <td>{{ store.user ? store.user.email : 'n/a' }}</td>
                 <td>
                     <input class="form-control" type="checkbox" name="recipients[{{ store.id }}]">
                 </td>

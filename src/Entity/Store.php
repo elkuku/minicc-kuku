@@ -20,11 +20,9 @@ class Store
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private ?int $id;
+    private ?int $id = null;
 
     /**
-     * @var integer
-     *
      * @ORM\Column(type="integer", nullable=true)
      */
     private ?int $userId = 0;
@@ -114,12 +112,10 @@ class Store
     private string $medAgua = '';
 
     /**
-     * @var User
-     *
      * @ORM\ManyToOne(targetEntity="User", inversedBy="stores")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
-    private User $user;
+    private ?User $user = null;
 
     /**
      * Get id
@@ -447,12 +443,7 @@ class Store
         return $this;
     }
 
-    /**
-     * Get user
-     *
-     * @return User
-     */
-    public function getUser(): User
+    public function getUser(): ?User
     {
         return $this->user;
     }

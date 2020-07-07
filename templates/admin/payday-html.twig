@@ -45,7 +45,7 @@
                             <option value="{{ store.id }}">
                                 {{ store.id }}
                                 - {{ store.destination }}
-                                - {{ store.user.name|short_name }}</option>
+                                - {{ store.user ? store.user.name|short_name : 'n/a' }}</option>
                         {% endfor %}
                     </select>
                 </td>

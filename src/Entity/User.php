@@ -70,22 +70,22 @@ class User implements UserInterface, Serializable
     /**
      * @ORM\Column(type="string", length=13, nullable=true)
      */
-    private string $inqRuc = '';
+    private ?string $inqRuc = '';
 
     /**
      * @ORM\Column(type="string", length=25, nullable=true)
      */
-    private string $telefono = '';
+    private ?string $telefono = '';
 
     /**
      * @ORM\Column(type="string", length=25, nullable=true)
      */
-    private string $telefono2 = '';
+    private ?string $telefono2 = '';
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private string $direccion = '';
+    private ?string $direccion = '';
 
     /**
      * User constructor.

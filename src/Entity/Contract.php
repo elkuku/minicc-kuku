@@ -22,7 +22,7 @@ class Contract
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private int $id;
+    private ?int $id = null;
 
     /**
      * @ORM\Column(type="integer")
@@ -35,11 +35,11 @@ class Contract
     private string $inqNombreapellido = '';
 
     /**
-     * @var UserGender
+     * @var ?UserGender
      *
      * @ManyToOne(targetEntity="UserGender")
      */
-    private UserGender $gender;
+    private ?UserGender $gender = null;
 
     /**
      * @ORM\Column(type="string", length=11)
@@ -136,7 +136,7 @@ class Contract
      *
      * @return integer
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -564,7 +564,7 @@ class Contract
     /**
      * @return UserGender
      */
-    public function getGender(): UserGender
+    public function getGender(): ?UserGender
     {
         return $this->gender;
     }

@@ -20,14 +20,14 @@ class PaymentMethod
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private ?int $id;
+    private ?int $id = null;
 
     /**
      * @var string
      *
      * @ORM\Column(type="string", length=150, nullable=false)
      */
-    private string $name;
+    private string $name = '';
 
     /**
      * Get id
