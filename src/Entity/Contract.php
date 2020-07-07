@@ -8,6 +8,7 @@
 
 namespace App\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\ManyToOne;
 
@@ -21,113 +22,113 @@ class Contract
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="integer")
      */
-    protected $storeNumber = 0;
+    protected int $storeNumber = 0;
 
     /**
      * @ORM\Column(type="string", length=150)
      */
-    private $inqNombreapellido = '';
+    private string $inqNombreapellido = '';
 
     /**
      * @var UserGender
      *
      * @ManyToOne(targetEntity="UserGender")
      */
-    private $gender;
+    private UserGender $gender;
 
     /**
      * @ORM\Column(type="string", length=11)
      */
-    private $inqCi = '000000000-0';
+    private string $inqCi = '000000000-0';
 
     /**
      * @ORM\Column(type="string", length=50)
      */
-    private $destination = '';
+    private string $destination = '';
 
     /**
      * @ORM\Column(type="float", precision=10, scale=0)
      */
-    private $valAlq = 0;
+    private float $valAlq = 0;
 
     /**
      * @ORM\Column(type="float", precision=10, scale=0)
      */
-    private $valGarantia = 0;
+    private float $valGarantia = 0;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(type="date")
      */
-    private $date = '0000-00-00 00:00:00';
+    private DateTime $date;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $cntLanfort = 0;
+    private int $cntLanfort = 0;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $cntNeon = 0;
+    private int $cntNeon = 0;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $cntSwitch = 0;
+    private int $cntSwitch = 0;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $cntToma = 0;
+    private int $cntToma = 0;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $cntVentana = 0;
+    private int $cntVentana = 0;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $cntLlaves = 0;
+    private int $cntLlaves = 0;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $cntMedAgua = 0;
+    private int $cntMedAgua = 0;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $cntMedElec = 0;
+    private int $cntMedElec = 0;
 
     /**
      * @ORM\Column(type="string", length=50)
      */
-    private $medElectrico = '';
+    private string $medElectrico = '';
 
     /**
      * @ORM\Column(type="string", length=50)
      */
-    private $medAgua = '';
+    private string $medAgua = '';
 
     /**
      * @ORM\Column(type="text", length=65535, nullable=false)
      */
-    private $text;
+    private string $text;
 
     /**
      * Contract constructor.
      */
     public function __construct()
     {
-        $this->date = new \DateTime;
+        $this->date = new DateTime;
     }
 
     /**
@@ -135,7 +136,7 @@ class Contract
      *
      * @return integer
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -147,7 +148,7 @@ class Contract
      *
      * @return Contract
      */
-    public function setInqNombreapellido($inqNombreapellido)
+    public function setInqNombreapellido($inqNombreapellido): Contract
     {
         $this->inqNombreapellido = $inqNombreapellido;
 
@@ -159,7 +160,7 @@ class Contract
      *
      * @return string
      */
-    public function getInqNombreapellido()
+    public function getInqNombreapellido(): string
     {
         return $this->inqNombreapellido;
     }
@@ -171,7 +172,7 @@ class Contract
      *
      * @return Contract
      */
-    public function setInqCi($inqCi)
+    public function setInqCi($inqCi): Contract
     {
         $this->inqCi = $inqCi;
 
@@ -183,7 +184,7 @@ class Contract
      *
      * @return string
      */
-    public function getInqCi()
+    public function getInqCi(): string
     {
         return $this->inqCi;
     }
@@ -195,7 +196,7 @@ class Contract
      *
      * @return Contract
      */
-    public function setDestination($destination)
+    public function setDestination($destination): Contract
     {
         $this->destination = $destination;
 
@@ -207,7 +208,7 @@ class Contract
      *
      * @return string
      */
-    public function getDestination()
+    public function getDestination(): string
     {
         return $this->destination;
     }
@@ -219,7 +220,7 @@ class Contract
      *
      * @return Contract
      */
-    public function setValAlq($valAlq)
+    public function setValAlq($valAlq): Contract
     {
         $this->valAlq = $valAlq;
 
@@ -243,7 +244,7 @@ class Contract
      *
      * @return Contract
      */
-    public function setValGarantia($valGarantia)
+    public function setValGarantia($valGarantia): Contract
     {
         $this->valGarantia = $valGarantia;
 
@@ -263,11 +264,11 @@ class Contract
     /**
      * Set date
      *
-     * @param \DateTime $date
+     * @param DateTime $date
      *
      * @return Contract
      */
-    public function setDate($date)
+    public function setDate($date): Contract
     {
         $this->date = $date;
 
@@ -277,9 +278,9 @@ class Contract
     /**
      * Get date
      *
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getDate()
+    public function getDate(): DateTime
     {
         return $this->date;
     }
@@ -291,7 +292,7 @@ class Contract
      *
      * @return Contract
      */
-    public function setCntLanfort($cntLanfort)
+    public function setCntLanfort($cntLanfort): Contract
     {
         $this->cntLanfort = $cntLanfort;
 
@@ -303,7 +304,7 @@ class Contract
      *
      * @return integer
      */
-    public function getCntLanfort()
+    public function getCntLanfort(): int
     {
         return $this->cntLanfort;
     }
@@ -315,7 +316,7 @@ class Contract
      *
      * @return Contract
      */
-    public function setCntNeon($cntNeon)
+    public function setCntNeon($cntNeon): Contract
     {
         $this->cntNeon = $cntNeon;
 
@@ -327,7 +328,7 @@ class Contract
      *
      * @return integer
      */
-    public function getCntNeon()
+    public function getCntNeon(): int
     {
         return $this->cntNeon;
     }
@@ -339,7 +340,7 @@ class Contract
      *
      * @return Contract
      */
-    public function setCntSwitch($cntSwitch)
+    public function setCntSwitch($cntSwitch): Contract
     {
         $this->cntSwitch = $cntSwitch;
 
@@ -351,7 +352,7 @@ class Contract
      *
      * @return integer
      */
-    public function getCntSwitch()
+    public function getCntSwitch(): int
     {
         return $this->cntSwitch;
     }
@@ -363,7 +364,7 @@ class Contract
      *
      * @return Contract
      */
-    public function setCntToma($cntToma)
+    public function setCntToma($cntToma): Contract
     {
         $this->cntToma = $cntToma;
 
@@ -375,7 +376,7 @@ class Contract
      *
      * @return integer
      */
-    public function getCntToma()
+    public function getCntToma(): int
     {
         return $this->cntToma;
     }
@@ -387,7 +388,7 @@ class Contract
      *
      * @return Contract
      */
-    public function setCntVentana($cntVentana)
+    public function setCntVentana($cntVentana): Contract
     {
         $this->cntVentana = $cntVentana;
 
@@ -399,7 +400,7 @@ class Contract
      *
      * @return integer
      */
-    public function getCntVentana()
+    public function getCntVentana(): int
     {
         return $this->cntVentana;
     }
@@ -411,7 +412,7 @@ class Contract
      *
      * @return Contract
      */
-    public function setCntLlaves($cntLlaves)
+    public function setCntLlaves($cntLlaves): Contract
     {
         $this->cntLlaves = $cntLlaves;
 
@@ -423,7 +424,7 @@ class Contract
      *
      * @return integer
      */
-    public function getCntLlaves()
+    public function getCntLlaves(): int
     {
         return $this->cntLlaves;
     }
@@ -435,7 +436,7 @@ class Contract
      *
      * @return Contract
      */
-    public function setCntMedAgua($cntMedAgua)
+    public function setCntMedAgua($cntMedAgua): Contract
     {
         $this->cntMedAgua = $cntMedAgua;
 
@@ -447,7 +448,7 @@ class Contract
      *
      * @return integer
      */
-    public function getCntMedAgua()
+    public function getCntMedAgua(): int
     {
         return $this->cntMedAgua;
     }
@@ -459,7 +460,7 @@ class Contract
      *
      * @return Contract
      */
-    public function setCntMedElec($cntMedElec)
+    public function setCntMedElec($cntMedElec): Contract
     {
         $this->cntMedElec = $cntMedElec;
 
@@ -471,7 +472,7 @@ class Contract
      *
      * @return integer
      */
-    public function getCntMedElec()
+    public function getCntMedElec(): int
     {
         return $this->cntMedElec;
     }
@@ -483,7 +484,7 @@ class Contract
      *
      * @return Contract
      */
-    public function setMedElectrico($medElectrico)
+    public function setMedElectrico($medElectrico): Contract
     {
         $this->medElectrico = $medElectrico;
 
@@ -495,7 +496,7 @@ class Contract
      *
      * @return string
      */
-    public function getMedElectrico()
+    public function getMedElectrico(): string
     {
         return $this->medElectrico;
     }
@@ -507,7 +508,7 @@ class Contract
      *
      * @return Contract
      */
-    public function setMedAgua($medAgua)
+    public function setMedAgua($medAgua): Contract
     {
         $this->medAgua = $medAgua;
 
@@ -519,7 +520,7 @@ class Contract
      *
      * @return string
      */
-    public function getMedAgua()
+    public function getMedAgua(): string
     {
         return $this->medAgua;
     }
@@ -531,7 +532,7 @@ class Contract
      *
      * @return Contract
      */
-    public function setText($text)
+    public function setText($text): Contract
     {
         $this->text = $text;
 
@@ -543,7 +544,7 @@ class Contract
      *
      * @return string
      */
-    public function getText()
+    public function getText(): string
     {
         return $this->text;
     }
@@ -553,7 +554,7 @@ class Contract
      *
      * @return Contract
      */
-    public function setGender(UserGender $gender)
+    public function setGender(UserGender $gender): Contract
     {
         $this->gender = $gender;
 
@@ -563,7 +564,7 @@ class Contract
     /**
      * @return UserGender
      */
-    public function getGender()
+    public function getGender(): UserGender
     {
         return $this->gender;
     }
@@ -573,7 +574,7 @@ class Contract
      *
      * @return Contract
      */
-    public function setStoreNumber($storeNumber)
+    public function setStoreNumber($storeNumber): Contract
     {
         $this->storeNumber = $storeNumber;
 
@@ -583,7 +584,7 @@ class Contract
     /**
      * @return integer
      */
-    public function getStoreNumber()
+    public function getStoreNumber(): int
     {
         return $this->storeNumber;
     }
@@ -593,7 +594,7 @@ class Contract
      *
      * @return $this
      */
-    public function setValuesFromStore(Store $store)
+    public function setValuesFromStore(Store $store): self
     {
         $this->setStoreNumber($store->getId())
             ->setDestination($store->getDestination())

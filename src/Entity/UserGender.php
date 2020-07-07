@@ -20,12 +20,12 @@ class UserGender
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=150, nullable=false)
      */
-    private $name;
+    private string $name;
 
     /**
      * Get id
@@ -44,7 +44,7 @@ class UserGender
      *
      * @return UserGender
      */
-    public function setName($name)
+    public function setName($name): UserGender
     {
         $this->name = $name;
 
@@ -56,7 +56,7 @@ class UserGender
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }

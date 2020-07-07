@@ -20,12 +20,12 @@ class TransactionType
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=150, nullable=false)
      */
-    private $name;
+    private string $name;
 
     /**
      * Get id

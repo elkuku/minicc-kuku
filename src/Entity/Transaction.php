@@ -8,6 +8,7 @@
 
 namespace App\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\ManyToOne;
 use JsonSerializable;
@@ -22,21 +23,21 @@ class Transaction implements JsonSerializable
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    protected $id;
+    protected ?int $id;
 
     /**
      * @var Store
      *
      * @ORM\ManyToOne(targetEntity="Store")
      */
-    protected $store;
+    protected Store $store;
 
     /**
      * @var User
      *
      * @ORM\ManyToOne(targetEntity="User")
      */
-    protected $user;
+    protected User $user;
 
     /**
      * The type
@@ -45,7 +46,7 @@ class Transaction implements JsonSerializable
      * @var TransactionType
      * @ManyToOne(targetEntity="TransactionType")
      */
-    private $type;
+    private TransactionType $type;
 
     /**
      * The method
@@ -54,36 +55,36 @@ class Transaction implements JsonSerializable
      * @var PaymentMethod
      * @ManyToOne(targetEntity="PaymentMethod")
      */
-    private $method;
+    private PaymentMethod $method;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(type="date", nullable=false)
      */
-    private $date;
+    private DateTime $date;
 
     /**
      * @var float
      *
      * @ORM\Column(type="decimal", precision=13, scale=2, nullable=false)
      */
-    private $amount = 0.00;
+    private float $amount = 0.00;
 
     /**
      * @ORM\Column(type="integer", length=20, nullable=true)
      */
-    private $document;
+    private int $document;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $depId;
+    private int $depId;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $recipeNo;
+    private int $recipeNo;
 
     /**
      * Get id
@@ -96,19 +97,19 @@ class Transaction implements JsonSerializable
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getDate()
+    public function getDate(): DateTime
     {
         return $this->date;
     }
 
     /**
-     * @param \DateTime $date
+     * @param DateTime $date
      *
      * @return $this
      */
-    public function setDate(\DateTime $date)
+    public function setDate(DateTime $date): self
     {
         $this->date = $date;
 
@@ -118,7 +119,7 @@ class Transaction implements JsonSerializable
     /**
      * @return float
      */
-    public function getAmount()
+    public function getAmount(): float
     {
         return $this->amount;
     }
@@ -128,17 +129,14 @@ class Transaction implements JsonSerializable
      *
      * @return $this
      */
-    public function setAmount($amount)
+    public function setAmount($amount): self
     {
         $this->amount = $amount;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getDocument()
+    public function getDocument(): int
     {
         return $this->document;
     }
@@ -148,7 +146,7 @@ class Transaction implements JsonSerializable
      *
      * @return $this
      */
-    public function setDocument($document)
+    public function setDocument($document): self
     {
         $this->document = $document;
 
@@ -158,7 +156,7 @@ class Transaction implements JsonSerializable
     /**
      * @return int
      */
-    public function getDepId()
+    public function getDepId(): int
     {
         return $this->depId;
     }
@@ -168,7 +166,7 @@ class Transaction implements JsonSerializable
      *
      * @return $this
      */
-    public function setDepId($depId)
+    public function setDepId($depId): self
     {
         $this->depId = $depId;
 
@@ -178,7 +176,7 @@ class Transaction implements JsonSerializable
     /**
      * @return int
      */
-    public function getRecipeNo()
+    public function getRecipeNo(): int
     {
         return $this->recipeNo;
     }
@@ -188,7 +186,7 @@ class Transaction implements JsonSerializable
      *
      * @return $this
      */
-    public function setRecipeNo($recipeNo)
+    public function setRecipeNo($recipeNo): self
     {
         $this->recipeNo = $recipeNo;
 
@@ -202,7 +200,7 @@ class Transaction implements JsonSerializable
      *
      * @return Transaction
      */
-    public function setUser(User $user)
+    public function setUser(User $user): Transaction
     {
         $this->user = $user;
 
@@ -214,7 +212,7 @@ class Transaction implements JsonSerializable
      *
      * @return User
      */
-    public function getUser()
+    public function getUser(): User
     {
         return $this->user;
     }
@@ -224,7 +222,7 @@ class Transaction implements JsonSerializable
      *
      * @return Transaction
      */
-    public function setStore(Store $store)
+    public function setStore(Store $store): Transaction
     {
         $this->store = $store;
 
@@ -236,7 +234,7 @@ class Transaction implements JsonSerializable
      *
      * @return Transaction
      */
-    public function setType(TransactionType $type)
+    public function setType(TransactionType $type): Transaction
     {
         $this->type = $type;
 
@@ -246,7 +244,7 @@ class Transaction implements JsonSerializable
     /**
      * @return TransactionType
      */
-    public function getType()
+    public function getType(): TransactionType
     {
         return $this->type;
     }
@@ -256,7 +254,7 @@ class Transaction implements JsonSerializable
      *
      * @return Transaction
      */
-    public function setMethod(PaymentMethod $paymentMethod)
+    public function setMethod(PaymentMethod $paymentMethod): Transaction
     {
         $this->method = $paymentMethod;
 
@@ -266,7 +264,7 @@ class Transaction implements JsonSerializable
     /**
      * @return PaymentMethod
      */
-    public function getMethod()
+    public function getMethod(): PaymentMethod
     {
         return $this->method;
     }
@@ -274,7 +272,7 @@ class Transaction implements JsonSerializable
     /**
      * @return Store
      */
-    public function getStore()
+    public function getStore(): Store
     {
         return $this->store;
     }
@@ -308,7 +306,7 @@ class Transaction implements JsonSerializable
      *
      * @return Transaction
      */
-    public function setId($id)
+    public function setId($id): Transaction
     {
         $this->id = $id;
 

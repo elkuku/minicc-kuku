@@ -8,9 +8,11 @@
 
 namespace App\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\ManyToOne;
 use JsonSerializable;
+use UnexpectedValueException;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\DepositRepository")
@@ -22,30 +24,30 @@ class Deposit implements JsonSerializable
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @var PaymentMethod
      * @ManyToOne(targetEntity="PaymentMethod")
      */
-    private $entity;
+    private PaymentMethod $entity;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(type="date", nullable=false)
      */
-    private $date;
+    private DateTime $date;
 
     /**
      * @ORM\Column(type="string", length=150, nullable=false)
      */
-    private $document;
+    private string $document;
 
     /**
      * @ORM\Column(type="decimal", precision=13, scale=2, nullable=false)
      */
-    private $amount;
+    private float $amount;
 
     /**
      * Get id
@@ -67,7 +69,7 @@ class Deposit implements JsonSerializable
     public function setEntity(PaymentMethod $entity): Deposit
     {
         if (1 === $entity->getId()) {
-            throw new \UnexpectedValueException(
+            throw new UnexpectedValueException(
                 'The entity with ID "1" is supposed to be the BAR payment method!'
             );
         }
@@ -90,11 +92,11 @@ class Deposit implements JsonSerializable
     /**
      * Set date
      *
-     * @param \DateTime $date
+     * @param DateTime $date
      *
      * @return Deposit
      */
-    public function setDate(\DateTime $date): Deposit
+    public function setDate(DateTime $date): Deposit
     {
         $this->date = $date;
 
@@ -104,9 +106,9 @@ class Deposit implements JsonSerializable
     /**
      * Get date
      *
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getDate(): \DateTime
+    public function getDate(): DateTime
     {
         return $this->date;
     }

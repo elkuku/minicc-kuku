@@ -20,12 +20,12 @@ class UserState
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=150, nullable=false)
      */
-    private $name;
+    private string $name;
 
     /**
      * Get id
@@ -56,7 +56,7 @@ class UserState
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }

@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\ManyToOne;
+use Serializable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -13,14 +14,14 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * ORM\Table(name="cc_user")
  * @UniqueEntity(fields="email", message="This email address is already in use")
  */
-class User implements UserInterface, \Serializable
+class User implements UserInterface, Serializable
 {
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @var Store[]
@@ -37,19 +38,19 @@ class User implements UserInterface, \Serializable
     /**
      * @ORM\Column(type="string", length=40)
      */
-    private $name;
+    private ?string $name;
 
     /**
      * @ORM\Column(type="string", length=50)
      */
-    private $role = 'ROLE_USER';
+    private string $role = 'ROLE_USER';
 
     /**
      * @var UserGender
      *
      * @ManyToOne(targetEntity="UserGender")
      */
-    private $gender;
+    private UserGender $gender;
 
     /**
      * User State
@@ -59,32 +60,32 @@ class User implements UserInterface, \Serializable
      *
      * @ManyToOne(targetEntity="UserState")
      */
-    private $state;
+    private UserState $state;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=false)
      */
-    private $inqCi = '';
+    private string $inqCi = '';
 
     /**
      * @ORM\Column(type="string", length=13, nullable=true)
      */
-    private $inqRuc = '';
+    private string $inqRuc = '';
 
     /**
      * @ORM\Column(type="string", length=25, nullable=true)
      */
-    private $telefono = '';
+    private string $telefono = '';
 
     /**
      * @ORM\Column(type="string", length=25, nullable=true)
      */
-    private $telefono2 = '';
+    private string $telefono2 = '';
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $direccion = '';
+    private string $direccion = '';
 
     /**
      * User constructor.
@@ -98,9 +99,8 @@ class User implements UserInterface, \Serializable
      * {@inheritdoc}
      * @return null
      */
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
-        return null;
     }
 
     /**
@@ -116,7 +116,7 @@ class User implements UserInterface, \Serializable
      *
      * @return $this
      */
-    public function setRole(string $role = null): self
+    public function setRole(string $role): self
     {
         $this->role = $role;
 
@@ -127,7 +127,7 @@ class User implements UserInterface, \Serializable
      * {@inheritdoc}
      * @return (Role|string)[] The user roles
      */
-    public function getRoles():array
+    public function getRoles(): array
     {
         return [$this->getRole()];
     }
@@ -152,12 +152,12 @@ class User implements UserInterface, \Serializable
         return $this;
     }
 
-    public function getName():?string
+    public function getName(): ?string
     {
         return $this->name;
     }
 
-    public function getUsername():string
+    public function getUsername(): string
     {
         return $this->email;
     }
@@ -175,7 +175,7 @@ class User implements UserInterface, \Serializable
      *
      * @return $this
      */
-    public function setEmail($email)
+    public function setEmail($email): self
     {
         $this->email = $email;
 
@@ -193,9 +193,8 @@ class User implements UserInterface, \Serializable
     /**
      * @return null
      */
-    public function getSalt()
+    public function getSalt(): void
     {
-        return null;
     }
 
     /**
@@ -203,7 +202,7 @@ class User implements UserInterface, \Serializable
      *
      * @return User
      */
-    public function setState(UserState $status)
+    public function setState(UserState $status): User
     {
         $this->state = $status;
 
@@ -213,7 +212,7 @@ class User implements UserInterface, \Serializable
     /**
      * @return UserState
      */
-    public function getState()
+    public function getState(): UserState
     {
         return $this->state;
     }
@@ -225,7 +224,7 @@ class User implements UserInterface, \Serializable
      *
      * @return User
      */
-    public function setInqCi($inqCi)
+    public function setInqCi($inqCi): User
     {
         $this->inqCi = $inqCi;
 
@@ -237,7 +236,7 @@ class User implements UserInterface, \Serializable
      *
      * @return string
      */
-    public function getInqCi()
+    public function getInqCi(): string
     {
         return $this->inqCi;
     }
@@ -249,7 +248,7 @@ class User implements UserInterface, \Serializable
      *
      * @return User
      */
-    public function setInqRuc($inqRuc)
+    public function setInqRuc($inqRuc): User
     {
         $this->inqRuc = $inqRuc;
 
@@ -261,7 +260,7 @@ class User implements UserInterface, \Serializable
      *
      * @return string
      */
-    public function getInqRuc()
+    public function getInqRuc(): string
     {
         return $this->inqRuc;
     }
@@ -273,7 +272,7 @@ class User implements UserInterface, \Serializable
      *
      * @return User
      */
-    public function setTelefono($telefono)
+    public function setTelefono($telefono): User
     {
         $this->telefono = $telefono;
 
@@ -285,7 +284,7 @@ class User implements UserInterface, \Serializable
      *
      * @return string
      */
-    public function getTelefono()
+    public function getTelefono(): string
     {
         return $this->telefono;
     }
@@ -297,7 +296,7 @@ class User implements UserInterface, \Serializable
      *
      * @return User
      */
-    public function setTelefono2($telefono2)
+    public function setTelefono2($telefono2): User
     {
         $this->telefono2 = $telefono2;
 
@@ -309,7 +308,7 @@ class User implements UserInterface, \Serializable
      *
      * @return string
      */
-    public function getTelefono2()
+    public function getTelefono2(): string
     {
         return $this->telefono2;
     }
@@ -321,7 +320,7 @@ class User implements UserInterface, \Serializable
      *
      * @return User
      */
-    public function setDireccion($direccion)
+    public function setDireccion($direccion): User
     {
         $this->direccion = $direccion;
 
@@ -333,7 +332,7 @@ class User implements UserInterface, \Serializable
      *
      * @return string
      */
-    public function getDireccion()
+    public function getDireccion(): string
     {
         return $this->direccion;
     }
@@ -341,11 +340,11 @@ class User implements UserInterface, \Serializable
     /**
      * Add store
      *
-     * @param \App\Entity\Store $store
+     * @param Store $store
      *
      * @return User
      */
-    public function addStore(Store $store)
+    public function addStore(Store $store): User
     {
         $this->stores[] = $store;
 
@@ -355,11 +354,11 @@ class User implements UserInterface, \Serializable
     /**
      * Remove store
      *
-     * @param \App\Entity\Store $store
+     * @param Store $store
      *
      * @return User
      */
-    public function removeStore(Store $store)
+    public function removeStore(Store $store): User
     {
         $this->stores->removeElement($store);
 
@@ -381,7 +380,7 @@ class User implements UserInterface, \Serializable
      *
      * @return User
      */
-    public function setGender(UserGender $gender)
+    public function setGender(UserGender $gender): User
     {
         $this->gender = $gender;
 
@@ -391,7 +390,7 @@ class User implements UserInterface, \Serializable
     /**
      * @return UserGender
      */
-    public function getGender()
+    public function getGender(): UserGender
     {
         return $this->gender;
     }
@@ -402,7 +401,7 @@ class User implements UserInterface, \Serializable
      * @link  http://php.net/manual/en/serializable.serialize.php
      * @return string the string representation of the object or null
      */
-    public function serialize()
+    public function serialize(): string
     {
         return serialize(
             [
@@ -421,7 +420,7 @@ class User implements UserInterface, \Serializable
      *
      * @return void
      */
-    public function unserialize($serialized)
+    public function unserialize($serialized): void
     {
         list (
             $this->id,

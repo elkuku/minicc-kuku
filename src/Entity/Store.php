@@ -20,98 +20,98 @@ class Store
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @var integer
      *
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $userId = 0;
+    private int $userId = 0;
 
     /**
      * @var string
      *
      * @ORM\Column(type="string", length=50, nullable=false)
      */
-    private $destination = '';
+    private string $destination = '';
 
     /**
      * @var float
      *
      * @ORM\Column(type="float", precision=10, scale=0, nullable=false)
      */
-    private $valAlq = 0;
+    private float $valAlq = 0;
 
     /**
      * @var integer
      *
      * @ORM\Column(type="integer", nullable=false)
      */
-    private $cntLanfort = 0;
+    private int $cntLanfort = 0;
 
     /**
      * @var integer
      *
      * @ORM\Column(type="integer", nullable=false)
      */
-    private $cntNeon = 0;
+    private int $cntNeon = 0;
 
     /**
      * @var integer
      *
      * @ORM\Column(type="integer", nullable=false)
      */
-    private $cntSwitch = 0;
+    private int $cntSwitch = 0;
 
     /**
      * @var integer
      *
      * @ORM\Column(type="integer", nullable=false)
      */
-    private $cntToma = 0;
+    private int $cntToma = 0;
 
     /**
      * @var integer
      *
      * @ORM\Column(type="integer", nullable=false)
      */
-    private $cntVentana = 0;
+    private int $cntVentana = 0;
 
     /**
      * @var integer
      *
      * @ORM\Column(type="integer", nullable=false)
      */
-    private $cntLlaves = 0;
+    private int $cntLlaves = 0;
 
     /**
      * @var integer
      *
      * @ORM\Column(type="integer", nullable=false)
      */
-    private $cntMedAgua = 0;
+    private int $cntMedAgua = 0;
 
     /**
      * @var integer
      *
      * @ORM\Column(type="integer", nullable=false)
      */
-    private $cntMedElec = 0;
+    private int $cntMedElec = 0;
 
     /**
      * @var string
      *
      * @ORM\Column(type="string", length=50)
      */
-    private $medElectrico = 0;
+    private string $medElectrico = '';
 
     /**
      * @var string
      *
      * @ORM\Column(type="string", length=50)
      */
-    private $medAgua = 0;
+    private string $medAgua = '';
 
     /**
      * @var User
@@ -119,7 +119,7 @@ class Store
      * @ORM\ManyToOne(targetEntity="User", inversedBy="stores")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
-    private $user;
+    private User $user;
 
     /**
      * Get id
@@ -138,7 +138,7 @@ class Store
      *
      * @return Store
      */
-    public function setUserId($idUser)
+    public function setUserId($idUser): Store
     {
         $this->userId = $idUser;
 
@@ -150,7 +150,7 @@ class Store
      *
      * @return integer
      */
-    public function getUserId()
+    public function getUserId(): int
     {
         return $this->userId;
     }
@@ -162,7 +162,7 @@ class Store
      *
      * @return Store
      */
-    public function setDestination($destination)
+    public function setDestination($destination): Store
     {
         $this->destination = $destination;
 
@@ -174,7 +174,7 @@ class Store
      *
      * @return string
      */
-    public function getDestination()
+    public function getDestination(): string
     {
         return $this->destination;
     }
@@ -186,7 +186,7 @@ class Store
      *
      * @return Store
      */
-    public function setValAlq($valAlq)
+    public function setValAlq($valAlq): Store
     {
         $this->valAlq = $valAlq;
 
@@ -198,7 +198,7 @@ class Store
      *
      * @return float
      */
-    public function getValAlq()
+    public function getValAlq(): float
     {
         return $this->valAlq;
     }
@@ -210,7 +210,7 @@ class Store
      *
      * @return Store
      */
-    public function setCntLanfort($cntLanfort)
+    public function setCntLanfort($cntLanfort): Store
     {
         $this->cntLanfort = $cntLanfort;
 
@@ -222,7 +222,7 @@ class Store
      *
      * @return integer
      */
-    public function getCntLanfort()
+    public function getCntLanfort(): int
     {
         return $this->cntLanfort;
     }
@@ -234,7 +234,7 @@ class Store
      *
      * @return Store
      */
-    public function setCntNeon($cntNeon)
+    public function setCntNeon($cntNeon): Store
     {
         $this->cntNeon = $cntNeon;
 
@@ -246,7 +246,7 @@ class Store
      *
      * @return integer
      */
-    public function getCntNeon()
+    public function getCntNeon(): int
     {
         return $this->cntNeon;
     }
@@ -258,7 +258,7 @@ class Store
      *
      * @return Store
      */
-    public function setCntSwitch($cntSwitch)
+    public function setCntSwitch($cntSwitch): Store
     {
         $this->cntSwitch = $cntSwitch;
 
@@ -270,7 +270,7 @@ class Store
      *
      * @return integer
      */
-    public function getCntSwitch()
+    public function getCntSwitch(): int
     {
         return $this->cntSwitch;
     }
@@ -282,7 +282,7 @@ class Store
      *
      * @return Store
      */
-    public function setCntToma($cntToma)
+    public function setCntToma($cntToma): Store
     {
         $this->cntToma = $cntToma;
 
@@ -294,7 +294,7 @@ class Store
      *
      * @return integer
      */
-    public function getCntToma()
+    public function getCntToma(): int
     {
         return $this->cntToma;
     }
@@ -306,7 +306,7 @@ class Store
      *
      * @return Store
      */
-    public function setCntVentana($cntVentana)
+    public function setCntVentana($cntVentana): Store
     {
         $this->cntVentana = $cntVentana;
 
@@ -318,7 +318,7 @@ class Store
      *
      * @return integer
      */
-    public function getCntVentana()
+    public function getCntVentana(): int
     {
         return $this->cntVentana;
     }
@@ -330,7 +330,7 @@ class Store
      *
      * @return Store
      */
-    public function setCntLlaves($cntLlaves)
+    public function setCntLlaves($cntLlaves): Store
     {
         $this->cntLlaves = $cntLlaves;
 
@@ -342,7 +342,7 @@ class Store
      *
      * @return integer
      */
-    public function getCntLlaves()
+    public function getCntLlaves(): int
     {
         return $this->cntLlaves;
     }
@@ -354,7 +354,7 @@ class Store
      *
      * @return Store
      */
-    public function setCntMedAgua($cntMedAgua)
+    public function setCntMedAgua($cntMedAgua): Store
     {
         $this->cntMedAgua = $cntMedAgua;
 
@@ -366,7 +366,7 @@ class Store
      *
      * @return integer
      */
-    public function getCntMedAgua()
+    public function getCntMedAgua(): int
     {
         return $this->cntMedAgua;
     }
@@ -378,7 +378,7 @@ class Store
      *
      * @return Store
      */
-    public function setCntMedElec($cntMedElec)
+    public function setCntMedElec($cntMedElec): Store
     {
         $this->cntMedElec = $cntMedElec;
 
@@ -390,7 +390,7 @@ class Store
      *
      * @return integer
      */
-    public function getCntMedElec()
+    public function getCntMedElec(): int
     {
         return $this->cntMedElec;
     }
@@ -402,19 +402,14 @@ class Store
      *
      * @return Store
      */
-    public function setMedElectrico($medElectrico)
+    public function setMedElectrico($medElectrico): Store
     {
         $this->medElectrico = $medElectrico;
 
         return $this;
     }
 
-    /**
-     * Get medElectrico
-     *
-     * @return integer
-     */
-    public function getMedElectrico()
+    public function getMedElectrico(): string
     {
         return $this->medElectrico;
     }
@@ -426,19 +421,14 @@ class Store
      *
      * @return Store
      */
-    public function setMedAgua($medAgua)
+    public function setMedAgua($medAgua): Store
     {
         $this->medAgua = $medAgua;
 
         return $this;
     }
 
-    /**
-     * Get medAgua
-     *
-     * @return integer
-     */
-    public function getMedAgua()
+    public function getMedAgua(): string
     {
         return $this->medAgua;
     }
@@ -446,11 +436,11 @@ class Store
     /**
      * Set user
      *
-     * @param \App\Entity\User $user
+     * @param User $user
      *
      * @return Store
      */
-    public function setUser(User $user = null)
+    public function setUser(User $user): Store
     {
         $this->user = $user;
 
@@ -460,9 +450,9 @@ class Store
     /**
      * Get user
      *
-     * @return \App\Entity\User
+     * @return User
      */
-    public function getUser()
+    public function getUser(): User
     {
         return $this->user;
     }
