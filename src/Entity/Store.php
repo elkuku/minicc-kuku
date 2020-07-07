@@ -27,7 +27,7 @@ class Store
      *
      * @ORM\Column(type="integer", nullable=true)
      */
-    private int $userId = 0;
+    private ?int $userId = 0;
 
     /**
      * @var string
