@@ -1,13 +1,21 @@
 const $ = require('jquery')
 
-$('.addRow').on("click", function(){ addRow(this); })
-$('.searchDepId').on("click", function(){ searchDepId(this); })
+$('.addRow').on('click', function () {
+    addRow(this)
+})
+$('.searchDepId').on('click', function () {
+    searchDepId(this)
+})
 
 function addRow(e) {
-    $('#paymentsTable tbody').append('<tr>' + $(e).parent().parent().html() + '</tr>');
-    e.remove();
-    $('.addRow').on("click", function(){ addRow(this); })
-    $('.searchDepId').on("click", function(){ searchDepId(this); })
+    $('#paymentsTable tbody').append('<tr>' + $(e).parent().parent().html() + '</tr>')
+    e.remove()
+    $('.addRow').on('click', function () {
+        addRow(this)
+    })
+    $('.searchDepId').on('click', function () {
+        searchDepId(this)
+    })
 }
 
 function searchDepId(el) {
@@ -25,9 +33,9 @@ function searchDepId(el) {
     let documentId = documentIdElement.val()
 
     if (!documentId) {
-        messageElement.html('<div class="alert alert-warning">Insert a document number</div>');
-        documentIdElement.focus();
-        return false;
+        messageElement.html('<div class="alert alert-warning">Insert a document number</div>')
+        documentIdElement.focus()
+        return false
     }
 
     $.ajax({
@@ -37,24 +45,23 @@ function searchDepId(el) {
         beforeSend: function () {
             messageElement.html(
                 '<div class="progress"><div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar"' +
-                ' style="width:100%">Procesando...</div></div>');
+                ' style="width:100%">Procesando...</div></div>')
         },
         success: function (response) {
             if (response.error) {
-                messageElement.html('<div class="alert alert-danger">' + response.error + '</div>');
-                documentIdElement.focus();
-            }
-            else {
-                messageElement.html('<div class="alert alert-success">Deposit found</div>');
-                var depo = response.data[0];
-                documentIdElement.val(depo.document);
-                destElement.val(depo.id);
-                dateElement.val(depo.date);
-                amountElement.val(depo.amount);
-                methodElement.val(2);
+                messageElement.html('<div class="alert alert-danger">' + response.error + '</div>')
+                documentIdElement.focus()
+            } else {
+                messageElement.html('<div class="alert alert-success">Deposit found</div>')
+                var depo = response.data[0]
+                documentIdElement.val(depo.document)
+                destElement.val(depo.id)
+                dateElement.val(depo.date)
+                amountElement.val(depo.amount)
+                methodElement.val(2)
             }
         }
-    });
+    })
 
-    return false;
+    return false
 }

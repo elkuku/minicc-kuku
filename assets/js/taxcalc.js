@@ -19,11 +19,11 @@ $('.taxWithoutTax').on('click', function () {
 function WithoutTax(withTax) {
     let val = withTax / taxRate
 
-    return val.toFixed(2);
+    return val.toFixed(2)
 }
 
 function withTax(WithoutTax) {
     let val = WithoutTax * taxRate
 
-    return val.toFixed(2);
+    return val.toFixed(2)
 }

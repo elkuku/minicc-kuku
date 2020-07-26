@@ -12,7 +12,7 @@ function drawChart(elemantId, title, labels, data) {
         'rgba(255, 99, 132, 0.2)',
         'rgba(54, 162, 235, 0.2)',
         'rgba(255, 206, 86, 0.2)'
-    ];
+    ]
 
     let borderColors = [
         'rgba(255,99,132,1)',
@@ -24,7 +24,7 @@ function drawChart(elemantId, title, labels, data) {
         'rgba(255,99,132,1)',
         'rgba(54, 162, 235, 1)',
         'rgba(255, 206, 86, 1)'
-    ];
+    ]
 
     new Chart(document.getElementById(elemantId), {
         type: 'bar',
@@ -39,7 +39,7 @@ function drawChart(elemantId, title, labels, data) {
             }]
         },
         options: {scales: {yAxes: [{ticks: {beginAtZero: true}}]}}
-    });
+    })
 }
 
 let chart1 = $('#chart1')

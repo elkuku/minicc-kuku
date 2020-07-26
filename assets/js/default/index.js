@@ -1,7 +1,7 @@
 const $ = require('jquery')
 
-$(function() {
+$(function () {
     $('html').addClass('bg-atacames')
     $('#main-container').remove()
     $('#app-layout').css({'padding': '0'})
-});
+})

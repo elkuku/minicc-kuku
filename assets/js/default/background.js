@@ -1,5 +1,5 @@
 const $ = require('jquery')
 
-$(function() {
+$(function () {
     $('#app-layout').addClass('bg-atacames')
-});
+})
