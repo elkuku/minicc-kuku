@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# 4E Website startup script
+# Startup script
 #
 
 docker-compose up -d
