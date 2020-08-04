@@ -1,16 +1,11 @@
 #!/bin/bash
 #
-# Startup script
+# Stop script
 #
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && cd .. && pwd )"
-
 cd "$DIR" || exit 1
 
-echo "Starting dev env in $DIR ..."
+docker-compose stop
 
-docker-compose up -d
-
-symfony server:start -d
-
-symfony open:local
+symfony server:stop
