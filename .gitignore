@@ -23,3 +23,5 @@ yarn-error.log
 
 /fakewebpack.config.js
 /tests_local
+
+.idea/workspace.xml
