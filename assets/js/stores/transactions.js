@@ -1,3 +1,5 @@
+const $ = require('jquery')
+
 function drawChart(elemantId, labels, data1, data2) {
     new Chart(document.getElementById(elemantId), {
         type: 'line',
