@@ -146,7 +146,7 @@ class Store
      *
      * @return integer
      */
-    public function getUserId(): int
+    public function getUserId(): ?int
     {
         return $this->userId;
     }
