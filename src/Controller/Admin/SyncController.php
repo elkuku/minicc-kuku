@@ -7,11 +7,11 @@ use Doctrine\DBAL\Statement;
 use Doctrine\ORM\EntityManager;
 use Exception;
 use RuntimeException;
-use Swift_Attachment;
-use Swift_Mailer;
-use Swift_Message;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
+use Symfony\Component\Mime\Part\DataPart;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,7 +35,10 @@ class SyncController extends AbstractController
             200,
             [
                 'Content-Type'        => 'application/txt',
-                'Content-Disposition' => sprintf('attachment; filename="%s"', $filename),
+                'Content-Disposition' => sprintf(
+                    'attachment; filename="%s"',
+                    $filename
+                ),
             ]
         );
     }
@@ -66,7 +69,10 @@ class SyncController extends AbstractController
         $parts = explode('-', $file->getClientOriginalName());
 
         if (count($parts) < 2) {
-            $this->addFlash('danger', 'Invalid filename should be "export-{TABLE_NAME}-{DATE}.json".');
+            $this->addFlash(
+                'danger',
+                'Invalid filename should be "export-{TABLE_NAME}-{DATE}.json".'
+            );
 
             return $this->redirectToRoute('admin-tasks');
         }
@@ -82,7 +88,9 @@ class SyncController extends AbstractController
                 if ($oldItem['id'] === $newItem->id) {
                     foreach ($newItem as $prop => $value) {
                         if ($oldItem[$prop] !== $value) {
-                            throw new UnexpectedValueException('Data inconsistency.');
+                            throw new UnexpectedValueException(
+                                'Data inconsistency.'
+                            );
                         }
                     }
 
@@ -149,41 +157,50 @@ class SyncController extends AbstractController
      * @Route("/backup", name="backup")
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function backup(Swift_Mailer $mailer): Response
+    public function backup(MailerInterface $mailer): Response
     {
-        $parts = parse_url($_ENV['DATABASE_URL']);
+        try {
+            $parts = parse_url($_ENV['DATABASE_URL']);
 
-        $hostname = $parts['host'];
-        $username = $parts['user'];
-        $password = $parts['pass'];
-        $database = ltrim($parts['path'], '/');
+            $hostname = $parts['host'];
+            $username = $parts['user'];
+            $password = $parts['pass'];
+            $database = ltrim($parts['path'], '/');
 
-        $cmd = sprintf('mysqldump -h %s -u %s -p%s %s|gzip 2>&1', $hostname, $username, $password, $database);
+            // $cmd = sprintf('mysqldump -h %s -u %s -p%s %s|gzip 2>&1', $hostname, $username, $password, $database);
+            $cmd = sprintf(
+                'docker exec minicc-kuku_database_1 /usr/bin/mysqldump -h %s -u %s -p%s %s|gzip 2>&1',
+                $hostname,
+                $username,
+                $password,
+                $database
+            );
 
-        ob_start();
-        passthru($cmd, $retVal);
-        $gzip = ob_get_clean();
+            ob_start();
+            passthru($cmd, $retVal);
+            $gzip = ob_get_clean();
 
-        if ($retVal) {
-            throw new RuntimeException('Error creating DB backup: '.$gzip);
-        }
+            if ($retVal) {
+                throw new RuntimeException('Error creating DB backup: '.$gzip);
+            }
 
-        $fileName = date('Y-m-d').'_backup.gz';
-        $mime = 'application/x-gzip';
+            $fileName = date('Y-m-d').'_backup.gz';
+            $mime = 'application/x-gzip';
 
-        $message = (new Swift_Message(
-            'Backup', '<h3>Backup</h3>Date: '.date('Y-m-d'), 'text/html'
-        ))
-            ->attach(new Swift_Attachment($gzip, $fileName, $mime))
-            ->setFrom('minicckuku@gmail.com')
-            ->setTo('minicckuku@gmail.com');
+            $attachment = new DataPart($gzip, $fileName, $mime);
 
-        $count = $mailer->send($message);
+            $email = (new Email())
+                ->from('minicckuku@gmail.com')
+                ->to('minicckuku@gmail.com')
+                ->subject('Backup')
+                ->text('Backup - Date: '.date('Y-m-d'))
+                ->html('<h3>Backup</h3>Date: '.date('Y-m-d'))
+                ->attachPart($attachment);
 
-        if (!$count) {
-            $this->addFlash('danger', 'There was an error sending the message...');
-        } else {
+            $mailer->send($email);
             $this->addFlash('success', 'Backup has been sent to your inbox.');
+        } catch (Exception $exception) {
+            $this->addFlash('danger', $exception->getMessage());
         }
 
         return $this->redirectToRoute('admin-tasks');
