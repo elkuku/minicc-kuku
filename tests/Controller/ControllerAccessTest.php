@@ -27,19 +27,8 @@ class ControllerAccessTest extends FixtureAwareTestCase
             'contact' => [
                 'expected' => 200,
             ],
-
             'login' => [
                 'expected' => 200,
-            ],
-
-            'agent_add_comment' => [
-                'method' => 'POST',
-            ],
-            'agent_lookup' => [
-                'method' => 'POST',
-            ],
-            'comment_delete_inline' => [
-                'method' => 'DELETE',
             ],
         ];
 
@@ -145,7 +134,7 @@ class ControllerAccessTest extends FixtureAwareTestCase
                 $path = str_replace('{id}', $defaultId, $path);
                 // echo 'Testing: '.$path.PHP_EOL;
                 $this->client->request($method, $path);
-                $this->assertEquals(
+                self::assertEquals(
                     $defaultExpected,
                     $this->client->getResponse()->getStatusCode(),
                     sprintf('failed: %s (%s)', $routeName, $path)

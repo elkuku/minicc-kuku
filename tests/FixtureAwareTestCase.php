@@ -15,8 +15,8 @@ use Symfony\Bridge\Doctrine\DataFixtures\ContainerAwareLoader;
  */
 abstract class FixtureAwareTestCase extends DataFixtureTestCase
 {
-    private ORMExecutor $fixtureExecutor;
-    private ContainerAwareLoader $fixtureLoader;
+    private ?ORMExecutor $fixtureExecutor = null;
+    private ?ContainerAwareLoader $fixtureLoader = null;
 
     protected function setUp(): void
     {
