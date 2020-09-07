@@ -4,7 +4,7 @@ services:
     image: mysql:5.7
     environment:
       MYSQL_DATABASE: 'main'
-      MYSQL_USER: 'main'
+      MYSQL_USER: 'root'
       MYSQL_PASSWORD: 'main'
       MYSQL_ROOT_PASSWORD: 'main'
     ports:
