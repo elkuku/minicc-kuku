@@ -26,8 +26,13 @@ class PlanillasController extends AbstractController
      * @Route("/planillas-mail", name="planillas-mail")
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function mail(StoreRepository $storeRepository, TransactionRepository $transactionRepository, Pdf $pdf, MailerInterface $mailer, KernelInterface $kernel): Response
-    {
+    public function mail(
+        StoreRepository $storeRepository,
+        TransactionRepository $transactionRepository,
+        Pdf $pdf,
+        MailerInterface $mailer,
+        KernelInterface $kernel
+    ): Response {
         $year = date('Y');
         $month = date('m');
 
@@ -35,7 +40,14 @@ class PlanillasController extends AbstractController
         $html = 'Attachment: '.$fileName;
 
         $document = $pdf->getOutputFromHtml(
-            $this->getPlanillasHtml($year, $month, $storeRepository, $transactionRepository, $kernel)
+            $this->getPlanillasHtml(
+                $year,
+                $month,
+                $storeRepository,
+                $transactionRepository,
+                $kernel
+            ),
+            ['enable-local-file-access' => true]
         );
 
         $email = (new Email())
@@ -59,8 +71,14 @@ class PlanillasController extends AbstractController
      * @Route("/planilla-mail", name="planilla-mail")
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function mailClients(StoreRepository $storeRepository, TransactionRepository $transactionRepository, Request $request, Pdf $pdf, Swift_Mailer $mailer, KernelInterface $kernel): Response
-    {
+    public function mailClients(
+        StoreRepository $storeRepository,
+        TransactionRepository $transactionRepository,
+        Request $request,
+        Pdf $pdf,
+        Swift_Mailer $mailer,
+        KernelInterface $kernel
+    ): Response {
         $recipients = $request->get('recipients');
 
         if (!$recipients) {
@@ -83,7 +101,14 @@ class PlanillasController extends AbstractController
             }
 
             $document = $pdf->getOutputFromHtml(
-                $this->getPlanillasHtml($year, $month, $storeRepository, $transactionRepository, $kernel, $store->getId())
+                $this->getPlanillasHtml(
+                    $year,
+                    $month,
+                    $storeRepository,
+                    $transactionRepository,
+                    $kernel,
+                    $store->getId()
+                )
             );
 
             $html = $this->renderView(
@@ -100,11 +125,19 @@ class PlanillasController extends AbstractController
 
             try {
                 $message = (new Swift_Message)
-                    ->setSubject("Planilla Local {$store->getId()} ($month - $year)")
+                    ->setSubject(
+                        "Planilla Local {$store->getId()} ($month - $year)"
+                    )
                     ->setFrom('minicckuku@gmail.com')
                     ->setTo($store->getUser()->getEmail())
                     ->setBody($html)
-                    ->attach(new Swift_Attachment($document, $fileName, 'application/pdf'));
+                    ->attach(
+                        new Swift_Attachment(
+                            $document,
+                            $fileName,
+                            'application/pdf'
+                        )
+                    );
 
                 $count = $mailer->send($message);
                 $successes[] = $store->getId();
@@ -124,7 +157,8 @@ class PlanillasController extends AbstractController
 
         if ($successes) {
             $this->addFlash(
-                'success', 'Mails have been sent to stores: '
+                'success',
+                'Mails have been sent to stores: '
                 .implode(', ', $successes)
             );
         }
@@ -136,22 +170,41 @@ class PlanillasController extends AbstractController
      * @Route("/planillas", name="planillas")
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function download(StoreRepository $storeRepository, TransactionRepository $transactionRepository, Pdf $pdf, KernelInterface $kernel): PdfResponse
-    {
+    public function download(
+        StoreRepository $storeRepository,
+        TransactionRepository $transactionRepository,
+        Pdf $pdf,
+        KernelInterface $kernel
+    ): PdfResponse {
         $year = date('Y');
         $month = date('m');
 
         $filename = sprintf('planillas-%d-%d.pdf', $year, $month);
-        $html = $this->getPlanillasHtml($year, $month, $storeRepository, $transactionRepository, $kernel);
+        $html = $this->getPlanillasHtml(
+            $year,
+            $month,
+            $storeRepository,
+            $transactionRepository,
+            $kernel
+        );
 
         return new PdfResponse(
-            $pdf->getOutputFromHtml($html),
+            $pdf->getOutputFromHtml(
+                $html,
+                ['enable-local-file-access' => true]
+            ),
             $filename
         );
     }
 
-    private function getPlanillasHtml(int $year, int $month, StoreRepository $storeRepo, TransactionRepository $transactionRepo, KernelInterface $kernel, int $storeId = 0): string
-    {
+    private function getPlanillasHtml(
+        int $year,
+        int $month,
+        StoreRepository $storeRepo,
+        TransactionRepository $transactionRepo,
+        KernelInterface $kernel,
+        int $storeId = 0
+    ): string {
         $stores = $storeRepo->findAll();
 
         $factDate = $year.'-'.$month.'-1';
@@ -174,12 +227,14 @@ class PlanillasController extends AbstractController
                 continue;
             }
 
-            $storeData[$store->getId()]['saldoIni'] = $transactionRepo->getSaldoALaFecha(
+            $storeData[$store->getId()]['saldoIni']
+                = $transactionRepo->getSaldoALaFecha(
                 $store,
                 $prevYear.'-'.$prevMonth.'-01'
             );
 
-            $storeData[$store->getId()]['transactions'] = $transactionRepo->findMonthPayments(
+            $storeData[$store->getId()]['transactions']
+                = $transactionRepo->findMonthPayments(
                 $store,
                 $prevMonth,
                 $prevYear

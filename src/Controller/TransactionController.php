@@ -50,6 +50,9 @@ class TransactionController extends AbstractController
     {
         $view = $request->query->get('view');
 
+        // var_dump($transaction);
+        // die;
+
         $form = $this->createForm(TransactionTypeType::class, $transaction);
 
         $form->handleRequest($request);
