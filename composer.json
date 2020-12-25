@@ -40,7 +40,7 @@
     "symfony/twig-pack": "*",
     "symfony/validator": "*",
     "symfony/web-link": "*",
-    "symfony/webpack-encore-bundle": "dev-master",
+    "symfony/webpack-encore-bundle": "*",
     "symfony/yaml": "*"
   },
   "require-dev": {
