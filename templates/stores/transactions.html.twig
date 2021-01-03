@@ -2,11 +2,6 @@
 
 {% block title %} {{ parent() }} - Transactions{% endblock %}
 
-{% block javascripts %}
-    {{ parent() }}
-    <script type="text/javascript" src="{{ asset('build/js/stores/transactions.js') }}"></script>
-{% endblock %}
-
 {% block body %}
     {% if is_granted('ROLE_ADMIN') %}
     {% include('_breadcrumbs.html.twig') %}
@@ -119,7 +114,5 @@
         </table>
     </form>
 
-    <canvas id="chart" width="200" height="50" data-chart-headers='{{ headerStr|raw }}'
-            data-chart-data='{{ monthPayments|raw }}' data-chart-data2='{{ rentalValStr|raw }}'></canvas>
-
+    {{ render_chart(chart, {'height': 75}) }}
 {% endblock %}

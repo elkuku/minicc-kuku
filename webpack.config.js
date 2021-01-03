@@ -28,10 +28,9 @@ Encore
     .addEntry('js/contract/form', './assets/js/contract/form.js')
     .addEntry('js/default/index', './assets/js/default/index.js')
     .addEntry('js/default/background', './assets/js/default/background.js')
-    .addEntry('js/stores/transactions', './assets/js/stores/transactions.js')
     .addEntry('js/transaction/form', './assets/js/transaction/form.js')
 
-    .addStyleEntry('css/app', './assets/css/app.scss')
+    // .addStyleEntry('css/app', './assets/css/app.scss')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')

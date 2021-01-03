@@ -14,6 +14,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
+use Symfony\UX\Chartjs\Model\Chart;
 
 /**
  * @Route("/stores")
@@ -28,7 +30,10 @@ class StoreController extends AbstractController
      */
     public function index(StoreRepository $storeRepository): Response
     {
-        return $this->render('stores/list.html.twig', ['stores' => $storeRepository->findAll()]);
+        return $this->render(
+            'stores/list.html.twig',
+            ['stores' => $storeRepository->findAll()]
+        );
     }
 
     /**
@@ -101,8 +106,12 @@ class StoreController extends AbstractController
      * Security("is_granted('ROLE_ADMIN')")
      */
     public function show(
-        TransactionRepository $transactionRepository, StoreRepository $storeRepository, Store $store,
-        Request $request, TaxService $taxService
+        TransactionRepository $transactionRepository,
+        StoreRepository $storeRepository,
+        Store $store,
+        Request $request,
+        TaxService $taxService,
+        ChartBuilderInterface $chartBuilder
     ): Response {
         $this->denyAccessUnlessGranted('view', $store);
 
@@ -111,7 +120,10 @@ class StoreController extends AbstractController
         $this->addBreadcrumb('Stores', 'stores-list')
             ->addBreadcrumb('Store '.$store->getId());
 
-        $transactions = $transactionRepository->findByStoreAndYear($store, $year);
+        $transactions = $transactionRepository->findByStoreAndYear(
+            $store,
+            $year
+        );
 
         $headers = [];
         $monthPayments = [];
@@ -135,7 +147,10 @@ class StoreController extends AbstractController
             'stores/transactions.html.twig',
             [
                 'transactions'  => $transactions,
-                'saldoAnterior' => $transactionRepository->getSaldoAnterior($store, $year),
+                'saldoAnterior' => $transactionRepository->getSaldoAnterior(
+                    $store,
+                    $year
+                ),
                 'headerStr'     => json_encode($headers),
                 'monthPayments' => json_encode(array_values($monthPayments)),
                 'rentalValStr'  => json_encode(array_values($rentalValues)),
@@ -143,7 +158,46 @@ class StoreController extends AbstractController
                 'stores'        => $storeRepository->findAll(),
                 'year'          => $year,
                 'breadcrumbs'   => $this->getBreadcrumbs(),
+                'chart'         => $this->getChart(
+                    $headers,
+                    array_values($monthPayments),
+                    array_values($rentalValues),
+                    $chartBuilder
+                ),
             ]
         );
+    }
+
+    private function getChart(
+        array $labels,
+        array $dataPayments,
+        array $dataRent,
+        ChartBuilderInterface $chartBuilder
+    ): Chart {
+        $chart = $chartBuilder->createChart(Chart::TYPE_LINE);
+        $chart->setData(
+            [
+                'labels'   => $labels,
+                'datasets' => [
+                    [
+                        'label'           => 'Pagos',
+                        'data'            => $dataPayments,
+                        'fill'            => 'false',
+                        'lineTension'     => 0.1,
+                        'backgroundColor' => 'rgba(75,192,192,0.4)',
+                        'borderColor'     => 'rgba(75,192,192,1)',
+                    ],
+                    [
+                        'label'           => 'Alquiler',
+                        'data'            => $dataRent,
+                        'backgroundColor' => 'rgba(255, 206, 86, 0.2)',
+                        'borderColor'     => 'rgba(255, 206, 86, 0.2)',
+                        'borderWidth'     => 1,
+                    ],
+                ],
+            ]
+        );
+
+        return $chart;
     }
 }
