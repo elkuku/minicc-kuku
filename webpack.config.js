@@ -30,8 +30,6 @@ Encore
     .addEntry('js/default/background', './assets/js/default/background.js')
     .addEntry('js/transaction/form', './assets/js/transaction/form.js')
 
-    // .addStyleEntry('css/app', './assets/css/app.scss')
-
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')
 
@@ -66,7 +64,7 @@ Encore
     })
 
     // enables Sass/SCSS support
-    .enableSassLoader()
+    // .enableSassLoader()
 
 // uncomment if you use TypeScript
 //.enableTypeScriptLoader()
