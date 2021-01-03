@@ -20,14 +20,12 @@ Encore
      * Each entry will result in one JavaScript file (e.g. app.js)
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
-    .addEntry('js/common', ['jquery'])
-    .addEntry('js/app', './assets/js/app.js')
+    .addEntry('app', './assets/app.js')
     .addEntry('js/paginator', './assets/js/paginator.js')
     .addEntry('js/taxcalc', './assets/js/taxcalc.js')
     .addEntry('js/admin/pagos-por-ano', './assets/js/admin/pagos-por-ano.js')
     .addEntry('js/admin/payday', './assets/js/admin/payday.js')
     .addEntry('js/contract/form', './assets/js/contract/form.js')
-    .addEntry('js/default/index-charts', './assets/js/default/index-charts.js')
     .addEntry('js/default/index', './assets/js/default/index.js')
     .addEntry('js/default/background', './assets/js/default/background.js')
     .addEntry('js/stores/transactions', './assets/js/stores/transactions.js')
