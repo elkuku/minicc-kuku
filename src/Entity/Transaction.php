@@ -84,29 +84,16 @@ class Transaction implements JsonSerializable
      */
     private int $recipeNo;
 
-    /**
-     * Get id
-     *
-     * @return integer
-     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return DateTime
-     */
     public function getDate(): DateTime
     {
         return $this->date;
     }
 
-    /**
-     * @param DateTime $date
-     *
-     * @return $this
-     */
     public function setDate(DateTime $date): self
     {
         $this->date = $date;
@@ -114,20 +101,12 @@ class Transaction implements JsonSerializable
         return $this;
     }
 
-    /**
-     * @return float
-     */
-    public function getAmount(): float
+    public function getAmount(): string
     {
         return $this->amount;
     }
 
-    /**
-     * @param float $amount
-     *
-     * @return $this
-     */
-    public function setAmount($amount): self
+    public function setAmount(string $amount): self
     {
         $this->amount = $amount;
 
@@ -139,65 +118,37 @@ class Transaction implements JsonSerializable
         return $this->document;
     }
 
-    /**
-     * @param integer $document
-     *
-     * @return $this
-     */
-    public function setDocument($document): self
+    public function setDocument(int $document): self
     {
         $this->document = $document;
 
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getDepId(): int
     {
         return $this->depId;
     }
 
-    /**
-     * @param int $depId
-     *
-     * @return $this
-     */
-    public function setDepId($depId): self
+    public function setDepId(int $depId): self
     {
         $this->depId = $depId;
 
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getRecipeNo(): int
     {
         return $this->recipeNo;
     }
 
-    /**
-     * @param int $recipeNo
-     *
-     * @return $this
-     */
-    public function setRecipeNo($recipeNo): self
+    public function setRecipeNo(int $recipeNo): self
     {
         $this->recipeNo = $recipeNo;
 
         return $this;
     }
 
-    /**
-     * Set user
-     *
-     * @param User $user
-     *
-     * @return Transaction
-     */
     public function setUser(User $user): Transaction
     {
         $this->user = $user;
@@ -205,21 +156,11 @@ class Transaction implements JsonSerializable
         return $this;
     }
 
-    /**
-     * Get user
-     *
-     * @return User
-     */
     public function getUser(): User
     {
         return $this->user;
     }
 
-    /**
-     * @param Store $store
-     *
-     * @return Transaction
-     */
     public function setStore(Store $store): Transaction
     {
         $this->store = $store;
@@ -227,11 +168,6 @@ class Transaction implements JsonSerializable
         return $this;
     }
 
-    /**
-     * @param TransactionType $type
-     *
-     * @return Transaction
-     */
     public function setType(TransactionType $type): Transaction
     {
         $this->type = $type;
@@ -239,19 +175,11 @@ class Transaction implements JsonSerializable
         return $this;
     }
 
-    /**
-     * @return TransactionType
-     */
     public function getType(): TransactionType
     {
         return $this->type;
     }
 
-    /**
-     * @param PaymentMethod $paymentMethod
-     *
-     * @return Transaction
-     */
     public function setMethod(PaymentMethod $paymentMethod): Transaction
     {
         $this->method = $paymentMethod;
@@ -259,17 +187,11 @@ class Transaction implements JsonSerializable
         return $this;
     }
 
-    /**
-     * @return PaymentMethod
-     */
     public function getMethod(): PaymentMethod
     {
         return $this->method;
     }
 
-    /**
-     * @return Store
-     */
     public function getStore(): Store
     {
         return $this->store;
@@ -299,12 +221,7 @@ class Transaction implements JsonSerializable
         ];
     }
 
-    /**
-     * @param int $id
-     *
-     * @return Transaction
-     */
-    public function setId($id): Transaction
+    public function setId(int $id): Transaction
     {
         $this->id = $id;
 
