@@ -65,11 +65,9 @@ class Transaction implements JsonSerializable
     private DateTime $date;
 
     /**
-     * @var float
-     *
      * @ORM\Column(type="decimal", precision=13, scale=2, nullable=false)
      */
-    private float $amount = 0.00;
+    private string $amount = '0';
 
     /**
      * @ORM\Column(type="integer", length=20, nullable=true)
