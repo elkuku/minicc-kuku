@@ -148,7 +148,7 @@ class Contract
      *
      * @return Contract
      */
-    public function setInqNombreapellido($inqNombreapellido): Contract
+    public function setInqNombreapellido(string $inqNombreapellido): Contract
     {
         $this->inqNombreapellido = $inqNombreapellido;
 
@@ -172,7 +172,7 @@ class Contract
      *
      * @return Contract
      */
-    public function setInqCi($inqCi): Contract
+    public function setInqCi(string $inqCi): Contract
     {
         $this->inqCi = $inqCi;
 
@@ -196,7 +196,7 @@ class Contract
      *
      * @return Contract
      */
-    public function setDestination($destination): Contract
+    public function setDestination(string $destination): Contract
     {
         $this->destination = $destination;
 
