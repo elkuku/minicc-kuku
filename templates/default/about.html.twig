@@ -4,7 +4,7 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <script type="text/javascript" src="{{ asset('build/js/default/background.js') }}"></script>
+    {{ encore_entry_script_tags('js/default/background') }}
 {% endblock %}
 
 {% block body %}
