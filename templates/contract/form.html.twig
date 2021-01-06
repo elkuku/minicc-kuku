@@ -5,7 +5,6 @@
 {% block javascripts %}
     {{ parent() }}
     {{ encore_entry_script_tags('js/contract/form') }}
-    {{ encore_entry_script_tags('js/taxcalc') }}
 {% endblock %}
 {% block body %}
 
@@ -41,14 +40,12 @@
                 <th>Garantia</th>
             </tr>
             <tr valign="top">
-                <td class="alert-warning">
-                    ConIVA: <input id="val_alq_coniva"/><br/>
-                    <a class="btn btn-light btn-xs taxWithoutTax" data-with-tax="#val_alq_coniva"
-                       data-without-tax="#contract_valAlq">&dArr; Recalc &dArr;</a>
-                    <a class="btn btn-light btn-xs taxWithTax" data-with-tax="#val_alq_coniva"
-                       data-without-tax="#contract_valAlq">&uArr; Recalc &uArr;</a>
+                <td class="alert-warning" data-controller="taxcalc" data-taxcalc-taxrate-value="{{ ivaMultiplier }}">
+                    ConIVA:
+                    <input data-taxcalc-target="withTax" data-action="taxcalc#calcWithoutTax" type="text"/>
                     <br/>
-                    Sin IVA{{ form_widget(form.valAlq) }}</td>
+                    Sin IVA
+                    {{ form_widget(form.valAlq, {'attr': {'data-action': 'taxcalc#calcWithTax','data-taxcalc-target':'withoutTax'}}) }}
                 <td>{{ form_widget(form.valGarantia) }}</td>
             </tr>
         </table>

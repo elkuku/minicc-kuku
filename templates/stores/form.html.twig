@@ -2,14 +2,7 @@
 
 {% block title %} {{ parent() }} - Edit Store{% endblock %}
 
-{% block javascripts %}
-    {{ parent() }}
-    {{ encore_entry_script_tags('js/taxcalc') }}
-{% endblock %}
-
 {% block body %}
-
-    <span id="tax-rate" data-tax-rate="{{ ivaMultiplier }}"></span>
 
     {{ form_start(form) }}
 
@@ -29,16 +22,13 @@
             {{ form_label(form.destination) }}
             {{ form_widget(form.destination) }}
         </div>
-        <div class="col-sm-3 alert-warning">
+        <div class="col-sm-3 alert-warning" data-controller="taxcalc" data-taxcalc-taxrate-value="{{ ivaMultiplier }}">
             {{ form_label(form.valAlq) }}<br/>
-            ConIVA: <input id="val_alq_coniva"/><br/>
-            <a class="btn btn-light btn-xs taxWithoutTax" data-with-tax="#val_alq_coniva"
-               data-without-tax="#store_valAlq">&dArr; Recalc &dArr;</a>
-            <a class="btn btn-light btn-xs taxWithTax" data-with-tax="#val_alq_coniva"
-               data-without-tax="#store_valAlq">&uArr; Recalc &uArr;</a>
-            <br/>
-            Sin IVA
-            {{ form_widget(form.valAlq) }}
+                ConIVA:
+                <input data-taxcalc-target="withTax" data-action="taxcalc#calcWithoutTax" type="text"/>
+                <br/>
+                Sin IVA
+                {{ form_widget(form.valAlq, {'attr': {'data-action': 'taxcalc#calcWithTax','data-taxcalc-target':'withoutTax'}}) }}
         </div>
         <div class="col-sm-5">
             {{ form_label(form.user) }}

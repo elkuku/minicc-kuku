@@ -22,7 +22,6 @@ Encore
      */
     .addEntry('app', './assets/app.js')
     .addEntry('js/paginator', './assets/js/paginator.js')
-    .addEntry('js/taxcalc', './assets/js/taxcalc.js')
     .addEntry('js/admin/pagos-por-ano', './assets/js/admin/pagos-por-ano.js')
     .addEntry('js/admin/payday', './assets/js/admin/payday.js')
     .addEntry('js/contract/form', './assets/js/contract/form.js')
