@@ -18,16 +18,18 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 
-/**
- * @Route("contracts")
- */
+#[Route(path: 'contracts')]
 class ContractController extends AbstractController
 {
     /**
-     * @Route("/", name="contract-list")
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function list(StoreRepository $storeRepository, UserRepository $userRepository, ContractRepository $contractRepository, Request $request
+    #[Route(path: '/', name: 'contract-list')]
+    public function list(
+        StoreRepository $storeRepository,
+        UserRepository $userRepository,
+        ContractRepository $contractRepository,
+        Request $request
     ): Response {
         $storeId = $request->request->getInt('store_id');
         $year = $request->request->getInt('year');
@@ -37,7 +39,10 @@ class ContractController extends AbstractController
             [
                 'stores'    => $storeRepository->getActive(),
                 'users'     => $userRepository->findActiveUsers(),
-                'contracts' => $contractRepository->findContracts($storeId, $year),
+                'contracts' => $contractRepository->findContracts(
+                    $storeId,
+                    $year
+                ),
                 'year'      => $year,
                 'storeId'   => $storeId,
             ]
@@ -45,33 +50,30 @@ class ContractController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="contracts-new")
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function new(StoreRepository $storeRepo, UserRepository $userRepo, ContractRepository $contractRepo, Request $request
+    #[Route(path: '/new', name: 'contracts-new')]
+    public function new(
+        StoreRepository $storeRepo,
+        UserRepository $userRepo,
+        ContractRepository $contractRepo,
+        Request $request
     ): Response {
         $store = $storeRepo->find($request->request->getInt('store'));
         $user = $userRepo->find($request->request->getInt('user'));
         $plantilla = $contractRepo->findPlantilla();
-
         $contract = new Contract;
-
         $contract->setText($plantilla->getText());
-
         if ($store) {
             $contract->setValuesFromStore($store);
         }
-
         if ($user) {
             $contract
                 ->setInqNombreapellido($user->getName())
                 ->setInqCi($user->getInqCi());
         }
-
         $form = $this->createForm(ContractType::class, $contract);
-
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $contract = $form->getData();
 
@@ -96,15 +98,15 @@ class ContractController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="contracts-edit", requirements={"id"="\d+"})
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function edit(Contract $contract, Request $request): Response
-    {
+    #[Route(path: '/{id}', name: 'contracts-edit', requirements: ['id' => '\d+'])]
+    public function edit(
+        Contract $contract,
+        Request $request
+    ): Response {
         $form = $this->createForm(ContractType::class, $contract);
-
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $contract = $form->getData();
 
@@ -129,32 +131,31 @@ class ContractController extends AbstractController
     }
 
     /**
-     * @Route("/delete/{id}", name="contracts-delete")
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function delete(Contract $contract): Response
-    {
+    #[Route(path: '/delete/{id}', name: 'contracts-delete')]
+    public function delete(
+        Contract $contract
+    ): Response {
         $em = $this->getDoctrine()->getManager();
         $em->remove($contract);
         $em->flush();
-
         $this->addFlash('success', 'Contract has been deleted');
 
         return $this->redirectToRoute('contract-list');
     }
 
     /**
-     * @Route("/template", name="contracts-template")
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function template(ContractRepository $contractRepository, Request $request): Response
-    {
+    #[Route(path: '/template', name: 'contracts-template')]
+    public function template(
+        ContractRepository $contractRepository,
+        Request $request
+    ): Response {
         $data = $contractRepository->findPlantilla();
-
         $form = $this->createForm(ContractType::class, $data);
-
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
 
@@ -179,20 +180,29 @@ class ContractController extends AbstractController
     }
 
     /**
-     * @Route("/generate/{id}", name="contract-generate", requirements={"id"="\d+"})
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function generate(Contract $contract, Pdf $pdf): PdfResponse
-    {
+    #[Route(path: '/generate/{id}', name: 'contract-generate', requirements: ['id' => '\d+'])]
+    public function generate(
+        Contract $contract,
+        Pdf $pdf
+    ): PdfResponse {
         $numberToWord = new Numbers;
-
         $searchReplace = [
             '[local_no]'     => $contract->getStoreNumber(),
             '[destination]'  => $contract->getDestination(),
             '[val_alq]'      => number_format($contract->getValAlq(), 2),
-            '[txt_alq]'      => $numberToWord->toCurrency($contract->getValAlq(), 'es_EC', 'USD'),
+            '[txt_alq]'      => $numberToWord->toCurrency(
+                $contract->getValAlq(),
+                'es_EC',
+                'USD'
+            ),
             '[val_garantia]' => number_format($contract->getValGarantia(), 2),
-            '[txt_garantia]' => $numberToWord->toCurrency($contract->getValGarantia(), 'es_EC', 'USD'),
+            '[txt_garantia]' => $numberToWord->toCurrency(
+                $contract->getValGarantia(),
+                'es_EC',
+                'USD'
+            ),
             '[fecha_long]'   => IntlConverter::formatDate($contract->getDate()),
 
             '[inq_nombreapellido]' => $contract->getInqNombreapellido(),
@@ -216,18 +226,25 @@ class ContractController extends AbstractController
             '[med_electrico]' => $contract->getMedElectrico(),
             '[med_agua]'      => $contract->getMedAgua(),
         ];
-
-        $html = str_replace(array_keys($searchReplace), $searchReplace, $contract->getText());
-
+        $html = str_replace(
+            array_keys($searchReplace),
+            $searchReplace,
+            $contract->getText()
+        );
         /** @var Environment $twig */
         $twig = clone $this->get('twig');
 
         return new PdfResponse(
             $pdf->getOutputFromHtml(
                 $twig->createTemplate($html)
-                    ->render([]), ['encoding' => 'utf-8']
+                    ->render([]),
+                ['encoding' => 'utf-8']
             ),
-            sprintf('contrato-local-%d-%s.pdf', $contract->getStoreNumber(), date('Y-m-d'))
+            sprintf(
+                'contrato-local-%d-%s.pdf',
+                $contract->getStoreNumber(),
+                date('Y-m-d')
+            )
         );
     }
 }

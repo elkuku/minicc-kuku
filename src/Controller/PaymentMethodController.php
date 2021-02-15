@@ -11,31 +11,32 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/payment-methods")
- */
+#[Route(path: '/payment-methods')]
 class PaymentMethodController extends AbstractController
 {
     /**
-     * @Route("/", name="payment-methods", methods="GET")
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function index(PaymentMethodRepository $repository): Response
-    {
-        return $this->render('payment-methods/list.html.twig', ['paymentMethods' => $repository->findAll()]);
+    #[Route(path: '/', name: 'payment-methods', methods: ['GET'])]
+    public function index(
+        PaymentMethodRepository $repository
+    ): Response {
+        return $this->render(
+            'payment-methods/list.html.twig',
+            ['paymentMethods' => $repository->findAll()]
+        );
     }
 
     /**
-     * @Route("/new", name="payment-methods-new", methods="GET|POST")
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function new(Request $request): Response
-    {
+    #[Route(path: '/new', name: 'payment-methods-new', methods: ['GET|POST'])]
+    public function new(
+        Request $request
+    ): Response {
         $paymentMethod = new PaymentMethod;
         $form = $this->createForm(PaymentMethodType::class, $paymentMethod);
-
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $paymentMethod = $form->getData();
 
@@ -58,15 +59,15 @@ class PaymentMethodController extends AbstractController
     }
 
     /**
-     * @Route("/edit/{id}", name="payment-methods-edit")
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function edit(PaymentMethod $data, Request $request): Response
-    {
+    #[Route(path: '/edit/{id}', name: 'payment-methods-edit')]
+    public function edit(
+        PaymentMethod $data,
+        Request $request
+    ): Response {
         $form = $this->createForm(PaymentMethodType::class, $data);
-
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
 
@@ -89,15 +90,15 @@ class PaymentMethodController extends AbstractController
     }
 
     /**
-     * @Route("/delete/{id}", name="payment-methods-delete")
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function delete(PaymentMethod $paymentMethod): Response
-    {
+    #[Route(path: '/delete/{id}', name: 'payment-methods-delete')]
+    public function delete(
+        PaymentMethod $paymentMethod
+    ): Response {
         $em = $this->getDoctrine()->getManager();
         $em->remove($paymentMethod);
         $em->flush();
-
         $this->addFlash('success', 'Payment method has been deleted');
 
         return $this->redirectToRoute('payment-methods');

@@ -20,23 +20,21 @@ use Symfony\Component\Routing\Annotation\Route;
 use UnexpectedValueException;
 use function count;
 
-/**
- * @Route("/deposits")
- */
+#[Route(path: '/deposits')]
 class DepositController extends AbstractController
 {
     use PaginatorTrait;
 
     /**
-     * @Route("/", name="deposits")
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function index(DepositRepository $depositRepository, Request $request): Response
-    {
+    #[Route(path: '/', name: 'deposits')]
+    public function index(
+        DepositRepository $depositRepository,
+        Request $request
+    ): Response {
         $paginatorOptions = $this->getPaginatorOptions($request);
-
         $deposits = $depositRepository->getPaginatedList($paginatorOptions);
-
         $paginatorOptions->setMaxPages(
             ceil(
                 count($deposits) / $paginatorOptions->getLimit()
@@ -53,38 +51,30 @@ class DepositController extends AbstractController
     }
 
     /**
-     * @Route("/upload", name="upload-csv")
      * @Security("is_granted('ROLE_ADMIN')")
      * @throws Exception
      */
+    #[Route(path: '/upload', name: 'upload-csv')]
     public function uploadCSV(
-        PaymentMethodRepository $paymentMethodRepository, DepositRepository $depositRepository,
+        PaymentMethodRepository $paymentMethodRepository,
+        DepositRepository $depositRepository,
         Request $request
     ): RedirectResponse {
         $csvFile = $request->files->get('csv_file');
-
         if (!$csvFile) {
             throw new RuntimeException('No CSV file recieved.');
         }
-
         $path = $csvFile->getRealPath();
-
         if (!$path) {
             throw new RuntimeException('Invalid CSV file.');
         }
-
         $csvData = (new CsvParser)->parseCSV(file($path));
-
         $entity = $paymentMethodRepository->find(2);
-
         if (!$entity) {
             throw new UnexpectedValueException('Invalid entity');
         }
-
         $em = $this->getDoctrine()->getManager();
-
         $insertCount = 0;
-
         foreach ($csvData->lines as $line) {
             if (!isset($line->descripcion)) {
                 continue;
@@ -112,11 +102,10 @@ class DepositController extends AbstractController
                 continue;
             }
         }
-
         $em->flush();
-
         $this->addFlash(
-            ($insertCount ? 'success' : 'warning'), 'Depositos insertados: '
+            ($insertCount ? 'success' : 'warning'),
+            'Depositos insertados: '
             .$insertCount
         );
 
@@ -124,20 +113,19 @@ class DepositController extends AbstractController
     }
 
     /**
-     * @Route("/lookup", name="lookup-depo")
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function lookup(DepositRepository $depositRepository, Request $request): JsonResponse
-    {
+    #[Route(path: '/lookup', name: 'lookup-depo')]
+    public function lookup(
+        DepositRepository $depositRepository,
+        Request $request
+    ): JsonResponse {
         $documentId = $request->get('document_id');
-
         $deposits = $depositRepository->lookup($documentId);
-
         $response = [
             'error' => '',
             'data'  => '',
         ];
-
         if (!$deposits) {
             $response['error'] = 'No se encontró ninún depósito con este número!';
         } elseif (count($deposits) > 1) {

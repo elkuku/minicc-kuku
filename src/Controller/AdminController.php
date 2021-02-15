@@ -20,17 +20,18 @@ use UnexpectedValueException;
 class AdminController extends AbstractController
 {
     /**
-     * @Route("/cobrar", name="cobrar")
      * @Security("is_granted('ROLE_ADMIN')")
      * @throws Exception
      */
+    #[Route(path: '/cobrar', name: 'cobrar')]
     public function cobrar(
-        StoreRepository $storeRepository, UserRepository $userRepository,
-        TransactionTypeRepository $transactionTypeRepository, Request $request
+        StoreRepository $storeRepository,
+        UserRepository $userRepository,
+        TransactionTypeRepository $transactionTypeRepository,
+        Request $request
     ): Response {
         $values = $request->request->get('values');
         $users = $request->request->get('users');
-
         if ($values) {
             $em = $this->getDoctrine()->getManager();
 
@@ -48,7 +49,9 @@ class AdminController extends AbstractController
                 }
 
                 $transaction = (new Transaction)
-                    ->setDate(new DateTime($request->request->get('date_cobro')))
+                    ->setDate(
+                        new DateTime($request->request->get('date_cobro'))
+                    )
                     ->setStore($storeRepository->find((int)$storeId))
                     ->setUser($userRepository->find((int)$users[$storeId]))
                     ->setType($type)
@@ -65,20 +68,24 @@ class AdminController extends AbstractController
             return $this->redirectToRoute('welcome');
         }
 
-        return $this->render('admin/cobrar.html.twig', ['stores' => $storeRepository->getActive()]);
+        return $this->render(
+            'admin/cobrar.html.twig',
+            ['stores' => $storeRepository->getActive()]
+        );
     }
 
     /**
-     * @Route("/pay-day", name="pay-day")
      * @Security("is_granted('ROLE_ADMIN')")
      * @throws Exception
      */
+    #[Route(path: '/pay-day', name: 'pay-day')]
     public function payDay(
-        StoreRepository $storeRepository, PaymentMethodRepository $paymentMethodRepository,
-        TransactionTypeRepository $transactionTypeRepository, Request $request
+        StoreRepository $storeRepository,
+        PaymentMethodRepository $paymentMethodRepository,
+        TransactionTypeRepository $transactionTypeRepository,
+        Request $request
     ): Response {
         $payments = $request->request->get('payments');
-
         if (!$payments) {
             return $this->render(
                 'admin/payday-html.twig',
@@ -88,15 +95,11 @@ class AdminController extends AbstractController
                 ]
             );
         }
-
         $em = $this->getDoctrine()->getManager();
-
         $type = $transactionTypeRepository->findOneBy(['name' => 'Pago']);
-
         if (!$type) {
             throw new UnexpectedValueException('Invalid transaction type');
         }
-
         foreach ($payments['date_cobro'] as $i => $dateCobro) {
             if (!$dateCobro) {
                 continue;
@@ -108,7 +111,9 @@ class AdminController extends AbstractController
                 continue;
             }
 
-            $method = $paymentMethodRepository->find((int)$payments['method'][$i]);
+            $method = $paymentMethodRepository->find(
+                (int)$payments['method'][$i]
+            );
 
             if (!$method) {
                 throw new UnexpectedValueException('Invalid payment method.');
@@ -127,20 +132,20 @@ class AdminController extends AbstractController
 
             $em->persist($transaction);
         }
-
         $em->flush();
-
         $this->addFlash('success', 'Sa ha pagado...');
 
         return $this->redirectToRoute('welcome');
     }
 
     /**
-     * @Route("/pagos-por-ano", name="pagos-por-ano")
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function pagosPorAno(Request $request, TransactionRepository $repository): Response
-    {
+    #[Route(path: '/pagos-por-ano', name: 'pagos-por-ano')]
+    public function pagosPorAno(
+        Request $request,
+        TransactionRepository $repository
+    ): Response {
         $year = $request->query->getInt('year', (int)date('Y'));
 
         return $this->render(
@@ -153,11 +158,12 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/mail-list-transactions", name="mail-list-transactions")
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function mailListTransactions(StoreRepository $storeRepository): Response
-    {
+    #[Route(path: '/mail-list-transactions', name: 'mail-list-transactions')]
+    public function mailListTransactions(
+        StoreRepository $storeRepository
+    ): Response {
         return $this->render(
             'admin/mail-list-transactions.twig',
             [
@@ -167,11 +173,12 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/mail-list-planillas", name="mail-list-planillas")
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function mailListPlanillas(StoreRepository $storeRepository): Response
-    {
+    #[Route(path: '/mail-list-planillas', name: 'mail-list-planillas')]
+    public function mailListPlanillas(
+        StoreRepository $storeRepository
+    ): Response {
         return $this->render(
             'admin/mail-list-planillas.twig',
             [

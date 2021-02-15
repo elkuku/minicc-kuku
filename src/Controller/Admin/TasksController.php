@@ -18,23 +18,25 @@ use function dirname;
 class TasksController extends AbstractController
 {
     /**
-     * @Route("/admin-tasks", name="admin-tasks")
      * @Security("is_granted('ROLE_ADMIN')")
      */
+    #[Route(path: '/admin-tasks', name: 'admin-tasks')]
     public function index(): Response
     {
         return $this->render('admin/tasks.html.twig');
     }
 
     /**
-     * @Route("/console-view/{item}", name="console-view")
      * @Security("is_granted('ROLE_ADMIN')")
      * @throws Exception
      */
-    public function consoleView(string $item, Request $request, KernelInterface $kernel): Response
-    {
+    #[Route(path: '/console-view/{item}', name: 'console-view')]
+    public function consoleView(
+        string $item,
+        Request $request,
+        KernelInterface $kernel
+    ): Response {
         $command = [];
-
         switch ($item) {
             case 'routes':
                 $command['command'] = 'debug:router';
@@ -53,13 +55,10 @@ class TasksController extends AbstractController
             default:
                 throw new UnexpectedValueException('Unknown command');
         }
-
         $application = new Application($kernel);
         $application->setAutoExit(false);
-
         $input = new ArrayInput($command);
         $output = new BufferedOutput;
-
         $application->run($input, $output);
 
         return $this->render(
@@ -72,23 +71,21 @@ class TasksController extends AbstractController
     }
 
     /**
-     * @Route("/sysinfo", name="sysinfo")
      * @Security("is_granted('ROLE_ADMIN')")
      * @throws Exception
      */
-    public function sysInfo(KernelInterface $kernel): Response
-    {
+    #[Route(path: '/sysinfo', name: 'sysinfo')]
+    public function sysInfo(
+        KernelInterface $kernel
+    ): Response {
         $application = new Application($kernel);
         $application->setAutoExit(false);
-
         $input = new ArrayInput(
             [
                 'command' => 'about',
             ]
         );
-
         $output = new BufferedOutput();
-
         $application->run($input, $output);
 
         return $this->render(

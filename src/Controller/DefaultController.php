@@ -14,9 +14,7 @@ use Symfony\UX\Chartjs\Model\Chart;
 
 class DefaultController extends AbstractController
 {
-    /**
-     * @Route("/", name="welcome")
-     */
+    #[Route(path: '/', name: 'welcome')]
     public function index(
         StoreRepository $storeRepository,
         TransactionRepository $transactionRepository,
@@ -30,7 +28,6 @@ class DefaultController extends AbstractController
             'monthsDebt' => [],
             'balances'   => [],
         ];
-
         if ($user) {
             foreach ($storeRepository->getActive() as $store) {
                 $balance = $transactionRepository->getSaldo($store);
@@ -53,15 +50,15 @@ class DefaultController extends AbstractController
         return $this->render(
             'default/index.html.twig',
             [
-                'stores'           => $user ? $user->getStores() : null,
-                'balances'         => $balances,
-                'chartBalances'    => $this->getChart(
+                'stores'          => $user ? $user->getStores() : null,
+                'balances'        => $balances,
+                'chartBalances'   => $this->getChart(
                     'Saldo en $',
                     $chartData['headers'],
                     $chartData['balances'],
                     $chartBuilder
                 ),
-                'chartMonthsDebt'  => $this->getChart(
+                'chartMonthsDebt' => $this->getChart(
                     'Meses de deuda',
                     $chartData['headers'],
                     $chartData['monthsDebt'],
@@ -71,17 +68,13 @@ class DefaultController extends AbstractController
         );
     }
 
-    /**
-     * @Route("/about", name="about")
-     */
+    #[Route(path: '/about', name: 'about')]
     public function about(): Response
     {
         return $this->render('default/about.html.twig');
     }
 
-    /**
-     * @Route("/contact", name="contact")
-     */
+    #[Route(path: '/contact', name: 'contact')]
     public function contact(): Response
     {
         return $this->render('default/contact.html.twig');

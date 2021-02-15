@@ -22,11 +22,12 @@ use function count;
 class SyncController extends AbstractController
 {
     /**
-     * @Route("/export-table/{name}", name="export-table")
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function export(string $name): Response
-    {
+    #[Route(path: '/export-table/{name}', name: 'export-table')]
+    public function export(
+        string $name
+    ): Response {
         $content = json_encode($this->getTableData($name));
         $filename = sprintf('export-%s-%s.json', $name, date('Y-m-d'));
 
@@ -44,30 +45,26 @@ class SyncController extends AbstractController
     }
 
     /**
-     * @Route("/import-table", name="import-table")
      * @Security("is_granted('ROLE_ADMIN')")
      * @throws DBALException
      */
-    public function import(Request $request): Response
-    {
+    #[Route(path: '/import-table', name: 'import-table')]
+    public function import(
+        Request $request
+    ): Response {
         $file = $request->files->get('file');
-
         if (!$file) {
             $this->addFlash('danger', 'No file received.');
 
             return $this->redirectToRoute('admin-tasks');
         }
-
         $path = $file->getRealPath();
-
         if (!$path) {
             $this->addFlash('danger', 'Invalid file.');
 
             return $this->redirectToRoute('admin-tasks');
         }
-
         $parts = explode('-', $file->getClientOriginalName());
-
         if (count($parts) < 2) {
             $this->addFlash(
                 'danger',
@@ -76,13 +73,9 @@ class SyncController extends AbstractController
 
             return $this->redirectToRoute('admin-tasks');
         }
-
         $tableName = $parts[1];
-
         $newData = json_decode(file_get_contents($path));
-
         $oldData = $this->getTableData($tableName);
-
         foreach ($newData as $i => $newItem) {
             foreach ($oldData as $io => $oldItem) {
                 if ($oldItem['id'] === $newItem->id) {
@@ -99,28 +92,20 @@ class SyncController extends AbstractController
                 }
             }
         }
-
         if (!count($newData)) {
             $this->addFlash('success', 'Everything is in Sync :)');
 
             return $this->redirectToRoute('admin-tasks');
         }
-
         $queryLines = [];
         $queryLines[] = "INSERT INTO $tableName\n";
-
         $keys = [];
-
         foreach (reset($newData) as $prop => $value) {
             $keys[] = $prop;
         }
-
         $queryLines[] = '('.implode(', ', $keys).")\n";
-
         $queryLines[] = "VALUES\n";
-
         $values = [];
-
         foreach ($newData as $item) {
             $valueLine = '';
 
@@ -136,29 +121,25 @@ class SyncController extends AbstractController
 
             $values[] = sprintf('(%s)', trim($valueLine, ', '));
         }
-
         $queryLines[] = implode(",\n", $values).';';
-
         $query = implode('', $queryLines);
-
         /** @type EntityManager $em */
         $em = $this->getDoctrine()->getManager();
-
         /** @type Statement $statement */
         $statement = $em->getConnection()->prepare($query);
         $statement->execute();
-
         $this->addFlash('success', count($newData).' lines inserted');
 
         return $this->redirectToRoute('admin-tasks');
     }
 
     /**
-     * @Route("/backup", name="backup")
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function backup(MailerInterface $mailer): Response
-    {
+    #[Route(path: '/backup', name: 'backup')]
+    public function backup(
+        MailerInterface $mailer
+    ): Response {
         try {
             $parts = parse_url($_ENV['DATABASE_URL']);
 
@@ -206,23 +187,19 @@ class SyncController extends AbstractController
         return $this->redirectToRoute('admin-tasks');
     }
 
-    /**
-     * @return array|RedirectResponse
-     */
-    private function getTableData($tableName)
-    {
+    private function getTableData($tableName
+    ): array|\Symfony\Component\HttpFoundation\RedirectResponse {
         try {
             /** @type EntityManager $em */
             $em = $this->getDoctrine()->getManager();
 
             $query = "SELECT * FROM $tableName;";
 
-            /** @type Statement $statement */
             $statement = $em->getConnection()->prepare($query);
             $statement->execute();
 
             $result = $statement->fetchAll();
-        } catch (Exception $exception) {
+        } catch (Exception) {
             $this->addFlash('danger', 'There was an error...');
 
             return $this->redirectToRoute('admin-tasks');

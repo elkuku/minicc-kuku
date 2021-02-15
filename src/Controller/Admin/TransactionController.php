@@ -27,9 +27,9 @@ use function count;
 class TransactionController extends AbstractController
 {
     /**
-     * @Route("/mail-transactions", name="mail-transactions")
      * @Security("is_granted('ROLE_ADMIN')")
      */
+    #[Route(path: '/mail-transactions', name: 'mail-transactions')]
     public function mail(
         StoreRepository $storeRepository,
         TransactionRepository $transactionRepository,
@@ -38,19 +38,15 @@ class TransactionController extends AbstractController
         Swift_Mailer $mailer
     ): RedirectResponse {
         $recipients = $request->get('recipients');
-
         $year = (int)date('Y');
-
         if (!$recipients) {
             $this->addFlash('warning', 'No recipients selected');
 
             return $this->redirectToRoute('mail-list-transactions');
         }
-
         $stores = $storeRepository->getActive();
         $failures = [];
         $successes = [];
-
         foreach ($stores as $store) {
             if (!array_key_exists($store->getId(), $recipients)) {
                 continue;
@@ -103,11 +99,9 @@ class TransactionController extends AbstractController
                     .$store->getId();
             }
         }
-
         if ($failures) {
             $this->addFlash('warning', implode('<br>', $failures));
         }
-
         if ($successes) {
             $this->addFlash(
                 'success',
@@ -119,9 +113,7 @@ class TransactionController extends AbstractController
         return $this->redirectToRoute('welcome');
     }
 
-    /**
-     * @Route("/store-transaction-pdf/{id}/{year}", name="store-transaction-pdf")
-     */
+    #[Route(path: '/store-transaction-pdf/{id}/{year}', name: 'store-transaction-pdf')]
     public function getStore(
         Store $store,
         int $year,
@@ -130,27 +122,23 @@ class TransactionController extends AbstractController
         PDFHelper $PDFHelper
     ): PdfResponse {
         $this->denyAccessUnlessGranted('export', $store);
-
         $html = $this->getTransactionsHtml(
             $transactionRepository,
             $store,
             $year
         );
-
         $filename = sprintf(
             'movimientos-%d-local-%d-%s.pdf',
             $year,
             $store->getId(),
             date('Y-m-d')
         );
-
         $header = $this->renderView(
             '_header-pdf.html.twig',
             [
                 'rootPath' => $PDFHelper->getRoot().'/public',
             ]
         );
-
         $footer = $this->renderView('_footer-pdf.html.twig');
 
         return new PdfResponse(
@@ -166,9 +154,9 @@ class TransactionController extends AbstractController
     }
 
     /**
-     * @Route("/mail-annual-transactions", name="mail-annual-transactions")
      * @Security("is_granted('ROLE_ADMIN')")
      */
+    #[Route(path: '/mail-annual-transactions', name: 'mail-annual-transactions')]
     public function mailStores(
         Request $request,
         TransactionRepository $transactionRepository,
@@ -177,11 +165,8 @@ class TransactionController extends AbstractController
         MailerInterface $mailer
     ): RedirectResponse {
         $year = (int)$request->get('year', date('Y'));
-
         $htmlPages = [];
-
         $stores = $storeRepository->findAll();
-
         foreach ($stores as $store) {
             if ($store->getUserId()) {
                 $htmlPages[] = $this->getTransactionsHtml(
@@ -191,9 +176,7 @@ class TransactionController extends AbstractController
                 );
             }
         }
-
         $fileName = "movimientos-$year.pdf";
-
         try {
             $attachment = new DataPart(
                 $pdf->getOutputFromHtml($htmlPages),
@@ -221,20 +204,17 @@ class TransactionController extends AbstractController
     }
 
     /**
-     * @Route("/stores-transactions-pdf", name="stores-transactions-pdf")
      * @Security("is_granted('ROLE_ADMIN')")
      */
+    #[Route(path: '/stores-transactions-pdf', name: 'stores-transactions-pdf')]
     public function getStores(
         TransactionRepository $transactionRepository,
         StoreRepository $storeRepository,
         Pdf $pdf
     ): PdfResponse {
         $htmlPages = [];
-
         $year = (int)date('Y');
-
         $stores = $storeRepository->findAll();
-
         foreach ($stores as $store) {
             if ($store->getUserId()) {
                 $htmlPages[] = $this->getTransactionsHtml(
@@ -244,7 +224,6 @@ class TransactionController extends AbstractController
                 );
             }
         }
-
         $filename = sprintf('movimientos-%d-%s.pdf', $year, date('Y-m-d'));
 
         return new PdfResponse(

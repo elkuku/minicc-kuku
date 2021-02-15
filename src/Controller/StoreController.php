@@ -17,19 +17,18 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
 
-/**
- * @Route("/stores")
- */
+#[Route(path: '/stores')]
 class StoreController extends AbstractController
 {
     use BreadcrumbTrait;
 
     /**
-     * @Route("/", name="stores-list")
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function index(StoreRepository $storeRepository): Response
-    {
+    #[Route(path: '/', name: 'stores-list')]
+    public function index(
+        StoreRepository $storeRepository
+    ): Response {
         return $this->render(
             'stores/list.html.twig',
             ['stores' => $storeRepository->findAll()]
@@ -37,16 +36,15 @@ class StoreController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="stores-add")
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function new(Request $request): Response
-    {
+    #[Route(path: '/new', name: 'stores-add')]
+    public function new(
+        Request $request
+    ): Response {
         $store = new Store;
         $form = $this->createForm(StoreType::class, $store);
-
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $store = $form->getData();
 
@@ -70,15 +68,15 @@ class StoreController extends AbstractController
     }
 
     /**
-     * @Route("/edit/{id}", name="stores-edit")
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function edit(Store $store, Request $request): Response
-    {
+    #[Route(path: '/edit/{id}', name: 'stores-edit')]
+    public function edit(
+        Store $store,
+        Request $request
+    ): Response {
         $form = $this->createForm(StoreType::class, $store);
-
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $store = $form->getData();
 
@@ -102,9 +100,9 @@ class StoreController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="store-transactions")
      * Security("is_granted('ROLE_ADMIN')")
      */
+    #[Route(path: '/{id}', name: 'store-transactions')]
     public function show(
         TransactionRepository $transactionRepository,
         StoreRepository $storeRepository,
@@ -114,28 +112,22 @@ class StoreController extends AbstractController
         ChartBuilderInterface $chartBuilder
     ): Response {
         $this->denyAccessUnlessGranted('view', $store);
-
         $year = (int)$request->get('year', date('Y'));
-
         $this->addBreadcrumb('Stores', 'stores-list')
             ->addBreadcrumb('Store '.$store->getId());
-
         $transactions = $transactionRepository->findByStoreAndYear(
             $store,
             $year
         );
-
         $headers = [];
         $monthPayments = [];
         $rentalValues = [];
         $rentalValue = $taxService->getValueConTax($store->getValAlq());
-
         for ($i = 1; $i < 13; $i++) {
             $headers[] = IntlConverter::formatDate('1966-'.$i.'-1', 'MMMM');
             $monthPayments[$i] = 0;
             $rentalValues[$i] = $rentalValue;
         }
-
         foreach ($transactions as $transaction) {
             if ($transaction->getType()->getName() === 'Pago') {
                 $monthPayments[$transaction->getDate()->format('n')]

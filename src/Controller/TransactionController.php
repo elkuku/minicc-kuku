@@ -14,46 +14,42 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-/**
- * @Route("/transactions")
- */
+#[Route(path: '/transactions')]
 class TransactionController extends AbstractController
 {
     use PaginatorTrait;
 
     /**
-     * @Route("/delete/{id}", name="transaction-delete")
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function delete(Request $request, Transaction $transaction): Response
-    {
+    #[Route(path: '/delete/{id}', name: 'transaction-delete')]
+    public function delete(
+        Request $request,
+        Transaction $transaction
+    ): Response {
         if (null === $transaction) {
             throw $this->createNotFoundException('No transaction found');
         }
-
         $em = $this->getDoctrine()->getManager();
         $em->remove($transaction);
         $em->flush();
-
         $this->addFlash('success', 'Transaction has been deleted');
-
         $redirect = str_replace('@', '/', $request->get('redirect'));
 
         return $this->redirect('/'.$redirect);
     }
 
     /**
-     * @Route("/edit/{id}", name="transaction-edit")
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function edit(Transaction $transaction, Request $request): Response
-    {
+    #[Route(path: '/edit/{id}', name: 'transaction-edit')]
+    public function edit(
+        Transaction $transaction,
+        Request $request
+    ): Response {
         $view = $request->query->get('view');
-
         $form = $this->createForm(TransactionTypeType::class, $transaction);
-
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $transaction = $form->getData();
 
@@ -64,7 +60,8 @@ class TransactionController extends AbstractController
             $this->addFlash('success', 'La Transaccion ha sido guardada.');
 
             return $this->redirectToRoute(
-                'store-transactions', [
+                'store-transactions',
+                [
                     'id' => $transaction->getStore()->getId(),
                 ]
             );
@@ -81,15 +78,17 @@ class TransactionController extends AbstractController
     }
 
     /**
-     * @Route("/", name="transaction-rawlist")
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function rawList(StoreRepository $storeRepo, TransactionRepository $transactionRepo, TransactionTypeRepository $transactionTypeRepo, Request $request): Response
-    {
+    #[Route(path: '/', name: 'transaction-rawlist')]
+    public function rawList(
+        StoreRepository $storeRepo,
+        TransactionRepository $transactionRepo,
+        TransactionTypeRepository $transactionTypeRepo,
+        Request $request
+    ): Response {
         $paginatorOptions = $this->getPaginatorOptions($request);
-
         $transactions = $transactionRepo->getRawList($paginatorOptions);
-
         $paginatorOptions->setMaxPages(
             (int)ceil(
                 $transactions->count() / $paginatorOptions->getLimit()

@@ -14,21 +14,21 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-/**
- * @Route("/users")
- */
+#[Route(path: '/users')]
 class UserController extends AbstractController
 {
     /**
-     * @Route("/", name="users-list")
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function list(UserRepository $userRepo, UserStateRepository $stateRepo, Request $request): Response
-    {
+    #[Route(path: '/', name: 'users-list')]
+    public function list(
+        UserRepository $userRepo,
+        UserStateRepository $stateRepo,
+        Request $request
+    ): Response {
         $userState = (int)$request->get('user_state', 1);
-
-        $criteria = [];// ['role' => 'ROLE_USER'];
-
+        $criteria = [];
+        // ['role' => 'ROLE_USER'];
         if ($userState) {
             $criteria['state'] = $stateRepo->find($userState);
         }
@@ -36,23 +36,23 @@ class UserController extends AbstractController
         return $this->render(
             'user/list.html.twig',
             [
-                'users'     => $userRepo->findBy($criteria),
+                'users' => $userRepo->findBy($criteria),
                 'userState' => $userState,
-                'states'    => $stateRepo->findAll(),
+                'states' => $stateRepo->findAll(),
             ]
         );
     }
 
     /**
-     * @Route("/edit/{id}", name="user-edit")
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function edit(User $client, Request $request): Response
-    {
+    #[Route(path: '/edit/{id}', name: 'user-edit')]
+    public function edit(
+        User $client,
+        Request $request
+    ): Response {
         $form = $this->createForm(UserFullType::class, $client);
-
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $client = $form->getData();
 
@@ -75,11 +75,12 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/pdf", name="pdf-users")
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function pdfList(UserRepository $userRepository): Response
-    {
+    #[Route(path: '/pdf', name: 'pdf-users')]
+    public function pdfList(
+        UserRepository $userRepository
+    ): Response {
         return $this->render(
             'user/user-pdf-list.html.twig',
             [
@@ -89,12 +90,17 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/ruclist", name="users-ruclist")
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function rucList(UserRepository $userRepository, Pdf $pdf): PdfResponse
-    {
-        $html = $this->renderView('user/ruclist.html.twig', ['users' => $this->getSortedUsers($userRepository)]);
+    #[Route(path: '/ruclist', name: 'users-ruclist')]
+    public function rucList(
+        UserRepository $userRepository,
+        Pdf $pdf
+    ): PdfResponse {
+        $html = $this->renderView(
+            'user/ruclist.html.twig',
+            ['users' => $this->getSortedUsers($userRepository)]
+        );
 
         return new PdfResponse(
             $pdf->getOutputFromHtml($html),
@@ -103,18 +109,18 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="register")
      *
      * // NOTE: Only admin can register new users !
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function new(Request $request): Response
-    {
+    #[Route(path: '/new', name: 'register')]
+    public function new(
+        Request $request
+    ): Response {
         // Create a new blank user and process the form
         $user = new User;
         $form = $this->createForm(UserFullType::class, $user);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             // Set their role
             $user->setRole('ROLE_USER');

@@ -23,9 +23,9 @@ use Symfony\Component\HttpFoundation\Response;
 class PlanillasController extends AbstractController
 {
     /**
-     * @Route("/planillas-mail", name="planillas-mail")
      * @Security("is_granted('ROLE_ADMIN')")
      */
+    #[Route(path: '/planillas-mail', name: 'planillas-mail')]
     public function mail(
         StoreRepository $storeRepository,
         TransactionRepository $transactionRepository,
@@ -35,10 +35,8 @@ class PlanillasController extends AbstractController
     ): Response {
         $year = date('Y');
         $month = date('m');
-
         $fileName = "planillas-$year-$month.pdf";
         $html = 'Attachment: '.$fileName;
-
         $document = $pdf->getOutputFromHtml(
             $this->getPlanillasHtml(
                 $year,
@@ -49,14 +47,12 @@ class PlanillasController extends AbstractController
             ),
             ['enable-local-file-access' => true]
         );
-
         $email = (new Email())
             ->from('minicckuku@gmail.com')
             ->to('minicckuku@gmail.com')
             ->subject("NEW Planillas $year-$month")
             ->html($html)
             ->attach($document, "planillas-$year-$month.pdf");
-
         try {
             $mailer->send($email);
             $this->addFlash('success', 'Mail has been sent.');
@@ -68,9 +64,9 @@ class PlanillasController extends AbstractController
     }
 
     /**
-     * @Route("/planilla-mail", name="planilla-mail")
      * @Security("is_granted('ROLE_ADMIN')")
      */
+    #[Route(path: '/planilla-mail', name: 'planilla-mail')]
     public function mailClients(
         StoreRepository $storeRepository,
         TransactionRepository $transactionRepository,
@@ -80,21 +76,17 @@ class PlanillasController extends AbstractController
         KernelInterface $kernel
     ): Response {
         $recipients = $request->get('recipients');
-
         if (!$recipients) {
             $this->addFlash('warning', 'No recipients selected');
 
             return $this->redirectToRoute('mail-list-transactions');
         }
-
         $year = date('Y');
         $month = date('m');
-
         $fileName = "planilla-$year-$month.pdf";
         $stores = $storeRepository->getActive();
         $failures = [];
         $successes = [];
-
         foreach ($stores as $store) {
             if (!array_key_exists($store->getId(), $recipients)) {
                 continue;
@@ -150,11 +142,9 @@ class PlanillasController extends AbstractController
                     .$store->getId();
             }
         }
-
         if ($failures) {
             $this->addFlash('warning', implode('<br>', $failures));
         }
-
         if ($successes) {
             $this->addFlash(
                 'success',
@@ -167,9 +157,9 @@ class PlanillasController extends AbstractController
     }
 
     /**
-     * @Route("/planillas", name="planillas")
      * @Security("is_granted('ROLE_ADMIN')")
      */
+    #[Route(path: '/planillas', name: 'planillas')]
     public function download(
         StoreRepository $storeRepository,
         TransactionRepository $transactionRepository,
@@ -178,7 +168,6 @@ class PlanillasController extends AbstractController
     ): PdfResponse {
         $year = date('Y');
         $month = date('m');
-
         $filename = sprintf('planillas-%d-%d.pdf', $year, $month);
         $html = $this->getPlanillasHtml(
             $year,
