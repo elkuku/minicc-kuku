@@ -40,12 +40,9 @@ class TransactionRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param Store   $store
-     * @param integer $year
-     *
      * @return Transaction[]
      */
-    public function findByStoreAndYear(Store $store, $year): array
+    public function findByStoreAndYear(Store $store, int $year): array
     {
         return $this->createQueryBuilder('p')
             ->where('p.store = :store')
@@ -57,9 +54,6 @@ class TransactionRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    /**
-     * @return array
-     */
     public function getSaldos(): array
     {
         return $this->createQueryBuilder('t')
@@ -120,11 +114,8 @@ class TransactionRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param Store  $store
      * @param string $month
      * @param string $year
-     *
-     * @return array
      */
     public function findMonthPayments(Store $store, $month, $year): array
     {
@@ -174,11 +165,6 @@ class TransactionRepository extends ServiceEntityRepository
         return $payments;
     }
 
-    /**
-     * @param PaginatorOptions $options
-     *
-     * @return Paginator
-     */
     public function getRawList(PaginatorOptions $options): Paginator
     {
         $criteria = $options->getCriteria();

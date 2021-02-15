@@ -24,23 +24,11 @@ use function get_class;
 use function is_object;
 use function strlen;
 
-/**
- * Class AppExtension
- */
 class AppExtension extends AbstractExtension
     implements ServiceSubscriberInterface
 {
-    /**
-     * @var ContainerInterface
-     */
-    private ContainerInterface $container;
-
-    /**
-     * AppExtension constructor.
-     */
-    public function __construct(ContainerInterface $container)
+    public function __construct(private ContainerInterface $container)
     {
-        $this->container = $container;
     }
 
     /**
@@ -75,8 +63,6 @@ class AppExtension extends AbstractExtension
      * @param integer $decimals
      * @param string  $decPoint
      * @param string  $thousandsSep
-     *
-     * @return string
      */
     public function priceFilter($number, $decimals = 2, $decPoint = '.', $thousandsSep = ','): string
     {
@@ -94,8 +80,6 @@ class AppExtension extends AbstractExtension
      * Invert a value
      *
      * @param integer $value
-     *
-     * @return integer
      */
     public function invertFilter($value): int
     {
@@ -107,7 +91,6 @@ class AppExtension extends AbstractExtension
      * @param string $format
      * @param string $lang
      *
-     * @return string
      * @throws Exception
      */
     public function intlDate($date, $format = "d 'de' MMMM YYYY", $lang = 'es_ES'): string
@@ -123,15 +106,13 @@ class AppExtension extends AbstractExtension
      * Convert object to array for Twig usage..
      *
      * @param object $classObject
-     *
-     * @return array
      */
     public function objectFilter($classObject): array
     {
         $array = (array)$classObject;
         $response = [];
 
-        $className = get_class($classObject);
+        $className = $classObject::class;
 
         foreach ($array as $k => $v) {
             $response[trim(str_replace($className, '', $k))] = $v;
@@ -142,10 +123,6 @@ class AppExtension extends AbstractExtension
 
     /**
      * Shorten a (latin) name
-     *
-     * @param string $longName
-     *
-     * @return string
      */
     public function shortName(string $longName): string
     {

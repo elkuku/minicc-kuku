@@ -20,10 +20,6 @@ use App\Entity\User;
  */
 class UserType extends AbstractType
 {
-    /**
-     * @param FormBuilderInterface $builder
-     * @param array                $options
-     */
     public function buildForm(
         FormBuilderInterface $builder,
         array $options
@@ -33,9 +29,6 @@ class UserType extends AbstractType
             ->add('email', EmailType::class);
     }
 
-    /**
-     * @param OptionsResolver $resolver
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(

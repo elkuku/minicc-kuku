@@ -15,14 +15,8 @@ class StoreVoter extends Voter
     public const EDIT = 'edit';
     public const EXPORT = 'export';
 
-    /**
-     * @var Security
-     */
-    private Security $security;
-
-    public function __construct(Security $security)
+    public function __construct(private Security $security)
     {
-        $this->security = $security;
     }
 
     protected function supports(string $attribute, $subject): bool

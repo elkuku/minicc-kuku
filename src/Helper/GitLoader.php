@@ -13,16 +13,13 @@ use function is_array;
 
 class GitLoader
 {
-    private string $projectDir;
-
-    public function __construct($rootDir)
+    public function __construct(private $rootDir)
     {
-        $this->projectDir = $rootDir;
     }
 
     public function getBranchName(): string
     {
-        $gitHeadFile = $this->projectDir.'/.git/HEAD';
+        $gitHeadFile = $this->rootDir.'/.git/HEAD';
         $branchname = 'no branch name';
 
         $stringFromFile = file_exists($gitHeadFile)
@@ -43,7 +40,7 @@ class GitLoader
 
     public function getLastCommitMessage(): string
     {
-        $gitCommitMessageFile = $this->projectDir.'/.git/COMMIT_EDITMSG';
+        $gitCommitMessageFile = $this->rootDir.'/.git/COMMIT_EDITMSG';
         $commitMessage = file_exists($gitCommitMessageFile)
             ? file($gitCommitMessageFile, FILE_USE_INCLUDE_PATH) : '';
 
@@ -52,12 +49,12 @@ class GitLoader
 
     public function getLastCommitDetail(): array
     {
-        $gitLogFile = $this->projectDir.'/.git/logs/HEAD';
+        $gitLogFile = $this->rootDir.'/.git/logs/HEAD';
         $gitLogs = file_exists($gitLogFile)
             ? file($gitLogFile, FILE_USE_INCLUDE_PATH) : '';
         $sha = trim(
             $this->execCommand(
-                'cd '.$this->projectDir.' && git rev-parse --short HEAD'
+                'cd '.$this->rootDir.' && git rev-parse --short HEAD'
             )
         );
 
@@ -73,16 +70,7 @@ class GitLoader
         return $logs;
     }
 
-    /**
-     * Execute a command on the server.
-     *
-     * @param string $command The command to execute.
-     *
-     * @return string
-     *
-     * @throws RuntimeException
-     */
-    protected function execCommand($command): string
+    protected function execCommand(string $command): string
     {
         ob_start();
         $lastLine = system($command, $status);

@@ -18,12 +18,6 @@ trait BreadcrumbTrait
      */
     private array $breadcrumbs = [];
 
-    /**
-     * @param string $text
-     * @param string $link
-     *
-     * @return $this
-     */
     protected function addBreadcrumb(string $text, string $link = ''): self
     {
         $this->initBreadcrumbs();
@@ -33,17 +27,11 @@ trait BreadcrumbTrait
         return $this;
     }
 
-    /**
-     * @return array
-     */
     protected function getBreadcrumbs(): array
     {
         return $this->initBreadcrumbs()->breadcrumbs;
     }
 
-    /**
-     * @return $this
-     */
     private function initBreadcrumbs(): self
     {
         if (!$this->breadcrumbs) {

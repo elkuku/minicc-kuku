@@ -26,43 +26,10 @@ class GoogleAuthenticator extends SocialAuthenticator
 {
     use TargetPathTrait;
 
-    /**
-     * @var ClientRegistry
-     */
-    private ClientRegistry $clientRegistry;
-
-    /**
-     * @var EntityManagerInterface
-     */
-    private EntityManagerInterface $em;
-
-    /**
-     * @var UserRepository
-     */
-    private UserRepository $userRepository;
-    /**
-     * @var UrlGeneratorInterface
-     */
-    private UrlGeneratorInterface $urlGenerator;
-    /**
-     * @var Session
-     */
-    private $session;
-
-    public function __construct(ClientRegistry $clientRegistry, EntityManagerInterface $em, UserRepository $userRepository, UrlGeneratorInterface $urlGenerator, SessionInterface $session)
+    public function __construct(private ClientRegistry $clientRegistry, private EntityManagerInterface $em, private UserRepository $userRepository, private UrlGeneratorInterface $urlGenerator, private SessionInterface $session)
     {
-        $this->clientRegistry = $clientRegistry;
-        $this->em = $em;
-        $this->userRepository = $userRepository;
-        $this->urlGenerator = $urlGenerator;
-        $this->session = $session;
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return bool
-     */
     public function supports(Request $request):bool
     {
         // continue ONLY if the current ROUTE matches the check ROUTE
@@ -70,8 +37,6 @@ class GoogleAuthenticator extends SocialAuthenticator
     }
 
     /**
-     * @param Request $request
-     *
      * @return AccessToken|mixed
      */
     public function getCredentials(Request $request)
@@ -83,7 +48,6 @@ class GoogleAuthenticator extends SocialAuthenticator
 
     /**
      * @param mixed                 $credentials
-     * @param UserProviderInterface $userProvider
      *
      * @return User|null|object|UserInterface
      */
@@ -121,8 +85,6 @@ class GoogleAuthenticator extends SocialAuthenticator
     }
 
     /**
-     * @param Request        $request
-     * @param TokenInterface $token
      * @param string         $providerKey
      *
      * @return null|Response
@@ -137,8 +99,6 @@ class GoogleAuthenticator extends SocialAuthenticator
     }
 
     /**
-     * @param Request                 $request
-     * @param AuthenticationException $exception
      *
      * @return null|Response
      */
@@ -156,10 +116,8 @@ class GoogleAuthenticator extends SocialAuthenticator
      * Called when authentication is needed, but it's not sent.
      * This redirects to the 'login'.
      *
-     * @param Request                      $request
      * @param AuthenticationException|null $authException
      *
-     * @return RedirectResponse
      */
     public function start(Request $request, AuthenticationException $authException = null): RedirectResponse
     {

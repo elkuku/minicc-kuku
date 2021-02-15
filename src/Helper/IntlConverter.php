@@ -9,24 +9,12 @@
 namespace App\Helper;
 
 use DateTime;
-use Exception;
 use IntlDateFormatter;
 use function is_object;
 
-/**
- * Class IntlConverter
- */
 class IntlConverter
 {
-    /**
-     * @param string|DateTime $date
-     * @param string          $format
-     * @param string          $lang
-     *
-     * @return string
-     * @throws Exception
-     */
-    public static function formatDate($date, string $format = "d 'de' MMMM YYYY", string $lang = 'es_ES'): string
+    public static function formatDate(string|\DateTime $date, string $format = "d 'de' MMMM YYYY", string $lang = 'es_ES'): string
     {
         $formatter = new IntlDateFormatter('ES_es', IntlDateFormatter::LONG, IntlDateFormatter::NONE);
 

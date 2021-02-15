@@ -31,11 +31,6 @@ class DepositRepository extends ServiceEntityRepository
         parent::__construct($registry, Deposit::class);
     }
 
-    /**
-     * @param Deposit $deposit
-     *
-     * @return boolean
-     */
     public function has(Deposit $deposit): bool
     {
         return $this->findOneBy(
@@ -46,11 +41,6 @@ class DepositRepository extends ServiceEntityRepository
         ) ? true : false;
     }
 
-    /**
-     * @param PaginatorOptions $options
-     *
-     * @return Paginator
-     */
     public function getPaginatedList(PaginatorOptions $options): Paginator
     {
         $query = $this->createQueryBuilder('d')
@@ -86,12 +76,7 @@ class DepositRepository extends ServiceEntityRepository
         return $this->paginate($query, $options->getPage(), $options->getLimit());
     }
 
-    /**
-     * @param integer $documentId
-     *
-     * @return array
-     */
-    public function lookup($documentId): array
+    public function lookup(int $documentId): array
     {
         return $this->createQueryBuilder('d')
             ->where('d.document LIKE :document')

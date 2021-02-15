@@ -24,17 +24,8 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 {
     use TargetPathTrait;
 
-    private EntityManagerInterface $entityManager;
-    private RouterInterface $router;
-    private CsrfTokenManagerInterface $csrfTokenManager;
-    private string $appEnv;
-
-    public function __construct(EntityManagerInterface $entityManager, RouterInterface $router, CsrfTokenManagerInterface $csrfTokenManager, string $appEnv)
+    public function __construct(private EntityManagerInterface $entityManager, private RouterInterface $router, private CsrfTokenManagerInterface $csrfTokenManager, private string $appEnv)
     {
-        $this->entityManager = $entityManager;
-        $this->router = $router;
-        $this->csrfTokenManager = $csrfTokenManager;
-        $this->appEnv = $appEnv;
     }
 
     public function supports(Request $request):bool
