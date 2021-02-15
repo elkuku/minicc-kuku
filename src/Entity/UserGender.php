@@ -27,35 +27,18 @@ class UserGender
      */
     private string $name;
 
-    /**
-     * Get id
-     *
-     * @return integer
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * Set name
-     *
-     * @param string $name
-     *
-     * @return UserGender
-     */
-    public function setName($name): UserGender
+    public function setName(string $name): UserGender
     {
         $this->name = $name;
 
         return $this;
     }
 
-    /**
-     * Get name
-     *
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;

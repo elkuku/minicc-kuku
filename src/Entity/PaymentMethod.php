@@ -39,13 +39,6 @@ class PaymentMethod
         return $this->id;
     }
 
-    /**
-     * Set name
-     *
-     * @param string $name
-     *
-     * @return PaymentMethod
-     */
     public function setName(string $name): self
     {
         $this->name = $name;
@@ -53,11 +46,6 @@ class PaymentMethod
         return $this;
     }
 
-    /**
-     * Get name
-     *
-     * @return string
-     */
     public function getName(): ?string
     {
         return $this->name;

@@ -33,7 +33,7 @@ class User implements UserInterface, Serializable
     /**
      * @ORM\Column(type="string", length=255, unique=true)
      */
-    private $email;
+    private string $email;
 
     /**
      * @ORM\Column(type="string", length=40)
@@ -111,11 +111,6 @@ class User implements UserInterface, Serializable
         return $this->role;
     }
 
-    /**
-     * @param string $role
-     *
-     * @return $this
-     */
     public function setRole(string $role): self
     {
         $this->role = $role;
@@ -132,20 +127,12 @@ class User implements UserInterface, Serializable
         return [$this->getRole()];
     }
 
-    /**
-     * @return int
-     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @param string $name
-     *
-     * @return $this
-     */
-    public function setName($name): self
+    public function setName(string $name): self
     {
         $this->name = $name;
 
@@ -162,46 +149,27 @@ class User implements UserInterface, Serializable
         return $this->email;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getEmail()
+    public function getEmail(): string
     {
         return $this->email;
     }
 
-    /**
-     * @param string $email
-     *
-     * @return $this
-     */
-    public function setEmail($email): self
+    public function setEmail(string $email): self
     {
         $this->email = $email;
 
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
     public function getPassword()
     {
         return null;
     }
 
-    /**
-     * @return null
-     */
     public function getSalt(): void
     {
     }
 
-    /**
-     * @param UserState $status
-     *
-     * @return User
-     */
     public function setState(UserState $status): User
     {
         $this->state = $status;
@@ -209,141 +177,71 @@ class User implements UserInterface, Serializable
         return $this;
     }
 
-    /**
-     * @return UserState
-     */
     public function getState(): UserState
     {
         return $this->state;
     }
 
-    /**
-     * Set inqCi
-     *
-     * @param string $inqCi
-     *
-     * @return User
-     */
-    public function setInqCi($inqCi): User
+    public function setInqCi(string $inqCi): User
     {
         $this->inqCi = $inqCi;
 
         return $this;
     }
 
-    /**
-     * Get inqCi
-     *
-     * @return string
-     */
     public function getInqCi(): string
     {
         return $this->inqCi;
     }
 
-    /**
-     * Set inqRuc
-     *
-     * @param string $inqRuc
-     *
-     * @return User
-     */
-    public function setInqRuc($inqRuc): User
+    public function setInqRuc(string $inqRuc): User
     {
         $this->inqRuc = $inqRuc;
 
         return $this;
     }
 
-    /**
-     * Get inqRuc
-     *
-     * @return string
-     */
     public function getInqRuc(): string
     {
         return $this->inqRuc;
     }
 
-    /**
-     * Set telefono
-     *
-     * @param string $telefono
-     *
-     * @return User
-     */
-    public function setTelefono($telefono): User
+    public function setTelefono(string $telefono): User
     {
         $this->telefono = $telefono;
 
         return $this;
     }
 
-    /**
-     * Get telefono
-     *
-     * @return string
-     */
     public function getTelefono(): string
     {
         return $this->telefono;
     }
 
-    /**
-     * Set telefono2
-     *
-     * @param string $telefono2
-     *
-     * @return User
-     */
-    public function setTelefono2($telefono2): User
+    public function setTelefono2(string $telefono2): User
     {
         $this->telefono2 = $telefono2;
 
         return $this;
     }
 
-    /**
-     * Get telefono2
-     *
-     * @return string
-     */
     public function getTelefono2(): string
     {
         return $this->telefono2;
     }
 
-    /**
-     * Set direccion
-     *
-     * @param string $direccion
-     *
-     * @return User
-     */
-    public function setDireccion($direccion): User
+    public function setDireccion(string $direccion): User
     {
         $this->direccion = $direccion;
 
         return $this;
     }
 
-    /**
-     * Get address
-     *
-     * @return string
-     */
     public function getDireccion(): string
     {
         return $this->direccion;
     }
 
-    /**
-     * Add store
-     *
-     * @param Store $store
-     *
-     * @return User
-     */
     public function addStore(Store $store): User
     {
         $this->stores[] = $store;
@@ -351,13 +249,6 @@ class User implements UserInterface, Serializable
         return $this;
     }
 
-    /**
-     * Remove store
-     *
-     * @param Store $store
-     *
-     * @return User
-     */
     public function removeStore(Store $store): User
     {
         $this->stores->removeElement($store);
@@ -366,8 +257,6 @@ class User implements UserInterface, Serializable
     }
 
     /**
-     * Get stores
-     *
      * @return Store[]
      */
     public function getStores()
@@ -375,11 +264,6 @@ class User implements UserInterface, Serializable
         return $this->stores;
     }
 
-    /**
-     * @param UserGender $gender
-     *
-     * @return User
-     */
     public function setGender(UserGender $gender): User
     {
         $this->gender = $gender;
@@ -387,9 +271,6 @@ class User implements UserInterface, Serializable
         return $this;
     }
 
-    /**
-     * @return UserGender
-     */
     public function getGender(): UserGender
     {
         return $this->gender;
@@ -417,8 +298,6 @@ class User implements UserInterface, Serializable
      * @link  http://php.net/manual/en/serializable.unserialize.php
      *
      * @param string $serialized The string representation of the object.
-     *
-     * @return void
      */
     public function unserialize($serialized): void
     {

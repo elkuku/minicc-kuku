@@ -27,35 +27,18 @@ class TransactionType
      */
     private string $name;
 
-    /**
-     * Get id
-     *
-     * @return integer
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * Set name
-     *
-     * @param string $name
-     *
-     * @return TransactionType
-     */
-    public function setName($name): TransactionType
+    public function setName(string $name): TransactionType
     {
         $this->name = $name;
 
         return $this;
     }
 
-    /**
-     * Get name
-     *
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;

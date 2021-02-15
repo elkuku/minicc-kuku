@@ -9,20 +9,8 @@ use Twig\Environment;
 
 class TwigEventSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @var Environment
-     */
-    private Environment $twig;
-
-    /**
-     * @var UserRepository
-     */
-    private UserRepository $userRepository;
-
-    public function __construct(Environment $twig, UserRepository $userRepository)
+    public function __construct(private Environment $twig, private UserRepository $userRepository)
     {
-        $this->twig = $twig;
-        $this->userRepository = $userRepository;
     }
 
     public function onKernelController(ControllerEvent $event): void

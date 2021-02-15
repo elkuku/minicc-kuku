@@ -49,23 +49,11 @@ class Deposit implements JsonSerializable
      */
     private float $amount;
 
-    /**
-     * Get id
-     *
-     * @return integer
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * Set entity
-     *
-     * @param PaymentMethod $entity
-     *
-     * @return Deposit
-     */
     public function setEntity(PaymentMethod $entity): Deposit
     {
         if (1 === $entity->getId()) {
@@ -79,23 +67,11 @@ class Deposit implements JsonSerializable
         return $this;
     }
 
-    /**
-     * Get entity
-     *
-     * @return PaymentMethod
-     */
     public function getEntity(): PaymentMethod
     {
         return $this->entity;
     }
 
-    /**
-     * Set date
-     *
-     * @param DateTime $date
-     *
-     * @return Deposit
-     */
     public function setDate(DateTime $date): Deposit
     {
         $this->date = $date;
@@ -103,23 +79,11 @@ class Deposit implements JsonSerializable
         return $this;
     }
 
-    /**
-     * Get date
-     *
-     * @return DateTime
-     */
     public function getDate(): DateTime
     {
         return $this->date;
     }
 
-    /**
-     * Set document
-     *
-     * @param string $document
-     *
-     * @return Deposit
-     */
     public function setDocument($document): Deposit
     {
         $this->document = $document;
@@ -127,23 +91,11 @@ class Deposit implements JsonSerializable
         return $this;
     }
 
-    /**
-     * Get document
-     *
-     * @return string
-     */
     public function getDocument(): string
     {
         return $this->document;
     }
 
-    /**
-     * Set amount
-     *
-     * @param string $amount
-     *
-     * @return Deposit
-     */
     public function setAmount($amount): Deposit
     {
         $this->amount = $amount;
@@ -151,11 +103,6 @@ class Deposit implements JsonSerializable
         return $this;
     }
 
-    /**
-     * Get amount
-     *
-     * @return string
-     */
     public function getAmount(): string
     {
         return $this->amount;
@@ -169,7 +116,7 @@ class Deposit implements JsonSerializable
      * which is a value of any type other than a resource.
      * @since 5.4.0
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return [
             'id'       => $this->id,

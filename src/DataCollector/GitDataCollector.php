@@ -10,11 +10,8 @@ use Throwable;
 
 class GitDataCollector extends DataCollector
 {
-    private GitLoader $gitLoader;
-
-    public function __construct(GitLoader $gitLoader)
+    public function __construct(private GitLoader $gitLoader)
     {
-        $this->gitLoader = $gitLoader;
     }
 
     public function collect(Request $request, Response $response, Throwable $exception = null): void
@@ -36,27 +33,27 @@ class GitDataCollector extends DataCollector
         $this->data = array();
     }
 
-    public function getGitBranch()
+    public function getGitBranch(): string
     {
         return $this->data['git_branch'];
     }
 
-    public function getLastCommitMessage()
+    public function getLastCommitMessage(): string
     {
         return $this->data['last_commit_message'];
     }
 
-    public function getLastCommitAuthor()
+    public function getLastCommitAuthor(): string
     {
         return $this->data['logs']['author'];
     }
 
-    public function getLastCommitDate()
+    public function getLastCommitDate(): string
     {
         return $this->data['logs']['date'];
     }
 
-    public function getSha()
+    public function getSha(): string
     {
         return $this->data['logs']['sha'];
     }
