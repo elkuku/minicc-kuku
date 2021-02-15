@@ -24,7 +24,7 @@ class DataFixtureTestCase extends WebTestCase
     /**
      * {@inheritDoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
