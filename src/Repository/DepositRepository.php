@@ -48,20 +48,27 @@ class DepositRepository extends ServiceEntityRepository
 
         if ($options->searchCriteria('amount')) {
             $query->andWhere('d.amount = :amount')
-                ->setParameter('amount', (float)$options->searchCriteria('amount'));
+                ->setParameter(
+                    'amount',
+                    (float)$options->searchCriteria('amount')
+                );
         }
 
         if ($options->searchCriteria('document')) {
             $query->andWhere('d.document LIKE :document')
                 ->setParameter(
-                    'document', '%'.(int)$options->searchCriteria('document')
+                    'document',
+                    '%'.(int)$options->searchCriteria('document')
                     .'%'
                 );
         }
 
         if ($options->searchCriteria('date_from')) {
             $query->andWhere('d.date >= :date_from')
-                ->setParameter('date_from', $options->searchCriteria('date_from'));
+                ->setParameter(
+                    'date_from',
+                    $options->searchCriteria('date_from')
+                );
         }
 
         if ($options->searchCriteria('date_to')) {
@@ -69,11 +76,17 @@ class DepositRepository extends ServiceEntityRepository
                 ->setParameter('date_to', $options->searchCriteria('date_to'));
         }
 
-        $query->addSelect('(SELECT t.id FROM App:Transaction t WHERE t.depId = d.id) AS tr_id');
+        $query->addSelect(
+            '(SELECT t.id FROM App:Transaction t WHERE t.depId = d.id) AS tr_id'
+        );
 
         $query = $query->getQuery();
 
-        return $this->paginate($query, $options->getPage(), $options->getLimit());
+        return $this->paginate(
+            $query,
+            $options->getPage(),
+            $options->getLimit()
+        );
     }
 
     public function lookup(int $documentId): array
@@ -81,7 +94,9 @@ class DepositRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('d')
             ->where('d.document LIKE :document')
             ->setParameter('document', '%'.(int)$documentId.'%')
-            ->addSelect('(SELECT t.id FROM App:Transaction t WHERE t.depId = d.id) AS tr_id')
+            ->addSelect(
+                '(SELECT t.id FROM App:Transaction t WHERE t.depId = d.id) AS tr_id'
+            )
             ->getQuery()
             ->getResult();
     }

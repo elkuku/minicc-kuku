@@ -35,8 +35,10 @@ class ContractType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options): void
-    {
+    public function buildForm(
+        FormBuilderInterface $builder,
+        array $options
+    ): void {
         $builder
             ->add('date')
             // Store
@@ -49,7 +51,7 @@ class ContractType extends AbstractType
                 'gender',
                 EntityType::class,
                 [
-                    'class'        => 'App:UserGender',
+                    'class' => 'App:UserGender',
                     'choice_label' => 'name',
                 ]
             )

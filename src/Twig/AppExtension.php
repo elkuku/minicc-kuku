@@ -20,7 +20,6 @@ use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 use function count;
-use function get_class;
 use function is_object;
 use function strlen;
 
@@ -64,8 +63,12 @@ class AppExtension extends AbstractExtension
      * @param string  $decPoint
      * @param string  $thousandsSep
      */
-    public function priceFilter($number, $decimals = 2, $decPoint = '.', $thousandsSep = ','): string
-    {
+    public function priceFilter(
+        $number,
+        $decimals = 2,
+        $decPoint = '.',
+        $thousandsSep = ','
+    ): string {
         $price = number_format($number, $decimals, $decPoint, $thousandsSep);
         $price = sprintf(
             '<span class="%s">%s</span>',
@@ -93,9 +96,16 @@ class AppExtension extends AbstractExtension
      *
      * @throws Exception
      */
-    public function intlDate($date, $format = "d 'de' MMMM YYYY", $lang = 'es_ES'): string
-    {
-        $formatter = new IntlDateFormatter('ES_es', IntlDateFormatter::LONG, IntlDateFormatter::NONE);
+    public function intlDate(
+        $date,
+        $format = "d 'de' MMMM YYYY",
+        $lang = 'es_ES'
+    ): string {
+        $formatter = new IntlDateFormatter(
+            'ES_es',
+            IntlDateFormatter::LONG,
+            IntlDateFormatter::NONE
+        );
 
         $dateTime = is_object($date) ? $date : new DateTime($date);
 

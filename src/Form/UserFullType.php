@@ -24,8 +24,10 @@ class UserFullType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options): void
-    {
+    public function buildForm(
+        FormBuilderInterface $builder,
+        array $options
+    ): void {
         $builder
             ->add(
                 'state',
@@ -49,8 +51,7 @@ class UserFullType extends AbstractType
             ->add('inqRuc', null, ['required' => false])
             ->add('telefono', null, ['required' => false])
             ->add('telefono2', null, ['required' => false])
-            ->add('direccion', null, ['required' => false])
-;
+            ->add('direccion', null, ['required' => false]);
     }
 
     /**

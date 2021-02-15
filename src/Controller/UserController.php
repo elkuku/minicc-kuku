@@ -36,9 +36,9 @@ class UserController extends AbstractController
         return $this->render(
             'user/list.html.twig',
             [
-                'users' => $userRepo->findBy($criteria),
+                'users'     => $userRepo->findBy($criteria),
                 'userState' => $userState,
-                'states' => $stateRepo->findAll(),
+                'states'    => $stateRepo->findAll(),
             ]
         );
     }

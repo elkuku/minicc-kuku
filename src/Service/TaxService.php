@@ -21,8 +21,7 @@ class TaxService
          * @var integer
          */
         private $taxValue
-    )
-    {
+    ) {
     }
 
     public function getTaxValue(): int

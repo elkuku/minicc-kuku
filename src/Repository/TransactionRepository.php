@@ -179,7 +179,10 @@ class TransactionRepository extends ServiceEntityRepository
 
         if ($options->searchCriteria('amount')) {
             $query->andWhere('t.amount = :amount')
-                ->setParameter('amount', (float)$options->searchCriteria('amount'));
+                ->setParameter(
+                    'amount',
+                    (float)$options->searchCriteria('amount')
+                );
         }
 
         if ($options->searchCriteria('store')) {
@@ -189,7 +192,10 @@ class TransactionRepository extends ServiceEntityRepository
 
         if ($options->searchCriteria('date_from')) {
             $query->andWhere('t.date >= :date_from')
-                ->setParameter('date_from', $options->searchCriteria('date_from'));
+                ->setParameter(
+                    'date_from',
+                    $options->searchCriteria('date_from')
+                );
         }
 
         if ($options->searchCriteria('date_to')) {
@@ -199,6 +205,10 @@ class TransactionRepository extends ServiceEntityRepository
 
         $query = $query->getQuery();
 
-        return $this->paginate($query, $options->getPage(), $options->getLimit());
+        return $this->paginate(
+            $query,
+            $options->getPage(),
+            $options->getLimit()
+        );
     }
 }

@@ -24,11 +24,15 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 {
     use TargetPathTrait;
 
-    public function __construct(private EntityManagerInterface $entityManager, private RouterInterface $router, private CsrfTokenManagerInterface $csrfTokenManager, private string $appEnv)
-    {
+    public function __construct(
+        private EntityManagerInterface $entityManager,
+        private RouterInterface $router,
+        private CsrfTokenManagerInterface $csrfTokenManager,
+        private string $appEnv
+    ) {
     }
 
-    public function supports(Request $request):bool
+    public function supports(Request $request): bool
     {
         return 'login' === $request->attributes->get('_route')
             && $request->isMethod('POST');
@@ -37,7 +41,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     public function getCredentials(Request $request)
     {
         $credentials = [
-            'email'      => $request->request->get('email'),
+            'email' => $request->request->get('email'),
             'csrf_token' => $request->request->get('_csrf_token'),
         ];
         $request->getSession()->set(
@@ -60,13 +64,15 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
         if (!$user) {
             // fail authentication with a custom error
-            throw new CustomUserMessageAuthenticationException('Email could not be found.');
+            throw new CustomUserMessageAuthenticationException(
+                'Email could not be found.'
+            );
         }
 
         return $user;
     }
 
-    public function checkCredentials($credentials, UserInterface $user):bool
+    public function checkCredentials($credentials, UserInterface $user): bool
     {
         if ('dev' !== $this->appEnv) {
             throw new UnexpectedValueException('GTFO!');
@@ -75,16 +81,23 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         return true;
     }
 
-    public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
-    {
-        if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
+    public function onAuthenticationSuccess(
+        Request $request,
+        TokenInterface $token,
+        $providerKey
+    ) {
+        if ($targetPath = $this->getTargetPath(
+            $request->getSession(),
+            $providerKey
+        )
+        ) {
             return new RedirectResponse($targetPath);
         }
 
         return new RedirectResponse($this->router->generate('welcome'));
     }
 
-    protected function getLoginUrl():string
+    protected function getLoginUrl(): string
     {
         return $this->router->generate('login');
     }

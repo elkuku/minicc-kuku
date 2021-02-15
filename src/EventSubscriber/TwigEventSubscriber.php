@@ -9,13 +9,18 @@ use Twig\Environment;
 
 class TwigEventSubscriber implements EventSubscriberInterface
 {
-    public function __construct(private Environment $twig, private UserRepository $userRepository)
-    {
+    public function __construct(
+        private Environment $twig,
+        private UserRepository $userRepository
+    ) {
     }
 
     public function onKernelController(ControllerEvent $event): void
     {
-        $this->twig->addGlobal('systemUsers', $this->userRepository->findActiveUsers());
+        $this->twig->addGlobal(
+            'systemUsers',
+            $this->userRepository->findActiveUsers()
+        );
         $this->twig->addGlobal('currentYear', date('Y'));
     }
 

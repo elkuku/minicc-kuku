@@ -34,8 +34,11 @@ class StoreVoter extends Voter
         return true;
     }
 
-    protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
-    {
+    protected function voteOnAttribute(
+        string $attribute,
+        $subject,
+        TokenInterface $token
+    ): bool {
         if ($this->security->isGranted('ROLE_ADMIN')) {
             return true;
         }
