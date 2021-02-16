@@ -10,9 +10,6 @@ namespace App\Service;
 
 class ShaFinder
 {
-    /**
-     * @var string
-     */
     private string $sha = 'n/a';
 
     public function __construct(string $rootDir)

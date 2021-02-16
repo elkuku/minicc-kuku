@@ -8,20 +8,10 @@
 
 namespace App\Service;
 
-/**
- * Class TaxService
- */
 class TaxService
 {
-    /**
-     * TaxService constructor.
-     */
-    public function __construct(
-        /**
-         * @var integer
-         */
-        private $taxValue
-    ) {
+    public function __construct(private int $taxValue)
+    {
     }
 
     public function getTaxValue(): int
