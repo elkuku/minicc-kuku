@@ -36,7 +36,6 @@
         "symfony/sendgrid-mailer": "5.*",
         "symfony/serializer-pack": "*",
         "symfony/string": "*",
-        "symfony/swiftmailer-bundle": "^3.1",
         "symfony/translation": "*",
         "symfony/twig-pack": "*",
         "symfony/ux-chartjs": "^1.1",
@@ -51,7 +50,7 @@
         "symfony/browser-kit": "5.*",
         "symfony/css-selector": "*",
         "symfony/debug-pack": "*",
-        "symfony/maker-bundle": "^1.5",
+        "symfony/maker-bundle": "^1.29",
         "symfony/test-pack": "*",
         "symfony/web-profiler-bundle": "*"
     },
