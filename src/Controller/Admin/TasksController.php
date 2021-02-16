@@ -15,21 +15,17 @@ use Symfony\Component\HttpFoundation\Response;
 use UnexpectedValueException;
 use function dirname;
 
+/**
+ * @Security("is_granted('ROLE_ADMIN')")
+ */
 class TasksController extends AbstractController
 {
-    /**
-     * @Security("is_granted('ROLE_ADMIN')")
-     */
     #[Route(path: '/admin-tasks', name: 'admin-tasks')]
     public function index(): Response
     {
         return $this->render('admin/tasks.html.twig');
     }
 
-    /**
-     * @Security("is_granted('ROLE_ADMIN')")
-     * @throws Exception
-     */
     #[Route(path: '/console-view/{item}', name: 'console-view')]
     public function consoleView(
         string $item,
@@ -70,10 +66,6 @@ class TasksController extends AbstractController
         );
     }
 
-    /**
-     * @Security("is_granted('ROLE_ADMIN')")
-     * @throws Exception
-     */
     #[Route(path: '/sysinfo', name: 'sysinfo')]
     public function sysInfo(
         KernelInterface $kernel

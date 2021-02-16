@@ -20,11 +20,11 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @Security("is_granted('ROLE_ADMIN')")
+ */
 class PlanillasController extends AbstractController
 {
-    /**
-     * @Security("is_granted('ROLE_ADMIN')")
-     */
     #[Route(path: '/planillas-mail', name: 'planillas-mail')]
     public function mail(
         StoreRepository $storeRepository,
@@ -63,9 +63,6 @@ class PlanillasController extends AbstractController
         return $this->render('admin/tasks.html.twig');
     }
 
-    /**
-     * @Security("is_granted('ROLE_ADMIN')")
-     */
     #[Route(path: '/planilla-mail', name: 'planilla-mail')]
     public function mailClients(
         StoreRepository $storeRepository,
@@ -156,9 +153,6 @@ class PlanillasController extends AbstractController
         return $this->redirectToRoute('welcome');
     }
 
-    /**
-     * @Security("is_granted('ROLE_ADMIN')")
-     */
     #[Route(path: '/planillas', name: 'planillas')]
     public function download(
         StoreRepository $storeRepository,

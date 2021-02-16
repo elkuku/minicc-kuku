@@ -2,8 +2,6 @@
 
 namespace App\Controller\Admin;
 
-use Doctrine\DBAL\DBALException;
-use Doctrine\DBAL\Statement;
 use Doctrine\ORM\EntityManager;
 use Exception;
 use RuntimeException;
@@ -19,11 +17,11 @@ use Symfony\Component\HttpFoundation\Response;
 use UnexpectedValueException;
 use function count;
 
+/**
+ * @Security("is_granted('ROLE_ADMIN')")
+ */
 class SyncController extends AbstractController
 {
-    /**
-     * @Security("is_granted('ROLE_ADMIN')")
-     */
     #[Route(path: '/export-table/{name}', name: 'export-table')]
     public function export(
         string $name
@@ -44,10 +42,6 @@ class SyncController extends AbstractController
         );
     }
 
-    /**
-     * @Security("is_granted('ROLE_ADMIN')")
-     * @throws DBALException
-     */
     #[Route(path: '/import-table', name: 'import-table')]
     public function import(
         Request $request
@@ -125,7 +119,6 @@ class SyncController extends AbstractController
         $query = implode('', $queryLines);
         /** @type EntityManager $em */
         $em = $this->getDoctrine()->getManager();
-        /** @type Statement $statement */
         $statement = $em->getConnection()->prepare($query);
         $statement->execute();
         $this->addFlash('success', count($newData).' lines inserted');
@@ -133,9 +126,6 @@ class SyncController extends AbstractController
         return $this->redirectToRoute('admin-tasks');
     }
 
-    /**
-     * @Security("is_granted('ROLE_ADMIN')")
-     */
     #[Route(path: '/backup', name: 'backup')]
     public function backup(
         MailerInterface $mailer
@@ -187,8 +177,8 @@ class SyncController extends AbstractController
         return $this->redirectToRoute('admin-tasks');
     }
 
-    private function getTableData($tableName
-    ): array|\Symfony\Component\HttpFoundation\RedirectResponse {
+    private function getTableData(string $tableName): array|RedirectResponse
+    {
         try {
             /** @type EntityManager $em */
             $em = $this->getDoctrine()->getManager();

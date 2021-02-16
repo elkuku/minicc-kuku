@@ -24,11 +24,11 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use function count;
 
+/**
+ * @Security("is_granted('ROLE_ADMIN')")
+ */
 class TransactionController extends AbstractController
 {
-    /**
-     * @Security("is_granted('ROLE_ADMIN')")
-     */
     #[Route(path: '/mail-transactions', name: 'mail-transactions')]
     public function mail(
         StoreRepository $storeRepository,
@@ -153,9 +153,6 @@ class TransactionController extends AbstractController
         );
     }
 
-    /**
-     * @Security("is_granted('ROLE_ADMIN')")
-     */
     #[Route(path: '/mail-annual-transactions', name: 'mail-annual-transactions')]
     public function mailStores(
         Request $request,
@@ -203,9 +200,6 @@ class TransactionController extends AbstractController
         return $this->redirectToRoute('welcome');
     }
 
-    /**
-     * @Security("is_granted('ROLE_ADMIN')")
-     */
     #[Route(path: '/stores-transactions-pdf', name: 'stores-transactions-pdf')]
     public function getStores(
         TransactionRepository $transactionRepository,
