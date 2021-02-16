@@ -12,7 +12,6 @@ use App\Entity\User;
 use App\Service\ShaFinder;
 use App\Service\TaxService;
 use DateTime;
-use Exception;
 use IntlDateFormatter;
 use Psr\Container\ContainerInterface;
 use Symfony\Contracts\Service\ServiceSubscriberInterface;
@@ -57,17 +56,19 @@ class AppExtension extends AbstractExtension
         ];
     }
 
-    /**
-     * @param float   $number
-     * @param integer $decimals
-     * @param string  $decPoint
-     * @param string  $thousandsSep
-     */
+    public static function getSubscribedServices(): array
+    {
+        return [
+            ShaFinder::class,
+            TaxService::class,
+        ];
+    }
+
     public function priceFilter(
-        $number,
-        $decimals = 2,
-        $decPoint = '.',
-        $thousandsSep = ','
+        float $number,
+        int $decimals = 2,
+        string $decPoint = '.',
+        string $thousandsSep = ','
     ): string {
         $price = number_format($number, $decimals, $decPoint, $thousandsSep);
         $price = sprintf(
@@ -81,33 +82,37 @@ class AppExtension extends AbstractExtension
 
     /**
      * Invert a value
-     *
-     * @param integer $value
      */
-    public function invertFilter($value): int
+    public function invertFilter(int $value): int
     {
         return -$value;
     }
 
     /**
-     * @param mixed  $date String or DateTime object
-     * @param string $format
-     * @param string $lang
-     *
-     * @throws Exception
+     * @throws \Exception
      */
     public function intlDate(
-        $date,
-        $format = "d 'de' MMMM YYYY",
-        $lang = 'es_ES'
+        string|DateTime $date,
+        string $format = "d 'de' MMMM YYYY",
+        string $lang = 'es_ES'
     ): string {
         $formatter = new IntlDateFormatter(
-            'ES_es',
+            'es_ES',
             IntlDateFormatter::LONG,
             IntlDateFormatter::NONE
         );
 
-        $dateTime = is_object($date) ? $date : new DateTime($date);
+        if ($date instanceof DateTime) {
+            $dateTime = $date;
+        } else {
+            try {
+                $dateTime = new DateTime($date);
+            } catch (\Exception) {
+                return $date;
+            }
+        }
+
+
 
         return $formatter->formatObject($dateTime, $format, $lang);
     }
@@ -117,7 +122,7 @@ class AppExtension extends AbstractExtension
      *
      * @param object $classObject
      */
-    public function objectFilter($classObject): array
+    public function objectFilter(object $classObject): array
     {
         $array = (array)$classObject;
         $response = [];
@@ -192,7 +197,7 @@ class AppExtension extends AbstractExtension
             if (13 === strlen($ruc)) {
                 $rucs = str_split($ruc, 10);
 
-                $ruc = chunk_split($rucs[0], 3, ' ').' '.$rucs[1];
+                $ruc = trim(chunk_split($rucs[0], 3, ' ')).' '.$rucs[1];
             } else {
                 $ruc = chunk_split($ruc, 3, ' ');
             }
@@ -201,14 +206,6 @@ class AppExtension extends AbstractExtension
             $ruc = chunk_split($ruc, 3, ' ');
         }
 
-        return $ruc;
-    }
-
-    public static function getSubscribedServices(): array
-    {
-        return [
-            ShaFinder::class,
-            TaxService::class,
-        ];
+        return trim($ruc);
     }
 }
