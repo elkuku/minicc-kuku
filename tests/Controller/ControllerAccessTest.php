@@ -1,19 +1,17 @@
 <?php
 
-namespace Controller;
+namespace App\Tests\Controller;
 
 use DirectoryIterator;
 use Exception;
-use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\BrowserKit\AbstractBrowser;
 
 /**
  * Controller "smoke" test
  */
 class ControllerAccessTest extends WebTestCase
 {
-    private $routeLoader;
-
     private array $exceptions
         = [
             'welcome' => [
@@ -36,6 +34,7 @@ class ControllerAccessTest extends WebTestCase
     public function testRoutes(): void
     {
         $client = static::createClient();
+
         $routeLoader = static::bootKernel()->getContainer()
             ->get('routing.loader');
 
@@ -63,7 +62,7 @@ class ControllerAccessTest extends WebTestCase
         }
     }
 
-    private function processRoutes(array $routes, KernelBrowser $browser): void
+    private function processRoutes(array $routes, AbstractBrowser $browser): void
     {
         foreach ($routes as $routeName => $route) {
             $defaultId = 1;
@@ -94,17 +93,26 @@ class ControllerAccessTest extends WebTestCase
             // WTF end
 
             $path = str_replace('{id}', $defaultId, $route->getPath());
+            $out = true;
             foreach ($methods as $method) {
-                $browser->request($method, $path);
-                if (true) {
+                if ($out) {
                     echo sprintf(
-                            'Testing: %s - %s Expected: %s got: %s',
+                            'Testing: %s - %s Expected: %s ... ',
                             $method,
                             $path,
                             $expectedStatusCode,
+                        );
+                }
+
+                $browser->request($method, $path);
+
+                if ($out) {
+                    echo sprintf(
+                            ' got: %s',
                             $browser->getResponse()->getStatusCode()
                         ).PHP_EOL;
                 }
+
                 self::assertEquals(
                     $expectedStatusCode,
                     $browser->getResponse()->getStatusCode(),
@@ -113,117 +121,4 @@ class ControllerAccessTest extends WebTestCase
             }
         }
     }
-
-    // protected KernelBrowser $client;
-    //
-    // protected function setUp(): void
-    // {
-    //     $this->client = static::createClient();
-    //     // parent::setUp();
-    //     // $kernel = static::bootKernel();
-    //
-    //     // $this->addFixture(new StoreFixture());
-    //     // $this->addFixture(new TransactionFixture());
-    //     // $this->addFixture(new PaymentMethodFixture());
-    //     // $this->addFixture(new ContractFixture());
-    //     // $this->addFixture(new UserFixture());
-    //     //
-    //     // $this->executeFixtures();
-    //
-    //     // $this->routeLoader = $kernel->getContainer()->get('routing.loader');
-    //     $this->routeLoader = static::bootKernel()->getContainer()
-    //         ->get('routing.loader');
-    // }
-    //
-    // /**
-    //  * @throws Exception
-    //  */
-    // private function loadRoutes($controllerName)
-    // {
-    //     $routerClass = 'App\Controller\\'.$controllerName;
-    //
-    //     if (class_exists($routerClass)) {
-    //         return $this->routeLoader->load($routerClass);
-    //     }
-    //
-    //     return false;
-    // }
-    //
-    // /**
-    //  * @throws Exception
-    //  */
-    // public function testShowPage(): void
-    // {
-    //     $path = __DIR__.'/../../src/Controller';
-    //
-    //     foreach (new DirectoryIterator($path) as $item) {
-    //         if (
-    //             $item->isDot()
-    //             || in_array(
-    //                 $item->getBasename(),
-    //                 ['.gitignore', 'GoogleController.php']
-    //             )
-    //         ) {
-    //             continue;
-    //         }
-    //
-    //         if ('TransactionController.php' === $item->getBasename()) {
-    //             // @todo transactions is not a valid table name in SQLite :(
-    //             continue;
-    //         }
-    //
-    //         $controllerName = basename($item->getBasename(), '.php');
-    //
-    //         $r = $this->loadRoutes($controllerName);
-    //
-    //         if (!$r) {
-    //             continue;
-    //         }
-    //
-    //         $routes = $r->all();
-    //
-    //         foreach ($routes as $routeName => $route) {
-    //             $method = 'GET';
-    //             $defaultId = 1;
-    //             $defaultExpected = 302;
-    //
-    //             if (array_key_exists($routeName, $this->exceptions)) {
-    //                 if (array_key_exists(
-    //                     'method',
-    //                     $this->exceptions[$routeName]
-    //                 )
-    //                 ) {
-    //                     $method = $this->exceptions[$routeName]['method'];
-    //                 }
-    //                 if (array_key_exists(
-    //                     'expected',
-    //                     $this->exceptions[$routeName]
-    //                 )
-    //                 ) {
-    //                     $defaultExpected = $this->exceptions[$routeName]['expected'];
-    //                 }
-    //                 if (array_key_exists(
-    //                     'params',
-    //                     $this->exceptions[$routeName]
-    //                 )
-    //                 ) {
-    //                     $params = $this->exceptions[$routeName]['params'];
-    //                     if (array_key_exists('id', $params)) {
-    //                         $defaultId = $params['id'];
-    //                     }
-    //                 }
-    //             }
-    //
-    //             $path = $route->getPath();
-    //             $path = str_replace('{id}', $defaultId, $path);
-    //             // echo 'Testing: '.$path.PHP_EOL;
-    //             $this->client->request($method, $path);
-    //             self::assertEquals(
-    //                 $defaultExpected,
-    //                 $this->client->getResponse()->getStatusCode(),
-    //                 sprintf('failed: %s (%s)', $routeName, $path)
-    //             );
-    //         }
-    //     }
-    // }
 }
