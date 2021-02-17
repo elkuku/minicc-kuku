@@ -1,4 +1,4 @@
-{% extends 'base-pdf.html.twig' %}
+{% extends '_pdf/base-pdf.html.twig' %}
 {% block stylesheets %}
     <style>
         body {
@@ -40,7 +40,7 @@
                         {{ intlDate(factDate, "MMMM YYYY")|capitalize }}
                     </td>
                     <td style="text-align: right; width: 33%;">
-                        <img src="{{ rootPath ~ asset('build/images/minicc-logo.gif') }}" alt="Logo"
+                        <img src="{{ rootDir ~ asset('build/images/minicc-logo.gif') }}" alt="Logo"
                              height="50px"/><br/>
                     </td>
                 </tr>
