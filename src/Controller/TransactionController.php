@@ -22,7 +22,7 @@ class TransactionController extends AbstractController
     /**
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    #[Route(path: '/delete/{id}', name: 'transaction-delete')]
+    #[Route(path: '/delete/{id}', name: 'transaction-delete', methods: ['GET'])]
     public function delete(
         Request $request,
         Transaction $transaction

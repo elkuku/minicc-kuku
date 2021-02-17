@@ -82,7 +82,7 @@ class UserController extends AbstractController
         UserRepository $userRepository
     ): Response {
         return $this->render(
-            'user/user-pdf-list.html.twig',
+            '_pdf/user-pdf-list.html.twig',
             [
                 'users' => $this->getSortedUsers($userRepository),
             ]
@@ -98,7 +98,7 @@ class UserController extends AbstractController
         Pdf $pdf
     ): PdfResponse {
         $html = $this->renderView(
-            'user/ruclist.html.twig',
+            '_pdf/ruclist.html.twig',
             ['users' => $this->getSortedUsers($userRepository)]
         );
 

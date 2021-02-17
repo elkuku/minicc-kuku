@@ -30,7 +30,7 @@ class PaymentMethodController extends AbstractController
     /**
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    #[Route(path: '/new', name: 'payment-methods-new', methods: ['GET|POST'])]
+    #[Route(path: '/new', name: 'payment-methods-new', methods: ['GET', 'POST'])]
     public function new(
         Request $request
     ): Response {

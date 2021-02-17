@@ -10,9 +10,6 @@ use App\Service\PDFHelper;
 use Exception;
 use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 use Knp\Snappy\Pdf;
-use Swift_Attachment;
-use Swift_Mailer;
-use Swift_Message;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,7 +32,7 @@ class TransactionController extends AbstractController
         TransactionRepository $transactionRepository,
         Request $request,
         Pdf $pdf,
-        Swift_Mailer $mailer
+        MailerInterface $mailer
     ): RedirectResponse {
         $recipients = $request->get('recipients');
         $year = (int)date('Y');
@@ -59,6 +56,7 @@ class TransactionController extends AbstractController
                     'user'     => $store->getUser(),
                     'store'    => $store,
                     'fileName' => $fileName,
+                    'year' => $year,
                 ]
             );
 
@@ -70,33 +68,19 @@ class TransactionController extends AbstractController
                 )
             );
 
-            $count = 0;
+            $email = (new Email())
+                ->from('minicckuku@gmail.com')
+                ->to($store->getUser()->getEmail())
+                ->subject("Movimientos del local {$store->getId()} ano $year")
+                // ->text('Backup - Date: '.date('Y-m-d'))
+                ->html($html)
+                ->attach($document, $fileName);
 
             try {
-                $message = (new Swift_Message)
-                    ->setSubject(
-                        "Movimientos del local {$store->getId()} ano $year"
-                    )
-                    ->setFrom('minicckuku@gmail.com')
-                    ->setTo($store->getUser()->getEmail())
-                    ->setBody($html)
-                    ->attach(
-                        new Swift_Attachment(
-                            $document,
-                            $fileName,
-                            'application/pdf'
-                        )
-                    );
-
-                $count = $mailer->send($message);
+                $mailer->send($email);
                 $successes[] = $store->getId();
-            } catch (Exception $exception) {
+            } catch (TransportExceptionInterface $exception) {
                 $failures[] = $exception->getMessage();
-            }
-
-            if (0 === $count) {
-                $failures[] = 'Unable to send the message to store: '
-                    .$store->getId();
             }
         }
         if ($failures) {
@@ -247,7 +231,7 @@ class TransactionController extends AbstractController
         }
 
         return $this->renderView(
-            'stores/transactions-pdf.html.twig',
+            '_pdf/transactions-pdf.html.twig',
             [
                 'saldoAnterior' => $transactionRepository->getSaldoAnterior(
                     $store,

@@ -3,16 +3,11 @@
 namespace App\Controller\Admin;
 
 use App\Repository\StoreRepository;
-use App\Repository\TransactionRepository;
-use Exception;
+use App\Service\PayrollHelper;
 use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 use Knp\Snappy\Pdf;
-use Swift_Attachment;
-use Swift_Mailer;
-use Swift_Message;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
@@ -23,36 +18,32 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * @Security("is_granted('ROLE_ADMIN')")
  */
-class PlanillasController extends AbstractController
+class PayrollController extends AbstractController
 {
     #[Route(path: '/planillas-mail', name: 'planillas-mail')]
     public function mail(
-        StoreRepository $storeRepository,
-        TransactionRepository $transactionRepository,
         Pdf $pdf,
         MailerInterface $mailer,
-        KernelInterface $kernel
+        PayrollHelper $payrollHelper,
     ): Response {
         $year = date('Y');
         $month = date('m');
-        $fileName = "planillas-$year-$month.pdf";
+        $fileName = "payrolls-$year-$month.pdf";
         $html = 'Attachment: '.$fileName;
         $document = $pdf->getOutputFromHtml(
-            $this->getPlanillasHtml(
+            $this->renderPayrolls(
                 $year,
                 $month,
-                $storeRepository,
-                $transactionRepository,
-                $kernel
+                $payrollHelper
             ),
             ['enable-local-file-access' => true]
         );
         $email = (new Email())
             ->from('minicckuku@gmail.com')
             ->to('minicckuku@gmail.com')
-            ->subject("NEW Planillas $year-$month")
+            ->subject("Planillas $year-$month")
             ->html($html)
-            ->attach($document, "planillas-$year-$month.pdf");
+            ->attach($document, $fileName);
         try {
             $mailer->send($email);
             $this->addFlash('success', 'Mail has been sent.');
@@ -66,11 +57,10 @@ class PlanillasController extends AbstractController
     #[Route(path: '/planilla-mail', name: 'planilla-mail')]
     public function mailClients(
         StoreRepository $storeRepository,
-        TransactionRepository $transactionRepository,
         Request $request,
         Pdf $pdf,
-        Swift_Mailer $mailer,
-        KernelInterface $kernel
+        MailerInterface $mailer,
+        PayrollHelper $payrollHelper
     ): Response {
         $recipients = $request->get('recipients');
         if (!$recipients) {
@@ -84,20 +74,20 @@ class PlanillasController extends AbstractController
         $stores = $storeRepository->getActive();
         $failures = [];
         $successes = [];
+
         foreach ($stores as $store) {
             if (!array_key_exists($store->getId(), $recipients)) {
                 continue;
             }
 
             $document = $pdf->getOutputFromHtml(
-                $this->getPlanillasHtml(
+                $this->renderPayrolls(
                     $year,
                     $month,
-                    $storeRepository,
-                    $transactionRepository,
-                    $kernel,
+                    $payrollHelper,
                     $store->getId()
-                )
+                ),
+                ['enable-local-file-access' => true]
             );
 
             $html = $this->renderView(
@@ -110,33 +100,26 @@ class PlanillasController extends AbstractController
                 ]
             );
 
-            $count = 0;
+            $user = $store->getUser();
 
-            try {
-                $message = (new Swift_Message)
-                    ->setSubject(
-                        "Planilla Local {$store->getId()} ($month - $year)"
-                    )
-                    ->setFrom('minicckuku@gmail.com')
-                    ->setTo($store->getUser()->getEmail())
-                    ->setBody($html)
-                    ->attach(
-                        new Swift_Attachment(
-                            $document,
-                            $fileName,
-                            'application/pdf'
-                        )
-                    );
-
-                $count = $mailer->send($message);
-                $successes[] = $store->getId();
-            } catch (Exception $exception) {
-                $failures[] = $exception->getMessage();
+            if (!$user) {
+                continue;
             }
 
-            if (0 === $count) {
-                $failures[] = 'Unable to send the message to store: '
-                    .$store->getId();
+            $email = (new Email())
+                ->from('minicckuku@gmail.com')
+                ->to($user->getEmail())
+                ->subject(
+                    "Su planilla del local {$store->getId()} ($month - $year)"
+                )
+                ->html($html)
+                ->attach($document, $fileName);
+
+            try {
+                $mailer->send($email);
+                $successes[] = $store->getId();
+            } catch (TransportExceptionInterface $exception) {
+                $failures[] = $exception->getMessage();
             }
         }
         if ($failures) {
@@ -155,21 +138,14 @@ class PlanillasController extends AbstractController
 
     #[Route(path: '/planillas', name: 'planillas')]
     public function download(
-        StoreRepository $storeRepository,
-        TransactionRepository $transactionRepository,
         Pdf $pdf,
-        KernelInterface $kernel
+        PayrollHelper $payrollHelper,
     ): PdfResponse {
-        $year = date('Y');
-        $month = date('m');
-        $filename = sprintf('planillas-%d-%d.pdf', $year, $month);
-        $html = $this->getPlanillasHtml(
-            $year,
-            $month,
-            $storeRepository,
-            $transactionRepository,
-            $kernel
-        );
+        $year = (int)date('Y');
+        $month = (int)date('m');
+        $filename = sprintf('payrolls-%d-%d.pdf', $year, $month);
+
+        $html = $this->renderPayrolls($year, $month, $payrollHelper);
 
         return new PdfResponse(
             $pdf->getOutputFromHtml(
@@ -180,61 +156,15 @@ class PlanillasController extends AbstractController
         );
     }
 
-    private function getPlanillasHtml(
+    private function renderPayrolls(
         int $year,
         int $month,
-        StoreRepository $storeRepo,
-        TransactionRepository $transactionRepo,
-        KernelInterface $kernel,
+        PayrollHelper $payrollHelper,
         int $storeId = 0
     ): string {
-        $stores = $storeRepo->findAll();
-
-        $factDate = $year.'-'.$month.'-1';
-
-        if (1 === $month) {
-            $prevYear = $year - 1;
-            $prevMonth = 12;
-        } else {
-            $prevYear = $year;
-            $prevMonth = $month - 1;
-        }
-
-        $prevDate = $prevYear.'-'.$prevMonth.'-01';
-
-        $storeData = [];
-        $selecteds = [];
-
-        foreach ($stores as $store) {
-            if ($storeId && $store->getId() !== $storeId) {
-                continue;
-            }
-
-            $storeData[$store->getId()]['saldoIni']
-                = $transactionRepo->getSaldoALaFecha(
-                $store,
-                $prevYear.'-'.$prevMonth.'-01'
-            );
-
-            $storeData[$store->getId()]['transactions']
-                = $transactionRepo->findMonthPayments(
-                $store,
-                $prevMonth,
-                $prevYear
-            );
-
-            $selecteds[] = $store;
-        }
-
         return $this->renderView(
-            'admin/planillas-pdf.html.twig',
-            [
-                'factDate'  => $factDate,
-                'prevDate'  => $prevDate,
-                'stores'    => $selecteds,
-                'storeData' => $storeData,
-                'rootPath'  => $kernel->getProjectDir().'/public',
-            ]
+            '_pdf/payrolls-pdf.html.twig',
+            $payrollHelper->getData($year, $month, $storeId)
         );
     }
 }
