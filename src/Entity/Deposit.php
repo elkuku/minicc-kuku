@@ -27,14 +27,11 @@ class Deposit implements JsonSerializable
     private int $id;
 
     /**
-     * @var PaymentMethod
      * @ManyToOne(targetEntity="PaymentMethod")
      */
     private PaymentMethod $entity;
 
     /**
-     * @var DateTime
-     *
      * @ORM\Column(type="date", nullable=false)
      */
     private DateTime $date;

@@ -46,8 +46,6 @@ class User implements UserInterface, Serializable
     private string $role = 'ROLE_USER';
 
     /**
-     * @var UserGender
-     *
      * @ManyToOne(targetEntity="UserGender")
      */
     private UserGender $gender;
@@ -55,8 +53,6 @@ class User implements UserInterface, Serializable
     /**
      * User State
      * Active or Inactive
-     *
-     * @var UserState
      *
      * @ManyToOne(targetEntity="UserState")
      */
@@ -87,9 +83,6 @@ class User implements UserInterface, Serializable
      */
     private ?string $direccion = '';
 
-    /**
-     * User constructor.
-     */
     public function __construct()
     {
         $this->stores = new ArrayCollection;

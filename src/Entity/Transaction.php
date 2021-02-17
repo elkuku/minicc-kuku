@@ -26,15 +26,11 @@ class Transaction implements JsonSerializable
     protected ?int $id = null;
 
     /**
-     * @var Store
-     *
      * @ORM\ManyToOne(targetEntity="Store")
      */
-    protected Store $store;
+    protected ?Store $store = null;
 
     /**
-     * @var User
-     *
      * @ORM\ManyToOne(targetEntity="User")
      */
     protected User $user;
@@ -43,7 +39,6 @@ class Transaction implements JsonSerializable
      * The type
      * Alquiler, Pago, etc.
      *
-     * @var TransactionType
      * @ManyToOne(targetEntity="TransactionType")
      */
     private TransactionType $type;
@@ -52,14 +47,11 @@ class Transaction implements JsonSerializable
      * The method
      * Bar, bank, etc.
      *
-     * @var PaymentMethod
      * @ManyToOne(targetEntity="PaymentMethod")
      */
     private PaymentMethod $method;
 
     /**
-     * @var DateTime
-     *
      * @ORM\Column(type="date", nullable=false)
      */
     private DateTime $date;
@@ -192,7 +184,7 @@ class Transaction implements JsonSerializable
         return $this->method;
     }
 
-    public function getStore(): Store
+    public function getStore(): ?Store
     {
         return $this->store;
     }

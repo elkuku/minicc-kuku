@@ -23,17 +23,10 @@ class PaymentMethod
     private ?int $id = null;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="string", length=150, nullable=false)
      */
     private string $name = '';
 
-    /**
-     * Get id
-     *
-     * @return integer
-     */
     public function getId(): ?int
     {
         return $this->id;

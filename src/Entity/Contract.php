@@ -35,8 +35,6 @@ class Contract
     private string $inqNombreapellido = '';
 
     /**
-     * @var ?UserGender
-     *
      * @ManyToOne(targetEntity="UserGender")
      */
     private ?UserGender $gender = null;
@@ -62,8 +60,6 @@ class Contract
     private float $valGarantia = 0;
 
     /**
-     * @var DateTime
-     *
      * @ORM\Column(type="date")
      */
     private DateTime $date;
