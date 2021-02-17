@@ -11,7 +11,8 @@ class TwigEventSubscriber implements EventSubscriberInterface
 {
     public function __construct(
         private Environment $twig,
-        private UserRepository $userRepository
+        private UserRepository $userRepository,
+        private string $rootDir,
     ) {
     }
 
@@ -22,6 +23,7 @@ class TwigEventSubscriber implements EventSubscriberInterface
             $this->userRepository->findActiveUsers()
         );
         $this->twig->addGlobal('currentYear', date('Y'));
+        $this->twig->addGlobal('rootDir', $this->rootDir.'/public');
     }
 
     public static function getSubscribedEvents(): array
