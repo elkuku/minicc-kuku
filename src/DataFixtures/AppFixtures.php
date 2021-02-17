@@ -2,7 +2,6 @@
 
 namespace App\DataFixtures;
 
-use _HumbugBox5d215ba2066e\Nette\Utils\DateTime;
 use App\Entity\Store;
 use App\Entity\Transaction;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -17,7 +16,7 @@ class AppFixtures extends Fixture
         $manager->persist($store);
 
         $transaction = (new Transaction())
-            ->setDate(new DateTime());
+            ->setDate(new \DateTime());
         $manager->persist($transaction);
 
         $manager->flush();
