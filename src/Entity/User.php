@@ -206,7 +206,7 @@ class User implements UserInterface, Serializable
         return $this;
     }
 
-    public function getTelefono(): string
+    public function getTelefono(): ?string
     {
         return $this->telefono;
     }
@@ -218,7 +218,7 @@ class User implements UserInterface, Serializable
         return $this;
     }
 
-    public function getTelefono2(): string
+    public function getTelefono2(): ?string
     {
         return $this->telefono2;
     }
@@ -230,7 +230,7 @@ class User implements UserInterface, Serializable
         return $this;
     }
 
-    public function getDireccion(): string
+    public function getDireccion(): ?string
     {
         return $this->direccion;
     }
