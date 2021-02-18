@@ -74,7 +74,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
     public function checkCredentials($credentials, UserInterface $user): bool
     {
-        if ('dev' !== $this->appEnv) {
+        if (!in_array($this->appEnv, ['dev', 'test'])) {
             throw new UnexpectedValueException('GTFO!');
         }
 
