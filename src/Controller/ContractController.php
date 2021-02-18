@@ -18,12 +18,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 
+/**
+ * @Security("is_granted('ROLE_ADMIN')")
+ */
 #[Route(path: 'contracts')]
 class ContractController extends AbstractController
 {
-    /**
-     * @Security("is_granted('ROLE_ADMIN')")
-     */
     #[Route(path: '/', name: 'contract-list')]
     public function list(
         StoreRepository $storeRepository,
@@ -49,9 +49,6 @@ class ContractController extends AbstractController
         );
     }
 
-    /**
-     * @Security("is_granted('ROLE_ADMIN')")
-     */
     #[Route(path: '/new', name: 'contracts-new')]
     public function new(
         StoreRepository $storeRepo,
@@ -97,9 +94,6 @@ class ContractController extends AbstractController
         );
     }
 
-    /**
-     * @Security("is_granted('ROLE_ADMIN')")
-     */
     #[Route(path: '/{id}', name: 'contracts-edit', requirements: ['id' => '\d+'])]
     public function edit(
         Contract $contract,
@@ -130,9 +124,6 @@ class ContractController extends AbstractController
         );
     }
 
-    /**
-     * @Security("is_granted('ROLE_ADMIN')")
-     */
     #[Route(path: '/delete/{id}', name: 'contracts-delete')]
     public function delete(
         Contract $contract
@@ -145,9 +136,6 @@ class ContractController extends AbstractController
         return $this->redirectToRoute('contract-list');
     }
 
-    /**
-     * @Security("is_granted('ROLE_ADMIN')")
-     */
     #[Route(path: '/template', name: 'contracts-template')]
     public function template(
         ContractRepository $contractRepository,
@@ -179,9 +167,6 @@ class ContractController extends AbstractController
         );
     }
 
-    /**
-     * @Security("is_granted('ROLE_ADMIN')")
-     */
     #[Route(path: '/generate/{id}', name: 'contract-generate', requirements: ['id' => '\d+'])]
     public function generate(
         Contract $contract,

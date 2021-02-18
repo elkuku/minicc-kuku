@@ -14,12 +14,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @Security("is_granted('ROLE_ADMIN')")
+ */
 #[Route(path: '/users')]
 class UserController extends AbstractController
 {
-    /**
-     * @Security("is_granted('ROLE_ADMIN')")
-     */
     #[Route(path: '/', name: 'users-list')]
     public function list(
         UserRepository $userRepo,
@@ -43,9 +43,6 @@ class UserController extends AbstractController
         );
     }
 
-    /**
-     * @Security("is_granted('ROLE_ADMIN')")
-     */
     #[Route(path: '/edit/{id}', name: 'user-edit')]
     public function edit(
         User $client,
@@ -74,9 +71,6 @@ class UserController extends AbstractController
         );
     }
 
-    /**
-     * @Security("is_granted('ROLE_ADMIN')")
-     */
     #[Route(path: '/pdf', name: 'pdf-users')]
     public function pdfList(
         UserRepository $userRepository
@@ -89,9 +83,6 @@ class UserController extends AbstractController
         );
     }
 
-    /**
-     * @Security("is_granted('ROLE_ADMIN')")
-     */
     #[Route(path: '/ruclist', name: 'users-ruclist')]
     public function rucList(
         UserRepository $userRepository,
@@ -108,11 +99,6 @@ class UserController extends AbstractController
         );
     }
 
-    /**
-     *
-     * // NOTE: Only admin can register new users !
-     * @Security("is_granted('ROLE_ADMIN')")
-     */
     #[Route(path: '/new', name: 'register')]
     public function new(
         Request $request

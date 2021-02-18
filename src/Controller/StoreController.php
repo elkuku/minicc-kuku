@@ -99,9 +99,6 @@ class StoreController extends AbstractController
         );
     }
 
-    /**
-     * Security("is_granted('ROLE_ADMIN')")
-     */
     #[Route(path: '/{id}', name: 'store-transactions')]
     public function show(
         TransactionRepository $transactionRepository,

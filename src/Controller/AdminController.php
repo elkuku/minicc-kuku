@@ -17,12 +17,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use UnexpectedValueException;
 
+/**
+ * @Security("is_granted('ROLE_ADMIN')")
+ */
 class AdminController extends AbstractController
 {
-    /**
-     * @Security("is_granted('ROLE_ADMIN')")
-     * @throws Exception
-     */
     #[Route(path: '/cobrar', name: 'cobrar')]
     public function cobrar(
         StoreRepository $storeRepository,
@@ -74,10 +73,6 @@ class AdminController extends AbstractController
         );
     }
 
-    /**
-     * @Security("is_granted('ROLE_ADMIN')")
-     * @throws Exception
-     */
     #[Route(path: '/pay-day', name: 'pay-day')]
     public function payDay(
         StoreRepository $storeRepository,
@@ -138,9 +133,6 @@ class AdminController extends AbstractController
         return $this->redirectToRoute('welcome');
     }
 
-    /**
-     * @Security("is_granted('ROLE_ADMIN')")
-     */
     #[Route(path: '/pagos-por-ano', name: 'pagos-por-ano')]
     public function pagosPorAno(
         Request $request,
@@ -157,9 +149,6 @@ class AdminController extends AbstractController
         );
     }
 
-    /**
-     * @Security("is_granted('ROLE_ADMIN')")
-     */
     #[Route(path: '/mail-list-transactions', name: 'mail-list-transactions')]
     public function mailListTransactions(
         StoreRepository $storeRepository
@@ -172,9 +161,6 @@ class AdminController extends AbstractController
         );
     }
 
-    /**
-     * @Security("is_granted('ROLE_ADMIN')")
-     */
     #[Route(path: '/mail-list-planillas', name: 'mail-list-planillas')]
     public function mailListPlanillas(
         StoreRepository $storeRepository

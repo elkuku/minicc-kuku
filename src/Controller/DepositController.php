@@ -20,14 +20,14 @@ use Symfony\Component\Routing\Annotation\Route;
 use UnexpectedValueException;
 use function count;
 
+/**
+ * @Security("is_granted('ROLE_ADMIN')")
+ */
 #[Route(path: '/deposits')]
 class DepositController extends AbstractController
 {
     use PaginatorTrait;
 
-    /**
-     * @Security("is_granted('ROLE_ADMIN')")
-     */
     #[Route(path: '/', name: 'deposits')]
     public function index(
         DepositRepository $depositRepository,
@@ -50,10 +50,6 @@ class DepositController extends AbstractController
         );
     }
 
-    /**
-     * @Security("is_granted('ROLE_ADMIN')")
-     * @throws Exception
-     */
     #[Route(path: '/upload', name: 'upload-csv')]
     public function uploadCSV(
         PaymentMethodRepository $paymentMethodRepository,
@@ -112,9 +108,6 @@ class DepositController extends AbstractController
         return $this->redirectToRoute('deposits');
     }
 
-    /**
-     * @Security("is_granted('ROLE_ADMIN')")
-     */
     #[Route(path: '/lookup', name: 'lookup-depo')]
     public function lookup(
         DepositRepository $depositRepository,

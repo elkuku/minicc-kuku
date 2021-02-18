@@ -14,14 +14,14 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @Security("is_granted('ROLE_ADMIN')")
+ */
 #[Route(path: '/transactions')]
 class TransactionController extends AbstractController
 {
     use PaginatorTrait;
 
-    /**
-     * @Security("is_granted('ROLE_ADMIN')")
-     */
     #[Route(path: '/delete/{id}', name: 'transaction-delete', methods: ['GET'])]
     public function delete(
         Request $request,
@@ -39,9 +39,6 @@ class TransactionController extends AbstractController
         return $this->redirect('/'.$redirect);
     }
 
-    /**
-     * @Security("is_granted('ROLE_ADMIN')")
-     */
     #[Route(path: '/edit/{id}', name: 'transaction-edit')]
     public function edit(
         Transaction $transaction,
@@ -77,9 +74,6 @@ class TransactionController extends AbstractController
         );
     }
 
-    /**
-     * @Security("is_granted('ROLE_ADMIN')")
-     */
     #[Route(path: '/', name: 'transaction-rawlist')]
     public function rawList(
         StoreRepository $storeRepo,

@@ -11,12 +11,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @Security("is_granted('ROLE_ADMIN')")
+ */
 #[Route(path: '/payment-methods')]
 class PaymentMethodController extends AbstractController
 {
-    /**
-     * @Security("is_granted('ROLE_ADMIN')")
-     */
     #[Route(path: '/', name: 'payment-methods', methods: ['GET'])]
     public function index(
         PaymentMethodRepository $repository
@@ -27,9 +27,6 @@ class PaymentMethodController extends AbstractController
         );
     }
 
-    /**
-     * @Security("is_granted('ROLE_ADMIN')")
-     */
     #[Route(path: '/new', name: 'payment-methods-new', methods: ['GET', 'POST'])]
     public function new(
         Request $request
@@ -58,9 +55,6 @@ class PaymentMethodController extends AbstractController
         );
     }
 
-    /**
-     * @Security("is_granted('ROLE_ADMIN')")
-     */
     #[Route(path: '/edit/{id}', name: 'payment-methods-edit')]
     public function edit(
         PaymentMethod $data,
@@ -89,9 +83,6 @@ class PaymentMethodController extends AbstractController
         );
     }
 
-    /**
-     * @Security("is_granted('ROLE_ADMIN')")
-     */
     #[Route(path: '/delete/{id}', name: 'payment-methods-delete')]
     public function delete(
         PaymentMethod $paymentMethod
