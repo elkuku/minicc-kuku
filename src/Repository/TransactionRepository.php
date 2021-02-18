@@ -67,7 +67,7 @@ class TransactionRepository extends ServiceEntityRepository
      * @throws NoResultException
      * @throws NonUniqueResultException
      */
-    public function getSaldo(Store $store): string
+    public function getSaldo(Store $store): ?string
     {
         return $this->createQueryBuilder('t')
             ->select('SUM(t.amount) AS amount')

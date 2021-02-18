@@ -65,7 +65,7 @@ class AppExtension extends AbstractExtension
     }
 
     public function priceFilter(
-        float $number,
+        float|null $number,
         int $decimals = 2,
         string $decPoint = '.',
         string $thousandsSep = ','
