@@ -72,8 +72,12 @@
                 <td></td>
                 {% endif %}
                 <td>Saldo Anterior</td>
-                <td class="text-right">{{ saldoAnterior|price|raw }}</td>
-                <td class="text-right">{{ saldoAnterior|price|raw }}</td>
+                {% if saldoAnterior %}
+                    <td class="text-right">{{ saldoAnterior|price|raw }}</td>
+                    <td class="text-right">{{ saldoAnterior|price|raw }}</td>
+                {% else %}
+                    <td colspan="2"></td>
+                {% endif %}
                 {% if is_granted('ROLE_ADMIN') %}
                 <td></td>
                 {% endif %}
