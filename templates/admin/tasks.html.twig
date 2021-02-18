@@ -14,7 +14,7 @@
                 <li class="list-group-item"><a href="{{ path('planillas-mail') }}">Mail Planillas</a></li>
                 <li class="list-group-item"><a href="{{ path('stores-transactions-pdf') }}">Transactions PDF</a></li>
             </ul>
-            <form action="{{ path('mail-annual-transactions') }}">
+            <form action="{{ path('mail-annual-transactions') }}" method="post">
                 Send all transactions for year
 
                 <select name="year">
