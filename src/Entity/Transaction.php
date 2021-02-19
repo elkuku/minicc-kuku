@@ -27,11 +27,13 @@ class Transaction implements JsonSerializable
 
     /**
      * @ORM\ManyToOne(targetEntity="Store")
+     * @ORM\JoinColumn(name="store_id", referencedColumnName="id", nullable=false)
      */
     protected Store $store;
 
     /**
      * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
      */
     protected User $user;
 
@@ -40,6 +42,7 @@ class Transaction implements JsonSerializable
      * Alquiler, Pago, etc.
      *
      * @ManyToOne(targetEntity="TransactionType")
+     * @ORM\JoinColumn(name="type_id", referencedColumnName="id", nullable=false)
      */
     private TransactionType $type;
 
@@ -48,6 +51,7 @@ class Transaction implements JsonSerializable
      * Bar, bank, etc.
      *
      * @ManyToOne(targetEntity="PaymentMethod")
+     * @ORM\JoinColumn(name="method_id", referencedColumnName="id", nullable=false)
      */
     private PaymentMethod $method;
 
