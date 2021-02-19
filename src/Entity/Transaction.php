@@ -28,7 +28,7 @@ class Transaction implements JsonSerializable
     /**
      * @ORM\ManyToOne(targetEntity="Store")
      */
-    protected ?Store $store = null;
+    protected Store $store;
 
     /**
      * @ORM\ManyToOne(targetEntity="User")
@@ -184,7 +184,7 @@ class Transaction implements JsonSerializable
         return $this->method;
     }
 
-    public function getStore(): ?Store
+    public function getStore(): Store
     {
         return $this->store;
     }
