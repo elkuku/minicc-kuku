@@ -83,7 +83,12 @@ class ControllerAccessTest extends WebTestCase
                 }
             }
 
-            $methods = $route->getMethods() ?: ['GET'];
+            $methods = $route->getMethods() ;
+
+            if (!$methods) {
+                echo sprintf('No methods set in controller "%s"',$route->getPath()).PHP_EOL;
+                $methods = ['GET'];
+            }
 
             // WTF start
             if (isset($methods[0]) && strpos($methods[0], '|')) {
@@ -93,7 +98,7 @@ class ControllerAccessTest extends WebTestCase
             // WTF end
 
             $path = str_replace('{id}', $defaultId, $route->getPath());
-            $out = true;
+            $out = false;
             foreach ($methods as $method) {
                 if ($out) {
                     echo sprintf(
