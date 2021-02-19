@@ -1,5 +1,6 @@
 const $ = require('jquery')
-
+let currDate
+let count = 0
 $('.addRow').on('click', function () {
     addRow(this)
 })
@@ -8,8 +9,11 @@ $('.searchDepId').on('click', function () {
 })
 
 function addRow(e) {
-    $('#paymentsTable tbody').append('<tr>' + $(e).parent().parent().html() + '</tr>')
+    const el = $(e)
+    const oldDate = el.closest('td').prev().prev().prev().prev().prev().prev().prev().prev().find('input').val()
+    $('#paymentsTable tbody').append('<tr>' + el.parent().parent().html() + '</tr>')
     e.remove()
+    $('#paymentsTable tbody tr').last().find('td').first().find('input').val(oldDate)
     $('.addRow').on('click', function () {
         addRow(this)
     })
