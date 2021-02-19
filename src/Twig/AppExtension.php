@@ -119,8 +119,6 @@ class AppExtension extends AbstractExtension
 
     /**
      * Convert object to array for Twig usage..
-     *
-     * @param object $classObject
      */
     public function objectFilter(object $classObject): array
     {
