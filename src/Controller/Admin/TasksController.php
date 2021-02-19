@@ -20,13 +20,13 @@ use function dirname;
  */
 class TasksController extends AbstractController
 {
-    #[Route(path: '/admin-tasks', name: 'admin-tasks')]
+    #[Route(path: '/admin-tasks', name: 'admin-tasks', methods: ['GET'])]
     public function index(): Response
     {
         return $this->render('admin/tasks.html.twig');
     }
 
-    #[Route(path: '/console-view/{item}', name: 'console-view')]
+    #[Route(path: '/console-view/{item}', name: 'console-view', methods: ['GET'])]
     public function consoleView(
         string $item,
         Request $request,
@@ -66,7 +66,7 @@ class TasksController extends AbstractController
         );
     }
 
-    #[Route(path: '/sysinfo', name: 'sysinfo')]
+    #[Route(path: '/sysinfo', name: 'sysinfo', methods: ['GET'])]
     public function sysInfo(
         KernelInterface $kernel
     ): Response {

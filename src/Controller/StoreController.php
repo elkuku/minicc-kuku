@@ -25,7 +25,7 @@ class StoreController extends AbstractController
     /**
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    #[Route(path: '/', name: 'stores-list')]
+    #[Route(path: '/', name: 'stores-list', methods: ['GET'])]
     public function index(
         StoreRepository $storeRepository
     ): Response {
@@ -38,7 +38,7 @@ class StoreController extends AbstractController
     /**
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    #[Route(path: '/new', name: 'stores-add')]
+    #[Route(path: '/new', name: 'stores-add', methods: ['GET', 'POST'])]
     public function new(
         Request $request
     ): Response {
@@ -70,7 +70,7 @@ class StoreController extends AbstractController
     /**
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    #[Route(path: '/edit/{id}', name: 'stores-edit')]
+    #[Route(path: '/edit/{id}', name: 'stores-edit', methods: ['GET', 'POST'])]
     public function edit(
         Store $store,
         Request $request
@@ -99,7 +99,7 @@ class StoreController extends AbstractController
         );
     }
 
-    #[Route(path: '/{id}', name: 'store-transactions')]
+    #[Route(path: '/{id}', name: 'store-transactions', methods: ['GET', 'POST'])]
     public function show(
         TransactionRepository $transactionRepository,
         StoreRepository $storeRepository,

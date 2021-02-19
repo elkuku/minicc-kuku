@@ -28,7 +28,7 @@ class DepositController extends AbstractController
 {
     use PaginatorTrait;
 
-    #[Route(path: '/', name: 'deposits')]
+    #[Route(path: '/', name: 'deposits', methods: ['GET', 'POST'])]
     public function index(
         DepositRepository $depositRepository,
         Request $request
@@ -50,7 +50,7 @@ class DepositController extends AbstractController
         );
     }
 
-    #[Route(path: '/upload', name: 'upload-csv')]
+    #[Route(path: '/upload', name: 'upload-csv', methods: ['GET', 'POST'])]
     public function uploadCSV(
         PaymentMethodRepository $paymentMethodRepository,
         DepositRepository $depositRepository,
@@ -108,7 +108,7 @@ class DepositController extends AbstractController
         return $this->redirectToRoute('deposits');
     }
 
-    #[Route(path: '/lookup', name: 'lookup-depo')]
+    #[Route(path: '/lookup', name: 'lookup-depo', methods: ['POST'])]
     public function lookup(
         DepositRepository $depositRepository,
         Request $request

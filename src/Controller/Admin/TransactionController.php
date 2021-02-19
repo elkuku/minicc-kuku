@@ -26,7 +26,7 @@ use function count;
  */
 class TransactionController extends AbstractController
 {
-    #[Route(path: '/mail-transactions', name: 'mail-transactions')]
+    #[Route(path: '/mail-transactions', name: 'mail-transactions', methods: ['POST'])]
     public function mail(
         StoreRepository $storeRepository,
         TransactionRepository $transactionRepository,
@@ -97,7 +97,7 @@ class TransactionController extends AbstractController
         return $this->redirectToRoute('welcome');
     }
 
-    #[Route(path: '/store-transaction-pdf/{id}/{year}', name: 'store-transaction-pdf')]
+    #[Route(path: '/store-transaction-pdf/{id}/{year}', name: 'store-transaction-pdf', methods: ['GET'])]
     public function getStore(
         Store $store,
         int $year,
@@ -137,7 +137,7 @@ class TransactionController extends AbstractController
         );
     }
 
-    #[Route(path: '/mail-annual-transactions', name: 'mail-annual-transactions')]
+    #[Route(path: '/mail-annual-transactions', name: 'mail-annual-transactions', methods: ['POST'])]
     public function mailStores(
         Request $request,
         TransactionRepository $transactionRepository,
@@ -184,7 +184,7 @@ class TransactionController extends AbstractController
         return $this->redirectToRoute('welcome');
     }
 
-    #[Route(path: '/stores-transactions-pdf', name: 'stores-transactions-pdf')]
+    #[Route(path: '/stores-transactions-pdf', name: 'stores-transactions-pdf', methods: ['GET'])]
     public function getStores(
         TransactionRepository $transactionRepository,
         StoreRepository $storeRepository,

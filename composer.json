@@ -45,12 +45,14 @@
         "symfony/yaml": "*"
     },
     "require-dev": {
+        "dbrekelmans/bdi": "^0.3.0",
         "rector/rector": "^0.9.9",
         "roave/security-advisories": "dev-master",
         "symfony/browser-kit": "5.*",
         "symfony/css-selector": "*",
         "symfony/debug-pack": "*",
         "symfony/maker-bundle": "^1.29",
+        "symfony/panther": "^1.0",
         "symfony/test-pack": "*",
         "symfony/web-profiler-bundle": "*"
     },

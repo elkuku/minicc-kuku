@@ -39,7 +39,7 @@ class TransactionController extends AbstractController
         return $this->redirect('/'.$redirect);
     }
 
-    #[Route(path: '/edit/{id}', name: 'transaction-edit')]
+    #[Route(path: '/edit/{id}', name: 'transaction-edit', methods: ['GET', 'POST'])]
     public function edit(
         Transaction $transaction,
         Request $request
@@ -74,7 +74,7 @@ class TransactionController extends AbstractController
         );
     }
 
-    #[Route(path: '/', name: 'transaction-rawlist')]
+    #[Route(path: '/', name: 'transaction-rawlist', methods: ['GET', 'POST'])]
     public function rawList(
         StoreRepository $storeRepo,
         TransactionRepository $transactionRepo,

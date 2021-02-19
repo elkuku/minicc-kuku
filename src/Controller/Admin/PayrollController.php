@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class PayrollController extends AbstractController
 {
-    #[Route(path: '/planillas-mail', name: 'planillas-mail')]
+    #[Route(path: '/planillas-mail', name: 'planillas-mail', methods: ['GET'])]
     public function mail(
         Pdf $pdf,
         MailerInterface $mailer,
@@ -54,7 +54,7 @@ class PayrollController extends AbstractController
         return $this->render('admin/tasks.html.twig');
     }
 
-    #[Route(path: '/planilla-mail', name: 'planilla-mail')]
+    #[Route(path: '/planilla-mail', name: 'planilla-mail', methods: ['POST'])]
     public function mailClients(
         StoreRepository $storeRepository,
         Request $request,
@@ -136,7 +136,7 @@ class PayrollController extends AbstractController
         return $this->redirectToRoute('welcome');
     }
 
-    #[Route(path: '/planillas', name: 'planillas')]
+    #[Route(path: '/planillas', name: 'planillas', methods: ['GET'])]
     public function download(
         Pdf $pdf,
         PayrollHelper $payrollHelper,

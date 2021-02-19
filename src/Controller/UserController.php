@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
 #[Route(path: '/users')]
 class UserController extends AbstractController
 {
-    #[Route(path: '/', name: 'users-list')]
+    #[Route(path: '/', name: 'users-list', methods: ['GET', 'POST'])]
     public function list(
         UserRepository $userRepo,
         UserStateRepository $stateRepo,
@@ -28,7 +28,6 @@ class UserController extends AbstractController
     ): Response {
         $userState = (int)$request->get('user_state', 1);
         $criteria = [];
-        // ['role' => 'ROLE_USER'];
         if ($userState) {
             $criteria['state'] = $stateRepo->find($userState);
         }
@@ -43,7 +42,7 @@ class UserController extends AbstractController
         );
     }
 
-    #[Route(path: '/edit/{id}', name: 'user-edit')]
+    #[Route(path: '/edit/{id}', name: 'user-edit', methods: ['GET', 'POST'])]
     public function edit(
         User $client,
         Request $request
@@ -71,7 +70,7 @@ class UserController extends AbstractController
         );
     }
 
-    #[Route(path: '/pdf', name: 'pdf-users')]
+    #[Route(path: '/pdf', name: 'pdf-users', methods: ['GET'])]
     public function pdfList(
         UserRepository $userRepository
     ): Response {
@@ -83,7 +82,7 @@ class UserController extends AbstractController
         );
     }
 
-    #[Route(path: '/ruclist', name: 'users-ruclist')]
+    #[Route(path: '/ruclist', name: 'users-ruclist', methods: ['GET'])]
     public function rucList(
         UserRepository $userRepository,
         Pdf $pdf
@@ -99,19 +98,16 @@ class UserController extends AbstractController
         );
     }
 
-    #[Route(path: '/new', name: 'register')]
+    #[Route(path: '/new', name: 'register', methods: ['GET', 'POST'])]
     public function new(
         Request $request
     ): Response {
-        // Create a new blank user and process the form
         $user = new User;
         $form = $this->createForm(UserFullType::class, $user);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            // Set their role
             $user->setRole('ROLE_USER');
 
-            // Save
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();

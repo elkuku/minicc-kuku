@@ -13,7 +13,7 @@ class GoogleController extends AbstractController
     /**
      * Link to this controller to start the "connect" process
      */
-    #[Route(path: '/connect/google', name: 'connect_google_start')]
+    #[Route(path: '/connect/google', name: 'connect_google_start', methods: ['GET'])]
     public function connectAction(
         ClientRegistry $clientRegistry
     ): RedirectResponse {
@@ -32,11 +32,8 @@ class GoogleController extends AbstractController
      * because this is the "redirect_route" you configured
      * in config/packages/knpu_oauth2_client.yaml
      */
-    #[Route(path: '/connect/google/check', name: 'connect_google_check')]
-    public function connectCheckAction(
-        Request $request,
-        ClientRegistry $clientRegistry
-    ): RedirectResponse {
+    #[Route(path: '/connect/google/check', name: 'connect_google_check', methods: ['GET'])]
+    public function connectCheckAction(): RedirectResponse {
         return $this->redirectToRoute('welcome');
     }
 }

@@ -24,7 +24,7 @@ use Twig\Environment;
 #[Route(path: 'contracts')]
 class ContractController extends AbstractController
 {
-    #[Route(path: '/', name: 'contract-list')]
+    #[Route(path: '/', name: 'contract-list', methods: ['GET', 'POST'])]
     public function list(
         StoreRepository $storeRepository,
         UserRepository $userRepository,
@@ -49,7 +49,7 @@ class ContractController extends AbstractController
         );
     }
 
-    #[Route(path: '/new', name: 'contracts-new')]
+    #[Route(path: '/new', name: 'contracts-new', methods: ['POST'])]
     public function new(
         StoreRepository $storeRepo,
         UserRepository $userRepo,
@@ -94,7 +94,8 @@ class ContractController extends AbstractController
         );
     }
 
-    #[Route(path: '/{id}', name: 'contracts-edit', requirements: ['id' => '\d+'])]
+    #[Route(path: '/{id}', name: 'contracts-edit', requirements: ['id' => '\d+'],
+        methods: ['GET', 'POST'])]
     public function edit(
         Contract $contract,
         Request $request
@@ -124,7 +125,7 @@ class ContractController extends AbstractController
         );
     }
 
-    #[Route(path: '/delete/{id}', name: 'contracts-delete')]
+    #[Route(path: '/delete/{id}', name: 'contracts-delete', methods: ['GET'])]
     public function delete(
         Contract $contract
     ): Response {
@@ -136,7 +137,7 @@ class ContractController extends AbstractController
         return $this->redirectToRoute('contract-list');
     }
 
-    #[Route(path: '/template', name: 'contracts-template')]
+    #[Route(path: '/template', name: 'contracts-template', methods: ['GET', 'POST'])]
     public function template(
         ContractRepository $contractRepository,
         Request $request
@@ -167,7 +168,7 @@ class ContractController extends AbstractController
         );
     }
 
-    #[Route(path: '/generate/{id}', name: 'contract-generate', requirements: ['id' => '\d+'])]
+    #[Route(path: '/generate/{id}', name: 'contract-generate', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function generate(
         Contract $contract,
         Pdf $pdf

@@ -55,7 +55,7 @@ class PaymentMethodController extends AbstractController
         );
     }
 
-    #[Route(path: '/edit/{id}', name: 'payment-methods-edit')]
+    #[Route(path: '/edit/{id}', name: 'payment-methods-edit', methods: ['GET', 'POST'])]
     public function edit(
         PaymentMethod $data,
         Request $request
@@ -83,7 +83,7 @@ class PaymentMethodController extends AbstractController
         );
     }
 
-    #[Route(path: '/delete/{id}', name: 'payment-methods-delete')]
+    #[Route(path: '/delete/{id}', name: 'payment-methods-delete', methods: ['GET'])]
     public function delete(
         PaymentMethod $paymentMethod
     ): Response {

@@ -22,7 +22,7 @@ use UnexpectedValueException;
  */
 class AdminController extends AbstractController
 {
-    #[Route(path: '/cobrar', name: 'cobrar')]
+    #[Route(path: '/cobrar', name: 'cobrar', methods: ['GET', 'POST'])]
     public function cobrar(
         StoreRepository $storeRepository,
         UserRepository $userRepository,
@@ -73,7 +73,7 @@ class AdminController extends AbstractController
         );
     }
 
-    #[Route(path: '/pay-day', name: 'pay-day')]
+    #[Route(path: '/pay-day', name: 'pay-day', methods: ['GET', 'POST'])]
     public function payDay(
         StoreRepository $storeRepository,
         PaymentMethodRepository $paymentMethodRepository,
@@ -133,7 +133,7 @@ class AdminController extends AbstractController
         return $this->redirectToRoute('welcome');
     }
 
-    #[Route(path: '/pagos-por-ano', name: 'pagos-por-ano')]
+    #[Route(path: '/pagos-por-ano', name: 'pagos-por-ano', methods: ['GET'])]
     public function pagosPorAno(
         Request $request,
         TransactionRepository $repository
@@ -149,7 +149,7 @@ class AdminController extends AbstractController
         );
     }
 
-    #[Route(path: '/mail-list-transactions', name: 'mail-list-transactions')]
+    #[Route(path: '/mail-list-transactions', name: 'mail-list-transactions', methods: ['GET'])]
     public function mailListTransactions(
         StoreRepository $storeRepository
     ): Response {
@@ -161,7 +161,7 @@ class AdminController extends AbstractController
         );
     }
 
-    #[Route(path: '/mail-list-planillas', name: 'mail-list-planillas')]
+    #[Route(path: '/mail-list-planillas', name: 'mail-list-planillas', methods: ['GET'])]
     public function mailListPlanillas(
         StoreRepository $storeRepository
     ): Response {

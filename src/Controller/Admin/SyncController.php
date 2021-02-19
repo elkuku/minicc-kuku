@@ -22,7 +22,7 @@ use function count;
  */
 class SyncController extends AbstractController
 {
-    #[Route(path: '/export-table/{name}', name: 'export-table')]
+    #[Route(path: '/export-table/{name}', name: 'export-table', methods: ['GET'])]
     public function export(
         string $name
     ): Response {
@@ -42,7 +42,7 @@ class SyncController extends AbstractController
         );
     }
 
-    #[Route(path: '/import-table', name: 'import-table')]
+    #[Route(path: '/import-table', name: 'import-table', methods: ['POST'])]
     public function import(
         Request $request
     ): Response {
@@ -126,7 +126,7 @@ class SyncController extends AbstractController
         return $this->redirectToRoute('admin-tasks');
     }
 
-    #[Route(path: '/backup', name: 'backup')]
+    #[Route(path: '/backup', name: 'backup', methods: ['GET'])]
     public function backup(
         MailerInterface $mailer
     ): Response {

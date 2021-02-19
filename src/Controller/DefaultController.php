@@ -14,7 +14,7 @@ use Symfony\UX\Chartjs\Model\Chart;
 
 class DefaultController extends AbstractController
 {
-    #[Route(path: '/', name: 'welcome')]
+    #[Route(path: '/', name: 'welcome', methods: ['GET'])]
     public function index(
         StoreRepository $storeRepository,
         TransactionRepository $transactionRepository,
@@ -68,13 +68,13 @@ class DefaultController extends AbstractController
         );
     }
 
-    #[Route(path: '/about', name: 'about')]
+    #[Route(path: '/about', name: 'about', methods: ['GET'])]
     public function about(): Response
     {
         return $this->render('default/about.html.twig');
     }
 
-    #[Route(path: '/contact', name: 'contact')]
+    #[Route(path: '/contact', name: 'contact', methods: ['GET'])]
     public function contact(): Response
     {
         return $this->render('default/contact.html.twig');
