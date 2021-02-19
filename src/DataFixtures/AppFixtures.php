@@ -65,9 +65,13 @@ class AppFixtures extends Fixture
             ->setRole('ROLE_USER');
         $manager->persist($user3);
 
+        /*
+         * Store
+         */
         $store = (new Store())
             ->setValAlq(123)
-            ->setUser($user1);
+            ->setUser($user1)
+            ->setDestination('TEST');
         $manager->persist($store);
 
         /*
@@ -87,14 +91,14 @@ class AppFixtures extends Fixture
         $names = ['Alquiler', 'Pago', 'Saldo Inicial', 'Ajuste'];
 
         foreach ($names as $name) {
-            $transactionType = new TransactionType;
-
-            $transactionType->setName($name);
-
+            $transactionType = (new TransactionType)
+                ->setName($name);
             $manager->persist($transactionType);
         }
 
         $transaction = (new Transaction())
+            ->setStore($store)
+            ->setUser($user1)
             ->setDate(new \DateTime())
             ->setType($transactionType)
             ->setAmount(123);
@@ -109,7 +113,6 @@ class AppFixtures extends Fixture
                     __DIR__.'/contract-template.html'
                 )
             );
-
         $manager->persist($contract);
 
         $manager->flush();
