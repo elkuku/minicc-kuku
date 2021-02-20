@@ -15,16 +15,16 @@ class ControllerAccessTest extends WebTestCase
     private array $exceptions
         = [
             'welcome' => [
-                'statusCode' => 200,
+                'statusCodes' => ['GET' => 200],
             ],
             'about'   => [
-                'statusCode' => 200,
+                'statusCodes' => ['GET' => 200],
             ],
             'contact' => [
-                'statusCode' => 200,
+                'statusCodes' => ['GET' => 200],
             ],
             'login'   => [
-                'statusCode' => 200,
+                'statusCodes' => ['GET' => 200, 'POST' => 302],
             ],
         ];
 
@@ -62,31 +62,29 @@ class ControllerAccessTest extends WebTestCase
         }
     }
 
-    private function processRoutes(array $routes, AbstractBrowser $browser): void
-    {
+    private function processRoutes(
+        array $routes,
+        AbstractBrowser $browser
+    ): void {
         foreach ($routes as $routeName => $route) {
             $defaultId = 1;
-            $expectedStatusCode = 302;
-            if (array_key_exists($routeName, $this->exceptions)) {
-                if (array_key_exists(
-                    'statusCode',
+            $expectedStatusCodes = [];
+            if (array_key_exists($routeName, $this->exceptions)
+                && array_key_exists(
+                    'statusCodes',
                     $this->exceptions[$routeName]
                 )
-                ) {
-                    $expectedStatusCode = $this->exceptions[$routeName]['statusCode'];
-                }
-                if (array_key_exists('params', $this->exceptions[$routeName])) {
-                    $params = $this->exceptions[$routeName]['params'];
-                    if (array_key_exists('id', $params)) {
-                        $defaultId = $params['id'];
-                    }
-                }
+            ) {
+                $expectedStatusCodes = $this->exceptions[$routeName]['statusCodes'];
             }
 
-            $methods = $route->getMethods() ;
+            $methods = $route->getMethods();
 
             if (!$methods) {
-                echo sprintf('No methods set in controller "%s"',$route->getPath()).PHP_EOL;
+                echo sprintf(
+                        'No methods set in controller "%s"',
+                        $route->getPath()
+                    ).PHP_EOL;
                 $methods = ['GET'];
             }
 
@@ -100,13 +98,17 @@ class ControllerAccessTest extends WebTestCase
             $path = str_replace('{id}', $defaultId, $route->getPath());
             $out = false;
             foreach ($methods as $method) {
+                $expectedStatusCode = 302;
+                if (array_key_exists($method, $expectedStatusCodes)) {
+                    $expectedStatusCode = $expectedStatusCodes[$method];
+                }
                 if ($out) {
                     echo sprintf(
-                            'Testing: %s - %s Expected: %s ... ',
-                            $method,
-                            $path,
-                            $expectedStatusCode,
-                        );
+                        'Testing: %s - %s Expected: %s ... ',
+                        $method,
+                        $path,
+                        $expectedStatusCode,
+                    );
                 }
 
                 $browser->request($method, $path);
