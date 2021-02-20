@@ -101,7 +101,8 @@ class AppFixtures extends Fixture
             ->setUser($user1)
             ->setDate(new \DateTime())
             ->setType($transactionType)
-            ->setAmount(123);
+            ->setMethod($paymentMethod)
+            ->setAmount(123.45);
         $manager->persist($transaction);
 
         /*
