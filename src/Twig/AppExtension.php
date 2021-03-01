@@ -19,7 +19,6 @@ use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 use function count;
-use function is_object;
 use function strlen;
 
 class AppExtension extends AbstractExtension

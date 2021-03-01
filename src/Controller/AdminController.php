@@ -9,7 +9,6 @@ use App\Repository\TransactionRepository;
 use App\Repository\TransactionTypeRepository;
 use App\Repository\UserRepository;
 use DateTime;
-use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

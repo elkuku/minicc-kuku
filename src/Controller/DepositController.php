@@ -8,7 +8,6 @@ use App\Helper\Paginator\PaginatorTrait;
 use App\Repository\DepositRepository;
 use App\Repository\PaymentMethodRepository;
 use DateTime;
-use Exception;
 use RuntimeException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
