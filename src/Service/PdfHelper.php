@@ -11,13 +11,15 @@ namespace App\Service;
 use App\Entity\Store;
 use App\Entity\Transaction;
 use App\Repository\TransactionRepository;
+use Knp\Snappy\Pdf;
 use Twig\Environment;
 
-class PDFHelper
+class PdfHelper
 {
     public function __construct(
         private string $rootDir,
-        private Environment $twig
+        private Environment $twig,
+        private Pdf $pdfEngine,
     ) {
     }
 
@@ -70,5 +72,27 @@ class PDFHelper
             '_pdf/payrolls-pdf.html.twig',
             $payrollHelper->getData($year, $month, $storeId)
         );
+    }
+
+    public function getOutputFromHtml(
+        array|string $htmlPages,
+        array $options = []
+    ): string {
+        return $this->pdfEngine->getOutputFromHtml($htmlPages, $options);
+    }
+
+    public function getHeaderHtml(): string
+    {
+        return $this->twig->render(
+            '_header-pdf.html.twig',
+            [
+                'rootPath' => $this->rootDir.'/public',
+            ]
+        );
+    }
+
+    public function getFooterHtml(): string
+    {
+        return $this->twig->render('_footer-pdf.html.twig');
     }
 }

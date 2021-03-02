@@ -5,12 +5,14 @@ namespace App\Controller;
 use App\Entity\Store;
 use App\Repository\StoreRepository;
 use App\Repository\TransactionRepository;
+use App\Repository\UserRepository;
 use App\Service\PayrollHelper;
-use App\Service\PDFHelper;
+use App\Service\PdfHelper;
 use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 use Knp\Snappy\Pdf;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -19,15 +21,14 @@ use Symfony\Component\Routing\Annotation\Route;
 class PdfController extends AbstractController
 {
     #[Route(path: '/store-transaction-pdf/{id}/{year}', name: 'store-transaction-pdf', methods: ['GET'])]
-    public function getStore(
+    public function storeTransactions(
         Store $store,
         int $year,
         TransactionRepository $transactionRepository,
-        Pdf $pdf,
-        PDFHelper $PDFHelper
+        PdfHelper $pdfHelper
     ): PdfResponse {
         $this->denyAccessUnlessGranted('export', $store);
-        $html = $PDFHelper->renderTransactionHtml(
+        $html = $pdfHelper->renderTransactionHtml(
             $transactionRepository,
             $store,
             $year
@@ -38,20 +39,14 @@ class PdfController extends AbstractController
             $store->getId(),
             date('Y-m-d')
         );
-        $header = $this->renderView(
-            '_header-pdf.html.twig',
-            [
-                'rootPath' => $PDFHelper->getRoot().'/public',
-            ]
-        );
-        $footer = $this->renderView('_footer-pdf.html.twig');
 
         return new PdfResponse(
-            $pdf->getOutputFromHtml(
+            $pdfHelper->getOutputFromHtml(
                 $html,
                 [
-                    'footer-html' => $footer,
-                    'header-html' => $header,
+                    'header-html'              => $pdfHelper->getHeaderHtml(),
+                    'footer-html'              => $pdfHelper->getFooterHtml(),
+                    'enable-local-file-access' => true,
                 ]
             ),
             $filename
@@ -59,18 +54,17 @@ class PdfController extends AbstractController
     }
 
     #[Route(path: '/stores-transactions-pdf', name: 'stores-transactions-pdf', methods: ['GET'])]
-    public function getStores(
+    public function storesTransactions(
         TransactionRepository $transactionRepository,
         StoreRepository $storeRepository,
-        Pdf $pdf,
-        PDFHelper $PDFHelper
+        PdfHelper $pdfHelper
     ): PdfResponse {
         $htmlPages = [];
         $year = (int)date('Y');
         $stores = $storeRepository->findAll();
         foreach ($stores as $store) {
             if ($store->getUserId()) {
-                $htmlPages[] = $PDFHelper->renderTransactionHtml(
+                $htmlPages[] = $pdfHelper->renderTransactionHtml(
                     $transactionRepository,
                     $store,
                     $year
@@ -80,25 +74,31 @@ class PdfController extends AbstractController
         $filename = sprintf('movimientos-%d-%s.pdf', $year, date('Y-m-d'));
 
         return new PdfResponse(
-            $pdf->getOutputFromHtml($htmlPages),
+            $pdfHelper->getOutputFromHtml(
+                $htmlPages,
+                [
+                    'header-html'              => $pdfHelper->getHeaderHtml(),
+                    'footer-html'              => $pdfHelper->getFooterHtml(),
+                    'enable-local-file-access' => true,
+                ]
+            ),
             $filename
         );
     }
 
     #[Route(path: '/planillas', name: 'planillas', methods: ['GET'])]
-    public function download(
-        Pdf $pdf,
-        PDFHelper $PDFHelper,
+    public function planillas(
+        PdfHelper $PdfHelper,
         PayrollHelper $payrollHelper,
     ): PdfResponse {
         $year = (int)date('Y');
         $month = (int)date('m');
         $filename = sprintf('payrolls-%d-%d.pdf', $year, $month);
 
-        $html = $PDFHelper->renderPayrollsHtml($year, $month, $payrollHelper);
+        $html = $PdfHelper->renderPayrollsHtml($year, $month, $payrollHelper);
 
         return new PdfResponse(
-            $pdf->getOutputFromHtml(
+            $PdfHelper->getOutputFromHtml(
                 $html,
                 ['enable-local-file-access' => true]
             ),
@@ -106,5 +106,29 @@ class PdfController extends AbstractController
         );
     }
 
+    #[Route(path: '/pdf', name: 'pdf-users', methods: ['GET'])]
+    public function pdfList(
+        UserRepository $userRepository
+    ): Response {
+        return $this->render(
+            '_pdf/user-pdf-list.html.twig',
+            ['users' => $userRepository->getSortedByStore()]
+        );
+    }
 
+    #[Route(path: '/ruclist', name: 'users-ruclist', methods: ['GET'])]
+    public function rucList(
+        UserRepository $userRepository,
+        PdfHelper $PdfHelper
+    ): PdfResponse {
+        $html = $this->renderView(
+            '_pdf/ruclist.html.twig',
+            ['users' => $userRepository->getSortedByStore()]
+        );
+
+        return new PdfResponse(
+            $PdfHelper->getOutputFromHtml($html),
+            sprintf('user-list-%s.pdf', date('Y-m-d'))
+        );
+    }
 }

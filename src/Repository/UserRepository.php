@@ -37,4 +37,34 @@ class UserRepository extends ServiceEntityRepository
             ['name' => 'ASC']
         );
     }
+
+    /**
+     * @return User[]
+     */
+    public function getSortedByStore(): array
+    {
+        $users = $this->findActiveUsers();
+
+        usort(
+            $users,
+            static function ($a, $b) {
+                $aId = 0;
+                $bId = 0;
+
+                /** @type User $a */
+                foreach ($a->getStores() as $store) {
+                    $aId = $store->getId();
+                }
+
+                /** @type User $b */
+                foreach ($b->getStores() as $store) {
+                    $bId = $store->getId();
+                }
+
+                return ($aId < $bId) ? -1 : 1;
+            }
+        );
+
+        return $users;
+    }
 }

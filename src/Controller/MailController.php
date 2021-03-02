@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Repository\StoreRepository;
 use App\Repository\TransactionRepository;
 use App\Service\PayrollHelper;
-use App\Service\PDFHelper;
+use App\Service\PdfHelper;
 use Knp\Snappy\Pdf;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -29,7 +29,7 @@ class MailController extends AbstractController
         TransactionRepository $transactionRepository,
         Request $request,
         Pdf $pdf,
-        PDFHelper $PDFHelper,
+        PdfHelper $PDFHelper,
         MailerInterface $mailer
     ): RedirectResponse {
         $recipients = $request->get('recipients');
@@ -101,7 +101,7 @@ class MailController extends AbstractController
         TransactionRepository $transactionRepository,
         StoreRepository $storeRepository,
         Pdf $pdf,
-        PDFHelper $PDFHelper,
+        PdfHelper $PDFHelper,
         MailerInterface $mailer
     ): RedirectResponse {
         $year = (int)$request->get('year', date('Y'));
@@ -146,7 +146,7 @@ class MailController extends AbstractController
     #[Route(path: '/planillas-mail', name: 'planillas-mail', methods: ['GET'])]
     public function mailPlanillas(
         Pdf $pdf,
-        PDFHelper $PDFHelper,
+        PdfHelper $PDFHelper,
         MailerInterface $mailer,
         PayrollHelper $payrollHelper,
     ): Response {
@@ -183,7 +183,7 @@ class MailController extends AbstractController
         StoreRepository $storeRepository,
         Request $request,
         Pdf $pdf,
-        PDFHelper $PDFHelper,
+        PdfHelper $PDFHelper,
         MailerInterface $mailer,
         PayrollHelper $payrollHelper
     ): Response {

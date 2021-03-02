@@ -6,8 +6,6 @@ use App\Entity\User;
 use App\Form\UserFullType;
 use App\Repository\UserRepository;
 use App\Repository\UserStateRepository;
-use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
-use Knp\Snappy\Pdf;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -70,34 +68,6 @@ class UserController extends AbstractController
         );
     }
 
-    #[Route(path: '/pdf', name: 'pdf-users', methods: ['GET'])]
-    public function pdfList(
-        UserRepository $userRepository
-    ): Response {
-        return $this->render(
-            '_pdf/user-pdf-list.html.twig',
-            [
-                'users' => $this->getSortedUsers($userRepository),
-            ]
-        );
-    }
-
-    #[Route(path: '/ruclist', name: 'users-ruclist', methods: ['GET'])]
-    public function rucList(
-        UserRepository $userRepository,
-        Pdf $pdf
-    ): PdfResponse {
-        $html = $this->renderView(
-            '_pdf/ruclist.html.twig',
-            ['users' => $this->getSortedUsers($userRepository)]
-        );
-
-        return new PdfResponse(
-            $pdf->getOutputFromHtml($html),
-            sprintf('user-list-%s.pdf', date('Y-m-d'))
-        );
-    }
-
     #[Route(path: '/new', name: 'register', methods: ['GET', 'POST'])]
     public function new(
         Request $request
@@ -124,32 +94,5 @@ class UserController extends AbstractController
                 'data' => $user,
             ]
         );
-    }
-
-    private function getSortedUsers(UserRepository $userRepository): array
-    {
-        $users = $userRepository->findActiveUsers();
-
-        usort(
-            $users,
-            static function ($a, $b) {
-                $aId = 0;
-                $bId = 0;
-
-                /** @type User $a */
-                foreach ($a->getStores() as $store) {
-                    $aId = $store->getId();
-                }
-
-                /** @type User $b */
-                foreach ($b->getStores() as $store) {
-                    $bId = $store->getId();
-                }
-
-                return ($aId < $bId) ? -1 : 1;
-            }
-        );
-
-        return $users;
     }
 }
