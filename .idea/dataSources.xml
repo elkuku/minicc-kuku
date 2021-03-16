@@ -5,7 +5,7 @@
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://localhost:32771/main</jdbc-url>
+      <jdbc-url>jdbc:mysql://localhost:49153/main</jdbc-url>
     </data-source>
     <data-source source="LOCAL" name="main_test@localhost" uuid="01e39ee9-ce2b-4e70-bb54-5b5179602d5f">
       <driver-ref>mysql.8</driver-ref>
