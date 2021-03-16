@@ -9,7 +9,6 @@ use App\Repository\UserRepository;
 use App\Service\PayrollHelper;
 use App\Service\PdfHelper;
 use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
-use Knp\Snappy\Pdf;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -108,18 +107,25 @@ class PdfController extends AbstractController
 
     #[Route(path: '/pdf', name: 'pdf-users', methods: ['GET'])]
     public function pdfList(
-        UserRepository $userRepository
+        UserRepository $userRepository,
+        PdfHelper $PdfHelper,
     ): Response {
-        return $this->render(
+        $html = $this->renderView(
             '_pdf/user-pdf-list.html.twig',
             ['users' => $userRepository->getSortedByStore()]
         );
+
+        return new PdfResponse(
+            $PdfHelper->getOutputFromHtml($html),
+            sprintf('user-list-%s.pdf', date('Y-m-d'))
+        );
+
     }
 
     #[Route(path: '/ruclist', name: 'users-ruclist', methods: ['GET'])]
     public function rucList(
         UserRepository $userRepository,
-        PdfHelper $PdfHelper
+        PdfHelper $pdfHelper,
     ): PdfResponse {
         $html = $this->renderView(
             '_pdf/ruclist.html.twig',
@@ -127,7 +133,13 @@ class PdfController extends AbstractController
         );
 
         return new PdfResponse(
-            $PdfHelper->getOutputFromHtml($html),
+            $pdfHelper->getOutputFromHtml(
+                $html,
+                [
+                    'header-html'              => $pdfHelper->getHeaderHtml(),
+                    'footer-html'              => $pdfHelper->getFooterHtml(),
+                    'enable-local-file-access' => true,
+                ]),
             sprintf('user-list-%s.pdf', date('Y-m-d'))
         );
     }

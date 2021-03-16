@@ -2,13 +2,15 @@
 
     {% block stylesheets %}
         <style>
+            td {
+                border-bottom: 1px solid silver;
+            }
             .ruc {
                 font-family: monospace;
                 font-size: 1.6em;
             }
-
-            td {
-                border-bottom: 1px solid silver;
+            .user {
+                font-size: 1.2em;
             }
         </style>
     {% endblock %}
@@ -30,7 +32,7 @@
                 <th>
                     {% for store in user.stores %}{{ store.id }}&nbsp;{% endfor %}
                 </th>
-                <td>
+                <td class="user">
                     {{ 2 == user.gender.id ? 'Sra.' : 'Sr.' }}
                     {{ user.name }}
                 </td>
