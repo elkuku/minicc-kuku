@@ -1,0 +1,97 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ parent() }} - Pay Day{% endblock %}
+
+{% block body %}
+    <div {{ stimulus_controller('payday', {
+        lastRecipeNo: lastRecipeNo
+    }) }}>
+
+        <h1>Pay Day2</h1>
+
+        <form method="post" action="{{ path('pay-day') }}">
+            <div data-payday-target="tbody">
+                <div class="row no-gutters bg-info text-center">
+                    <div class="col-2"><h5>Fecha</h5></div>
+                    <div class="col-3"><h5>Local</h5></div>
+                    <div class="col-1"><h5>Monto</h5></div>
+                    <div class="col-1"><h5>Factura</h5></div>
+                    <div class="col-2"><h5>Forma</h5></div>
+                    <div class="col-2"><h5>Documento</h5></div>
+                    <div class="col-1"><h5>DepId</h5></div>
+                </div>
+                <div class="row no-gutters"
+                     data-payday-target="row"
+                        {{ stimulus_controller('payday-row', {
+                            urlSearch: path('_deposito_search'),
+                            urlLookup: path('_deposito_lookup'),
+                        }) }}
+                >
+                    <div class="col-2">
+                        <input class="form-control" name="payments[date_cobro][]" type="date" size="9"
+                               data-action="payday#changeDate"
+                               data-payday-row-target="date"
+                        >
+                    </div>
+                    <div class="col-3">
+                        <select class="form-control" name="payments[store][]">
+                            <option value="0">Local</option>
+                            {% for store in stores %}
+                                <option value="{{ store.id }}">
+                                    {{ store.id }} - {{ store.destination }}
+                                    - {{ store.user ? store.user.name|short_name : 'n/a' }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-1 text-monospace">
+                        <input class="form-control" name="payments[amount][]" type="text" size="7"
+                               data-payday-row-target="amount"
+                        >
+                    </div>
+                    <div class="col-1">
+                        <input class="form-control" name="payments[recipe][]" type="text" size="7" value="{{ lastRecipeNo }}">
+                    </div>
+
+
+                    <div class="col-2">
+                        <select class="form-control" name="payments[method][]"
+                                data-payday-row-target="method"
+                        >
+                            {% for method in paymentMethods %}
+                                <option value="{{ method.id }}">{{ method.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+
+                    <div class="col-2">
+                        <input
+                                data-action="payday-row#onSearchInput keydown->payday-row#onKeydown"
+                                data-payday-row-target="document"
+                                class="form-control" name="payments[document][]" type="text" size="7">
+                        <div
+                                class="search-preview"
+                                data-payday-row-target="result"
+                        >
+                        </div>
+                    </div>
+
+
+                    <div class="col-1">
+                        <input
+                                data-payday-row-target="depid"
+                                class="form-control" name="payments[depId][]" type="text" size="7">
+                    </div>
+                </div>{# row #}
+            </div>{# tbody #}
+
+            <div class="card-footer">
+                <button type="button" class="btn btn-info addRow" data-action="payday#addRow" accesskey="n">
+                    <span class="oi oi-plus"></span>
+                </button>
+                <button type="submit" class="btn btn-success">A Cobrar</button>
+            </div>
+
+        </form>
+    </div>
+{% endblock %}

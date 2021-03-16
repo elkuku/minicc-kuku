@@ -211,4 +211,19 @@ class TransactionRepository extends ServiceEntityRepository
             $options->getLimit()
         );
     }
+
+    public function getLastRecipeNo():int
+    {
+        try {
+            $number = (int) $this->createQueryBuilder('t')
+                ->select('MAX(t.recipeNo)')
+                ->getQuery()
+                ->getSingleScalarResult();
+
+        } catch (\Exception) {
+            $number = 0;
+        }
+
+        return $number;
+    }
 }

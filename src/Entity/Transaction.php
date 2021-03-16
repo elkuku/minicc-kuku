@@ -72,13 +72,20 @@ class Transaction implements JsonSerializable
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @deprecated
      */
-    private int $depId;
+    private $depId = null;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Deposit::class, inversedBy="transaction", cascade={"persist", "remove"})
+     */
+    private ?Deposit $deposit;
+
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private int $recipeNo;
+    private ?int $recipeNo = 0;
 
     public function getId(): ?int
     {
@@ -121,7 +128,7 @@ class Transaction implements JsonSerializable
         return $this;
     }
 
-    public function getDepId(): int
+    public function getDepId(): ?int
     {
         return $this->depId;
     }
@@ -133,7 +140,7 @@ class Transaction implements JsonSerializable
         return $this;
     }
 
-    public function getRecipeNo(): int
+    public function getRecipeNo(): ?int
     {
         return $this->recipeNo;
     }
@@ -191,6 +198,19 @@ class Transaction implements JsonSerializable
     public function getStore(): Store
     {
         return $this->store;
+    }
+
+
+    public function getDeposit(): ?Deposit
+    {
+        return $this->deposit;
+    }
+
+    public function setDeposit(?Deposit $deposit): self
+    {
+        $this->deposit = $deposit;
+
+        return $this;
     }
 
     /**

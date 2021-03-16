@@ -132,6 +132,68 @@ class AdminController extends AbstractController
         return $this->redirectToRoute('welcome');
     }
 
+    #[Route(path: '/pay-day2', name: 'pay-day2', methods: ['GET', 'POST'])]
+    public function payDay2(
+        StoreRepository $storeRepository,
+        PaymentMethodRepository $paymentMethodRepository,
+        TransactionRepository $transactionRepository,
+        TransactionTypeRepository $transactionTypeRepository,
+        Request $request
+    ): Response {
+        $payments = $request->request->get('payments');
+        if (!$payments) {
+            return $this->render(
+                'admin/payday2-html.twig',
+                [
+                    'stores'         => $storeRepository->getActive(),
+                    'lastRecipeNo'   => $transactionRepository->getLastRecipeNo()+1,
+                    'paymentMethods' => $paymentMethodRepository->findAll(),
+                ]
+            );
+        }
+        $em = $this->getDoctrine()->getManager();
+        $type = $transactionTypeRepository->findOneBy(['name' => 'Pago']);
+        if (!$type) {
+            throw new UnexpectedValueException('Invalid transaction type');
+        }
+        foreach ($payments['date_cobro'] as $i => $dateCobro) {
+            if (!$dateCobro) {
+                continue;
+            }
+
+            $store = $storeRepository->find((int)$payments['store'][$i]);
+
+            if (!$store) {
+                continue;
+            }
+
+            $method = $paymentMethodRepository->find(
+                (int)$payments['method'][$i]
+            );
+
+            if (!$method) {
+                throw new UnexpectedValueException('Invalid payment method.');
+            }
+
+            $transaction = (new Transaction)
+                ->setDate(new DateTime($dateCobro))
+                ->setStore($store)
+                ->setUser($store->getUser())
+                ->setType($type)
+                ->setMethod($method)
+                ->setRecipeNo((int)$payments['recipe'][$i])
+                ->setDocument((int)$payments['document'][$i])
+                ->setDepId((int)$payments['depId'][$i])
+                ->setAmount($payments['amount'][$i]);
+
+            $em->persist($transaction);
+        }
+        $em->flush();
+        $this->addFlash('success', 'Sa ha pagado...');
+
+        return $this->redirectToRoute('welcome');
+    }
+
     #[Route(path: '/pagos-por-ano', name: 'pagos-por-ano', methods: ['GET'])]
     public function pagosPorAno(
         Request $request,

@@ -46,6 +46,11 @@ class Deposit implements JsonSerializable
      */
     private float $amount;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Transaction::class, mappedBy="deposit", cascade={"persist", "remove"})
+     */
+    private ?Transaction $transaction;
+
     public function getId(): int
     {
         return $this->id;
@@ -105,6 +110,28 @@ class Deposit implements JsonSerializable
         return $this->amount;
     }
 
+    public function getTransaction(): ?Transaction
+    {
+        return $this->transaction;
+    }
+
+    public function setTransaction(?Transaction $transaction): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($transaction === null && $this->transaction !== null) {
+            $this->transaction->setDeposit(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($transaction !== null && $transaction->getDeposit() !== $this) {
+            $transaction->setDeposit($this);
+        }
+
+        $this->transaction = $transaction;
+
+        return $this;
+    }
+
     /**
      * Specify data which should be serialized to JSON
      *
@@ -120,6 +147,7 @@ class Deposit implements JsonSerializable
             'amount'   => $this->amount,
             'document' => $this->document,
             'date'     => $this->date->format('Y-m-d'),
+            'entity'   => $this->entity ? $this->entity->getId():null
         ];
     }
 }

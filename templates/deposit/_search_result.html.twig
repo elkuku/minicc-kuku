@@ -1,0 +1,16 @@
+<div class="list-group">
+    {% for id in ids %}
+        <div
+                class="list-group-item list-group-item-action"
+                data-action="click->payday-row#queryDepo"
+                data-id="{{ id.id }}"
+                data-payday-row-target="resultItem"
+        >
+            {{ id.document }}
+        </div>
+    {% else %}
+        <div class="list-group-item">
+            {{ 'No results found :('|trans }}
+        </div>
+    {% endfor %}
+</div>

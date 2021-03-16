@@ -93,10 +93,23 @@ class DepositRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('d')
             ->where('d.document LIKE :document')
-            ->setParameter('document', '%'.(int)$documentId.'%')
+            ->setParameter('document', '%'.$documentId.'%')
             ->addSelect(
                 '(SELECT t.id FROM App:Transaction t WHERE t.depId = d.id) AS tr_id'
             )
+            ->setMaxResults(5)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function search(int $documentId): array
+    {
+        return $this->createQueryBuilder('d')
+            ->leftJoin('d.transaction', 'tr')
+            ->andWhere('d.document LIKE :document')
+            ->andWhere('tr.id IS NULL')
+            ->setParameter('document', '%'.$documentId.'%')
+            ->setMaxResults(10)
             ->getQuery()
             ->getResult();
     }

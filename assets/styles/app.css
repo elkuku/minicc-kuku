@@ -61,3 +61,10 @@ th {
     margin-top: 3px;
     display: inline-block;
 }
+
+.search-preview {
+    position: absolute;
+    z-index: 100;
+    width: 180px;
+    /*top: 144px;*/
+}

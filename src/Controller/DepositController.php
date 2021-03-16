@@ -107,8 +107,35 @@ class DepositController extends AbstractController
         return $this->redirectToRoute('deposits');
     }
 
+    #[Route(path: '/_search', name: '_deposito_search', methods: ['GET'])]
+    public function _search(DepositRepository $depositRepository, Request $request)
+    {
+        $documentId = (int)$request->get('q');
+        $ids = $depositRepository->search($documentId);
+
+        return $this->render(
+            'deposit/_search_result.html.twig',
+            [
+                'ids' => $ids,
+            ]
+        );
+    }
+
+    #[Route(path: '/_lookup', name: '_deposito_lookup', methods: ['GET'])]
+    public function lookup(DepositRepository $depositRepository,
+        Request $request): JsonResponse{
+        $id = $request->get('id');
+
+        $deposit = $depositRepository->find($id);
+
+        return $this->json($deposit);
+    }
+
     #[Route(path: '/lookup', name: 'lookup-depo', methods: ['POST'])]
-    public function lookup(
+    /**
+     * @deprecated
+     */
+    public function lookupOLD(
         DepositRepository $depositRepository,
         Request $request
     ): JsonResponse {

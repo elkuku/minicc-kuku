@@ -69,7 +69,7 @@ class PaymentMethodController extends AbstractController
             $em->persist($data);
             $em->flush();
 
-            $this->addFlash('success', 'Payment method has been saved');
+            $this->addFlash('success', 'Payment method has been updated');
 
             return $this->redirectToRoute('payment-methods');
         }

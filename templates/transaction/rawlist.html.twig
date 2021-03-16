@@ -60,6 +60,7 @@
                     {{ paginator.criteria('amount', paginatorOptions) }}
                 </th>
                 <th></th>
+                <th></th>
             </tr>
             <tr>
                 <th>{{ paginator.ordering('id', paginatorOptions) }}</th>
@@ -75,6 +76,7 @@
                 <th>Fecha</th>
                 <th>Type</th>
                 <th>Monto</th>
+                <th>Recipe</th>
                 <th>Action</th>
             </tr>
             </thead>
@@ -85,6 +87,7 @@
                     <td>{{ intlDate(transaction.date) }}</td>
                     <td>{{ transaction.type.name }}</td>
                     <td class="text-right">{{ transaction.amount }}</td>
+                    <td>{{ transaction.recipeNo }}</td>
                     <td>
                         <a href="{{ path('transaction-edit', {'id': transaction.id, 'view': 'transaction-rawlist'}) }}">Edit</a>
                         <a href="{{ path('transaction-delete', {'id': transaction.id, 'view': 'transaction-rawlist'}) }}">Delete</a>

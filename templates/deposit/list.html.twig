@@ -73,7 +73,9 @@
                 {% set deposit = d[0] %}
                 <tr>
                     <td>{{ deposit.id }}</td>
-                    <td>{{ d['tr_id'] }}</td>
+                    <td>{{ d['tr_id'] }}
+                    {{ dump(deposit.transaction) }}
+                    </td>
                     <td>{{ deposit.date|date('Y-m-d') }}</td>
                     <td style="white-space: nowrap">{{ deposit.entity.name }}</td>
                     <td>{{ deposit.document }}</td>
