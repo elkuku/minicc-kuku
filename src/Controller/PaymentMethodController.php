@@ -3,8 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\PaymentMethod;
-use App\Repository\PaymentMethodRepository;
 use App\Form\PaymentMethodType;
+use App\Repository\PaymentMethodRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,15 +19,23 @@ class PaymentMethodController extends AbstractController
 {
     #[Route(path: '/', name: 'payment-methods', methods: ['GET'])]
     public function index(
-        PaymentMethodRepository $repository
+        PaymentMethodRepository $repository,
+        Request $request
     ): Response {
+        $template = $request->query->get('ajax')
+            ? '_list.html.twig'
+            : 'list.html.twig';
+
         return $this->render(
-            'payment-methods/list.html.twig',
+            'payment-methods/'.$template,
             ['paymentMethods' => $repository->findAll()]
         );
     }
 
-    #[Route(path: '/new', name: 'payment-methods-new', methods: ['GET', 'POST'])]
+    #[Route(path: '/new', name: 'payment-methods-new', methods: [
+        'GET',
+        'POST',
+    ])]
     public function new(
         Request $request
     ): Response {
@@ -46,16 +54,24 @@ class PaymentMethodController extends AbstractController
             return $this->redirectToRoute('payment-methods');
         }
 
+        $template = $request->query->get('ajax')
+            ? '_form.html.twig'
+            : 'form.html.twig';
+
         return $this->render(
-            'payment-methods/form.html.twig',
+            'payment-methods/'.$template,
             [
                 'form' => $form->createView(),
                 'data' => $paymentMethod,
-            ]
+            ],
+            new Response(null, $form->isSubmitted() ? 422 : 200)
         );
     }
 
-    #[Route(path: '/edit/{id}', name: 'payment-methods-edit', methods: ['GET', 'POST'])]
+    #[Route(path: '/edit/{id}', name: 'payment-methods-edit', methods: [
+        'GET',
+        'POST',
+    ])]
     public function edit(
         PaymentMethod $data,
         Request $request
@@ -74,12 +90,17 @@ class PaymentMethodController extends AbstractController
             return $this->redirectToRoute('payment-methods');
         }
 
+        $template = $request->query->get('ajax')
+            ? '_form.html.twig'
+            : 'form.html.twig';
+
         return $this->render(
-            'payment-methods/form.html.twig',
+            'payment-methods/'.$template,
             [
                 'form' => $form->createView(),
                 'data' => $data,
-            ]
+            ],
+            new Response(null, $form->isSubmitted() ? 422 : 200)
         );
     }
 

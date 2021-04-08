@@ -68,3 +68,7 @@ th {
     width: 180px;
     /*top: 144px;*/
 }
+
+.modal-body button, .modal-body a {
+    display: none;
+}
