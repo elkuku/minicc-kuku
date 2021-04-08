@@ -3,35 +3,39 @@
 {% block title %} {{ parent() }} - Payment methods{% endblock %}
 
 {% block body %}
-    <div class="float-right">
-        <a href="{{ path('payment-methods-new') }}" class="btn btn-info">Nuevo</a>
+    <div
+            {# class="container-fluid mt-4" #}
+            {{ stimulus_controller('reload-content', {
+                url: path('payment-methods', {ajax: 1})
+            }) }}
+            data-action="modal-form:success->reload-content#refreshContent"
+    >
+        <div class="float-right">
+{#            <a href="{{ path('payment-methods-new') }}" class="btn btn-info">Nuevo</a>#}
+
+            <div {{ stimulus_controller('modal-form', {
+                formUrl: path('payment-methods-new', { ajax: 1 })
+            }) }}
+                    data-action="hidden.bs.modal->modal-form#modalHidden"
+            >
+                <button
+                        class="btn btn-primary btn-sm"
+                        data-action="modal-form#openModal"
+                >Nuevo
+                </button>
+                {{ include('_modal.html.twig', {
+                    modalTitle: 'Nuevo metodo de pago'
+                }) }}
+            </div>
+
+
+        </div>
+
+        <h1>Payment methods</h1>
+
+        <div data-reload-content-target="content">
+            {{ include('payment-methods/_list.html.twig') }}
+        </div>
+
     </div>
-
-    <h1>Payment methods</h1>
-
-    <table class="table table-sm table-hover">
-        <thead>
-        <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Action</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for method in paymentMethods %}
-            <tr>
-                <td>{{ method.id }}</td>
-                <td>{{ method.name }}</td>
-                <td>
-                    <a href="{{ path('payment-methods-edit', {'id': method.id}) }}">Edit</a>
-                    <a href="{{ path('payment-methods-delete', {'id': method.id}) }}">Delete</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="2">No Methods Defined!!</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
 {% endblock %}

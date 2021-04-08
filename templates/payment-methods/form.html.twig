@@ -6,13 +6,6 @@
 
     <h2>{{ data.id ? 'Editar Payment method' : 'Nuevo Payment method' }}</h2>
 
-    {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <div class="pull-right">
-        <button type="submit" class="btn btn-light btn-success">Guardar</button>
-        <a class="btn btn-light" href="{{ path('payment-methods') }}">Cancelar</a>
-    </div>
-    {{ form_end(form) }}
-
+    {{ include('payment-methods/_form.html.twig') }}
 
 {% endblock %}
