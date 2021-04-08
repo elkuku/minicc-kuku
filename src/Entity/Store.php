@@ -254,7 +254,7 @@ class Store
         return $this->medAgua;
     }
 
-    public function setUser(User $user): Store
+    public function setUser(?User $user): Store
     {
         $this->user = $user;
 
