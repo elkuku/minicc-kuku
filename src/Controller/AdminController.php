@@ -26,50 +26,56 @@ class AdminController extends AbstractController
         StoreRepository $storeRepository,
         UserRepository $userRepository,
         TransactionTypeRepository $transactionTypeRepository,
+        PaymentMethodRepository $paymentMethodRepository,
         Request $request
     ): Response {
         $values = $request->request->get('values');
-        $users = $request->request->get('users');
-        if ($values) {
-            $em = $this->getDoctrine()->getManager();
-
-            // Type "Alquiler"
-            $type = $transactionTypeRepository->find(1);
-
-            if (!$type) {
-                throw new UnexpectedValueException('Invalid transaction type');
-            }
-
-            foreach ($values as $storeId => $value) {
-                if (0 === $value) {
-                    // No value
-                    continue;
-                }
-
-                $transaction = (new Transaction)
-                    ->setDate(
-                        new DateTime($request->request->get('date_cobro'))
-                    )
-                    ->setStore($storeRepository->find((int)$storeId))
-                    ->setUser($userRepository->find((int)$users[$storeId]))
-                    ->setType($type)
-                    // Set negative value (!)
-                    ->setAmount(-$value);
-
-                $em->persist($transaction);
-            }
-
-            $em->flush();
-
-            $this->addFlash('success', 'A cobrar...');
-
-            return $this->redirectToRoute('welcome');
+        if (!$values) {
+            return $this->render(
+                'admin/cobrar.html.twig',
+                ['stores' => $storeRepository->getActive()]
+            );
         }
 
-        return $this->render(
-            'admin/cobrar.html.twig',
-            ['stores' => $storeRepository->getActive()]
-        );
+        $users = $request->request->get('users');
+
+        $em = $this->getDoctrine()->getManager();
+
+        // Type "Alquiler"
+        $type = $transactionTypeRepository->find(1);
+        $method = $paymentMethodRepository->find(1);
+
+        if (!$type || !$method) {
+            throw new UnexpectedValueException(
+                'Invalid type or payment method.'
+            );
+        }
+
+        foreach ($values as $storeId => $value) {
+            if (0 === $value) {
+                // No value
+                continue;
+            }
+
+            $transaction = (new Transaction)
+                ->setDate(
+                    new DateTime($request->request->get('date_cobro'))
+                )
+                ->setStore($storeRepository->find((int)$storeId))
+                ->setUser($userRepository->find((int)$users[$storeId]))
+                ->setType($type)
+                ->setMethod($method)
+                // Set negative value (!)
+                ->setAmount(-$value);
+
+            $em->persist($transaction);
+        }
+
+        $em->flush();
+
+        $this->addFlash('success', 'A cobrar...');
+
+        return $this->redirectToRoute('welcome');
     }
 
     #[Route(path: '/pay-day', name: 'pay-day', methods: ['GET', 'POST'])]
@@ -146,11 +152,13 @@ class AdminController extends AbstractController
                 'admin/payday2-html.twig',
                 [
                     'stores'         => $storeRepository->getActive(),
-                    'lastRecipeNo'   => $transactionRepository->getLastRecipeNo()+1,
+                    'lastRecipeNo'   => $transactionRepository->getLastRecipeNo(
+                        ) + 1,
                     'paymentMethods' => $paymentMethodRepository->findAll(),
                 ]
             );
         }
+
         $em = $this->getDoctrine()->getManager();
         $type = $transactionTypeRepository->findOneBy(['name' => 'Pago']);
         if (!$type) {

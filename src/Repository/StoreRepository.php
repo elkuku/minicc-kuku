@@ -36,8 +36,7 @@ class StoreRepository extends ServiceEntityRepository
     public function getActive(): array
     {
         return $this->createQueryBuilder('s')
-            ->where('s.valAlq > :val')
-            ->setParameter('val', 0)
+            ->where('s.user IS NOT NULL')
             ->getQuery()
             ->getResult();
     }
