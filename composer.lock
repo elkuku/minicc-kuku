@@ -827,16 +827,16 @@
         },
         {
             "name": "doctrine/doctrine-migrations-bundle",
-            "version": "3.1.0",
+            "version": "3.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/DoctrineMigrationsBundle.git",
-                "reference": "d1248471734c62b94baac36cb18e9c635775eeb0"
+                "reference": "91f0a5e2356029575f3038432cc188b12f9d5da5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/DoctrineMigrationsBundle/zipball/d1248471734c62b94baac36cb18e9c635775eeb0",
-                "reference": "d1248471734c62b94baac36cb18e9c635775eeb0",
+                "url": "https://api.github.com/repos/doctrine/DoctrineMigrationsBundle/zipball/91f0a5e2356029575f3038432cc188b12f9d5da5",
+                "reference": "91f0a5e2356029575f3038432cc188b12f9d5da5",
                 "shasum": ""
             },
             "require": {
@@ -891,7 +891,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/DoctrineMigrationsBundle/issues",
-                "source": "https://github.com/doctrine/DoctrineMigrationsBundle/tree/3.1.0"
+                "source": "https://github.com/doctrine/DoctrineMigrationsBundle/tree/3.1.1"
             },
             "funding": [
                 {
@@ -907,7 +907,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-04-05T20:45:07+00:00"
+            "time": "2021-04-10T16:48:53+00:00"
         },
         {
             "name": "doctrine/event-manager",
@@ -3287,16 +3287,16 @@
         },
         {
             "name": "sensio/framework-extra-bundle",
-            "version": "v6.1.1",
+            "version": "v6.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioFrameworkExtraBundle.git",
-                "reference": "8ef75e99f20332f2725587896364f7079b53de95"
+                "reference": "676262b7a65a1033befbcf59e180d072df7504b6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioFrameworkExtraBundle/zipball/8ef75e99f20332f2725587896364f7079b53de95",
-                "reference": "8ef75e99f20332f2725587896364f7079b53de95",
+                "url": "https://api.github.com/repos/sensiolabs/SensioFrameworkExtraBundle/zipball/676262b7a65a1033befbcf59e180d072df7504b6",
+                "reference": "676262b7a65a1033befbcf59e180d072df7504b6",
                 "shasum": ""
             },
             "require": {
@@ -3359,9 +3359,9 @@
             ],
             "support": {
                 "issues": "https://github.com/sensiolabs/SensioFrameworkExtraBundle/issues",
-                "source": "https://github.com/sensiolabs/SensioFrameworkExtraBundle/tree/v6.1.1"
+                "source": "https://github.com/sensiolabs/SensioFrameworkExtraBundle/tree/v6.1.2"
             },
-            "time": "2021-02-23T11:50:58+00:00"
+            "time": "2021-04-09T16:14:11+00:00"
         },
         {
             "name": "symfony/apache-pack",
@@ -9946,12 +9946,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "07d2f0c0e6553fd7433f2eb7d043260d3bfd351d"
+                "reference": "aa48fe959b0236eede9c51a38f47df2bb81ef137"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/07d2f0c0e6553fd7433f2eb7d043260d3bfd351d",
-                "reference": "07d2f0c0e6553fd7433f2eb7d043260d3bfd351d",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/aa48fe959b0236eede9c51a38f47df2bb81ef137",
+                "reference": "aa48fe959b0236eede9c51a38f47df2bb81ef137",
                 "shasum": ""
             },
             "conflict": {
@@ -10208,6 +10208,7 @@
                 "verot/class.upload.php": "<=1.0.3|>=2,<=2.0.4",
                 "vrana/adminer": "<4.7.9",
                 "wallabag/tcpdf": "<6.2.22",
+                "wikimedia/parsoid": "<0.12.2",
                 "willdurand/js-translation-bundle": "<2.1.1",
                 "yii2mod/yii2-cms": "<1.9.2",
                 "yiisoft/yii": ">=1.1.14,<1.1.15",
@@ -10277,7 +10278,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-04-07T21:01:39+00:00"
+            "time": "2021-04-09T08:01:23+00:00"
         },
         {
             "name": "sebastian/diff",
