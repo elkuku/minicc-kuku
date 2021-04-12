@@ -8,6 +8,8 @@
 
 namespace App\Form;
 
+use App\Entity\Store;
+use App\Repository\StoreRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -17,6 +19,9 @@ use Symfony\Component\Form\FormBuilderInterface;
  */
 class TransactionTypeType extends AbstractType
 {
+    public function __construct(private StoreRepository $storeRepository)
+    {
+    }
     /**
      * {@inheritdoc}
      */
@@ -46,7 +51,11 @@ class TransactionTypeType extends AbstractType
                 EntityType::class,
                 [
                     'class'        => 'App:Store',
-                    'choice_label' => 'id',
+                    // 'choice_label' => 'id',
+                    // 'choices' => $this->storeRepository->getActive(),
+                    'choice_label' => function (Store $store) {
+                        return $store->getId().' - '.$store->getDestination();
+                    },
                 ]
             )
             ->add(
