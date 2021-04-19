@@ -5,9 +5,11 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\PersistentCollection;
 use Serializable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -21,22 +23,27 @@ class User implements UserInterface, Serializable
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private ?int $id;
+    private ?int $id = null;
 
     /**
      * @var Store[]
      *
      * @ORM\OneToMany(targetEntity="Store", mappedBy="user")
      */
-    private $stores;
+    private array|ArrayCollection|PersistentCollection $stores;
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
+     * @Assert\NotBlank
+     * @Assert\Email(
+     *     message = "The email '{{ value }}' is not a valid email."
+     * )
      */
     private string $email;
 
     /**
      * @ORM\Column(type="string", length=40)
+     * @Assert\NotBlank
      */
     private ?string $name;
 
@@ -48,7 +55,7 @@ class User implements UserInterface, Serializable
     /**
      * @ManyToOne(targetEntity="UserGender")
      */
-    private UserGender $gender;
+    private ?UserGender $gender = null;
 
     /**
      * User State
@@ -56,10 +63,11 @@ class User implements UserInterface, Serializable
      *
      * @ManyToOne(targetEntity="UserState")
      */
-    private UserState $state;
+    private ?UserState $state = null;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=false)
+     * @Assert\NotBlank
      */
     private string $inqCi = '';
 
@@ -96,10 +104,7 @@ class User implements UserInterface, Serializable
     {
     }
 
-    /**
-     * @return mixed
-     */
-    public function getRole()
+    public function getRole(): string
     {
         return $this->role;
     }
@@ -111,10 +116,6 @@ class User implements UserInterface, Serializable
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     * @return (Role|string)[] The user roles
-     */
     public function getRoles(): array
     {
         return [$this->getRole()];
@@ -154,9 +155,8 @@ class User implements UserInterface, Serializable
         return $this;
     }
 
-    public function getPassword()
+    public function getPassword(): void
     {
-        return null;
     }
 
     public function getSalt(): void
@@ -170,7 +170,7 @@ class User implements UserInterface, Serializable
         return $this;
     }
 
-    public function getState(): UserState
+    public function getState(): ?UserState
     {
         return $this->state;
     }
@@ -187,7 +187,7 @@ class User implements UserInterface, Serializable
         return $this->inqCi;
     }
 
-    public function setInqRuc(string $inqRuc): User
+    public function setInqRuc(?string $inqRuc): User
     {
         $this->inqRuc = $inqRuc;
 
@@ -199,7 +199,7 @@ class User implements UserInterface, Serializable
         return $this->inqRuc;
     }
 
-    public function setTelefono(string $telefono): User
+    public function setTelefono(?string $telefono): User
     {
         $this->telefono = $telefono;
 
@@ -211,7 +211,7 @@ class User implements UserInterface, Serializable
         return $this->telefono;
     }
 
-    public function setTelefono2(string $telefono2): User
+    public function setTelefono2(?string $telefono2): User
     {
         $this->telefono2 = $telefono2;
 
@@ -223,7 +223,7 @@ class User implements UserInterface, Serializable
         return $this->telefono2;
     }
 
-    public function setDireccion(string $direccion): User
+    public function setDireccion(?string $direccion): User
     {
         $this->direccion = $direccion;
 
@@ -264,17 +264,11 @@ class User implements UserInterface, Serializable
         return $this;
     }
 
-    public function getGender(): UserGender
+    public function getGender(): ?UserGender
     {
         return $this->gender;
     }
 
-    /**
-     * String representation of object
-     *
-     * @link  http://php.net/manual/en/serializable.serialize.php
-     * @return string the string representation of the object or null
-     */
     public function serialize(): string
     {
         return serialize(
@@ -285,19 +279,12 @@ class User implements UserInterface, Serializable
         );
     }
 
-    /**
-     * Constructs the object
-     *
-     * @link  http://php.net/manual/en/serializable.unserialize.php
-     *
-     * @param string $serialized The string representation of the object.
-     */
-    public function unserialize($serialized): void
+    public function unserialize($data): void
     {
-        list (
+        [
             $this->id,
             $this->email,
-            )
-            = unserialize($serialized);
+        ]
+            = unserialize($data);
     }
 }
