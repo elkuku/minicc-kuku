@@ -27,3 +27,8 @@ yarn-error.log
 .idea/workspace.xml
 
 /drivers/*
+
+###> phpunit/phpunit ###
+/phpunit.xml
+.phpunit.result.cache
+###< phpunit/phpunit ###

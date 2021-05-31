@@ -4,6 +4,7 @@
         "@symfony/ux-chartjs": "file:vendor/symfony/ux-chartjs/Resources/assets",
         "@symfony/webpack-encore": "^1.0.0",
         "bootstrap": "^4.5.0",
+        "chart.js": "^2.9.4",
         "core-js": "^3.0.0",
         "file-loader": "^6.0.0",
         "jquery": "^3.5.1",
