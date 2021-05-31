@@ -75,14 +75,10 @@ class DepositController extends AbstractController
                 continue;
             }
 
-            if ('DEPOSITO' !== $line->descripcion) {
+            if (!str_starts_with($line->descripcion, 'TRANSFERENCIA DIRECTA DE')) {
+            // if ('DEPOSITO' !== $line->descripcion) {
                 continue;
             }
-
-            //			if (false !== strpos($line->concepto, 'INTERES'))
-            //			{
-            //				continue;
-            //			}
 
             $deposit = (new Deposit)
                 ->setEntity($entity)
@@ -93,8 +89,6 @@ class DepositController extends AbstractController
             if (false === $depositRepository->has($deposit)) {
                 $em->persist($deposit);
                 $insertCount++;
-
-                continue;
             }
         }
         $em->flush();
@@ -166,4 +160,17 @@ class DepositController extends AbstractController
 
         return new JsonResponse($response);
     }
+
+    #[Route(path: '/delete/{id}', name: 'deposits-delete', methods: ['GET'])]
+    public function delete(
+        Deposit $deposit
+    ): Response {
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($deposit);
+        $em->flush();
+        $this->addFlash('success', 'Deposit method has been deleted');
+
+        return $this->redirectToRoute('deposits');
+    }
+
 }
