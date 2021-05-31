@@ -31,6 +31,7 @@
         "symfony/monolog-bundle": "^3.5",
         "symfony/orm-pack": "*",
         "symfony/process": "*",
+        "symfony/runtime": "5.*",
         "symfony/security-bundle": "*",
         "symfony/sendgrid-mailer": "5.*",
         "symfony/serializer-pack": "*",

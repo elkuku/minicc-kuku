@@ -1,4 +1,6 @@
 security:
+    # https://symfony.com/doc/current/security/experimental_authenticators.html
+    enable_authenticator_manager: true
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
         database_users:
@@ -8,20 +10,20 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
-            anonymous: true
             lazy: true
             switch_user: true
+
+            entry_point: App\Security\LoginFormAuthenticator
 
             guard:
                 authenticators:
                     - App\Security\LoginFormAuthenticator
                     - App\Security\GoogleAuthenticator
-                entry_point: App\Security\LoginFormAuthenticator
 
             form_login:
                 login_path: login
                 check_path: login
-                csrf_token_generator: security.csrf.token_manager
+#                csrf_token_generator: security.csrf.token_manager
 
             logout:
                 path: /logout
