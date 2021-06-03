@@ -11,7 +11,7 @@
         "ext-json": "*",
         "ext-pcre": "*",
         "doctrine/doctrine-fixtures-bundle": "^3.0",
-        "elkuku/intl-numbers-to-words": "1.0",
+        "elkuku/intl-numbers-to-words": "1.*",
         "h4cc/wkhtmltopdf-amd64": "^0.12.3",
         "knplabs/knp-snappy-bundle": "^1.5",
         "knpuniversity/oauth2-client-bundle": "^v2.1",
