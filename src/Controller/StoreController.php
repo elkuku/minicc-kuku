@@ -35,7 +35,7 @@ class StoreController extends AbstractController
     }
 
 
-    #[Route(path: '/{id}', name: 'store-transactions', methods: ['GET', 'POST'])]
+    #[Route(path: '/{id}', name: 'store-transactions', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function show(
         TransactionRepository $transactionRepository,
         StoreRepository $storeRepository,
