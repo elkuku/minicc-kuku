@@ -14,6 +14,12 @@ use function is_object;
 
 class IntlConverter
 {
+    public function __construct(
+        private string $defaultLocale,
+        private string $defaultCurrency
+    ) {
+    }
+
     public static function formatDate(
         string|\DateTime $date,
         string $format = "d 'de' MMMM YYYY",
@@ -28,5 +34,19 @@ class IntlConverter
         $dateTime = is_object($date) ? $date : new DateTime($date);
 
         return $formatter->formatObject($dateTime, $format, $lang);
+    }
+
+    public function toCurrencyWords(
+        float $ammount,
+        string $locale = null,
+        string $currency = null
+    ): string {
+        $locale = $locale ?? $this->defaultLocale;
+        $currency = $currency ?? $this->defaultCurrency;
+
+        $a = new \NumberFormatter($locale, \NumberFormatter::SPELLOUT);
+        echo $a->formatCurrency(1_231_231.45, $currency) .PHP_EOL;
+        echo $a->format(1_231_231.45) .PHP_EOL;
+
     }
 }
