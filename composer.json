@@ -20,7 +20,7 @@
         "h4cc/wkhtmltopdf-amd64": "^0.12.3",
         "knplabs/knp-snappy-bundle": "^1.5",
         "knpuniversity/oauth2-client-bundle": "^v2.1",
-        "league/oauth2-google": "^3.0",
+        "league/oauth2-google": "^4.0",
         "oro/doctrine-extensions": "^2.0",
         "phpdocumentor/reflection-docblock": "^5.2",
         "sensio/framework-extra-bundle": "^6.0",
