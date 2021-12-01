@@ -7,7 +7,9 @@ security:
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
         database_users:
-            entity: { class: App:User, property: email }
+            entity:
+                class: App\Entity\User
+                property: identifier
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -18,15 +20,13 @@ security:
 
             entry_point: App\Security\LoginFormAuthenticator
 
-            guard:
-                authenticators:
-                    - App\Security\LoginFormAuthenticator
-                    - App\Security\GoogleAuthenticator
+            custom_authenticators:
+                - App\Security\LoginFormAuthenticator
+                - App\Security\GoogleAuthenticator
 
             form_login:
                 login_path: login
                 check_path: login
-#                csrf_token_generator: security.csrf.token_manager
 
             logout:
                 path: /logout
