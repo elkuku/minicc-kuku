@@ -29,12 +29,11 @@
 
                         <div class="form-group">
                             {# <label for="email" class="col-md-4 control-label">e-mail</label> #}
-                            <input id="email" class="form-control" name="email" value="{{ last_username }}"
-                                   placeholder="e-mail" required autofocus>
+                            <input id="identifier" class="form-control" name="identifier" value="{{ last_username }}"
+                                   placeholder="Identifier" required autofocus>
                         </div>
 
-                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('login') }}">
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary">Login</button>
                         </div>
