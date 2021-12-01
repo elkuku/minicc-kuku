@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\PaymentMethod;
 use App\Form\PaymentMethodType;
 use App\Repository\PaymentMethodRepository;
+use Doctrine\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,7 +38,8 @@ class PaymentMethodController extends AbstractController
         'POST',
     ])]
     public function new(
-        Request $request
+        Request $request,
+        ManagerRegistry $managerRegistry,
     ): Response {
         $paymentMethod = new PaymentMethod;
         $form = $this->createForm(PaymentMethodType::class, $paymentMethod);
@@ -45,7 +47,7 @@ class PaymentMethodController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $paymentMethod = $form->getData();
 
-            $em = $this->getDoctrine()->getManager();
+            $em = $managerRegistry->getManager();
             $em->persist($paymentMethod);
             $em->flush();
 
@@ -74,14 +76,15 @@ class PaymentMethodController extends AbstractController
     ])]
     public function edit(
         PaymentMethod $data,
-        Request $request
+        Request $request,
+        ManagerRegistry $managerRegistry,
     ): Response {
         $form = $this->createForm(PaymentMethodType::class, $data);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
 
-            $em = $this->getDoctrine()->getManager();
+            $em = $managerRegistry->getManager();
             $em->persist($data);
             $em->flush();
 
@@ -106,9 +109,10 @@ class PaymentMethodController extends AbstractController
 
     #[Route(path: '/delete/{id}', name: 'payment-methods-delete', methods: ['GET'])]
     public function delete(
-        PaymentMethod $paymentMethod
+        PaymentMethod $paymentMethod,
+        ManagerRegistry $managerRegistry,
     ): Response {
-        $em = $this->getDoctrine()->getManager();
+        $em = $managerRegistry->getManager();
         $em->remove($paymentMethod);
         $em->flush();
         $this->addFlash('success', 'Payment method has been deleted');

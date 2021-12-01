@@ -10,6 +10,7 @@ use App\Repository\StoreRepository;
 use App\Repository\TransactionRepository;
 use App\Service\ChartBuilderService;
 use App\Service\TaxService;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -97,7 +98,8 @@ class StoreController extends AbstractController
      */
     #[Route(path: '/new', name: 'stores-add', methods: ['GET', 'POST'])]
     public function new(
-        Request $request
+        Request $request,
+        ManagerRegistry $managerRegistry,
     ): Response {
         $store = new Store;
         $form = $this->createForm(StoreType::class, $store);
@@ -105,7 +107,7 @@ class StoreController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $store = $form->getData();
 
-            $em = $this->getDoctrine()->getManager();
+            $em = $managerRegistry->getManager();
             $em->persist($store);
             $em->flush();
 
@@ -130,14 +132,16 @@ class StoreController extends AbstractController
     #[Route(path: '/edit/{id}', name: 'stores-edit', methods: ['GET', 'POST'])]
     public function edit(
         Store $store,
-        Request $request
+        Request $request,
+        ManagerRegistry $managerRegistry,
     ): Response {
         $form = $this->createForm(StoreType::class, $store);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $store = $form->getData();
 
-            $em = $this->getDoctrine()->getManager();
+            $em = $managerRegistry->getManager();
+
             $em->persist($store);
             $em->flush();
 

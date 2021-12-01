@@ -8,6 +8,7 @@ use App\Helper\IntlConverter;
 use App\Repository\ContractRepository;
 use App\Repository\StoreRepository;
 use App\Repository\UserRepository;
+use Doctrine\Persistence\ManagerRegistry;
 use IntlNumbersToWords\Numbers;
 use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 use Knp\Snappy\Pdf;
@@ -54,7 +55,8 @@ class ContractController extends AbstractController
         StoreRepository $storeRepo,
         UserRepository $userRepo,
         ContractRepository $contractRepo,
-        Request $request
+        Request $request,
+        ManagerRegistry $managerRegistry,
     ): Response {
         $store = $storeRepo->find($request->request->getInt('store'));
         $user = $userRepo->find($request->request->getInt('user'));
@@ -74,7 +76,7 @@ class ContractController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $contract = $form->getData();
 
-            $em = $this->getDoctrine()->getManager();
+            $em = $managerRegistry->getManager();
             $em->persist($contract);
             $em->flush();
 
@@ -98,14 +100,15 @@ class ContractController extends AbstractController
         methods: ['GET', 'POST'])]
     public function edit(
         Contract $contract,
-        Request $request
+        Request $request,
+        ManagerRegistry $managerRegistry,
     ): Response {
         $form = $this->createForm(ContractType::class, $contract);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $contract = $form->getData();
 
-            $em = $this->getDoctrine()->getManager();
+            $em = $managerRegistry->getManager();
             $em->persist($contract);
             $em->flush();
 
@@ -127,9 +130,10 @@ class ContractController extends AbstractController
 
     #[Route(path: '/delete/{id}', name: 'contracts-delete', methods: ['GET'])]
     public function delete(
-        Contract $contract
+        Contract $contract,
+        ManagerRegistry $managerRegistry,
     ): Response {
-        $em = $this->getDoctrine()->getManager();
+        $em = $managerRegistry->getManager();
         $em->remove($contract);
         $em->flush();
         $this->addFlash('success', 'Contract has been deleted');
@@ -140,7 +144,8 @@ class ContractController extends AbstractController
     #[Route(path: '/template', name: 'contracts-template', methods: ['GET', 'POST'])]
     public function template(
         ContractRepository $contractRepository,
-        Request $request
+        Request $request,
+        ManagerRegistry $managerRegistry,
     ): Response {
         $data = $contractRepository->findPlantilla();
         $form = $this->createForm(ContractType::class, $data);
@@ -148,7 +153,7 @@ class ContractController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
 
-            $em = $this->getDoctrine()->getManager();
+            $em = $managerRegistry->getManager();
             $em->persist($data);
             $em->flush();
 

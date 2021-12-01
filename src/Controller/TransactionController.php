@@ -8,6 +8,7 @@ use App\Helper\Paginator\PaginatorTrait;
 use App\Repository\StoreRepository;
 use App\Repository\TransactionRepository;
 use App\Repository\TransactionTypeRepository;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -25,12 +26,10 @@ class TransactionController extends AbstractController
     #[Route(path: '/delete/{id}', name: 'transaction-delete', methods: ['GET'])]
     public function delete(
         Request $request,
-        Transaction $transaction
+        Transaction $transaction,
+        ManagerRegistry $managerRegistry,
     ): Response {
-        if (null === $transaction) {
-            throw $this->createNotFoundException('No transaction found');
-        }
-        $em = $this->getDoctrine()->getManager();
+        $em = $managerRegistry->getManager();
         $em->remove($transaction);
         $em->flush();
         $this->addFlash('success', 'Transaction has been deleted');
@@ -42,7 +41,8 @@ class TransactionController extends AbstractController
     #[Route(path: '/edit/{id}', name: 'transaction-edit', methods: ['GET', 'POST'])]
     public function edit(
         Transaction $transaction,
-        Request $request
+        Request $request,
+        ManagerRegistry $managerRegistry,
     ): Response {
         $view = $request->query->get('view');
         $form = $this->createForm(TransactionTypeType::class, $transaction);
@@ -50,7 +50,7 @@ class TransactionController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $transaction = $form->getData();
 
-            $em = $this->getDoctrine()->getManager();
+            $em = $managerRegistry->getManager();
             $em->persist($transaction);
             $em->flush();
 

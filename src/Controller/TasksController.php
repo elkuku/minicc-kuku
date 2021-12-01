@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\Persistence\ManagerRegistry;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -91,9 +92,10 @@ class TasksController extends AbstractController
     }
     #[Route(path: '/export-table/{name}', name: 'export-table', methods: ['GET'])]
     public function export(
-        string $name
+        string $name,
+        ManagerRegistry $managerRegistry,
     ): Response {
-        $content = json_encode($this->getTableData($name));
+        $content = json_encode($this->getTableData($name, $managerRegistry));
         $filename = sprintf('export-%s-%s.json', $name, date('Y-m-d'));
 
         return new Response(
@@ -111,7 +113,8 @@ class TasksController extends AbstractController
 
     #[Route(path: '/import-table', name: 'import-table', methods: ['POST'])]
     public function import(
-        Request $request
+        Request $request,
+        ManagerRegistry $managerRegistry,
     ): Response {
         $file = $request->files->get('file');
         if (!$file) {
@@ -136,7 +139,7 @@ class TasksController extends AbstractController
         }
         $tableName = $parts[1];
         $newData = json_decode(file_get_contents($path));
-        $oldData = $this->getTableData($tableName);
+        $oldData = $this->getTableData($tableName, $managerRegistry);
         foreach ($newData as $i => $newItem) {
             foreach ($oldData as $io => $oldItem) {
                 if ($oldItem['id'] === $newItem->id) {
@@ -185,23 +188,20 @@ class TasksController extends AbstractController
         $queryLines[] = implode(",\n", $values).';';
         $query = implode('', $queryLines);
         /** @type EntityManager $em */
-        $em = $this->getDoctrine()->getManager();
+        $em = $managerRegistry->getManager();
         $statement = $em->getConnection()->prepare($query);
-        $statement->execute();
+        $statement->executeQuery();
         $this->addFlash('success', count($newData).' lines inserted');
 
         return $this->redirectToRoute('admin-tasks');
     }
 
-    private function getTableData(string $tableName): array|RedirectResponse
+    private function getTableData(string $tableName, ManagerRegistry $managerRegistry,): array|RedirectResponse
     {
         try {
-            /** @type EntityManager $em */
-            $em = $this->getDoctrine()->getManager();
-
             $query = "SELECT * FROM $tableName;";
 
-            $statement = $em->getConnection()->prepare($query);
+            $statement = $managerRegistry->getConnection()->prepare($query);
             $statement->execute();
 
             $result = $statement->fetchAll();

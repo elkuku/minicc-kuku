@@ -9,6 +9,7 @@ use App\Repository\TransactionRepository;
 use App\Repository\TransactionTypeRepository;
 use App\Repository\UserRepository;
 use DateTime;
+use Doctrine\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,7 +28,8 @@ class AdminController extends AbstractController
         UserRepository $userRepository,
         TransactionTypeRepository $transactionTypeRepository,
         PaymentMethodRepository $paymentMethodRepository,
-        Request $request
+        Request $request,
+        ManagerRegistry $managerRegistry,
     ): Response {
         $values = $request->request->get('values');
         if (!$values) {
@@ -39,7 +41,7 @@ class AdminController extends AbstractController
 
         $users = $request->request->get('users');
 
-        $em = $this->getDoctrine()->getManager();
+        $em = $managerRegistry->getManager();
 
         // Type "Alquiler"
         $type = $transactionTypeRepository->find(1);
@@ -83,7 +85,8 @@ class AdminController extends AbstractController
         StoreRepository $storeRepository,
         PaymentMethodRepository $paymentMethodRepository,
         TransactionTypeRepository $transactionTypeRepository,
-        Request $request
+        Request $request,
+        ManagerRegistry $managerRegistry,
     ): Response {
         $payments = $request->request->get('payments');
         if (!$payments) {
@@ -95,7 +98,7 @@ class AdminController extends AbstractController
                 ]
             );
         }
-        $em = $this->getDoctrine()->getManager();
+        $em = $managerRegistry->getManager();
         $type = $transactionTypeRepository->findOneBy(['name' => 'Pago']);
         if (!$type) {
             throw new UnexpectedValueException('Invalid transaction type');
@@ -144,7 +147,8 @@ class AdminController extends AbstractController
         PaymentMethodRepository $paymentMethodRepository,
         TransactionRepository $transactionRepository,
         TransactionTypeRepository $transactionTypeRepository,
-        Request $request
+        Request $request,
+        ManagerRegistry $managerRegistry,
     ): Response {
         $payments = $request->request->get('payments');
         if (!$payments) {
@@ -159,7 +163,7 @@ class AdminController extends AbstractController
             );
         }
 
-        $em = $this->getDoctrine()->getManager();
+        $em = $managerRegistry->getManager();
         $type = $transactionTypeRepository->findOneBy(['name' => 'Pago']);
         if (!$type) {
             throw new UnexpectedValueException('Invalid transaction type');

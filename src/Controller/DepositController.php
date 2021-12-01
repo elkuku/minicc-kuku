@@ -8,6 +8,7 @@ use App\Helper\Paginator\PaginatorTrait;
 use App\Repository\DepositRepository;
 use App\Repository\PaymentMethodRepository;
 use DateTime;
+use Doctrine\Persistence\ManagerRegistry;
 use RuntimeException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -53,7 +54,8 @@ class DepositController extends AbstractController
     public function uploadCSV(
         PaymentMethodRepository $paymentMethodRepository,
         DepositRepository $depositRepository,
-        Request $request
+        Request $request,
+        ManagerRegistry $managerRegistry,
     ): RedirectResponse {
         $csvFile = $request->files->get('csv_file');
         if (!$csvFile) {
@@ -68,7 +70,7 @@ class DepositController extends AbstractController
         if (!$entity) {
             throw new UnexpectedValueException('Invalid entity');
         }
-        $em = $this->getDoctrine()->getManager();
+        $em = $managerRegistry->getManager();
         $insertCount = 0;
         foreach ($csvData->lines as $line) {
             if (!isset($line->descripcion)) {
@@ -131,7 +133,7 @@ class DepositController extends AbstractController
      */
     public function lookupOLD(
         DepositRepository $depositRepository,
-        Request $request
+        Request $request,
     ): JsonResponse {
         $documentId = $request->get('document_id');
         $deposits = $depositRepository->lookup($documentId);
@@ -163,9 +165,10 @@ class DepositController extends AbstractController
 
     #[Route(path: '/delete/{id}', name: 'deposits-delete', methods: ['GET'])]
     public function delete(
-        Deposit $deposit
+        Deposit $deposit,
+        ManagerRegistry $managerRegistry,
     ): Response {
-        $em = $this->getDoctrine()->getManager();
+        $em = $managerRegistry->getManager();
         $em->remove($deposit);
         $em->flush();
         $this->addFlash('success', 'Deposit method has been deleted');

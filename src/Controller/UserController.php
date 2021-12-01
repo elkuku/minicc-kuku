@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Form\UserFullType;
 use App\Repository\UserRepository;
 use App\Repository\UserStateRepository;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -43,14 +44,15 @@ class UserController extends AbstractController
     #[Route(path: '/edit/{id}', name: 'user-edit', methods: ['GET', 'POST'])]
     public function edit(
         User $client,
-        Request $request
+        Request $request,
+        ManagerRegistry $managerRegistry,
     ): Response {
         $form = $this->createForm(UserFullType::class, $client);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $client = $form->getData();
 
-            $em = $this->getDoctrine()->getManager();
+            $em = $managerRegistry->getManager();
             $em->persist($client);
             $em->flush();
 
@@ -70,7 +72,8 @@ class UserController extends AbstractController
 
     #[Route(path: '/new', name: 'register', methods: ['GET', 'POST'])]
     public function new(
-        Request $request
+        Request $request,
+        ManagerRegistry $managerRegistry,
     ): Response {
         $user = new User;
         $form = $this->createForm(UserFullType::class, $user);
@@ -78,7 +81,7 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $user->setRole('ROLE_USER');
 
-            $em = $this->getDoctrine()->getManager();
+            $em = $managerRegistry->getManager();
             $em->persist($user);
             $em->flush();
 

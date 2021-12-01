@@ -7,11 +7,10 @@ use App\Repository\TransactionRepository;
 use App\Service\ChartBuilderService;
 use App\Service\TaxService;
 use stdClass;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class DefaultController extends AbstractController
+class DefaultController extends BaseController
 {
     #[Route(path: '/', name: 'welcome', methods: ['GET'])]
     public function index(
@@ -49,7 +48,7 @@ class DefaultController extends AbstractController
         return $this->render(
             'default/index.html.twig',
             [
-                'stores'          => $user ? $user->getStores() : null,
+                'stores'          => $user?->getStores(),
                 'balances'        => $balances,
                 'chartBalances' => $chartBuilderService->getDashboardChart(
                     'Saldo en $',
