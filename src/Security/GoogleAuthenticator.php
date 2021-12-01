@@ -5,146 +5,116 @@ namespace App\Security;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use KnpU\OAuth2ClientBundle\Security\Authenticator\SocialAuthenticator;
-use KnpU\OAuth2ClientBundle\Client\Provider\GoogleClient;
+use KnpU\OAuth2ClientBundle\Client\OAuth2ClientInterface;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use League\OAuth2\Client\Provider\GoogleUser;
-use League\OAuth2\Client\Token\AccessToken;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\User\UserProviderInterface;
+use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
+use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
+use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
+use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
-class GoogleAuthenticator extends SocialAuthenticator
+class GoogleAuthenticator extends AbstractAuthenticator
 {
     use TargetPathTrait;
 
     public function __construct(
         private ClientRegistry $clientRegistry,
-        private EntityManagerInterface $em,
+        private EntityManagerInterface $entityManager,
         private UserRepository $userRepository,
         private UrlGeneratorInterface $urlGenerator,
-        private SessionInterface $session
     ) {
     }
 
     public function supports(Request $request): bool
     {
-        // continue ONLY if the current ROUTE matches the check ROUTE
-        return $request->attributes->get('_route') === 'connect_google_check';
+        return $request->getPathInfo() === '/connect/google/check';
     }
 
     /**
-     * @return AccessToken|mixed
+     * @throws \League\OAuth2\Client\Provider\Exception\IdentityProviderException
      */
-    public function getCredentials(Request $request)
+    public function authenticate(Request $request): Passport
     {
-        // this method is only called if supports() returns true
+        $token = $this->getGoogleClient()->getAccessToken();
 
-        return $this->fetchAccessToken($this->getGoogleClient());
-    }
-
-    /**
-     * @param mixed $credentials
-     *
-     * @return User|null|object|UserInterface
-     */
-    public function getUser($credentials, UserProviderInterface $userProvider)
-    {
         /** @var GoogleUser $googleUser */
         $googleUser = $this->getGoogleClient()
-            ->fetchUserFromToken($credentials);
+            ->fetchUserFromToken($token);
 
-        //		$email = $googleUser->getEmail();
+        $user = $this->getUser($googleUser);
 
-        // 1) have they logged in with Google before? Easy!
-        $user = $this->userRepository->findOneBy(
-            ['email' => $googleUser->getEmail()]
+        return new SelfValidatingPassport(
+            new UserBadge($user->getUserIdentifier()),
         );
-
-        if (!$user) {
-            return null;
-            $user = new User();
-
-            return $user;
-            $user->setEmail($googleUser->getEmail());
-
-            $this->em->persist($user);
-            $this->em->flush();
-        }
-
-        return $user;
     }
 
-    /**
-     * @return GoogleClient
-     */
-    private function getGoogleClient()
-    {
-        return $this->clientRegistry->getClient('google');
-    }
-
-    /**
-     * @param string $providerKey
-     *
-     * @return null|Response
-     */
     public function onAuthenticationSuccess(
         Request $request,
         TokenInterface $token,
-        $providerKey
-    ) {
+        string $firewallName
+    ): RedirectResponse {
         if ($targetPath = $this->getTargetPath(
             $request->getSession(),
-            $providerKey
+            $firewallName
         )
         ) {
             return new RedirectResponse($targetPath);
         }
 
-        return new RedirectResponse($this->urlGenerator->generate('welcome'));
+        return new RedirectResponse($this->urlGenerator->generate('default'));
     }
 
-    /**
-     *
-     * @return null|Response
-     */
     public function onAuthenticationFailure(
         Request $request,
         AuthenticationException $exception
-    ) {
+    ): RedirectResponse {
         $message = strtr(
             $exception->getMessageKey(),
             $exception->getMessageData()
         );
-        $this->session->getFlashBag()->add('danger', $message);
+        $request->getSession()->getFlashBag()->add('danger', $message);
 
         return new RedirectResponse($this->urlGenerator->generate('login'));
-
-        return new Response($message, Response::HTTP_FORBIDDEN);
     }
 
-    /**
-     * Called when authentication is needed, but it's not sent.
-     * This redirects to the 'login'.
-     *
-     * @param AuthenticationException|null $authException
-     *
-     */
-    public function start(
-        Request $request,
-        AuthenticationException $authException = null
-    ): RedirectResponse {
-        return new RedirectResponse(
-            '/connect/',
-            // might be the site, where users choose their oauth provider
-            Response::HTTP_TEMPORARY_REDIRECT
-        );
+    private function getUser(GoogleUser $googleUser): User
+    {
+        // 1) have they logged in with Google before? Easy!
+        if ($user = $this->userRepository->findOneBy(
+            ['googleId' => $googleUser->getId()]
+        )
+        ) {
+            return $user;
+        }
+
+        // @todo remove: Fetch user by email
+        if ($user = $this->userRepository->findOneBy(
+            ['identifier' => $googleUser->getEmail()]
+        )
+        ) {
+            // @todo remove: Update existing users google id
+            $user->setGoogleId($googleUser->getId());
+        } else {
+            // Register new user
+            $user = (new User())
+                ->setUserIdentifier($googleUser->getEmail())
+                ->setGoogleId($googleUser->getId());
+        }
+
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+
+        return $user;
+    }
+
+    private function getGoogleClient(): OAuth2ClientInterface
+    {
+        return $this->clientRegistry->getClient('google');
     }
 }
