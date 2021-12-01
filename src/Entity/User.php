@@ -26,6 +26,11 @@ class User implements UserInterface, Serializable
     private ?int $id = null;
 
     /**
+     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank */
+    private string $identifier;
+
+    /**
      * @var Store[]
      *
      * @ORM\OneToMany(targetEntity="Store", mappedBy="user")
@@ -139,6 +144,11 @@ class User implements UserInterface, Serializable
     }
 
     public function getUsername(): string
+    {
+        return $this->email;
+    }
+
+    public function getUserIdentifier(): string
     {
         return $this->email;
     }
@@ -286,5 +296,17 @@ class User implements UserInterface, Serializable
             $this->email,
         ]
             = unserialize($data);
+    }
+
+    public function getIdentifier(): ?string
+    {
+        return $this->identifier;
+    }
+
+    public function setIdentifier(string $identifier): self
+    {
+        $this->identifier = $identifier;
+
+        return $this;
     }
 }
