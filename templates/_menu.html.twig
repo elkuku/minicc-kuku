@@ -1,6 +1,6 @@
 <nav
         class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark"
-        {{ is_granted('ROLE_PREVIOUS_ADMIN') ? 'style="background-color: red !important"' }}
+        {{ is_granted('IS_IMPERSONATOR') ? 'style="background-color: red !important"' }}
 >
     <a class="navbar-brand" href="{{ path('welcome') }}">MiniCC KuKu</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
