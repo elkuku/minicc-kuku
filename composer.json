@@ -46,7 +46,7 @@
         "symfony/string": "*",
         "symfony/translation": "*",
         "symfony/twig-bundle": "5.*",
-        "symfony/ux-chartjs": "^1.1",
+        "symfony/ux-chartjs": "^2.0",
         "symfony/validator": "*",
         "symfony/web-link": "*",
         "symfony/webpack-encore-bundle": "*",
@@ -121,7 +121,8 @@
     "extra": {
         "symfony": {
             "allow-contrib": true,
-            "require": "5.4.*"
+            "require": "5.4.*",
+            "docker": true
         }
     }
 }

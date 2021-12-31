@@ -123,7 +123,7 @@ class ControllerAccessTest extends WebTestCase
                 self::assertEquals(
                     $expectedStatusCode,
                     $browser->getResponse()->getStatusCode(),
-                    sprintf('failed: %s (%s)', $routeName, $path)
+                    sprintf('failed: %s (%s) with method "%s"', $routeName, $path, $method)
                 );
             }
         }

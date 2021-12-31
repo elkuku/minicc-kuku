@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Contract;
+use App\Entity\Deposit;
 use App\Entity\PaymentMethod;
 use App\Entity\Store;
 use App\Entity\Transaction;
@@ -15,7 +16,7 @@ use Doctrine\Persistence\ObjectManager;
 
 class AppFixtures extends Fixture
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $userStateActive = (new UserState)
             ->setName('Activo');
@@ -38,6 +39,7 @@ class AppFixtures extends Fixture
             ->setGender($userGenderSra)
             ->setName('admin')
             ->setEmail('admin@example.com')
+            ->setIdentifier('admin@example.com')
             ->setRole('ROLE_ADMIN');
         $manager->persist($admin);
 
@@ -46,6 +48,7 @@ class AppFixtures extends Fixture
             ->setGender($userGenderSra)
             ->setName('user1')
             ->setEmail('user1@example.com')
+            ->setIdentifier('user1@example.com')
             ->setRole('ROLE_USER');
         $manager->persist($user1);
 
@@ -54,6 +57,7 @@ class AppFixtures extends Fixture
             ->setGender($userGenderSra)
             ->setName('user2')
             ->setEmail('user2@example.com')
+            ->setIdentifier('user2@example.com')
             ->setRole('ROLE_USER');
         $manager->persist($user2);
 
@@ -61,6 +65,7 @@ class AppFixtures extends Fixture
             ->setState($userStateInactive)
             ->setGender($userGenderSr)
             ->setName('user3')
+            ->setIdentifier('user3@example.com')
             ->setEmail('user3@example.com')
             ->setRole('ROLE_USER');
         $manager->persist($user3);
@@ -116,6 +121,17 @@ class AppFixtures extends Fixture
             );
         $manager->persist($contract);
 
+
+        /*
+         * Deposit
+         */
+        $deposit = (new Deposit())
+            ->setDate(new \DateTime())
+            ->setDocument(123)
+            ->setAmount(123);
+        $manager->persist($deposit);
+
         $manager->flush();
+
     }
 }

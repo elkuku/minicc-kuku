@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataSource name="main_test@localhost">
-  <database-model serializer="dbm" dbms="MYSQL" family-id="MYSQL" format-version="4.31">
+  <database-model serializer="dbm" dbms="MYSQL" family-id="MYSQL" format-version="4.32">
     <root id="1"/>
     <collation id="2" parent="1" name="armscii8_bin">
       <Charset>armscii8</Charset>
@@ -710,23 +710,23 @@
       <Charset>utf8mb4</Charset>
     </collation>
     <schema id="224" parent="1" name="information_schema">
-      <Collation>utf8_general_ci</Collation>
+      <CollationName>utf8_general_ci</CollationName>
     </schema>
     <schema id="225" parent="1" name="main">
-      <Collation>latin1_swedish_ci</Collation>
+      <CollationName>latin1_swedish_ci</CollationName>
     </schema>
     <schema id="226" parent="1" name="main_test">
-      <Collation>latin1_swedish_ci</Collation>
       <Current>1</Current>
+      <CollationName>latin1_swedish_ci</CollationName>
     </schema>
     <schema id="227" parent="1" name="mysql">
-      <Collation>latin1_swedish_ci</Collation>
+      <CollationName>latin1_swedish_ci</CollationName>
     </schema>
     <schema id="228" parent="1" name="performance_schema">
-      <Collation>utf8_general_ci</Collation>
+      <CollationName>utf8_general_ci</CollationName>
     </schema>
     <schema id="229" parent="1" name="sys">
-      <Collation>utf8_general_ci</Collation>
+      <CollationName>utf8_general_ci</CollationName>
     </schema>
     <user id="230" parent="1" name="mysql.session">
       <Host>localhost</Host>
@@ -739,34 +739,34 @@
       <Host>localhost</Host>
     </user>
     <table id="234" parent="226" name="contract">
-      <Collation>utf8mb4_unicode_ci</Collation>
+      <CollationName>utf8mb4_unicode_ci</CollationName>
     </table>
     <table id="235" parent="226" name="deposit">
-      <Collation>utf8mb4_unicode_ci</Collation>
+      <CollationName>utf8mb4_unicode_ci</CollationName>
     </table>
     <table id="236" parent="226" name="doctrine_migration_versions">
-      <Collation>utf8_unicode_ci</Collation>
+      <CollationName>utf8_unicode_ci</CollationName>
     </table>
     <table id="237" parent="226" name="payment_method">
-      <Collation>utf8mb4_unicode_ci</Collation>
+      <CollationName>utf8mb4_unicode_ci</CollationName>
     </table>
     <table id="238" parent="226" name="store">
-      <Collation>utf8mb4_unicode_ci</Collation>
+      <CollationName>utf8mb4_unicode_ci</CollationName>
     </table>
     <table id="239" parent="226" name="transaction">
-      <Collation>utf8mb4_unicode_ci</Collation>
+      <CollationName>utf8mb4_unicode_ci</CollationName>
     </table>
     <table id="240" parent="226" name="transaction_type">
-      <Collation>utf8mb4_unicode_ci</Collation>
+      <CollationName>utf8mb4_unicode_ci</CollationName>
     </table>
     <table id="241" parent="226" name="user">
-      <Collation>utf8mb4_unicode_ci</Collation>
+      <CollationName>utf8mb4_unicode_ci</CollationName>
     </table>
     <table id="242" parent="226" name="user_gender">
-      <Collation>utf8mb4_unicode_ci</Collation>
+      <CollationName>utf8mb4_unicode_ci</CollationName>
     </table>
     <table id="243" parent="226" name="user_state">
-      <Collation>utf8mb4_unicode_ci</Collation>
+      <CollationName>utf8mb4_unicode_ci</CollationName>
     </table>
     <column id="244" parent="234" name="id">
       <DataType>int(11)|0s</DataType>
