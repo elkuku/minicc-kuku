@@ -13,7 +13,7 @@ class TwigExtensionTest extends WebTestCase
     public function setUp(): void
     {
         static::createClient();
-        $this->twigExtension = new AppExtension(self::$container);
+        $this->twigExtension = new AppExtension(self::getContainer());
     }
 
     public function testPriceFilter(): void

@@ -28,7 +28,7 @@ class StoreAccessTest extends WebTestCase
     public function testAccessWrongUser(): void
     {
         $client = static::createClient();
-        $userRepository = static::$container->get(UserRepository::class);
+        $userRepository = self::getContainer()->get(UserRepository::class);
         $testUser = $userRepository->findOneByEmail('user2@example.com');
         $client->loginUser($testUser);
 
@@ -45,7 +45,7 @@ class StoreAccessTest extends WebTestCase
     public function testAccess(): void
     {
         $client = static::createClient();
-        $userRepository = static::$container->get(UserRepository::class);
+        $userRepository = self::getContainer()->get(UserRepository::class);
         $testUser = $userRepository->findOneByEmail('user1@example.com');
         $client->loginUser($testUser);
 
