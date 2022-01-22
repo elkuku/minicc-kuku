@@ -104,7 +104,7 @@ class DepositController extends AbstractController
     }
 
     #[Route(path: '/_search', name: '_deposito_search', methods: ['GET'])]
-    public function _search(DepositRepository $depositRepository, Request $request)
+    public function _search(DepositRepository $depositRepository, Request $request): Response
     {
         $documentId = (int)$request->get('q');
         $ids = $depositRepository->search($documentId);
@@ -167,7 +167,7 @@ class DepositController extends AbstractController
     public function delete(
         Deposit $deposit,
         ManagerRegistry $managerRegistry,
-    ): Response {
+    ): RedirectResponse {
         $em = $managerRegistry->getManager();
         $em->remove($deposit);
         $em->flush();
@@ -175,5 +175,4 @@ class DepositController extends AbstractController
 
         return $this->redirectToRoute('deposits');
     }
-
 }

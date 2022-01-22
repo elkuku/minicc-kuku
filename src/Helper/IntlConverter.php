@@ -40,7 +40,7 @@ class IntlConverter
         float $ammount,
         string $locale = null,
         string $currency = null
-    ): string {
+    ): void {
         $locale = $locale ?? $this->defaultLocale;
         $currency = $currency ?? $this->defaultCurrency;
 

@@ -8,6 +8,7 @@ use App\Repository\PaymentMethodRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -111,7 +112,7 @@ class PaymentMethodController extends AbstractController
     public function delete(
         PaymentMethod $paymentMethod,
         ManagerRegistry $managerRegistry,
-    ): Response {
+    ): RedirectResponse {
         $em = $managerRegistry->getManager();
         $em->remove($paymentMethod);
         $em->flush();

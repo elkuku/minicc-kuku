@@ -140,7 +140,7 @@ class Transaction implements JsonSerializable
         return $this;
     }
 
-    public function setUser(User $user): Transaction
+    public function setUser(User $user): static
     {
         $this->user = $user;
 
@@ -152,14 +152,14 @@ class Transaction implements JsonSerializable
         return $this->user;
     }
 
-    public function setStore(Store $store): Transaction
+    public function setStore(Store $store): static
     {
         $this->store = $store;
 
         return $this;
     }
 
-    public function setType(TransactionType $type): Transaction
+    public function setType(TransactionType $type): static
     {
         $this->type = $type;
 
@@ -171,7 +171,7 @@ class Transaction implements JsonSerializable
         return $this->type;
     }
 
-    public function setMethod(PaymentMethod $paymentMethod): Transaction
+    public function setMethod(PaymentMethod $paymentMethod): static
     {
         $this->method = $paymentMethod;
 
@@ -200,6 +200,9 @@ class Transaction implements JsonSerializable
         return $this;
     }
 
+    /**
+     * @return array<string, int>|array<string, null>|array<string, string>
+     */
     public function jsonSerialize(): array
     {
         return [
@@ -216,7 +219,7 @@ class Transaction implements JsonSerializable
         ];
     }
 
-    public function setId(int $id): Transaction
+    public function setId(int $id): static
     {
         $this->id = $id;
 

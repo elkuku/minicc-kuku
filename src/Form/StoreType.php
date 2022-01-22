@@ -9,6 +9,7 @@
 namespace App\Form;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -35,7 +36,7 @@ class StoreType extends AbstractType
                     'placeholder'   => '-Desocupado-',
                     'required'      => false,
                     'label'         => 'Inquilino',
-                    'query_builder' => static function (EntityRepository $er) {
+                    'query_builder' => static function (EntityRepository $er): QueryBuilder {
                         return $er->createQueryBuilder('u')
                             ->where('u.role = :role')
                             ->andWhere('u.state = :state')

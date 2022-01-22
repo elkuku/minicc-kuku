@@ -98,6 +98,9 @@ class User implements UserInterface, Serializable
         return $this;
     }
 
+    /**
+     * @return string[]
+     */
     public function getRoles(): array
     {
         return [$this->getRole()];
@@ -150,7 +153,7 @@ class User implements UserInterface, Serializable
     {
     }
 
-    public function setState(UserState $status): User
+    public function setState(UserState $status): static
     {
         $this->state = $status;
 
@@ -162,7 +165,7 @@ class User implements UserInterface, Serializable
         return $this->state;
     }
 
-    public function setInqCi(string $inqCi): User
+    public function setInqCi(string $inqCi): static
     {
         $this->inqCi = $inqCi;
 
@@ -174,19 +177,19 @@ class User implements UserInterface, Serializable
         return $this->inqCi;
     }
 
-    public function setInqRuc(?string $inqRuc): User
+    public function setInqRuc(?string $inqRuc): static
     {
         $this->inqRuc = $inqRuc;
 
         return $this;
     }
 
-    public function getInqRuc(): string
+    public function getInqRuc(): ?string
     {
         return $this->inqRuc;
     }
 
-    public function setTelefono(?string $telefono): User
+    public function setTelefono(?string $telefono): static
     {
         $this->telefono = $telefono;
 
@@ -198,7 +201,7 @@ class User implements UserInterface, Serializable
         return $this->telefono;
     }
 
-    public function setTelefono2(?string $telefono2): User
+    public function setTelefono2(?string $telefono2): static
     {
         $this->telefono2 = $telefono2;
 
@@ -210,7 +213,7 @@ class User implements UserInterface, Serializable
         return $this->telefono2;
     }
 
-    public function setDireccion(?string $direccion): User
+    public function setDireccion(?string $direccion): static
     {
         $this->direccion = $direccion;
 
@@ -222,14 +225,14 @@ class User implements UserInterface, Serializable
         return $this->direccion;
     }
 
-    public function addStore(Store $store): User
+    public function addStore(Store $store): static
     {
         $this->stores[] = $store;
 
         return $this;
     }
 
-    public function removeStore(Store $store): User
+    public function removeStore(Store $store): static
     {
         $this->stores->removeElement($store);
 
@@ -239,12 +242,12 @@ class User implements UserInterface, Serializable
     /**
      * @return Store[]
      */
-    public function getStores()
+    public function getStores(): array|ArrayCollection|PersistentCollection
     {
         return $this->stores;
     }
 
-    public function setGender(UserGender $gender): User
+    public function setGender(UserGender $gender): static
     {
         $this->gender = $gender;
 
@@ -275,7 +278,7 @@ class User implements UserInterface, Serializable
             = unserialize($data);
     }
 
-    public function getIdentifier(): ?string
+    public function getIdentifier(): string
     {
         return $this->identifier;
     }

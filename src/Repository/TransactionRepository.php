@@ -110,11 +110,7 @@ class TransactionRepository extends ServiceEntityRepository
             ->getSingleScalarResult();
     }
 
-    /**
-     * @param string $month
-     * @param string $year
-     */
-    public function findMonthPayments(Store $store, $month, $year): array
+    public function findMonthPayments(Store $store, string $month, string $year): array
     {
         return $this->createQueryBuilder('p')
             ->where('p.store = :store')
@@ -130,11 +126,9 @@ class TransactionRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param integer $year
-     *
      * @return Transaction[]
      */
-    public function getPagosPorAno($year): array
+    public function getPagosPorAno(int $year): array
     {
         $transactions = $this->createQueryBuilder('t')
             ->where('YEAR(t.date) = :year')

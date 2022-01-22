@@ -27,6 +27,9 @@ trait BreadcrumbTrait
         return $this;
     }
 
+    /**
+     * @return mixed[]
+     */
     protected function getBreadcrumbs(): array
     {
         return $this->initBreadcrumbs()->breadcrumbs;

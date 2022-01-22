@@ -27,12 +27,9 @@ class ContractRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param int $storeId
-     * @param int $year
-     *
      * @return Contract[]
      */
-    public function findContracts($storeId = 0, $year = 0): array
+    public function findContracts(int $storeId = 0, int $year = 0): array
     {
         $query = $this->createQueryBuilder('c');
 

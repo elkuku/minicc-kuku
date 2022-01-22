@@ -10,6 +10,7 @@ use App\Repository\TransactionRepository;
 use App\Repository\TransactionTypeRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,7 +29,7 @@ class TransactionController extends AbstractController
         Request $request,
         Transaction $transaction,
         ManagerRegistry $managerRegistry,
-    ): Response {
+    ): RedirectResponse {
         $em = $managerRegistry->getManager();
         $em->remove($transaction);
         $em->flush();

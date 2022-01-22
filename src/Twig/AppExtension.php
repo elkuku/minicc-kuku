@@ -30,6 +30,7 @@ class AppExtension extends AbstractExtension
 
     /**
      * {@inheritdoc}
+     * @return \Twig\TwigFilter[]
      */
     public function getFilters(): array
     {
@@ -45,6 +46,7 @@ class AppExtension extends AbstractExtension
 
     /**
      * {@inheritdoc}
+     * @return \Twig\TwigFunction[]
      */
     public function getFunctions(): array
     {
@@ -55,6 +57,9 @@ class AppExtension extends AbstractExtension
         ];
     }
 
+    /**
+     * @return class-string[]
+     */
     public static function getSubscribedServices(): array
     {
         return [
@@ -116,6 +121,7 @@ class AppExtension extends AbstractExtension
 
     /**
      * Convert object to array for Twig usage..
+     * @return array<string, mixed>
      */
     public function objectFilter(object $classObject): array
     {

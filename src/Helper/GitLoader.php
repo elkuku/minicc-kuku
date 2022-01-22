@@ -47,6 +47,9 @@ class GitLoader
         return is_array($commitMessage) ? trim($commitMessage[0]) : '';
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getLastCommitDetail(): array
     {
         $gitLogFile = $this->rootDir.'/.git/logs/HEAD';
@@ -74,7 +77,7 @@ class GitLoader
         return $logs;
     }
 
-    protected function execCommand(string $command): string
+    protected function execCommand(string $command): bool|string
     {
         ob_start();
         $lastLine = system($command, $status);

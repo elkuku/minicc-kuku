@@ -45,7 +45,7 @@ class TransactionTypeType extends AbstractType
                 EntityType::class,
                 [
                     'class'        => 'App:Store',
-                    'choice_label' => function (Store $store) {
+                    'choice_label' => function (Store $store): string {
                         return $store->getId().' - '.$store->getDestination();
                     },
                 ]

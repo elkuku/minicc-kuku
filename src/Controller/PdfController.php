@@ -109,7 +109,7 @@ class PdfController extends AbstractController
     public function pdfList(
         UserRepository $userRepository,
         PdfHelper $PdfHelper,
-    ): Response {
+    ): PdfResponse {
         $html = $this->renderView(
             '_pdf/user-pdf-list.html.twig',
             ['users' => $userRepository->getSortedByStore()]
@@ -119,7 +119,6 @@ class PdfController extends AbstractController
             $PdfHelper->getOutputFromHtml($html),
             sprintf('user-list-%s.pdf', date('Y-m-d'))
         );
-
     }
 
     #[Route(path: '/ruclist', name: 'users-ruclist', methods: ['GET'])]

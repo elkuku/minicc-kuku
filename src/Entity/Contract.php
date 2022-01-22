@@ -91,7 +91,7 @@ class Contract
         return $this->id;
     }
 
-    public function setInqNombreapellido(string $inqNombreapellido): Contract
+    public function setInqNombreapellido(string $inqNombreapellido): static
     {
         $this->inqNombreapellido = $inqNombreapellido;
 
@@ -103,7 +103,7 @@ class Contract
         return $this->inqNombreapellido;
     }
 
-    public function setInqCi(string $inqCi): Contract
+    public function setInqCi(string $inqCi): static
     {
         $this->inqCi = $inqCi;
 
@@ -115,7 +115,7 @@ class Contract
         return $this->inqCi;
     }
 
-    public function setDestination(string $destination): Contract
+    public function setDestination(string $destination): static
     {
         $this->destination = $destination;
 
@@ -127,31 +127,31 @@ class Contract
         return $this->destination;
     }
 
-    public function setValAlq($valAlq): Contract
+    public function setValAlq(float $valAlq): static
     {
         $this->valAlq = $valAlq;
 
         return $this;
     }
 
-    public function getValAlq()
+    public function getValAlq(): float
     {
         return $this->valAlq;
     }
 
-    public function setValGarantia($valGarantia): Contract
+    public function setValGarantia(float $valGarantia): static
     {
         $this->valGarantia = $valGarantia;
 
         return $this;
     }
 
-    public function getValGarantia()
+    public function getValGarantia(): float
     {
         return $this->valGarantia;
     }
 
-    public function setDate($date): Contract
+    public function setDate(\DateTime $date): static
     {
         $this->date = $date;
 
@@ -163,7 +163,7 @@ class Contract
         return $this->date;
     }
 
-    public function setCntLanfort(int $cntLanfort): Contract
+    public function setCntLanfort(int $cntLanfort): static
     {
         $this->cntLanfort = $cntLanfort;
 
@@ -175,7 +175,7 @@ class Contract
         return $this->cntLanfort;
     }
 
-    public function setCntNeon(int $cntNeon): Contract
+    public function setCntNeon(int $cntNeon): static
     {
         $this->cntNeon = $cntNeon;
 
@@ -187,7 +187,7 @@ class Contract
         return $this->cntNeon;
     }
 
-    public function setCntSwitch(int $cntSwitch): Contract
+    public function setCntSwitch(int $cntSwitch): static
     {
         $this->cntSwitch = $cntSwitch;
 
@@ -199,7 +199,7 @@ class Contract
         return $this->cntSwitch;
     }
 
-    public function setCntToma(int $cntToma): Contract
+    public function setCntToma(int $cntToma): static
     {
         $this->cntToma = $cntToma;
 
@@ -211,7 +211,7 @@ class Contract
         return $this->cntToma;
     }
 
-    public function setCntVentana(int $cntVentana): Contract
+    public function setCntVentana(int $cntVentana): static
     {
         $this->cntVentana = $cntVentana;
 
@@ -223,7 +223,7 @@ class Contract
         return $this->cntVentana;
     }
 
-    public function setCntLlaves(int $cntLlaves): Contract
+    public function setCntLlaves(int $cntLlaves): static
     {
         $this->cntLlaves = $cntLlaves;
 
@@ -235,7 +235,7 @@ class Contract
         return $this->cntLlaves;
     }
 
-    public function setCntMedAgua(int $cntMedAgua): Contract
+    public function setCntMedAgua(int $cntMedAgua): static
     {
         $this->cntMedAgua = $cntMedAgua;
 
@@ -247,7 +247,7 @@ class Contract
         return $this->cntMedAgua;
     }
 
-    public function setCntMedElec(int $cntMedElec): Contract
+    public function setCntMedElec(int $cntMedElec): static
     {
         $this->cntMedElec = $cntMedElec;
 
@@ -259,7 +259,7 @@ class Contract
         return $this->cntMedElec;
     }
 
-    public function setMedElectrico(string $medElectrico): Contract
+    public function setMedElectrico(string $medElectrico): static
     {
         $this->medElectrico = $medElectrico;
 
@@ -271,7 +271,7 @@ class Contract
         return $this->medElectrico;
     }
 
-    public function setMedAgua(string $medAgua): Contract
+    public function setMedAgua(string $medAgua): static
     {
         $this->medAgua = $medAgua;
 
@@ -283,7 +283,7 @@ class Contract
         return $this->medAgua;
     }
 
-    public function setText(string $text): Contract
+    public function setText(string $text): static
     {
         $this->text = $text;
 
@@ -295,7 +295,7 @@ class Contract
         return $this->text;
     }
 
-    public function setGender(UserGender $gender): Contract
+    public function setGender(UserGender $gender): static
     {
         $this->gender = $gender;
 
@@ -307,7 +307,7 @@ class Contract
         return $this->gender;
     }
 
-    public function setStoreNumber(int $storeNumber): Contract
+    public function setStoreNumber(int $storeNumber): static
     {
         $this->storeNumber = $storeNumber;
 

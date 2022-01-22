@@ -26,6 +26,9 @@ class TwigEventSubscriber implements EventSubscriberInterface
         $this->twig->addGlobal('rootDir', $this->rootDir.'/public');
     }
 
+    /**
+     * @return array<string, string>
+     */
     public static function getSubscribedEvents(): array
     {
         return [

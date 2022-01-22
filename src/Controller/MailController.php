@@ -186,7 +186,7 @@ class MailController extends AbstractController
         PdfHelper $PDFHelper,
         MailerInterface $mailer,
         PayrollHelper $payrollHelper
-    ): Response {
+    ): RedirectResponse {
         $recipients = $request->get('recipients');
         if (!$recipients) {
             $this->addFlash('warning', 'No recipients selected');
@@ -264,7 +264,7 @@ class MailController extends AbstractController
     #[Route(path: '/backup', name: 'backup', methods: ['GET'])]
     public function backup(
         MailerInterface $mailer
-    ): Response {
+    ): RedirectResponse {
         try {
             $parts = parse_url($_ENV['DATABASE_URL']);
 

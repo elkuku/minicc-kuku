@@ -45,12 +45,12 @@ class Deposit implements JsonSerializable
     ])]
     private ?Transaction $transaction;
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function setEntity(PaymentMethod $entity): Deposit
+    public function setEntity(PaymentMethod $entity): static
     {
         if (1 === $entity->getId()) {
             throw new UnexpectedValueException(
@@ -68,7 +68,7 @@ class Deposit implements JsonSerializable
         return $this->entity;
     }
 
-    public function setDate(DateTime $date): Deposit
+    public function setDate(DateTime $date): static
     {
         $this->date = $date;
 
@@ -80,7 +80,7 @@ class Deposit implements JsonSerializable
         return $this->date;
     }
 
-    public function setDocument($document): Deposit
+    public function setDocument(string $document): static
     {
         $this->document = $document;
 
@@ -92,14 +92,14 @@ class Deposit implements JsonSerializable
         return $this->document;
     }
 
-    public function setAmount($amount): Deposit
+    public function setAmount(float $amount): static
     {
         $this->amount = $amount;
 
         return $this;
     }
 
-    public function getAmount(): string
+    public function getAmount(): float
     {
         return $this->amount;
     }

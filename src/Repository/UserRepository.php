@@ -47,7 +47,7 @@ class UserRepository extends ServiceEntityRepository
 
         usort(
             $users,
-            static function ($a, $b) {
+            static function ($a, $b): int {
                 $aId = 0;
                 $bId = 0;
 

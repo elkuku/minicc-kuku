@@ -37,7 +37,7 @@ class PaginatorOptions
      */
     private array $criteria = [];
 
-    public function setPage(int $page): PaginatorOptions
+    public function setPage(int $page): static
     {
         $this->page = $page;
 
@@ -49,7 +49,7 @@ class PaginatorOptions
         return $this->page;
     }
 
-    public function setOrder(string $order): PaginatorOptions
+    public function setOrder(string $order): static
     {
         $this->order = $order;
 
@@ -61,7 +61,7 @@ class PaginatorOptions
         return $this->order;
     }
 
-    public function setOrderDir(string $orderDir): PaginatorOptions
+    public function setOrderDir(string $orderDir): static
     {
         $dirs = ['ASC', 'DESC'];
         $dir = strtoupper($orderDir);
@@ -82,19 +82,25 @@ class PaginatorOptions
         return $this->orderDir;
     }
 
-    public function setCriteria(array $criteria): PaginatorOptions
+    /**
+     * @param mixed[] $criteria
+     */
+    public function setCriteria(array $criteria): static
     {
         $this->criteria = $criteria;
 
         return $this;
     }
 
+    /**
+     * @return mixed[]
+     */
     public function getCriteria(): array
     {
         return $this->criteria;
     }
 
-    public function setMaxPages(int $maxPages): PaginatorOptions
+    public function setMaxPages(int $maxPages): static
     {
         $this->maxPages = $maxPages;
 
@@ -106,7 +112,7 @@ class PaginatorOptions
         return $this->maxPages;
     }
 
-    public function setLimit(int $limit): PaginatorOptions
+    public function setLimit(int $limit): static
     {
         $this->limit = $limit;
 

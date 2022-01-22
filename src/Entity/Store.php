@@ -72,7 +72,7 @@ class Store
         return $this->id;
     }
 
-    public function setUserId(int $idUser): Store
+    public function setUserId(int $idUser): static
     {
         $this->userId = $idUser;
 
@@ -84,7 +84,7 @@ class Store
         return $this->userId;
     }
 
-    public function setDestination(string $destination): Store
+    public function setDestination(string $destination): static
     {
         $this->destination = $destination;
 
@@ -96,7 +96,7 @@ class Store
         return $this->destination;
     }
 
-    public function setValAlq($valAlq): Store
+    public function setValAlq(float $valAlq): static
     {
         $this->valAlq = $valAlq;
 
@@ -108,7 +108,7 @@ class Store
         return $this->valAlq;
     }
 
-    public function setCntLanfort(int $cntLanfort): Store
+    public function setCntLanfort(int $cntLanfort): static
     {
         $this->cntLanfort = $cntLanfort;
 
@@ -120,7 +120,7 @@ class Store
         return $this->cntLanfort;
     }
 
-    public function setCntNeon(int $cntNeon): Store
+    public function setCntNeon(int $cntNeon): static
     {
         $this->cntNeon = $cntNeon;
 
@@ -132,7 +132,7 @@ class Store
         return $this->cntNeon;
     }
 
-    public function setCntSwitch(int $cntSwitch): Store
+    public function setCntSwitch(int $cntSwitch): static
     {
         $this->cntSwitch = $cntSwitch;
 
@@ -144,7 +144,7 @@ class Store
         return $this->cntSwitch;
     }
 
-    public function setCntToma(int $cntToma): Store
+    public function setCntToma(int $cntToma): static
     {
         $this->cntToma = $cntToma;
 
@@ -156,7 +156,7 @@ class Store
         return $this->cntToma;
     }
 
-    public function setCntVentana(int $cntVentana): Store
+    public function setCntVentana(int $cntVentana): static
     {
         $this->cntVentana = $cntVentana;
 
@@ -168,7 +168,7 @@ class Store
         return $this->cntVentana;
     }
 
-    public function setCntLlaves(int $cntLlaves): Store
+    public function setCntLlaves(int $cntLlaves): static
     {
         $this->cntLlaves = $cntLlaves;
 
@@ -180,7 +180,7 @@ class Store
         return $this->cntLlaves;
     }
 
-    public function setCntMedAgua(int $cntMedAgua): Store
+    public function setCntMedAgua(int $cntMedAgua): static
     {
         $this->cntMedAgua = $cntMedAgua;
 
@@ -192,7 +192,7 @@ class Store
         return $this->cntMedAgua;
     }
 
-    public function setCntMedElec(int $cntMedElec): Store
+    public function setCntMedElec(int $cntMedElec): static
     {
         $this->cntMedElec = $cntMedElec;
 
@@ -204,7 +204,7 @@ class Store
         return $this->cntMedElec;
     }
 
-    public function setMedElectrico(int $medElectrico): Store
+    public function setMedElectrico(int $medElectrico): static
     {
         $this->medElectrico = $medElectrico;
 
@@ -216,7 +216,7 @@ class Store
         return $this->medElectrico;
     }
 
-    public function setMedAgua(int $medAgua): Store
+    public function setMedAgua(int $medAgua): static
     {
         $this->medAgua = $medAgua;
 
@@ -228,7 +228,7 @@ class Store
         return $this->medAgua;
     }
 
-    public function setUser(?User $user): Store
+    public function setUser(?User $user): static
     {
         $this->user = $user;
 

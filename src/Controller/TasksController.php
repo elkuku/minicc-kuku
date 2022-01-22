@@ -115,7 +115,7 @@ class TasksController extends AbstractController
     public function import(
         Request $request,
         ManagerRegistry $managerRegistry,
-    ): Response {
+    ): RedirectResponse {
         $file = $request->files->get('file');
         if (!$file) {
             $this->addFlash('danger', 'No file received.');

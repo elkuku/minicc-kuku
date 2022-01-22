@@ -24,12 +24,12 @@ class TransactionType
     #[Column(type: Types::STRING, length: 150, nullable: false)]
     private string $name;
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function setName(string $name): TransactionType
+    public function setName(string $name): static
     {
         $this->name = $name;
 
