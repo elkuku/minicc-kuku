@@ -64,7 +64,7 @@ class Transaction implements JsonSerializable
      * @deprecated
      */
     #[Column(type: Types::INTEGER, nullable: true)]
-    private $depId = null;
+    private ?int $depId;
 
     #[OneToOne(inversedBy: 'transaction', targetEntity: Deposit::class, cascade: [
         'persist',

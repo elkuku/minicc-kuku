@@ -21,12 +21,10 @@ class StoreVoter extends Voter
 
     protected function supports(string $attribute, $subject): bool
     {
-        // if the attribute isn't one we support, return false
         if (!in_array($attribute, [self::VIEW, self::EDIT, self::EXPORT])) {
             return false;
         }
 
-        // only vote on `Post` objects
         if (!$subject instanceof Store) {
             return false;
         }
@@ -52,16 +50,11 @@ class StoreVoter extends Voter
 
         /** @var Store $store */
         $store = $subject;
-
-        switch ($attribute) {
-            case self::VIEW:
-            case self::EXPORT:
-                return $this->canView($store, $user);
-            case self::EDIT:
-                return $this->canEdit($store, $user);
-        }
-
-        throw new LogicException('This code should not be reached!');
+        return match ($attribute) {
+            self::VIEW, self::EXPORT => $this->canView($store, $user),
+            self::EDIT => $this->canEdit(),
+            default => throw new LogicException('This code should not be reached!'),
+        };
     }
 
     private function canView(Store $store, User $user): bool
@@ -69,7 +62,7 @@ class StoreVoter extends Voter
         return $store->getUser() === $user;
     }
 
-    private function canEdit(Store $store, User $user): bool
+    private function canEdit(): bool
     {
         return $this->security->isGranted('ROLE_ADMIN');
     }

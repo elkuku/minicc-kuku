@@ -70,13 +70,11 @@ class AppExtension extends AbstractExtension
         string $thousandsSep = ','
     ): string {
         $price = number_format($number, $decimals, $decPoint, $thousandsSep);
-        $price = sprintf(
+        return sprintf(
             '<span class="%s">%s</span>',
             ($price < 0 ? 'amount amount-red' : 'amount'),
             $price
         );
-
-        return $price;
     }
 
     /**

@@ -141,7 +141,7 @@ class TasksController extends AbstractController
         $newData = json_decode(file_get_contents($path));
         $oldData = $this->getTableData($tableName, $managerRegistry);
         foreach ($newData as $i => $newItem) {
-            foreach ($oldData as $io => $oldItem) {
+            foreach ($oldData as $oldItem) {
                 if ($oldItem['id'] === $newItem->id) {
                     foreach ($newItem as $prop => $value) {
                         if ($oldItem[$prop] !== $value) {
@@ -173,7 +173,7 @@ class TasksController extends AbstractController
         foreach ($newData as $item) {
             $valueLine = '';
 
-            foreach ($item as $prop => $value) {
+            foreach ($item as $value) {
                 if (null === $value) {
                     $valueLine .= 'null, ';
                 } elseif (strpos($value, '-') || strpos($value, '.')) {

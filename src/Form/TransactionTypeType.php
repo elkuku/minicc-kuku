@@ -19,12 +19,6 @@ use Symfony\Component\Form\FormBuilderInterface;
  */
 class TransactionTypeType extends AbstractType
 {
-    public function __construct(private StoreRepository $storeRepository)
-    {
-    }
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(
         FormBuilderInterface $builder,
         array $options
@@ -51,8 +45,6 @@ class TransactionTypeType extends AbstractType
                 EntityType::class,
                 [
                     'class'        => 'App:Store',
-                    // 'choice_label' => 'id',
-                    // 'choices' => $this->storeRepository->getActive(),
                     'choice_label' => function (Store $store) {
                         return $store->getId().' - '.$store->getDestination();
                     },
