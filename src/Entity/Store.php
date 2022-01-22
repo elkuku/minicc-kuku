@@ -8,89 +8,63 @@
 
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
+use App\Repository\StoreRepository;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\StoreRepository")
- */
+#[Entity(repositoryClass: StoreRepository::class)]
 class Store
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[Id, GeneratedValue(strategy: 'AUTO')]
+    #[Column(type: Types::INTEGER)]
     private ?int $id = null;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+    #[Column(type: Types::INTEGER, nullable: true)]
     private ?int $userId = 0;
 
-    /**
-     * @ORM\Column(type="string", length=50, nullable=false)
-     */
+    #[Column(type: Types::STRING, length: 50, nullable: false)]
     private string $destination = '';
 
-    /**
-     * @ORM\Column(type="float", precision=10, scale=0, nullable=false)
-     */
+    #[Column(type: Types::FLOAT, precision: 10, scale: 0, nullable: false)]
     private float $valAlq = 0;
 
-    /**
-     * @ORM\Column(type="integer", nullable=false)
-     */
+    #[Column(type: Types::INTEGER, nullable: false)]
     private int $cntLanfort = 0;
 
-    /**
-     * @ORM\Column(type="integer", nullable=false)
-     */
+    #[Column(type: Types::INTEGER, nullable: false)]
     private int $cntNeon = 0;
 
-    /**
-     * @ORM\Column(type="integer", nullable=false)
-     */
+    #[Column(type: Types::INTEGER, nullable: false)]
     private int $cntSwitch = 0;
 
-    /**
-     * @ORM\Column(type="integer", nullable=false)
-     */
+    #[Column(type: Types::INTEGER, nullable: false)]
     private int $cntToma = 0;
 
-    /**
-     * @ORM\Column(type="integer", nullable=false)
-     */
+    #[Column(type: Types::INTEGER, nullable: false)]
     private int $cntVentana = 0;
 
-    /**
-     * @ORM\Column(type="integer", nullable=false)
-     */
+    #[Column(type: Types::INTEGER, nullable: false)]
     private int $cntLlaves = 0;
 
-    /**
-     * @ORM\Column(type="integer", nullable=false)
-     */
+    #[Column(type: Types::INTEGER, nullable: false)]
     private int $cntMedAgua = 0;
 
-    /**
-     * @ORM\Column(type="integer", nullable=false)
-     */
+    #[Column(type: Types::INTEGER, nullable: false)]
     private int $cntMedElec = 0;
 
-    /**
-     * @ORM\Column(type="string", length=50)
-     */
+    #[Column(type: Types::STRING, length: 50)]
     private string $medElectrico = '';
 
-    /**
-     * @ORM\Column(type="string", length=50)
-     */
+    #[Column(type: Types::STRING, length: 50)]
     private string $medAgua = '';
 
-    /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="stores")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
-     */
+    #[ManyToOne(targetEntity: 'User', inversedBy: 'stores')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id')]
     private ?User $user = null;
 
     public function getId(): ?int

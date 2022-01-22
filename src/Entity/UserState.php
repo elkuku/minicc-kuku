@@ -8,23 +8,20 @@
 
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
 
-/**
- * @ORM\Entity
- */
+#[Entity]
 class UserState
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private int $id;
+    #[Id, GeneratedValue(strategy: 'AUTO')]
+    #[Column(type: Types::INTEGER)]
+    private ?int $id = null;
 
-    /**
-     * @ORM\Column(type="string", length=150, nullable=false)
-     */
+    #[Column(type: Types::STRING, length: 150, nullable: false)]
     private string $name;
 
     public function getId(): int

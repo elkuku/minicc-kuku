@@ -12,15 +12,11 @@ doctrine:
         mappings:
             App:
                 is_bundle: false
-                type: annotation
+                type: attribute
                 dir: '%kernel.project_dir%/src/Entity'
                 prefix: 'App\Entity'
                 alias: App
         dql:
-            #string_functions:
-            #    YEAR: DoctrineExtensions\Query\Mysql\Year
-            #    MONTH: DoctrineExtensions\Query\Mysql\Month
-
             numeric_functions:
                 month: Oro\ORM\Query\AST\Functions\SimpleFunction
                 year: Oro\ORM\Query\AST\Functions\SimpleFunction

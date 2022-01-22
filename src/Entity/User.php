@@ -3,97 +3,74 @@
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\PersistentCollection;
 use Serializable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Validator\Constraints as Assert;
+use App\Repository\UserRepository;
+use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
- * ORM\Table(name="cc_user")
- * @UniqueEntity(fields="email", message="This email address is already in use")
- */
+#[UniqueEntity(fields: 'email', message: 'This email address is already in use')]
+#[Entity(repositoryClass: UserRepository::class)]
 class User implements UserInterface, Serializable
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[Id, GeneratedValue(strategy: 'AUTO')]
+    #[Column(type: Types::INTEGER)]
     private ?int $id = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank */
+    #[NotBlank]
+    #[Column(type: Types::STRING, length: 255)]
     private string $identifier;
 
     /**
      * @var Store[]
-     *
-     * @ORM\OneToMany(targetEntity="Store", mappedBy="user")
      */
+    #[OneToMany(mappedBy: 'user', targetEntity: 'Store')]
     private array|ArrayCollection|PersistentCollection $stores;
 
-    /**
-     * @ORM\Column(type="string", length=255, unique=true)
-     * @Assert\NotBlank
-     * @Assert\Email(
-     *     message = "The email '{{ value }}' is not a valid email."
-     * )
-     */
+    #[NotBlank]
+    #[Email(message: "The email '{{ value }}' is not a valid email.")]
+    #[Column(type: Types::STRING, length: 255, unique: true)]
     private string $email;
 
-    /**
-     * @ORM\Column(type="string", length=40)
-     * @Assert\NotBlank
-     */
+    #[NotBlank]
+    #[Column(type: Types::STRING, length: 40)]
     private ?string $name;
 
-    /**
-     * @ORM\Column(type="string", length=50)
-     */
+    #[Column(type: Types::STRING, length: 50)]
     private string $role = 'ROLE_USER';
 
-    /**
-     * @ManyToOne(targetEntity="UserGender")
-     */
+    #[ManyToOne(targetEntity: 'UserGender')]
     private ?UserGender $gender = null;
 
     /**
-     * User State
      * Active or Inactive
-     *
-     * @ManyToOne(targetEntity="UserState")
      */
+    #[ManyToOne(targetEntity: 'UserState')]
     private ?UserState $state = null;
 
-    /**
-     * @ORM\Column(type="string", length=50, nullable=false)
-     * @Assert\NotBlank
-     */
+    #[NotBlank]
+    #[Column(type: Types::STRING, length: 50, nullable: false)]
     private string $inqCi = '';
 
-    /**
-     * @ORM\Column(type="string", length=13, nullable=true)
-     */
+    #[Column(type: Types::STRING, length: 13, nullable: true)]
     private ?string $inqRuc = '';
 
-    /**
-     * @ORM\Column(type="string", length=25, nullable=true)
-     */
+    #[Column(type: Types::STRING, length: 25, nullable: true)]
     private ?string $telefono = '';
 
-    /**
-     * @ORM\Column(type="string", length=25, nullable=true)
-     */
+    #[Column(type: Types::STRING, length: 25, nullable: true)]
     private ?string $telefono2 = '';
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[Column(type: Types::STRING, length: 255, nullable: true)]
     private ?string $direccion = '';
 
     public function __construct()

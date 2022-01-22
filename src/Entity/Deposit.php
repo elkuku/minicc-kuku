@@ -9,46 +9,40 @@
 namespace App\Entity;
 
 use DateTime;
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToOne;
 use JsonSerializable;
 use UnexpectedValueException;
+use App\Repository\DepositRepository;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\DepositRepository")
- */
+#[Entity(repositoryClass: DepositRepository::class)]
 class Deposit implements JsonSerializable
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private int $id;
+    #[Id, GeneratedValue(strategy: 'AUTO')]
+    #[Column(type: Types::INTEGER)]
+    private ?int $id = null;
 
-    /**
-     * @ManyToOne(targetEntity="PaymentMethod")
-     */
+    #[ManyToOne(targetEntity: 'PaymentMethod')]
     private PaymentMethod $entity;
 
-    /**
-     * @ORM\Column(type="date", nullable=false)
-     */
+    #[Column(type: Types::DATE_MUTABLE, nullable: false)]
     private DateTime $date;
 
-    /**
-     * @ORM\Column(type="string", length=150, nullable=false)
-     */
+    #[Column(type: Types::STRING, length: 150, nullable: false)]
     private string $document;
 
-    /**
-     * @ORM\Column(type="decimal", precision=13, scale=2, nullable=false)
-     */
+    #[Column(type: Types::DECIMAL, precision: 13, scale: 2, nullable: false)]
     private float $amount;
 
-    /**
-     * @ORM\OneToOne(targetEntity=Transaction::class, mappedBy="deposit", cascade={"persist", "remove"})
-     */
+    #[OneToOne(mappedBy: 'deposit', targetEntity: Transaction::class, cascade: [
+        'persist',
+        'remove',
+    ])]
     private ?Transaction $transaction;
 
     public function getId(): int
@@ -147,7 +141,7 @@ class Deposit implements JsonSerializable
             'amount'   => $this->amount,
             'document' => $this->document,
             'date'     => $this->date->format('Y-m-d'),
-            'entity'   => $this->entity ? $this->entity->getId():null
+            'entity'   => $this->entity ? $this->entity->getId() : null,
         ];
     }
 }

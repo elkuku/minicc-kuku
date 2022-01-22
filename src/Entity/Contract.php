@@ -9,114 +9,76 @@
 namespace App\Entity;
 
 use DateTime;
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\ManyToOne;
+use App\Repository\ContractRepository;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\ContractRepository")
- */
+#[Entity(repositoryClass: ContractRepository::class)]
 class Contract
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[Id, GeneratedValue(strategy: 'AUTO')]
+    #[Column(type: Types::INTEGER)]
     private ?int $id = null;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[Column(type: Types::INTEGER)]
     protected int $storeNumber = 0;
 
-    /**
-     * @ORM\Column(type="string", length=150)
-     */
+    #[Column(type: Types::STRING, length: 150)]
     private string $inqNombreapellido = '';
 
-    /**
-     * @ManyToOne(targetEntity="UserGender")
-     */
+    #[ManyToOne(targetEntity: 'UserGender')]
     private ?UserGender $gender = null;
 
-    /**
-     * @ORM\Column(type="string", length=11)
-     */
+    #[Column(type: Types::STRING, length: 11)]
     private string $inqCi = '000000000-0';
 
-    /**
-     * @ORM\Column(type="string", length=50)
-     */
+    #[Column(type: Types::STRING, length: 50)]
     private string $destination = '';
 
-    /**
-     * @ORM\Column(type="float", precision=10, scale=0)
-     */
+    #[Column(type: Types::FLOAT, precision: 10, scale: 0)]
     private float $valAlq = 0;
 
-    /**
-     * @ORM\Column(type="float", precision=10, scale=0)
-     */
+    #[Column(type: Types::FLOAT, precision: 10, scale: 0)]
     private float $valGarantia = 0;
 
-    /**
-     * @ORM\Column(type="date")
-     */
+    #[Column(type: Types::DATE_MUTABLE)]
     private DateTime $date;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[Column(type: Types::INTEGER)]
     private int $cntLanfort = 0;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[Column(type: Types::INTEGER)]
     private int $cntNeon = 0;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[Column(type: Types::INTEGER)]
     private int $cntSwitch = 0;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[Column(type: Types::INTEGER)]
     private int $cntToma = 0;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[Column(type: Types::INTEGER)]
     private int $cntVentana = 0;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[Column(type: Types::INTEGER)]
     private int $cntLlaves = 0;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[Column(type: Types::INTEGER)]
     private int $cntMedAgua = 0;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[Column(type: Types::INTEGER)]
     private int $cntMedElec = 0;
 
-    /**
-     * @ORM\Column(type="string", length=50)
-     */
+    #[Column(type: Types::STRING, length: 50)]
     private string $medElectrico = '';
 
-    /**
-     * @ORM\Column(type="string", length=50)
-     */
+    #[Column(type: Types::STRING, length: 50)]
     private string $medAgua = '';
 
-    /**
-     * @ORM\Column(type="text", length=65535, nullable=false)
-     */
+    #[Column(type: Types::TEXT, length: 65535, nullable: false)]
     private string $text;
 
     public function __construct()

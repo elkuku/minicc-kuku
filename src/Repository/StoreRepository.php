@@ -14,15 +14,12 @@ use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * TransactionRepository
- *
- * @ORM\Entity
- *
  * @method Store|null find($id, $lockMode = null, $lockVersion = null)
  * @method Store|null findOneBy(array $criteria, array $orderBy = null)
  * @method Store[]    findAll()
  * @method Store[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
+#[ORM\Entity]
 class StoreRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)

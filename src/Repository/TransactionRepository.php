@@ -21,15 +21,12 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 use function count;
 
 /**
- * TransactionRepository
- *
- * @ORM\Entity
- *
  * @method Transaction|null find($id, $lockMode = null, $lockVersion = null)
  * @method Transaction|null findOneBy(array $criteria, array $orderBy = null)
  * @method Transaction[]    findAll()
  * @method Transaction[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
+#[ORM\Entity]
 class TransactionRepository extends ServiceEntityRepository
 {
     use PaginatorRepoTrait;
@@ -212,14 +209,13 @@ class TransactionRepository extends ServiceEntityRepository
         );
     }
 
-    public function getLastRecipeNo():int
+    public function getLastRecipeNo(): int
     {
         try {
-            $number = (int) $this->createQueryBuilder('t')
+            $number = (int)$this->createQueryBuilder('t')
                 ->select('MAX(t.recipeNo)')
                 ->getQuery()
                 ->getSingleScalarResult();
-
         } catch (\Exception) {
             $number = 0;
         }

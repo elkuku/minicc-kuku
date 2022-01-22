@@ -9,82 +9,70 @@
 namespace App\Entity;
 
 use DateTime;
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToOne;
 use JsonSerializable;
+use App\Repository\TransactionRepository;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\TransactionRepository")
- */
+#[Entity(repositoryClass: TransactionRepository::class)]
 class Transaction implements JsonSerializable
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[Id, GeneratedValue(strategy: 'AUTO')]
+    #[Column(type: Types::INTEGER)]
     protected ?int $id = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Store")
-     * @ORM\JoinColumn(name="store_id", referencedColumnName="id", nullable=false)
-     */
+    #[ManyToOne(targetEntity: 'Store')]
+    #[JoinColumn(name: 'store_id', referencedColumnName: 'id', nullable: false)]
     protected Store $store;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
-     */
+    #[ManyToOne(targetEntity: 'User')]
+    #[JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false)]
     protected User $user;
 
     /**
      * The type
      * Alquiler, Pago, etc.
-     *
-     * @ManyToOne(targetEntity="TransactionType")
-     * @ORM\JoinColumn(name="type_id", referencedColumnName="id", nullable=false)
      */
+    #[ManyToOne(targetEntity: 'TransactionType')]
+    #[JoinColumn(name: 'type_id', referencedColumnName: 'id', nullable: false)]
     private TransactionType $type;
 
     /**
      * The method
      * Bar, bank, etc.
-     *
-     * @ManyToOne(targetEntity="PaymentMethod")
-     * @ORM\JoinColumn(name="method_id", referencedColumnName="id", nullable=false)
      */
+    #[ManyToOne(targetEntity: 'PaymentMethod')]
+    #[JoinColumn(name: 'method_id', referencedColumnName: 'id', nullable: false)]
     private PaymentMethod $method;
 
-    /**
-     * @ORM\Column(type="date", nullable=false)
-     */
+    #[Column(type: Types::DATE_MUTABLE, nullable: false)]
     private DateTime $date;
 
-    /**
-     * @ORM\Column(type="decimal", precision=13, scale=2, nullable=false)
-     */
+    #[Column(type: Types::DECIMAL, precision: 13, scale: 2, nullable: false)]
     private string $amount = '0';
 
-    /**
-     * @ORM\Column(type="integer", length=20, nullable=true)
-     */
+    #[Column(type: Types::INTEGER, length: 20, nullable: true)]
     private int $document;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
      * @deprecated
      */
+    #[Column(type: Types::INTEGER, nullable: true)]
     private $depId = null;
 
-    /**
-     * @ORM\OneToOne(targetEntity=Deposit::class, inversedBy="transaction", cascade={"persist", "remove"})
-     */
+    #[OneToOne(inversedBy: 'transaction', targetEntity: Deposit::class, cascade: [
+        'persist',
+        'remove',
+    ])]
     private ?Deposit $deposit;
 
-
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+    #[Column(type: Types::INTEGER, nullable: true)]
     private ?int $recipeNo = 0;
 
     public function getId(): ?int
@@ -199,7 +187,6 @@ class Transaction implements JsonSerializable
     {
         return $this->store;
     }
-
 
     public function getDeposit(): ?Deposit
     {
