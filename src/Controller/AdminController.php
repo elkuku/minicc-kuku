@@ -88,7 +88,7 @@ class AdminController extends AbstractController
         Request $request,
         ManagerRegistry $managerRegistry,
     ): Response {
-        $payments = $request->request->get('payments');
+        $payments = $request->request->all('payments');
         if (!$payments) {
             return $this->render(
                 'admin/payday-html.twig',
