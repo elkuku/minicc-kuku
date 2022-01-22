@@ -9,7 +9,6 @@
 namespace App\Form;
 
 use App\Entity\Store;
-use App\Repository\StoreRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;

@@ -10,7 +10,7 @@ use App\Repository\PaymentMethodRepository;
 use DateTime;
 use Doctrine\Persistence\ManagerRegistry;
 use RuntimeException;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -20,9 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use UnexpectedValueException;
 use function count;
 
-/**
- * @Security("is_granted('ROLE_ADMIN')")
- */
+#[IsGranted('ROLE_ADMIN')]
 #[Route(path: '/deposits')]
 class DepositController extends AbstractController
 {

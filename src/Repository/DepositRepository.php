@@ -33,12 +33,12 @@ class DepositRepository extends ServiceEntityRepository
 
     public function has(Deposit $deposit): bool
     {
-        return $this->findOneBy(
+        return (bool)$this->findOneBy(
             [
                 'date' => $deposit->getDate(),
                 'document' => $deposit->getDocument(),
             ]
-        ) ? true : false;
+        );
     }
 
     public function getPaginatedList(PaginatorOptions $options): Paginator

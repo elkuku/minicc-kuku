@@ -7,15 +7,13 @@ use App\Form\UserFullType;
 use App\Repository\UserRepository;
 use App\Repository\UserStateRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-/**
- * @Security("is_granted('ROLE_ADMIN')")
- */
+#[IsGranted('ROLE_ADMIN')]
 #[Route(path: '/users')]
 class UserController extends AbstractController
 {

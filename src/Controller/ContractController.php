@@ -12,7 +12,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use IntlNumbersToWords\Numbers;
 use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 use Knp\Snappy\Pdf;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,9 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 
-/**
- * @Security("is_granted('ROLE_ADMIN')")
- */
+#[IsGranted('ROLE_ADMIN')]
 #[Route(path: 'contracts')]
 class ContractController extends AbstractController
 {
@@ -177,7 +175,8 @@ class ContractController extends AbstractController
     #[Route(path: '/generate/{id}', name: 'contract-generate', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function generate(
         Contract $contract,
-        Pdf $pdf
+        Pdf $pdf,
+        Environment $environment
     ): PdfResponse {
         $numberToWord = new Numbers;
         $searchReplace = [
@@ -223,8 +222,7 @@ class ContractController extends AbstractController
             $searchReplace,
             $contract->getText()
         );
-        /** @var Environment $twig */
-        $twig = clone $this->get('twig');
+        $twig = clone $environment;
 
         return new PdfResponse(
             $pdf->getOutputFromHtml(

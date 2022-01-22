@@ -141,7 +141,7 @@ class Deposit implements JsonSerializable
             'amount'   => $this->amount,
             'document' => $this->document,
             'date'     => $this->date->format('Y-m-d'),
-            'entity'   => $this->entity ? $this->entity->getId() : null,
+            'entity'   => $this->entity->getId(),
         ];
     }
 }

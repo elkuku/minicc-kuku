@@ -11,6 +11,7 @@ use App\Entity\TransactionType;
 use App\Entity\User;
 use App\Entity\UserGender;
 use App\Entity\UserState;
+use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -104,7 +105,7 @@ class AppFixtures extends Fixture
         $transaction = (new Transaction())
             ->setStore($store)
             ->setUser($user1)
-            ->setDate(new \DateTime())
+            ->setDate(new DateTime())
             ->setType($transactionType)
             ->setMethod($paymentMethod)
             ->setAmount(123.45);
@@ -126,7 +127,7 @@ class AppFixtures extends Fixture
          * Deposit
          */
         $deposit = (new Deposit())
-            ->setDate(new \DateTime())
+            ->setDate(new DateTime())
             ->setDocument(123)
             ->setAmount(123);
         $manager->persist($deposit);

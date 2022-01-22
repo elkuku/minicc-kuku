@@ -53,10 +53,7 @@ class ContractRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    /**
-     * @return mixed
-     */
-    public function findPlantilla()
+    public function findPlantilla(): mixed
     {
         $data = $this->matching(
             Criteria::create()->where(

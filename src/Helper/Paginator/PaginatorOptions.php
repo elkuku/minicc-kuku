@@ -82,9 +82,6 @@ class PaginatorOptions
         return $this->orderDir;
     }
 
-    /**
-     * @param mixed[] $criteria
-     */
     public function setCriteria(array $criteria): static
     {
         $this->criteria = $criteria;
@@ -92,9 +89,6 @@ class PaginatorOptions
         return $this;
     }
 
-    /**
-     * @return mixed[]
-     */
     public function getCriteria(): array
     {
         return $this->criteria;

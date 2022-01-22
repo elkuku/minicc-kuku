@@ -10,6 +10,7 @@ namespace App\Helper;
 
 use DateTime;
 use IntlDateFormatter;
+use NumberFormatter;
 use function is_object;
 
 class IntlConverter
@@ -21,7 +22,7 @@ class IntlConverter
     }
 
     public static function formatDate(
-        string|\DateTime $date,
+        string|DateTime $date,
         string $format = "d 'de' MMMM YYYY",
         string $lang = 'es_ES'
     ): string {
@@ -44,7 +45,7 @@ class IntlConverter
         $locale = $locale ?? $this->defaultLocale;
         $currency = $currency ?? $this->defaultCurrency;
 
-        $a = new \NumberFormatter($locale, \NumberFormatter::SPELLOUT);
+        $a = new NumberFormatter($locale, NumberFormatter::SPELLOUT);
         echo $a->formatCurrency(1_231_231.45, $currency) .PHP_EOL;
         echo $a->format(1_231_231.45) .PHP_EOL;
 

@@ -6,8 +6,10 @@ use App\Repository\StoreRepository;
 use App\Repository\TransactionRepository;
 use App\Service\PayrollHelper;
 use App\Service\PdfHelper;
+use Exception;
 use Knp\Snappy\Pdf;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use RuntimeException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,9 +20,7 @@ use Symfony\Component\Mime\Email;
 use Symfony\Component\Mime\Part\DataPart;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Security("is_granted('ROLE_ADMIN')")
- */
+#[IsGranted('ROLE_ADMIN')]
 class MailController extends AbstractController
 {
     #[Route(path: '/mail-transactions', name: 'mail-transactions', methods: ['POST'])]
@@ -134,7 +134,7 @@ class MailController extends AbstractController
 
             $mailer->send($email);
             $this->addFlash('success', 'Mail has been sent succesfully.');
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $this->addFlash('danger', $exception->getMessage());
         } catch (TransportExceptionInterface $exception) {
             $this->addFlash('danger', $exception->getMessage());
@@ -287,7 +287,7 @@ class MailController extends AbstractController
             $gzip = ob_get_clean();
 
             if ($retVal) {
-                throw new \RuntimeException('Error creating DB backup: '.$gzip);
+                throw new RuntimeException('Error creating DB backup: '.$gzip);
             }
 
             $fileName = date('Y-m-d').'_backup.gz';
@@ -305,7 +305,7 @@ class MailController extends AbstractController
 
             $mailer->send($email);
             $this->addFlash('success', 'Backup has been sent to your inbox.');
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $this->addFlash('danger', $exception->getMessage());
         }
 

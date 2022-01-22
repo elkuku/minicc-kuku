@@ -20,22 +20,22 @@ class GitLoader
     public function getBranchName(): string
     {
         $gitHeadFile = $this->rootDir.'/.git/HEAD';
-        $branchname = 'no branch name';
+        $branchName = 'no branch name';
 
         $stringFromFile = file_exists($gitHeadFile)
             ? file($gitHeadFile, FILE_USE_INCLUDE_PATH) : '';
 
-        if ($stringFromFile !== 0 && is_array($stringFromFile)) {
+        if (is_array($stringFromFile)) {
             // Get the string from the array
             $firstLine = $stringFromFile[0];
 
-            // Seperate out by the "/" in the string
+            // Separate out by the "/" in the string
             $explodedString = explode('/', $firstLine, 3);
 
-            $branchname = trim($explodedString[2]);
+            $branchName = trim($explodedString[2]);
         }
 
-        return $branchname;
+        return $branchName;
     }
 
     public function getLastCommitMessage(): string

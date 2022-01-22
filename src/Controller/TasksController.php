@@ -5,12 +5,12 @@ namespace App\Controller;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ManagerRegistry;
 use Exception;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,9 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 use UnexpectedValueException;
 use function dirname;
 
-/**
- * @Security("is_granted('ROLE_ADMIN')")
- */
+#[IsGranted('ROLE_ADMIN')]
 class TasksController extends AbstractController
 {
     #[Route(path: '/admin-tasks', name: 'admin-tasks', methods: ['GET'])]
@@ -95,7 +93,10 @@ class TasksController extends AbstractController
         string $name,
         ManagerRegistry $managerRegistry,
     ): Response {
-        $content = json_encode($this->getTableData($name, $managerRegistry));
+        $content = json_encode(
+            $this->getTableData($name, $managerRegistry),
+            JSON_THROW_ON_ERROR
+        );
         $filename = sprintf('export-%s-%s.json', $name, date('Y-m-d'));
 
         return new Response(
@@ -196,7 +197,7 @@ class TasksController extends AbstractController
         return $this->redirectToRoute('admin-tasks');
     }
 
-    private function getTableData(string $tableName, ManagerRegistry $managerRegistry,): array|RedirectResponse
+    private function getTableData(string $tableName, ManagerRegistry $managerRegistry): array|RedirectResponse
     {
         try {
             $query = "SELECT * FROM $tableName;";

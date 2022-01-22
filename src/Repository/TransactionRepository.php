@@ -18,6 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Exception;
 use function count;
 
 /**
@@ -79,7 +80,7 @@ class TransactionRepository extends ServiceEntityRepository
      * @throws NoResultException
      * @throws NonUniqueResultException
      */
-    public function getSaldoAnterior(Store $store, $year)
+    public function getSaldoAnterior(Store $store, $year): mixed
     {
         $year ?: date('Y');
 
@@ -98,7 +99,7 @@ class TransactionRepository extends ServiceEntityRepository
      * @throws NoResultException
      * @throws NonUniqueResultException
      */
-    public function getSaldoALaFecha(Store $store, $date)
+    public function getSaldoALaFecha(Store $store, $date): mixed
     {
         return $this->createQueryBuilder('t')
             ->select('SUM(t.amount)')
@@ -133,7 +134,7 @@ class TransactionRepository extends ServiceEntityRepository
         $transactions = $this->createQueryBuilder('t')
             ->where('YEAR(t.date) = :year')
             ->andWhere('t.type = :type')
-            ->setParameter('year', (int)$year)
+            ->setParameter('year', $year)
             ->setParameter('type', 2)
             ->getQuery()
             ->getResult();
@@ -210,7 +211,7 @@ class TransactionRepository extends ServiceEntityRepository
                 ->select('MAX(t.recipeNo)')
                 ->getQuery()
                 ->getSingleScalarResult();
-        } catch (\Exception) {
+        } catch (Exception) {
             $number = 0;
         }
 

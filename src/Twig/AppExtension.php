@@ -12,6 +12,7 @@ use App\Entity\User;
 use App\Service\ShaFinder;
 use App\Service\TaxService;
 use DateTime;
+use Exception;
 use IntlDateFormatter;
 use Psr\Container\ContainerInterface;
 use Symfony\Contracts\Service\ServiceSubscriberInterface;
@@ -109,7 +110,7 @@ class AppExtension extends AbstractExtension
         } else {
             try {
                 $dateTime = new DateTime($date);
-            } catch (\Exception) {
+            } catch (Exception) {
                 return $date;
             }
         }
@@ -120,7 +121,7 @@ class AppExtension extends AbstractExtension
     }
 
     /**
-     * Convert object to array for Twig usage..
+     * Convert object to array for Twig usage...
      * @return array<string, mixed>
      */
     public function objectFilter(object $classObject): array
@@ -180,7 +181,7 @@ class AppExtension extends AbstractExtension
             ->getTaxFromTotal($value);
     }
 
-    public function getSHA()
+    public function getSHA(): string
     {
         return $this->container->get(ShaFinder::class)->getSha();
     }

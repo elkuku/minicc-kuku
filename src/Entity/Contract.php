@@ -151,7 +151,7 @@ class Contract
         return $this->valGarantia;
     }
 
-    public function setDate(\DateTime $date): static
+    public function setDate(DateTime $date): static
     {
         $this->date = $date;
 

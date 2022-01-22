@@ -14,9 +14,6 @@ class PayrollHelper
     ) {
     }
 
-    /**
-     * @return array<string, mixed[]>
-     */
     #[ArrayShape([
         'factDate'  => "string",
         'prevDate'  => "string",

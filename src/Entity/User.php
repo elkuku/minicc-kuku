@@ -275,7 +275,7 @@ class User implements UserInterface, Serializable
             $this->id,
             $this->email,
         ]
-            = unserialize($data);
+            = unserialize($data, __CLASS__);
     }
 
     public function getIdentifier(): string

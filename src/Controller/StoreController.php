@@ -11,9 +11,9 @@ use App\Repository\TransactionRepository;
 use App\Service\ChartBuilderService;
 use App\Service\TaxService;
 use Doctrine\Persistence\ManagerRegistry;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -22,9 +22,7 @@ class StoreController extends AbstractController
 {
     use BreadcrumbTrait;
 
-    /**
-     * @Security("is_granted('ROLE_ADMIN')")
-     */
+    #[IsGranted('ROLE_ADMIN')]
     #[Route(path: '/', name: 'stores-list', methods: ['GET'])]
     public function index(
         StoreRepository $storeRepository
@@ -35,7 +33,11 @@ class StoreController extends AbstractController
         );
     }
 
-
+    /**
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \JsonException
+     */
     #[Route(path: '/{id}', name: 'store-transactions', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function show(
         TransactionRepository $transactionRepository,
@@ -77,9 +79,15 @@ class StoreController extends AbstractController
                     $store,
                     $year
                 ),
-                'headerStr'     => json_encode($headers),
-                'monthPayments' => json_encode(array_values($monthPayments)),
-                'rentalValStr'  => json_encode(array_values($rentalValues)),
+                'headerStr'     => json_encode($headers, JSON_THROW_ON_ERROR),
+                'monthPayments' => json_encode(
+                    array_values($monthPayments),
+                    JSON_THROW_ON_ERROR
+                ),
+                'rentalValStr'  => json_encode(
+                    array_values($rentalValues),
+                    JSON_THROW_ON_ERROR
+                ),
                 'store'         => $store,
                 'stores'        => $storeRepository->findAll(),
                 'year'          => $year,
@@ -93,9 +101,7 @@ class StoreController extends AbstractController
         );
     }
 
-    /**
-     * @Security("is_granted('ROLE_ADMIN')")
-     */
+    #[IsGranted('ROLE_ADMIN')]
     #[Route(path: '/new', name: 'stores-add', methods: ['GET', 'POST'])]
     public function new(
         Request $request,
@@ -126,9 +132,7 @@ class StoreController extends AbstractController
         );
     }
 
-    /**
-     * @Security("is_granted('ROLE_ADMIN')")
-     */
+    #[IsGranted('ROLE_ADMIN')]
     #[Route(path: '/edit/{id}', name: 'stores-edit', methods: ['GET', 'POST'])]
     public function edit(
         Store $store,

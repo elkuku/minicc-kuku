@@ -67,7 +67,7 @@ class GoogleAuthenticator extends AbstractAuthenticator
             return new RedirectResponse($targetPath);
         }
 
-        return new RedirectResponse($this->urlGenerator->generate('default'));
+        return new RedirectResponse($this->urlGenerator->generate('welcome'));
     }
 
     public function onAuthenticationFailure(
@@ -103,7 +103,7 @@ class GoogleAuthenticator extends AbstractAuthenticator
         } else {
             // Register new user
             $user = (new User())
-                ->setUserIdentifier($googleUser->getEmail())
+                ->setIdentifier($googleUser->getEmail())
                 ->setGoogleId($googleUser->getId());
         }
 
