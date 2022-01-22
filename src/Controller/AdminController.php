@@ -31,7 +31,7 @@ class AdminController extends AbstractController
         Request $request,
         ManagerRegistry $managerRegistry,
     ): Response {
-        $values = $request->request->get('values');
+        $values = $request->request->all('values');
         if (!$values) {
             return $this->render(
                 'admin/cobrar.html.twig',
@@ -39,7 +39,7 @@ class AdminController extends AbstractController
             );
         }
 
-        $users = $request->request->get('users');
+        $users = $request->request->all('users');
 
         $em = $managerRegistry->getManager();
 
@@ -150,7 +150,7 @@ class AdminController extends AbstractController
         Request $request,
         ManagerRegistry $managerRegistry,
     ): Response {
-        $payments = $request->request->get('payments');
+        $payments = $request->request->all('payments');
         if (!$payments) {
             return $this->render(
                 'admin/payday2-html.twig',
