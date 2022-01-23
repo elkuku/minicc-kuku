@@ -50,10 +50,13 @@ class StoreVoter extends Voter
 
         /** @var Store $store */
         $store = $subject;
+
         return match ($attribute) {
             self::VIEW, self::EXPORT => $this->canView($store, $user),
             self::EDIT => $this->canEdit(),
-            default => throw new LogicException('This code should not be reached!'),
+            default => throw new LogicException(
+                'This code should not be reached!'
+            ),
         };
     }
 

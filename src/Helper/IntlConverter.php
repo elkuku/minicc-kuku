@@ -46,8 +46,7 @@ class IntlConverter
         $currency = $currency ?? $this->defaultCurrency;
 
         $a = new NumberFormatter($locale, NumberFormatter::SPELLOUT);
-        echo $a->formatCurrency(1_231_231.45, $currency) .PHP_EOL;
-        echo $a->format(1_231_231.45) .PHP_EOL;
-
+        echo $a->formatCurrency(1_231_231.45, $currency).PHP_EOL;
+        echo $a->format(1_231_231.45).PHP_EOL;
     }
 }

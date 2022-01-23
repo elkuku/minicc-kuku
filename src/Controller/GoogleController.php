@@ -32,7 +32,8 @@ class GoogleController extends AbstractController
      * in config/packages/knpu_oauth2_client.yaml
      */
     #[Route(path: '/connect/google/check', name: 'connect_google_check', methods: ['GET'])]
-    public function connectCheckAction(): RedirectResponse {
+    public function connectCheckAction(): RedirectResponse
+    {
         return $this->redirectToRoute('welcome');
     }
 }

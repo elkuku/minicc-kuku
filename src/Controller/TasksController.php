@@ -88,6 +88,7 @@ class TasksController extends AbstractController
             ]
         );
     }
+
     #[Route(path: '/export-table/{name}', name: 'export-table', methods: ['GET'])]
     public function export(
         string $name,
@@ -103,7 +104,7 @@ class TasksController extends AbstractController
             $content,
             200,
             [
-                'Content-Type'        => 'application/txt',
+                'Content-Type' => 'application/txt',
                 'Content-Disposition' => sprintf(
                     'attachment; filename="%s"',
                     $filename
@@ -197,8 +198,10 @@ class TasksController extends AbstractController
         return $this->redirectToRoute('admin-tasks');
     }
 
-    private function getTableData(string $tableName, ManagerRegistry $managerRegistry): array|RedirectResponse
-    {
+    private function getTableData(
+        string $tableName,
+        ManagerRegistry $managerRegistry
+    ): array|RedirectResponse {
         try {
             $query = "SELECT * FROM $tableName;";
 

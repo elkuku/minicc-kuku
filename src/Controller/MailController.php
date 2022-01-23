@@ -54,7 +54,7 @@ class MailController extends AbstractController
                     'user'     => $store->getUser(),
                     'store'    => $store,
                     'fileName' => $fileName,
-                    'year' => $year,
+                    'year'     => $year,
                 ]
             );
 

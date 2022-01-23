@@ -122,7 +122,6 @@ class AppFixtures extends Fixture
             );
         $manager->persist($contract);
 
-
         /*
          * Deposit
          */
@@ -133,6 +132,5 @@ class AppFixtures extends Fixture
         $manager->persist($deposit);
 
         $manager->flush();
-
     }
 }

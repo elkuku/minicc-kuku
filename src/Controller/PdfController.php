@@ -135,7 +135,8 @@ class PdfController extends AbstractController
                     'header-html'              => $pdfHelper->getHeaderHtml(),
                     'footer-html'              => $pdfHelper->getFooterHtml(),
                     'enable-local-file-access' => true,
-                ]),
+                ]
+            ),
             sprintf('user-list-%s.pdf', date('Y-m-d'))
         );
     }

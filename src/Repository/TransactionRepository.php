@@ -111,8 +111,11 @@ class TransactionRepository extends ServiceEntityRepository
             ->getSingleScalarResult();
     }
 
-    public function findMonthPayments(Store $store, string $month, string $year): array
-    {
+    public function findMonthPayments(
+        Store $store,
+        string $month,
+        string $year
+    ): array {
         return $this->createQueryBuilder('p')
             ->where('p.store = :store')
             ->andWhere('MONTH(p.date) = :month')

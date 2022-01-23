@@ -50,10 +50,11 @@ class DefaultController extends BaseController
             [
                 'stores'          => $user?->getStores(),
                 'balances'        => $balances,
-                'chartBalances' => $chartBuilderService->getDashboardChart(
+                'chartBalances'   => $chartBuilderService->getDashboardChart(
                     'Saldo en $',
                     $chartData['headers'],
-                    $chartData['balances']),
+                    $chartData['balances']
+                ),
                 'chartMonthsDebt' => $chartBuilderService->getDashboardChart(
                     'Meses de deuda',
                     $chartData['headers'],

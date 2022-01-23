@@ -37,7 +37,10 @@ class TransactionController extends AbstractController
         return $this->redirect('/'.$redirect);
     }
 
-    #[Route(path: '/edit/{id}', name: 'transaction-edit', methods: ['GET', 'POST'])]
+    #[Route(path: '/edit/{id}', name: 'transaction-edit', methods: [
+        'GET',
+        'POST',
+    ])]
     public function edit(
         Transaction $transaction,
         Request $request,

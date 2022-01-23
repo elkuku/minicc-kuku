@@ -42,7 +42,7 @@ class DepositController extends AbstractController
         return $this->render(
             'deposit/list.html.twig',
             [
-                'deposits'         => $deposits,
+                'deposits' => $deposits,
                 'paginatorOptions' => $paginatorOptions,
             ]
         );
@@ -75,8 +75,12 @@ class DepositController extends AbstractController
                 continue;
             }
 
-            if (!str_starts_with($line->descripcion, 'TRANSFERENCIA DIRECTA DE')) {
-            // if ('DEPOSITO' !== $line->descripcion) {
+            if (!str_starts_with(
+                $line->descripcion,
+                'TRANSFERENCIA DIRECTA DE'
+            )
+            ) {
+                // if ('DEPOSITO' !== $line->descripcion) {
                 continue;
             }
 
@@ -102,8 +106,10 @@ class DepositController extends AbstractController
     }
 
     #[Route(path: '/_search', name: '_deposito_search', methods: ['GET'])]
-    public function _search(DepositRepository $depositRepository, Request $request): Response
-    {
+    public function _search(
+        DepositRepository $depositRepository,
+        Request $request
+    ): Response {
         $documentId = (int)$request->get('q');
         $ids = $depositRepository->search($documentId);
 
@@ -116,8 +122,10 @@ class DepositController extends AbstractController
     }
 
     #[Route(path: '/_lookup', name: '_deposito_lookup', methods: ['GET'])]
-    public function lookup(DepositRepository $depositRepository,
-        Request $request): JsonResponse{
+    public function lookup(
+        DepositRepository $depositRepository,
+        Request $request
+    ): JsonResponse {
         $id = $request->get('id');
 
         $deposit = $depositRepository->find($id);

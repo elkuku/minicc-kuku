@@ -140,7 +140,10 @@ class ContractController extends AbstractController
         return $this->redirectToRoute('contract-list');
     }
 
-    #[Route(path: '/template', name: 'contracts-template', methods: ['GET', 'POST'])]
+    #[Route(path: '/template', name: 'contracts-template', methods: [
+        'GET',
+        'POST',
+    ])]
     public function template(
         ContractRepository $contractRepository,
         Request $request,

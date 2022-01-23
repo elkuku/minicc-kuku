@@ -38,7 +38,10 @@ class StoreController extends AbstractController
      * @throws \Doctrine\ORM\NoResultException
      * @throws \JsonException
      */
-    #[Route(path: '/{id}', name: 'store-transactions', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    #[Route(path: '/{id}', name: 'store-transactions', requirements: ['id' => '\d+'], methods: [
+        'GET',
+        'POST',
+    ])]
     public function show(
         TransactionRepository $transactionRepository,
         StoreRepository $storeRepository,

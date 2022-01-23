@@ -76,6 +76,7 @@ class AppExtension extends AbstractExtension
         string $thousandsSep = ','
     ): string {
         $price = number_format($number, $decimals, $decPoint, $thousandsSep);
+
         return sprintf(
             '<span class="%s">%s</span>',
             ($price < 0 ? 'amount amount-red' : 'amount'),
@@ -115,13 +116,12 @@ class AppExtension extends AbstractExtension
             }
         }
 
-
-
         return $formatter->formatObject($dateTime, $format, $lang);
     }
 
     /**
      * Convert object to array for Twig usage...
+     *
      * @return array<string, mixed>
      */
     public function objectFilter(object $classObject): array
