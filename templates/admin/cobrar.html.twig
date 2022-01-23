@@ -18,7 +18,9 @@
                 </tr>
                 </thead>
                 <tbody>
+                {% set total = 0 %}
                 {% for store in stores %}
+                    {% set total = total + store.valAlq|conIva %}
                     <tr>
                         <td class="text-center">{{ store.id }}</td>
                         <td>{{ store.destination }}</td>
@@ -44,10 +46,14 @@
                     </td>
                     <td>
                         <input name="date_cobro" id="date_cobro" type="date" class="form-control"
+                               value="{{ 'now'|format_datetime(pattern="y-MM-01") }}"
                                required="required"/>
                     </td>
                     <td colspan="2" class="text-center">
-                        <button type="submit" class="btn btn-success">A Cobrar...!</button>
+                        <button type="submit" class="btn btn-success">
+                            <h2 style="color: yellow">Total: {{ total|format_currency('USD') }}</h2>
+                            A Cobrar...!
+                        </button>
                     </td>
                 </tr>
                 </tfoot>
