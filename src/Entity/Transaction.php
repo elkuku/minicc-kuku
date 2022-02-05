@@ -64,13 +64,13 @@ class Transaction implements JsonSerializable
      * @deprecated
      */
     #[Column(type: Types::INTEGER, nullable: true)]
-    private ?int $depId;
+    private ?int $depId = null;
 
     #[OneToOne(inversedBy: 'transaction', targetEntity: Deposit::class, cascade: [
         'persist',
         'remove',
     ])]
-    private ?Deposit $deposit;
+    private ?Deposit $deposit = null;
 
     #[Column(type: Types::INTEGER, nullable: true)]
     private ?int $recipeNo = 0;

@@ -134,9 +134,7 @@ class MailController extends AbstractController
 
             $mailer->send($email);
             $this->addFlash('success', 'Mail has been sent succesfully.');
-        } catch (Exception $exception) {
-            $this->addFlash('danger', $exception->getMessage());
-        } catch (TransportExceptionInterface $exception) {
+        } catch (Exception|TransportExceptionInterface $exception) {
             $this->addFlash('danger', $exception->getMessage());
         }
 

@@ -43,7 +43,7 @@ class Deposit implements JsonSerializable
         'persist',
         'remove',
     ])]
-    private ?Transaction $transaction;
+    private ?Transaction $transaction = null;
 
     public function getId(): ?int
     {

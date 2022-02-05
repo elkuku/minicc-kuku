@@ -43,7 +43,7 @@ class User implements UserInterface, Serializable
 
     #[NotBlank]
     #[Column(type: Types::STRING, length: 40)]
-    private ?string $name;
+    private ?string $name = null;
 
     #[Column(type: Types::STRING, length: 50)]
     private string $role = 'ROLE_USER';
@@ -275,7 +275,7 @@ class User implements UserInterface, Serializable
             $this->id,
             $this->email,
         ]
-            = unserialize($data, ['allowed_classes' => [__CLASS__]]);
+            = unserialize($data, ['allowed_classes' => [self::class]]);
     }
 
     public function getIdentifier(): string

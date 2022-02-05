@@ -142,7 +142,7 @@ class TransactionRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
 
-        if (!count($transactions)) {
+        if (!(is_countable($transactions) ? count($transactions) : 0)) {
             return [];
         }
 

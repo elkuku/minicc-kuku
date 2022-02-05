@@ -140,7 +140,7 @@ class TasksController extends AbstractController
             return $this->redirectToRoute('admin-tasks');
         }
         $tableName = $parts[1];
-        $newData = json_decode(file_get_contents($path));
+        $newData = json_decode(file_get_contents($path), null, 512, JSON_THROW_ON_ERROR);
         $oldData = $this->getTableData($tableName, $managerRegistry);
         foreach ($newData as $i => $newItem) {
             foreach ($oldData as $oldItem) {
@@ -158,7 +158,7 @@ class TasksController extends AbstractController
                 }
             }
         }
-        if (!count($newData)) {
+        if (!(is_countable($newData) ? count($newData) : 0)) {
             $this->addFlash('success', 'Everything is in Sync :)');
 
             return $this->redirectToRoute('admin-tasks');
@@ -193,7 +193,7 @@ class TasksController extends AbstractController
         $em = $managerRegistry->getManager();
         $statement = $em->getConnection()->prepare($query);
         $statement->executeQuery();
-        $this->addFlash('success', count($newData).' lines inserted');
+        $this->addFlash('success', (is_countable($newData) ? count($newData) : 0).' lines inserted');
 
         return $this->redirectToRoute('admin-tasks');
     }
