@@ -17,9 +17,9 @@ use Twig\Environment;
 class PdfHelper
 {
     public function __construct(
-        private string $rootDir,
-        private Environment $twig,
-        private Pdf $pdfEngine,
+        private readonly string $rootDir,
+        private readonly Environment $twig,
+        private readonly Pdf $pdfEngine,
     ) {
     }
 

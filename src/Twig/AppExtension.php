@@ -25,7 +25,7 @@ use function strlen;
 class AppExtension extends AbstractExtension
     implements ServiceSubscriberInterface
 {
-    public function __construct(private ContainerInterface $container)
+    public function __construct(private readonly ContainerInterface $container)
     {
     }
 

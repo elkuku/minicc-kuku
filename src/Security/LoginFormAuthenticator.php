@@ -21,8 +21,8 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
     use TargetPathTrait;
 
     public function __construct(
-        private RouterInterface $router,
-        private string $appEnv
+        private readonly RouterInterface $router,
+        private readonly string $appEnv
     ) {
     }
 

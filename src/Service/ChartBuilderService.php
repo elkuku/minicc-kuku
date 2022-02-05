@@ -7,7 +7,7 @@ use Symfony\UX\Chartjs\Model\Chart;
 
 class ChartBuilderService
 {
-    public function __construct(private ChartBuilderInterface $chartBuilder)
+    public function __construct(private readonly ChartBuilderInterface $chartBuilder)
     {
     }
 

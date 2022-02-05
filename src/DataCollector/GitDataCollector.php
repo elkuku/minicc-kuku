@@ -10,7 +10,7 @@ use Throwable;
 
 class GitDataCollector extends DataCollector
 {
-    public function __construct(private GitLoader $gitLoader)
+    public function __construct(private readonly GitLoader $gitLoader)
     {
     }
 

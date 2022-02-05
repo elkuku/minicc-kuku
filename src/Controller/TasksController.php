@@ -130,7 +130,7 @@ class TasksController extends AbstractController
 
             return $this->redirectToRoute('admin-tasks');
         }
-        $parts = explode('-', $file->getClientOriginalName());
+        $parts = explode('-', (string) $file->getClientOriginalName());
         if (count($parts) < 2) {
             $this->addFlash(
                 'danger',

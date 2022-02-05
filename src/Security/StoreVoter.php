@@ -11,11 +11,11 @@ use Symfony\Component\Security\Core\Security;
 
 class StoreVoter extends Voter
 {
-    public const VIEW = 'view';
-    public const EDIT = 'edit';
-    public const EXPORT = 'export';
+    public final const VIEW = 'view';
+    public final const EDIT = 'edit';
+    public final const EXPORT = 'export';
 
-    public function __construct(private Security $security)
+    public function __construct(private readonly Security $security)
     {
     }
 

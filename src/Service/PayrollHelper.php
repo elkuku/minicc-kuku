@@ -9,8 +9,8 @@ use JetBrains\PhpStorm\ArrayShape;
 class PayrollHelper
 {
     public function __construct(
-        private StoreRepository $storeRepository,
-        private TransactionRepository $transactionRepository,
+        private readonly StoreRepository $storeRepository,
+        private readonly TransactionRepository $transactionRepository,
     ) {
     }
 

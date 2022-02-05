@@ -24,10 +24,10 @@ class GoogleAuthenticator extends AbstractAuthenticator
     use TargetPathTrait;
 
     public function __construct(
-        private ClientRegistry $clientRegistry,
-        private EntityManagerInterface $entityManager,
-        private UserRepository $userRepository,
-        private UrlGeneratorInterface $urlGenerator,
+        private readonly ClientRegistry $clientRegistry,
+        private readonly EntityManagerInterface $entityManager,
+        private readonly UserRepository $userRepository,
+        private readonly UrlGeneratorInterface $urlGenerator,
     ) {
     }
 

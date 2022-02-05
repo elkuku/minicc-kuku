@@ -10,7 +10,7 @@ namespace App\Service;
 
 class TaxService
 {
-    public function __construct(private int $taxValue)
+    public function __construct(private readonly int $taxValue)
     {
     }
 
