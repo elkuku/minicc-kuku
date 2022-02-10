@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\PersistentCollection;
-use Serializable;
+use JetBrains\PhpStorm\ArrayShape;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use App\Repository\UserRepository;
@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 #[UniqueEntity(fields: 'email', message: 'This email address is already in use')]
 #[Entity(repositoryClass: UserRepository::class)]
-class User implements UserInterface, Serializable
+class User implements UserInterface
 {
     #[Id, GeneratedValue(strategy: 'AUTO')]
     #[Column(type: Types::INTEGER)]
@@ -259,25 +259,6 @@ class User implements UserInterface, Serializable
         return $this->gender;
     }
 
-    public function serialize(): string
-    {
-        return serialize(
-            [
-                $this->id,
-                $this->email,
-            ]
-        );
-    }
-
-    public function unserialize($data): void
-    {
-        [
-            $this->id,
-            $this->email,
-        ]
-            = unserialize($data, ['allowed_classes' => [self::class]]);
-    }
-
     public function getIdentifier(): string
     {
         return $this->identifier;
@@ -288,5 +269,21 @@ class User implements UserInterface, Serializable
         $this->identifier = $identifier;
 
         return $this;
+    }
+
+    #[ArrayShape(['id' => "int|null", 'email' => "string"])]
+    public function __serialize(): array
+    {
+        return
+            [
+                'id'    => $this->id,
+                'email' => $this->email,
+            ];
+    }
+
+    public function __unserialize(array $data): void
+    {
+        $this->id = $data['id'] ?: null;
+        $this->email = $data['email'] ?: null;
     }
 }
