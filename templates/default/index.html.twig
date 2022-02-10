@@ -10,83 +10,9 @@
 {% block body %}
     {% if app.user %}
         {% if app.user.role == 'ROLE_ADMIN' %}
-            {% set theyOweYou = 0 %}
-            <table class="table table-sm table-hover">
-                <thead>
-                <tr>
-                    <th class="text-center">Local</th>
-                    <th>Destino</th>
-                    <th>Cliente</th>
-                    <th class="text-right">Saldo</th>
-                    <th class="text-left">Meses</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for balance in balances %}
-                    {% if balance.store.user %}
-                        {% set mesesDebt = balance.amount / balance.store.valAlq|conIva %}
-                        <tr>
-                            <td class="text-center">{{ balance.store.id }}</td>
-                            <td>
-                                <a href="{{ path('store-transactions', {'id': balance.store.id}) }}">{{ balance.store.destination }}</a>
-                            </td>
-                            <td>{{ balance.store.user.name }}</td>
-                            <td class="text-right">{{ balance.amount|price|raw }}</td>
-                            <td class="text-left">{{ mesesDebt|invert|round(1, 'ceil') }}</td>
-                        </tr>
-                        {% set theyOweYou = theyOweYou + balance.amount %}
-                    {% endif %}
-                {% endfor %}
-                </tbody>
-            </table>
-            <div class="card-footer">
-                <h3 class="text-right">Sie schulden dir: $ {{ theyOweYou|price|raw }}</h3>
-            </div>
-            <div class="row">
-                <div class="col">
-                    {{ render_chart(chartBalances) }}
-                </div>
-                <div class="col">
-                    {{ render_chart(chartMonthsDebt) }}
-                </div>
-            </div>
+            {% include'default/_admin-dashboard.html.twig' %}
         {% else %}
-            <h3>Bienvenido {{ app.user.name }}</h3>
-            {% if stores.count() %}
-                <table class="table">
-                    <tr>
-                        <th>Numero</th>
-                        <th>Destino</th>
-                        <th class="text-right">Saldo</th>
-                    </tr>
-                    {% set saldo = 0 %}
-                    {% for store in stores %}
-                        <tr>
-                            <td>{{ store.id }}</td>
-                            <td>
-                                <a href="{{ path('store-transactions', {'id': store.id}) }}">
-                                    {{ store.destination }}
-                                </a>
-                            </td>
-                            <td class="text-right">
-                                {% for balance in balances %}
-                                    {% if balance.store.id == store.id %}
-                                        {{ balance.amount|price|raw }}
-                                        {% set saldo = saldo + balance.amount %}
-                                    {% endif %}
-                                {% endfor %}
-                            </td>
-                        </tr>
-                    {% endfor %}
-                    <tr>
-                        <td colspan="2" class="text-right">Saldo:</td>
-                        <td class="text-right"><b>{{ saldo|price|raw }}</b></td>
-                    </tr>
-                </table>
-            {% else %}
-                <h4>Usted no tiene local asignado!</h4>
-                Por favor contacte la administracion.
-            {% endif %}
+            {% include'default/_user-dashboard.html.twig' %}
         {% endif %}
     {% endif %}
 {% endblock %}

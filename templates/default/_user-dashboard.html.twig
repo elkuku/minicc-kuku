@@ -1,0 +1,36 @@
+<h3>Bienvenido {{ app.user.name }}</h3>
+{% if stores.count() %}
+    <table class="table">
+        <tr>
+            <th>Numero</th>
+            <th>Destino</th>
+            <th class="text-right">Saldo</th>
+        </tr>
+        {% set saldo = 0 %}
+        {% for store in stores %}
+            <tr>
+                <td>{{ store.id }}</td>
+                <td>
+                    <a href="{{ path('store-transactions', {'id': store.id}) }}">
+                        {{ store.destination }}
+                    </a>
+                </td>
+                <td class="text-right">
+                    {% for balance in balances %}
+                        {% if balance.store.id == store.id %}
+                            {{ balance.amount|price|raw }}
+                            {% set saldo = saldo + balance.amount %}
+                        {% endif %}
+                    {% endfor %}
+                </td>
+            </tr>
+        {% endfor %}
+        <tr>
+            <td colspan="2" class="text-right">Saldo:</td>
+            <td class="text-right"><b>{{ saldo|price|raw }}</b></td>
+        </tr>
+    </table>
+{% else %}
+    <h4>Usted no tiene local asignado!</h4>
+    Por favor contacte la administracion.
+{% endif %}
