@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataSource name="main_test@localhost">
-  <database-model serializer="dbm" dbms="MYSQL" family-id="MYSQL" format-version="4.32">
+  <database-model serializer="dbm" dbms="MYSQL" family-id="MYSQL" format-version="4.34">
     <root id="1"/>
     <collation id="2" parent="1" name="armscii8_bin">
       <Charset>armscii8</Charset>
@@ -769,10 +769,10 @@
       <CollationName>utf8mb4_unicode_ci</CollationName>
     </table>
     <column id="244" parent="234" name="id">
+      <AutoIncrement>1</AutoIncrement>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <SequenceIdentity>null</SequenceIdentity>
     </column>
     <column id="245" parent="234" name="gender_id">
       <DataType>int(11)|0s</DataType>
@@ -883,10 +883,10 @@
       <Primary>1</Primary>
     </key>
     <column id="267" parent="235" name="id">
+      <AutoIncrement>1</AutoIncrement>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <SequenceIdentity>null</SequenceIdentity>
     </column>
     <column id="268" parent="235" name="entity_id">
       <DataType>int(11)|0s</DataType>
@@ -940,10 +940,10 @@
       <Primary>1</Primary>
     </key>
     <column id="279" parent="237" name="id">
+      <AutoIncrement>1</AutoIncrement>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <SequenceIdentity>null</SequenceIdentity>
     </column>
     <column id="280" parent="237" name="name">
       <DataType>varchar(150)|0s</DataType>
@@ -956,10 +956,10 @@
       <Primary>1</Primary>
     </key>
     <column id="282" parent="238" name="id">
+      <AutoIncrement>1</AutoIncrement>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <SequenceIdentity>null</SequenceIdentity>
     </column>
     <column id="283" parent="238" name="user_id">
       <DataType>int(11)|0s</DataType>
@@ -1040,10 +1040,10 @@
       <Primary>1</Primary>
     </key>
     <column id="299" parent="239" name="id">
+      <AutoIncrement>1</AutoIncrement>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <SequenceIdentity>null</SequenceIdentity>
     </column>
     <column id="300" parent="239" name="store_id">
       <DataType>int(11)|0s</DataType>
@@ -1125,10 +1125,10 @@
       <Primary>1</Primary>
     </key>
     <column id="318" parent="240" name="id">
+      <AutoIncrement>1</AutoIncrement>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <SequenceIdentity>null</SequenceIdentity>
     </column>
     <column id="319" parent="240" name="name">
       <DataType>varchar(150)|0s</DataType>
@@ -1141,10 +1141,10 @@
       <Primary>1</Primary>
     </key>
     <column id="321" parent="241" name="id">
+      <AutoIncrement>1</AutoIncrement>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <SequenceIdentity>null</SequenceIdentity>
     </column>
     <column id="322" parent="241" name="gender_id">
       <DataType>int(11)|0s</DataType>
@@ -1223,10 +1223,10 @@
       <UnderlyingIndexName>UNIQ_8D93D649E7927C74</UnderlyingIndexName>
     </key>
     <column id="339" parent="242" name="id">
+      <AutoIncrement>1</AutoIncrement>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <SequenceIdentity>null</SequenceIdentity>
     </column>
     <column id="340" parent="242" name="name">
       <DataType>varchar(150)|0s</DataType>
@@ -1239,10 +1239,10 @@
       <Primary>1</Primary>
     </key>
     <column id="342" parent="243" name="id">
+      <AutoIncrement>1</AutoIncrement>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <SequenceIdentity>null</SequenceIdentity>
     </column>
     <column id="343" parent="243" name="name">
       <DataType>varchar(150)|0s</DataType>
