@@ -23,7 +23,6 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
-            - '../src/Tests/'
 
     App\Service\TaxService:
         $taxValue: '%env(value_iva)%'
