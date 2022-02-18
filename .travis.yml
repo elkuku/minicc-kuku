@@ -19,7 +19,11 @@ matrix:
   allow_failures:
     - php: nightly
 
+services:
+  - mysql
+
 before_script:
+  - cp .env.travis .env
   - composer install
   - nvm install 12
   - yarn install
