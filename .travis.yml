@@ -1,4 +1,5 @@
 language: php
+dist: bionic
 
 matrix:
   fast_finish: true
@@ -10,8 +11,6 @@ matrix:
 
 before_script:
   - composer install
-  - npm i
-  - npm run build
-
-script:
-  - composer test
+  - nvm install 12
+  - yarn install
+  - yarn dev
