@@ -1,5 +1,15 @@
 language: php
 dist: bionic
+sudo: false
+
+cache:
+  directories:
+    - $HOME/.composer/cache/files
+    - $HOME/symfony-bridge/.phpunit
+env:
+  global:
+    - PHPUNIT_FLAGS="-v"
+    - SYMFONY_PHPUNIT_DIR="$HOME/symfony-bridge/.phpunit"
 
 matrix:
   fast_finish: true
@@ -14,3 +24,9 @@ before_script:
   - nvm install 12
   - yarn install
   - yarn dev
+  - bin/console doctrine:database:create -n --env=test
+  - bin/console doctrine:migrations:migrate -n --env=test
+  - bin/console doctrine:fixtures:load -n --env=test
+
+script:
+  - SYMFONY_DEPRECATIONS_HELPER=disabled ./bin/phpunit $PHPUNIT_FLAGS
