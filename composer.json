@@ -110,13 +110,6 @@
         "post-update-cmd": [
             "@auto-scripts"
         ],
-        "phpcs": "vendor/bin/phpcs src --standard=ruleset.xml",
-        "test": "bin/phpunit",
-        "ci": [
-            "@composer validate --no-check-all --strict",
-            "@phpcs",
-            "@test"
-        ],
         "trans": [
             "./bin/console translation:update es --output-format=yaml --force"
         ]
