@@ -34,6 +34,6 @@ class TaxService
     {
         $base = $total / (1 + $this->taxValue / 100);
 
-        return $total - $base;
+        return round($total - $base, 2);
     }
 }
