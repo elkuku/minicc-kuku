@@ -38,21 +38,7 @@
                 <li class="list-group-item">
                     <a href="{{ path('backup') }}">Send Backup per e-mail</a>
                 </li>
-                <li class="list-group-item">
-                    <a href="{{ path('export-table', {'name': 'transaction'}) }}">Export Transactions</a>
-                </li>
-                <li class="list-group-item">
-                    <a href="{{ path('export-table', {'name': 'deposit'}) }}">Export Depositos</a>
-                </li>
             </ul>
-
-            <h6 class="card-header">Import</h6>
-            <form enctype="multipart/form-data" method="post" class="form" action="{{ path('import-table') }}">
-                <div class="form-group">
-                    <input name="file" type="file" class="form-control"/>
-                    <button type="submit" class="btn btn-primary">Upload Export</button>
-                </div>
-            </form>
         </div>
         <div class="card">
             <h5 class="card-header">View</h5>

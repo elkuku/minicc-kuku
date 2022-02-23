@@ -22,7 +22,8 @@ class GoogleController extends AbstractController
                 [
                     'profile',
                     'email' // the scopes you want to access
-                ]
+                ],
+                []
             );
     }
 

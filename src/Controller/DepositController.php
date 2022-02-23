@@ -71,7 +71,11 @@ class DepositController extends AbstractController
         $em = $managerRegistry->getManager();
         $insertCount = 0;
         foreach ($csvData->lines as $line) {
-            if (!isset($line->descripcion)) {
+            if (!isset(
+                $line->descripcion, $line->fecha,
+                $line->{'numero de documento'}, $line->credito
+            )
+            ) {
                 continue;
             }
 

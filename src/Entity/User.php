@@ -73,6 +73,9 @@ class User implements UserInterface
     #[Column(type: Types::STRING, length: 255, nullable: true)]
     private ?string $direccion = '';
 
+    #[Column(type: Types::STRING, length: 100, nullable: true)]
+    private ?string $googleId = '';
+
     public function __construct()
     {
         $this->stores = new ArrayCollection;
@@ -284,5 +287,17 @@ class User implements UserInterface
     {
         $this->id = $data['id'] ?: null;
         $this->email = $data['email'] ?: null;
+    }
+
+    public function getGoogleId(): ?string
+    {
+        return $this->googleId;
+    }
+
+    public function setGoogleId(string $googleId): self
+    {
+        $this->googleId = $googleId;
+
+        return $this;
     }
 }
