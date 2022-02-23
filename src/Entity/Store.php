@@ -204,7 +204,7 @@ class Store
         return $this->cntMedElec;
     }
 
-    public function setMedElectrico(int $medElectrico): static
+    public function setMedElectrico(string $medElectrico): static
     {
         $this->medElectrico = $medElectrico;
 
@@ -216,7 +216,7 @@ class Store
         return $this->medElectrico;
     }
 
-    public function setMedAgua(int $medAgua): static
+    public function setMedAgua(string $medAgua): static
     {
         $this->medAgua = $medAgua;
 

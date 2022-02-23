@@ -130,7 +130,7 @@ class TransactionRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return Transaction[]
+     * @return  array<int|string, array<int, array<int, array<int, Transaction>>>>
      */
     public function getPagosPorAno(int $year): array
     {
@@ -148,7 +148,7 @@ class TransactionRepository extends ServiceEntityRepository
 
         $payments = [];
 
-        /** @type Transaction $transaction */
+        /** @var Transaction $transaction */
         foreach ($transactions as $transaction) {
             $mes = (int)$transaction->getDate()->format('m');
             $day = (int)$transaction->getDate()->format('d');
