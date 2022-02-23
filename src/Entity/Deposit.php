@@ -16,6 +16,7 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToOne;
+use JetBrains\PhpStorm\ArrayShape;
 use JsonSerializable;
 use UnexpectedValueException;
 use App\Repository\DepositRepository;
@@ -130,11 +131,16 @@ class Deposit implements JsonSerializable
      * Specify data which should be serialized to JSON
      *
      * @link  http://php.net/manual/en/jsonserializable.jsonserialize.php
-     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * @return array data which can be serialized by <b>json_encode</b>,
      * which is a value of any type other than a resource.
      * @since 5.4.0
      */
-    public function jsonSerialize(): array
+    #[ArrayShape(['id'       => "int|null",
+                  'amount'   => "float",
+                  'document' => "string",
+                  'date'     => "string",
+                  'entity'   => "int|null"
+    ])] public function jsonSerialize(): array
     {
         return [
             'id'       => $this->id,

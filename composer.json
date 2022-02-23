@@ -23,7 +23,6 @@
         "league/oauth2-google": "^4.0",
         "oro/doctrine-extensions": "^2.0",
         "phpdocumentor/reflection-docblock": "^5.2",
-        "rector/rector": "^0.12.10",
         "sensio/framework-extra-bundle": "^6.0",
         "symfony/apache-pack": "*",
         "symfony/asset": "*",
@@ -58,7 +57,10 @@
     },
     "require-dev": {
         "dbrekelmans/bdi": "^0.3.0",
+        "jetbrains/phpstorm-attributes": "^1.0",
+        "phpstan/phpstan": "^1.4",
         "phpunit/phpunit": "^9.5",
+        "rector/rector": "^0.12.10",
         "roave/security-advisories": "dev-latest",
         "symfony/browser-kit": "*",
         "symfony/css-selector": "*",
