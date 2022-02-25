@@ -35,8 +35,7 @@ before_script:
 script:
   - SYMFONY_DEPRECATIONS_HELPER=disabled ./bin/phpunit $PHPUNIT_FLAGS
   - vendor/bin/phpstan analyse -l 4 src tests
-  - cat ./var/log/test.log || true
 
 after_script:
-  - cat ./var/log/test.log
+  - cat ./var/log/test.log || true
 #  - ./bin/console app:TravisFinishedNotification
