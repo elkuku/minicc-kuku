@@ -113,8 +113,8 @@ class TransactionRepository extends ServiceEntityRepository
 
     public function findMonthPayments(
         Store $store,
-        string $month,
-        string $year
+        int $month,
+        int $year
     ): array {
         return $this->createQueryBuilder('p')
             ->where('p.store = :store')

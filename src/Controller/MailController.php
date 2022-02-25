@@ -148,8 +148,8 @@ class MailController extends AbstractController
         MailerInterface $mailer,
         PayrollHelper $payrollHelper,
     ): Response {
-        $year = date('Y');
-        $month = date('m');
+        $year = (int)date('Y');
+        $month = (int)date('m');
         $fileName = "payrolls-$year-$month.pdf";
         $html = 'Attachment: '.$fileName;
         $document = $pdf->getOutputFromHtml(
@@ -191,8 +191,8 @@ class MailController extends AbstractController
 
             return $this->redirectToRoute('mail-list-transactions');
         }
-        $year = date('Y');
-        $month = date('m');
+        $year = (int)date('Y');
+        $month = (int)date('m');
         $fileName = "planilla-$year-$month.pdf";
         $stores = $storeRepository->getActive();
         $failures = [];

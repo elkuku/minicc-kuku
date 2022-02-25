@@ -95,7 +95,7 @@ class ControllerAccessTest extends WebTestCase
             }
             // WTF end
 
-            $path = str_replace('{id}', $defaultId, $route->getPath());
+            $path = str_replace('{id}', (string)$defaultId, $route->getPath());
             $out = false;
             foreach ($methods as $method) {
                 $expectedStatusCode = 302;

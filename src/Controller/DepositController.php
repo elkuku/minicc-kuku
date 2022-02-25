@@ -34,7 +34,7 @@ class DepositController extends AbstractController
         $paginatorOptions = $this->getPaginatorOptions($request);
         $deposits = $depositRepository->getPaginatedList($paginatorOptions);
         $paginatorOptions->setMaxPages(
-            ceil(
+            (int)ceil(
                 count($deposits) / $paginatorOptions->getLimit()
             )
         );
