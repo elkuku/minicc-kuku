@@ -31,10 +31,10 @@ class User implements UserInterface
     private string $identifier;
 
     /**
-     * @var Store[]
+     * @var PersistentCollection<int, Store>|ArrayCollection<int, Store> $stores
      */
     #[OneToMany(mappedBy: 'user', targetEntity: Store::class)]
-    private array|ArrayCollection|PersistentCollection $stores;
+    private PersistentCollection|ArrayCollection $stores;
 
     #[NotBlank]
     #[Email(message: "The email '{{ value }}' is not a valid email.")]
@@ -229,7 +229,7 @@ class User implements UserInterface
 
     public function addStore(Store $store): static
     {
-        $this->stores[] = $store;
+        $this->stores->add($store);
 
         return $this;
     }
@@ -242,9 +242,9 @@ class User implements UserInterface
     }
 
     /**
-     * @return Store[]
+     * @return PersistentCollection<int, Store>
      */
-    public function getStores(): array|ArrayCollection|PersistentCollection
+    public function getStores(): PersistentCollection
     {
         return $this->stores;
     }
@@ -273,6 +273,9 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return array{ id: integer|null, email: string|null}
+     */
     #[ArrayShape(['id' => "int|null", 'email' => "string"])]
     public function __serialize(): array
     {
@@ -283,6 +286,9 @@ class User implements UserInterface
             ];
     }
 
+    /**
+     * @param array{ id: int|null, email: string|null} $data
+     */
     public function __unserialize(array $data): void
     {
         $this->id = $data['id'] ?: null;

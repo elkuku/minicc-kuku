@@ -5,12 +5,12 @@ namespace App\Helper\CsvParser;
 class CsvObject
 {
     /**
-     * @var array
+     * @var array<string>
      */
     public array $headVars = [];
 
     /**
-     * @var array
+     * @var array<int, \stdClass>
      */
     public array $lines = [];
 }

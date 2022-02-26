@@ -18,13 +18,19 @@ use Doctrine\ORM\Mapping as ORM;
  * @method Store|null findOneBy(array $criteria, array $orderBy = null)
  * @method Store[]    findAll()
  * @method Store[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ *
+ * @extends ServiceEntityRepository<StoreRepository>
  */
 #[ORM\Entity]
 class StoreRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Store::class);
+        /**
+         * @var class-string<StoreRepository>
+         */
+        $className = Store::class;
+        parent::__construct($registry, $className);
     }
 
     /**

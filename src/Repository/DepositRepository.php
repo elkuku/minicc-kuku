@@ -12,6 +12,7 @@ use App\Entity\Deposit;
 use App\Helper\Paginator\PaginatorOptions;
 use App\Helper\Paginator\PaginatorRepoTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
@@ -21,6 +22,8 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
  * @method Deposit|null findOneBy(array $criteria, array $orderBy = null)
  * @method Deposit[]    findAll()
  * @method Deposit[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ *
+ * @extends ServiceEntityRepository<DepositRepository>
  */
 class DepositRepository extends ServiceEntityRepository
 {
@@ -28,7 +31,11 @@ class DepositRepository extends ServiceEntityRepository
 
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Deposit::class);
+        /**
+         * @var class-string<DepositRepository>
+         */
+        $className = Deposit::class;
+        parent::__construct($registry, $className);
     }
 
     public function has(Deposit $deposit): bool
@@ -41,6 +48,9 @@ class DepositRepository extends ServiceEntityRepository
         );
     }
 
+    /**
+     * @return Paginator<Query>
+     */
     public function getPaginatedList(PaginatorOptions $options): Paginator
     {
         $query = $this->createQueryBuilder('d')
@@ -89,6 +99,9 @@ class DepositRepository extends ServiceEntityRepository
         );
     }
 
+    /**
+     * @return Deposit[]
+     */
     public function lookup(int $documentId): array
     {
         return $this->createQueryBuilder('d')
@@ -102,6 +115,9 @@ class DepositRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    /**
+     * @return array<float>
+     */
     public function search(int $documentId): array
     {
         return $this->createQueryBuilder('d')

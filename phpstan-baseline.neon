@@ -1,0 +1,7 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Property App\\\\Entity\\\\User\\:\\:\\$stores type has no value type specified in iterable type Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, App\\\\Entity\\\\Store\\>\\|Doctrine\\\\ORM\\\\PersistentCollection\\<int, App\\\\Entity\\\\Store\\>\\.$#"
+			count: 1
+			path: src/Entity/User.php
+

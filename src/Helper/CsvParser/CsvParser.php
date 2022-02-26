@@ -8,6 +8,9 @@ use UnexpectedValueException;
 
 class CsvParser
 {
+    /**
+     * @param array<string> $contents
+     */
     public function parseCSV(array $contents): CsvObject
     {
         if (!$contents) {

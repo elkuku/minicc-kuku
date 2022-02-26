@@ -6,12 +6,16 @@ use DirectoryIterator;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\BrowserKit\AbstractBrowser;
+use Symfony\Component\Routing\Route;
 
 /**
  * Controller "smoke" test
  */
 class ControllerAccessTest extends WebTestCase
 {
+    /**
+     * @var array<string, array<string, array<string, int>>>
+     */
     private array $exceptions
         = [
             'welcome' => [
@@ -62,6 +66,9 @@ class ControllerAccessTest extends WebTestCase
         }
     }
 
+    /**
+     * @param array<Route> $routes
+     */
     private function processRoutes(
         array $routes,
         AbstractBrowser $browser

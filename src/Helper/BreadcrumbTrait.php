@@ -14,7 +14,7 @@ namespace App\Helper;
 trait BreadcrumbTrait
 {
     /**
-     * @var array
+     * @var array<string, string>
      */
     private array $breadcrumbs = [];
 
@@ -27,6 +27,9 @@ trait BreadcrumbTrait
         return $this;
     }
 
+    /**
+     * @return array<string, string>
+     */
     protected function getBreadcrumbs(): array
     {
         return $this->initBreadcrumbs()->breadcrumbs;

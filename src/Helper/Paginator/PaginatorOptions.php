@@ -33,7 +33,7 @@ class PaginatorOptions
     private string $orderDir = 'ASC';
 
     /**
-     * @var array
+     * @var array<string>
      */
     private array $criteria = [];
 
@@ -82,6 +82,9 @@ class PaginatorOptions
         return $this->orderDir;
     }
 
+    /**
+     * @param array<string> $criteria
+     */
     public function setCriteria(array $criteria): static
     {
         $this->criteria = $criteria;
@@ -89,6 +92,9 @@ class PaginatorOptions
         return $this;
     }
 
+    /**
+     * @return array<string>
+     */
     public function getCriteria(): array
     {
         return $this->criteria;

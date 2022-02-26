@@ -13,6 +13,7 @@ use App\Entity\Transaction;
 use App\Helper\Paginator\PaginatorOptions;
 use App\Helper\Paginator\PaginatorRepoTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\NonUniqueResultException;
@@ -26,6 +27,8 @@ use function count;
  * @method Transaction|null findOneBy(array $criteria, array $orderBy = null)
  * @method Transaction[]    findAll()
  * @method Transaction[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ *
+ * @extends ServiceEntityRepository<TransactionRepository>
  */
 #[ORM\Entity]
 class TransactionRepository extends ServiceEntityRepository
@@ -34,7 +37,11 @@ class TransactionRepository extends ServiceEntityRepository
 
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Transaction::class);
+        /**
+         * @var class-string<TransactionRepository>
+         */
+        $className = Transaction::class;
+        parent::__construct($registry, $className);
     }
 
     /**
@@ -52,6 +59,9 @@ class TransactionRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    /**
+     * @return array<float>
+     */
     public function getSaldos(): array
     {
         return $this->createQueryBuilder('t')
@@ -80,7 +90,7 @@ class TransactionRepository extends ServiceEntityRepository
      * @throws NoResultException
      * @throws NonUniqueResultException
      */
-    public function getSaldoAnterior(Store $store, $year): mixed
+    public function getSaldoAnterior(Store $store, int $year): mixed
     {
         $year ?: date('Y');
 
@@ -97,7 +107,7 @@ class TransactionRepository extends ServiceEntityRepository
     /**
      * @return int|mixed|string
      */
-    public function getSaldoALaFecha(Store $store, $date): mixed
+    public function getSaldoALaFecha(Store $store, string $date): mixed
     {
         return $this->createQueryBuilder('t')
             ->select('SUM(t.amount)')
@@ -109,6 +119,9 @@ class TransactionRepository extends ServiceEntityRepository
             ->getSingleScalarResult();
     }
 
+    /**
+     * @return array<float>
+     */
     public function findMonthPayments(
         Store $store,
         int $month,
@@ -158,6 +171,9 @@ class TransactionRepository extends ServiceEntityRepository
         return $payments;
     }
 
+    /**
+     * @return Paginator<Query>
+     */
     public function getRawList(PaginatorOptions $options): Paginator
     {
         $criteria = $options->getCriteria();

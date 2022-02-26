@@ -17,11 +17,17 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method UserState|null findOneBy(array $criteria, array $orderBy = null)
  * @method UserState[]    findAll()
  * @method UserState[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ *
+ * @extends ServiceEntityRepository<UserStateRepository>
  */
 class UserStateRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, UserState::class);
+        /**
+         * @var class-string<UserStateRepository>
+         */
+        $className = UserState::class;
+        parent::__construct($registry, $className);
     }
 }

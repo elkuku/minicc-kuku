@@ -46,8 +46,8 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
         $credentials = $this->getCredentials($request);
 
         return new SelfValidatingPassport(
-            new UserBadge($credentials['identifier'] ?? ''),
-            [new CsrfTokenBadge('login', $credentials['csrf_token'] ?? '')]
+            new UserBadge($credentials['identifier']),
+            [new CsrfTokenBadge('login', $credentials['csrf_token'])]
         );
     }
 
@@ -67,6 +67,9 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
         return new RedirectResponse($this->router->generate('welcome'));
     }
 
+    /**
+     * @return array{identifier: string, csrf_token: string}
+     */
     #[ArrayShape(['identifier' => "string", 'csrf_token' => "string"])]
     private function getCredentials(
         Request $request

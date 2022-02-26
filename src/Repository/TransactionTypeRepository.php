@@ -17,11 +17,17 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method TransactionType|null findOneBy(array $criteria, array $orderBy = null)
  * @method TransactionType[]    findAll()
  * @method TransactionType[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ *
+ * @extends ServiceEntityRepository<TransactionTypeRepository>
  */
 class TransactionTypeRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, TransactionType::class);
+        /**
+         * @var class-string<TransactionTypeRepository>
+         */
+        $className = TransactionType::class;
+        parent::__construct($registry, $className);
     }
 }
