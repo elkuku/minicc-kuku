@@ -4,8 +4,10 @@ namespace App\Tests\Controller;
 
 use DirectoryIterator;
 use Exception;
+use Symfony\Bundle\FrameworkBundle\Routing\DelegatingLoader;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\BrowserKit\AbstractBrowser;
+use Symfony\Component\BrowserKit\Response;
 use Symfony\Component\Routing\Route;
 
 /**
@@ -39,6 +41,9 @@ class ControllerAccessTest extends WebTestCase
     {
         $client = static::createClient();
 
+        /**
+         * @var DelegatingLoader $routeLoader
+         */
         $routeLoader = static::bootKernel()->getContainer()
             ->get('routing.loader');
 
@@ -103,7 +108,6 @@ class ControllerAccessTest extends WebTestCase
             // WTF end
 
             $path = str_replace('{id}', (string)$defaultId, $route->getPath());
-            $out = false;
             foreach ($methods as $method) {
                 $expectedStatusCode = 302;
                 if (array_key_exists($method, $expectedStatusCodes)) {
@@ -112,9 +116,14 @@ class ControllerAccessTest extends WebTestCase
 
                 $browser->request($method, $path);
 
+                /**
+                 * @var Response $response
+                 */
+                $response = $browser->getResponse();
+
                 self::assertEquals(
                     $expectedStatusCode,
-                    $browser->getResponse()->getStatusCode(),
+                    $response->getStatusCode(),
                     sprintf('failed: %s (%s) with method "%s"', $routeName, $path, $method)
                 );
             }

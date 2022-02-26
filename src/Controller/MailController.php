@@ -291,7 +291,7 @@ class MailController extends AbstractController
             $fileName = date('Y-m-d').'_backup.gz';
             $mime = 'application/x-gzip';
 
-            $attachment = new DataPart($gzip, $fileName, $mime);
+            $attachment = new DataPart((string)$gzip, $fileName, $mime);
 
             $email = (new Email())
                 ->from('minicckuku@gmail.com')

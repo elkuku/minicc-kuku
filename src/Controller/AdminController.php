@@ -59,7 +59,7 @@ class AdminController extends AbstractController
 
             $transaction = (new Transaction)
                 ->setDate(
-                    new DateTime($request->request->get('date_cobro'))
+                    new DateTime((string)$request->request->get('date_cobro'))
                 )
                 ->setStore($storeRepository->find((int)$storeId))
                 ->setUser($userRepository->find((int)$users[$storeId]))

@@ -9,7 +9,7 @@ use UnexpectedValueException;
 class CsvParser
 {
     /**
-     * @param array<string> $contents
+     * @param array<int, string|false> $contents
      */
     public function parseCSV(array $contents): CsvObject
     {
@@ -19,7 +19,7 @@ class CsvParser
 
         $csvObject = new CsvObject;
 
-        $headVars = explode(',', trim(trim($contents[0]), '"'));
+        $headVars = explode(',', trim(trim((string)$contents[0]), '"'));
 
         $csvObject->headVars = $headVars;
 
@@ -29,7 +29,7 @@ class CsvParser
         unset($contents[0]);
 
         foreach ($contents as $line) {
-            $fields = explode(',', trim(trim($line), '"'));
+            $fields = explode(',', trim(trim((string)$line), '"'));
 
             $o = new stdClass;
 

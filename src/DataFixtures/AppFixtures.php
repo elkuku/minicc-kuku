@@ -114,13 +114,12 @@ class AppFixtures extends Fixture
         /*
          * Contract
          */
-        $contract = (new Contract)
-            ->setText(
-                file_get_contents(
-                    __DIR__.'/contract-template.html'
-                )
-            );
-        $manager->persist($contract);
+        $text = file_get_contents(__DIR__.'/contract-template.html');
+        if ($text) {
+            $contract = (new Contract)
+                ->setText($text);
+            $manager->persist($contract);
+        }
 
         /*
          * Deposit

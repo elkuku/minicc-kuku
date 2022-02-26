@@ -1,6 +1,31 @@
 parameters:
 	ignoreErrors:
 		-
+			message: "#^Cannot access offset 'host' on array\\{scheme\\?\\: string, host\\?\\: string, port\\?\\: int, user\\?\\: string, pass\\?\\: string, path\\?\\: string, query\\?\\: string, fragment\\?\\: string\\}\\|false\\.$#"
+			count: 1
+			path: src/Controller/MailController.php
+
+		-
+			message: "#^Cannot access offset 'pass' on array\\{scheme\\?\\: string, host\\?\\: string, port\\?\\: int, user\\?\\: string, pass\\?\\: string, path\\?\\: string, query\\?\\: string, fragment\\?\\: string\\}\\|false\\.$#"
+			count: 1
+			path: src/Controller/MailController.php
+
+		-
+			message: "#^Cannot access offset 'path' on array\\{scheme\\?\\: string, host\\?\\: string, port\\?\\: int, user\\?\\: string, pass\\?\\: string, path\\?\\: string, query\\?\\: string, fragment\\?\\: string\\}\\|false\\.$#"
+			count: 1
+			path: src/Controller/MailController.php
+
+		-
+			message: "#^Cannot access offset 'user' on array\\{scheme\\?\\: string, host\\?\\: string, port\\?\\: int, user\\?\\: string, pass\\?\\: string, path\\?\\: string, query\\?\\: string, fragment\\?\\: string\\}\\|false\\.$#"
+			count: 1
+			path: src/Controller/MailController.php
+
+		-
+			message: "#^Method App\\\\Entity\\\\User\\:\\:getStores\\(\\) return type has no value type specified in iterable type Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, App\\\\Entity\\\\Store\\>\\|Doctrine\\\\ORM\\\\PersistentCollection\\<int, App\\\\Entity\\\\Store\\>\\.$#"
+			count: 1
+			path: src/Entity/User.php
+
+		-
 			message: "#^Property App\\\\Entity\\\\User\\:\\:\\$stores type has no value type specified in iterable type Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<int, App\\\\Entity\\\\Store\\>\\|Doctrine\\\\ORM\\\\PersistentCollection\\<int, App\\\\Entity\\\\Store\\>\\.$#"
 			count: 1
 			path: src/Entity/User.php

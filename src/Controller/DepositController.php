@@ -63,7 +63,11 @@ class DepositController extends AbstractController
         if (!$path) {
             throw new RuntimeException('Invalid CSV file.');
         }
-        $csvData = (new CsvParser)->parseCSV(file($path));
+        $contents = file($path);
+        if (!$contents) {
+            throw new RuntimeException('Cannot read CSV file.');
+        }
+        $csvData = (new CsvParser)->parseCSV($contents);
         $entity = $paymentMethodRepository->find(2);
         if (!$entity) {
             throw new UnexpectedValueException('Invalid entity');
@@ -109,7 +113,7 @@ class DepositController extends AbstractController
         return $this->redirectToRoute('deposits');
     }
 
-    #[Route(path: '/_search', name: '_deposito_search', methods: ['GET'])]
+    #[Route(path: '/search', name: 'deposito_search', methods: ['GET'])]
     public function _search(
         DepositRepository $depositRepository,
         Request $request
@@ -125,7 +129,7 @@ class DepositController extends AbstractController
         );
     }
 
-    #[Route(path: '/_lookup', name: '_deposito_lookup', methods: ['GET'])]
+    #[Route(path: '/lookup', name: 'deposito_lookup', methods: ['GET'])]
     public function lookup(
         DepositRepository $depositRepository,
         Request $request
@@ -135,42 +139,6 @@ class DepositController extends AbstractController
         $deposit = $depositRepository->find($id);
 
         return $this->json($deposit);
-    }
-
-    #[Route(path: '/lookup', name: 'lookup-depo', methods: ['POST'])]
-    /**
-     * @deprecated
-     */
-    public function lookupOLD(
-        DepositRepository $depositRepository,
-        Request $request,
-    ): JsonResponse {
-        $documentId = $request->get('document_id');
-        $deposits = $depositRepository->lookup($documentId);
-        $response = [
-            'error' => '',
-            'data'  => '',
-        ];
-        if (!$deposits) {
-            $response['error'] = 'No se encontró ninún depósito con este número!';
-        } elseif (count($deposits) > 1) {
-            $ids = [];
-            /** @type Deposit $d */
-            foreach ($deposits as $deposit) {
-                $d = $deposit[0];
-                $ids[] = $d->getDocument();
-            }
-
-            $response['error'] = 'Ambiguous selection. Found: '
-                .implode(' ', $ids);
-        } elseif ($deposits[0]['tr_id']) {
-            $response['error'] = 'Deposito ALREADY ASSIGNED!: '
-                .$deposits[0]['tr_id'];
-        } else {
-            $response['data'] = $deposits[0];
-        }
-
-        return new JsonResponse($response);
     }
 
     #[Route(path: '/delete/{id}', name: 'deposits-delete', methods: ['GET'])]

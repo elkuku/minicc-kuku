@@ -54,18 +54,20 @@ class GitLoader
     {
         $gitLogFile = $this->rootDir.'/.git/logs/HEAD';
         $gitLogs = file_exists($gitLogFile)
-            ? file($gitLogFile, FILE_USE_INCLUDE_PATH) : '';
+            ? file($gitLogFile, FILE_USE_INCLUDE_PATH) : [];
         $sha = trim(
-            $this->execCommand(
+            (string)$this->execCommand(
                 'cd '.$this->rootDir.' && git rev-parse --short HEAD'
             )
         );
 
-        preg_match(
-            "/([\w]+) ([\w]+) ([\w\s]+) (<[\w.@]+>) ([\d]+) ([\d-]+)\tcommit: ([\w\s]+)/",
-            (string) end($gitLogs),
-            $matches
-        );
+        if ($gitLogs) {
+            preg_match(
+                "/([\w]+) ([\w]+) ([\w\s]+) (<[\w.@]+>) ([\d]+) ([\d-]+)\tcommit: ([\w\s]+)/",
+                (string) end($gitLogs),
+                $matches
+            );
+        }
 
         $logs = [];
 

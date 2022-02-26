@@ -242,9 +242,9 @@ class User implements UserInterface
     }
 
     /**
-     * @return PersistentCollection<int, Store>
+     * @return PersistentCollection<int, Store>|ArrayCollection<int, Store>
      */
-    public function getStores(): PersistentCollection
+    public function getStores(): PersistentCollection|ArrayCollection
     {
         return $this->stores;
     }
