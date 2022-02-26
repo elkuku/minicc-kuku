@@ -13,7 +13,7 @@ use function is_array;
 
 class GitLoader
 {
-    public function __construct(private $rootDir)
+    public function __construct(private readonly string $rootDir)
     {
     }
 

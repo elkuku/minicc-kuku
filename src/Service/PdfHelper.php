@@ -74,6 +74,12 @@ class PdfHelper
         );
     }
 
+    /**
+     * @param array<string>|string $htmlPages
+     * @param array<string, string|bool>  $options
+     *
+     * @return string
+     */
     public function getOutputFromHtml(
         array|string $htmlPages,
         array $options = []

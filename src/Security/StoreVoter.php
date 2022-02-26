@@ -19,7 +19,7 @@ class StoreVoter extends Voter
     {
     }
 
-    protected function supports(string $attribute, $subject): bool
+    protected function supports(string $attribute, mixed $subject): bool
     {
         if (!in_array($attribute, [self::VIEW, self::EDIT, self::EXPORT])) {
             return false;
@@ -34,7 +34,7 @@ class StoreVoter extends Voter
 
     protected function voteOnAttribute(
         string $attribute,
-        $subject,
+        mixed $subject,
         TokenInterface $token
     ): bool {
         if ($this->security->isGranted('ROLE_ADMIN')) {

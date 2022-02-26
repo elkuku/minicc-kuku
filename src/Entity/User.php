@@ -33,7 +33,7 @@ class User implements UserInterface
     /**
      * @var Store[]
      */
-    #[OneToMany(mappedBy: 'user', targetEntity: 'Store')]
+    #[OneToMany(mappedBy: 'user', targetEntity: Store::class)]
     private array|ArrayCollection|PersistentCollection $stores;
 
     #[NotBlank]
@@ -48,13 +48,13 @@ class User implements UserInterface
     #[Column(type: Types::STRING, length: 50)]
     private string $role = 'ROLE_USER';
 
-    #[ManyToOne(targetEntity: 'UserGender')]
+    #[ManyToOne(targetEntity: UserGender::class)]
     private ?UserGender $gender = null;
 
     /**
      * Active or Inactive
      */
-    #[ManyToOne(targetEntity: 'UserState')]
+    #[ManyToOne(targetEntity: UserState::class)]
     private ?UserState $state = null;
 
     #[NotBlank]

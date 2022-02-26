@@ -63,7 +63,7 @@ class Store
     #[Column(type: Types::STRING, length: 50)]
     private string $medAgua = '';
 
-    #[ManyToOne(targetEntity: 'User', inversedBy: 'stores')]
+    #[ManyToOne(targetEntity: User::class, inversedBy: 'stores')]
     #[JoinColumn(name: 'user_id', referencedColumnName: 'id')]
     private ?User $user = null;
 

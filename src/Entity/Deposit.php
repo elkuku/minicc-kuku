@@ -28,7 +28,7 @@ class Deposit implements JsonSerializable
     #[Column(type: Types::INTEGER)]
     private ?int $id = null;
 
-    #[ManyToOne(targetEntity: 'PaymentMethod')]
+    #[ManyToOne(targetEntity: PaymentMethod::class)]
     private PaymentMethod $entity;
 
     #[Column(type: Types::DATE_MUTABLE, nullable: false)]

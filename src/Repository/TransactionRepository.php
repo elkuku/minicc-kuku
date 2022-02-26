@@ -96,8 +96,6 @@ class TransactionRepository extends ServiceEntityRepository
 
     /**
      * @return int|mixed|string
-     * @throws NoResultException
-     * @throws NonUniqueResultException
      */
     public function getSaldoALaFecha(Store $store, $date): mixed
     {

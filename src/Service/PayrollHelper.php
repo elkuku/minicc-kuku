@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Entity\Store;
 use App\Repository\StoreRepository;
 use App\Repository\TransactionRepository;
 use JetBrains\PhpStorm\ArrayShape;
@@ -14,6 +15,9 @@ class PayrollHelper
     ) {
     }
 
+    /**
+     * @return array<string, array<int|string, Store|array<string, mixed>>|string>
+     */
     #[ArrayShape([
         'factDate'  => "string",
         'prevDate'  => "string",

@@ -27,11 +27,11 @@ class Transaction implements JsonSerializable
     #[Column(type: Types::INTEGER)]
     protected ?int $id = null;
 
-    #[ManyToOne(targetEntity: 'Store')]
+    #[ManyToOne(targetEntity: Store::class)]
     #[JoinColumn(name: 'store_id', referencedColumnName: 'id', nullable: false)]
     protected Store $store;
 
-    #[ManyToOne(targetEntity: 'User')]
+    #[ManyToOne(targetEntity: User::class)]
     #[JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false)]
     protected User $user;
 
@@ -39,7 +39,7 @@ class Transaction implements JsonSerializable
      * The type
      * Alquiler, Pago, etc.
      */
-    #[ManyToOne(targetEntity: 'TransactionType')]
+    #[ManyToOne(targetEntity: TransactionType::class)]
     #[JoinColumn(name: 'type_id', referencedColumnName: 'id', nullable: false)]
     private TransactionType $type;
 
@@ -47,7 +47,7 @@ class Transaction implements JsonSerializable
      * The method
      * Bar, bank, etc.
      */
-    #[ManyToOne(targetEntity: 'PaymentMethod')]
+    #[ManyToOne(targetEntity: PaymentMethod::class)]
     #[JoinColumn(name: 'method_id', referencedColumnName: 'id', nullable: false)]
     private PaymentMethod $method;
 

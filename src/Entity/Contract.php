@@ -30,7 +30,7 @@ class Contract
     #[Column(type: Types::STRING, length: 150)]
     private string $inqNombreapellido = '';
 
-    #[ManyToOne(targetEntity: 'UserGender')]
+    #[ManyToOne(targetEntity: UserGender::class)]
     private ?UserGender $gender = null;
 
     #[Column(type: Types::STRING, length: 11)]

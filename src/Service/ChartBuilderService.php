@@ -11,6 +11,10 @@ class ChartBuilderService
     {
     }
 
+    /**
+     * @param array<int, string>  $labels
+     * @param array<int, float>  $data
+     */
     public function getDashboardChart(
         string $title,
         array $labels,
@@ -59,6 +63,11 @@ class ChartBuilderService
         return $chart;
     }
 
+    /**
+     * @param array<string> $labels
+     * @param array<int, float> $dataPayments
+     * @param array<int, float> $dataRent
+     */
     public function getStoreChart(
         array $labels,
         array $dataPayments,
