@@ -33,7 +33,7 @@
         "symfony/form": "*",
         "symfony/framework-bundle": "*",
         "symfony/google-mailer": "*",
-        "symfony/mailgun-mailer": "*",
+        "symfony/mailgun-mailer": "6.*",
         "symfony/monolog-bundle": "^3.5",
         "symfony/process": "*",
         "symfony/property-access": "*",
