@@ -115,7 +115,10 @@
         ],
         "trans": [
             "./bin/console translation:update es --output-format=yaml --force"
-        ]
+        ],
+        "test-phpunit": ["make tests"],
+        "test-phpstan": ["vendor/bin/phpstan analyse"],
+        "ci": ["@test-phpunit", "@test-phpstan"]
     },
     "conflict": {
         "symfony/symfony": "*"
