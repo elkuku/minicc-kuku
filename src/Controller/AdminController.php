@@ -82,67 +82,6 @@ class AdminController extends AbstractController
     public function payDay(
         StoreRepository $storeRepository,
         PaymentMethodRepository $paymentMethodRepository,
-        TransactionTypeRepository $transactionTypeRepository,
-        Request $request,
-        ManagerRegistry $managerRegistry,
-    ): Response {
-        $payments = $request->request->all('payments');
-        if (!$payments) {
-            return $this->render(
-                'admin/payday-html.twig',
-                [
-                    'stores'         => $storeRepository->getActive(),
-                    'paymentMethods' => $paymentMethodRepository->findAll(),
-                ]
-            );
-        }
-        $em = $managerRegistry->getManager();
-        $type = $transactionTypeRepository->findOneBy(['name' => 'Pago']);
-        if (!$type) {
-            throw new UnexpectedValueException('Invalid transaction type');
-        }
-        foreach ($payments['date_cobro'] as $i => $dateCobro) {
-            if (!$dateCobro) {
-                continue;
-            }
-
-            $store = $storeRepository->find((int)$payments['store'][$i]);
-
-            if (!$store) {
-                continue;
-            }
-
-            $method = $paymentMethodRepository->find(
-                (int)$payments['method'][$i]
-            );
-
-            if (!$method) {
-                throw new UnexpectedValueException('Invalid payment method.');
-            }
-
-            $transaction = (new Transaction)
-                ->setDate(new DateTime($dateCobro))
-                ->setStore($store)
-                ->setUser($store->getUser())
-                ->setType($type)
-                ->setMethod($method)
-                ->setRecipeNo((int)$payments['recipe'][$i])
-                ->setDocument((int)$payments['document'][$i])
-                ->setDepId((int)$payments['depId'][$i])
-                ->setAmount($payments['amount'][$i]);
-
-            $em->persist($transaction);
-        }
-        $em->flush();
-        $this->addFlash('success', 'Sa ha pagado...');
-
-        return $this->redirectToRoute('welcome');
-    }
-
-    #[Route(path: '/pay-day2', name: 'pay-day2', methods: ['GET', 'POST'])]
-    public function payDay2(
-        StoreRepository $storeRepository,
-        PaymentMethodRepository $paymentMethodRepository,
         TransactionRepository $transactionRepository,
         TransactionTypeRepository $transactionTypeRepository,
         Request $request,
@@ -151,7 +90,7 @@ class AdminController extends AbstractController
         $payments = $request->request->all('payments');
         if (!$payments) {
             return $this->render(
-                'admin/payday2-html.twig',
+                'admin/payday-html.twig',
                 [
                     'stores'         => $storeRepository->getActive(),
                     'lastRecipeNo'   => $transactionRepository->getLastRecipeNo(
