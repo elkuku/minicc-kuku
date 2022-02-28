@@ -76,6 +76,12 @@ class User implements UserInterface
     #[Column(type: Types::STRING, length: 100, nullable: true)]
     private ?string $googleId = '';
 
+    public final const ROLES
+        = [
+            'user'  => 'ROLE_USER',
+            'admin' => 'ROLE_ADMIN',
+        ];
+
     public function __construct()
     {
         $this->stores = new ArrayCollection;
