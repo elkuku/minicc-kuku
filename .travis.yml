@@ -34,7 +34,7 @@ before_script:
 
 script:
   - SYMFONY_DEPRECATIONS_HELPER=disabled ./bin/phpunit $PHPUNIT_FLAGS
-  - vendor/bin/phpstan analyse -l 4 src tests
+  - vendor/bin/phpstan analyse
 
 after_script:
   - cat ./var/log/test.log || true
