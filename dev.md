@@ -9,3 +9,4 @@
 
 #### Restore
     cat backup.sql | docker exec -i CONTAINER /usr/bin/mysql -u main -pmain main
+...
