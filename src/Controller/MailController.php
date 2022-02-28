@@ -273,7 +273,7 @@ class MailController extends AbstractController
 
             // $cmd = sprintf('mysqldump -h %s -u %s -p%s %s|gzip 2>&1', $hostname, $username, $password, $database);
             $cmd = sprintf(
-                'docker exec minicc-kuku_database_1 /usr/bin/mysqldump -h %s -u %s -p%s %s|gzip 2>&1',
+                'docker exec minicc-kuku-database-1 /usr/bin/mysqldump -h %s -u %s -p%s %s|gzip 2>&1',
                 $hostname,
                 $username,
                 $password,
