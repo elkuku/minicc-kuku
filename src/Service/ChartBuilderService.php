@@ -7,12 +7,13 @@ use Symfony\UX\Chartjs\Model\Chart;
 
 class ChartBuilderService
 {
-    public function __construct(private readonly ChartBuilderInterface $chartBuilder)
-    {
+    public function __construct(
+        private readonly ChartBuilderInterface $chartBuilder
+    ) {
     }
 
     /**
-     * @param array<int, string>  $labels
+     * @param array<int, string> $labels
      * @param array<int, float>  $data
      */
     public function getDashboardChart(
@@ -64,7 +65,7 @@ class ChartBuilderService
     }
 
     /**
-     * @param array<string> $labels
+     * @param array<string>     $labels
      * @param array<int, float> $dataPayments
      * @param array<int, float> $dataRent
      */

@@ -157,7 +157,7 @@ class UserAdminCommand extends Command
          */
         $questionHelper = $this->getHelper('question');
 
-      return $questionHelper->ask(
+        return $questionHelper->ask(
             $this->input,
             $this->output,
             (new ChoiceQuestion(

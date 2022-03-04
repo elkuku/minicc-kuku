@@ -42,7 +42,7 @@ class DepositRepository extends ServiceEntityRepository
     {
         return (bool)$this->findOneBy(
             [
-                'date' => $deposit->getDate(),
+                'date'     => $deposit->getDate(),
                 'document' => $deposit->getDocument(),
             ]
         );

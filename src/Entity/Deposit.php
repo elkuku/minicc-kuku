@@ -135,11 +135,12 @@ class Deposit implements JsonSerializable
      * which is a value of any type other than a resource.
      * @since 5.4.0
      */
-    #[ArrayShape(['id'       => "int|null",
-                  'amount'   => "float",
-                  'document' => "string",
-                  'date'     => "string",
-                  'entity'   => "int|null"
+    #[ArrayShape([
+        'id'       => "int|null",
+        'amount'   => "float",
+        'document' => "string",
+        'date'     => "string",
+        'entity'   => "int|null",
     ])] public function jsonSerialize(): array
     {
         return [

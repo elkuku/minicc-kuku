@@ -36,7 +36,8 @@ class StoreType extends AbstractType
                     'placeholder'   => '-Desocupado-',
                     'required'      => false,
                     'label'         => 'Inquilino',
-                    'query_builder' => static fn(EntityRepository $er): QueryBuilder => $er->createQueryBuilder('u')
+                    'query_builder' => static fn(EntityRepository $er
+                    ): QueryBuilder => $er->createQueryBuilder('u')
                         ->where('u.role = :role')
                         ->andWhere('u.state = :state')
                         ->setParameter('role', 'ROLE_USER')
