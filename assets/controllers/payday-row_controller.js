@@ -54,7 +54,6 @@ export default class extends Controller {
                 this._queryDepo(this.resultItemTargets[this.currentSelection - 1].dataset.id)
                 break
             default:
-            // console.log(event.code)
         }
     }
 
