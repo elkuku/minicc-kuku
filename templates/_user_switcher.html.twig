@@ -6,15 +6,15 @@
             <option value="">Switch user...</option>
         {% endif %}
         {% for user in systemUsers %}
-            {% set uri = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all|merge({'_switch_user': user.email }))) %}
+            {% set uri = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all|merge({'_switch_user': user.identifier }))) %}
             {% set selected = '' %}
             {% if is_granted('IS_IMPERSONATOR') %}
-                {% if user.email == app.user.email %}
+                {% if user.identifier == app.user.identifier %}
                     {% set selected = ' selected="selected"' %}
                 {% endif %}
             {% endif %}
             <option value="{{ uri }}" {{ selected }}>
-                {{ user.name }} ({{ user.email }})
+                {{ user.name }} ({{ user.identifier }})
             </option>
         {% endfor %}
     </select>
