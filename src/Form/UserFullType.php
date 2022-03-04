@@ -16,9 +16,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use App\Entity\User;
 
-/**
- * Class UserFullType
- */
 class UserFullType extends AbstractType
 {
     /**
@@ -46,6 +43,7 @@ class UserFullType extends AbstractType
                 )
             )
             ->add('name', TextType::class)
+            ->add('identifier', TextType::class)
             ->add('email', EmailType::class)
             ->add('inqCi')
             ->add('inqRuc', null, ['required' => false])

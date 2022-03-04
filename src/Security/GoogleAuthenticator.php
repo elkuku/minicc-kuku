@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
@@ -51,7 +52,7 @@ class GoogleAuthenticator extends AbstractAuthenticator
         $user = $this->getUser($googleUser);
 
         return new SelfValidatingPassport(
-            new UserBadge($user->getUserIdentifier()),
+            new UserBadge($user->getIdentifier()),
         );
     }
 
@@ -76,7 +77,7 @@ class GoogleAuthenticator extends AbstractAuthenticator
         AuthenticationException $exception
     ): RedirectResponse {
         $message = strtr(
-            $exception->getMessageKey(),
+            $exception->getMessage(),
             $exception->getMessageData()
         );
 
@@ -101,16 +102,19 @@ class GoogleAuthenticator extends AbstractAuthenticator
 
         // @todo remove: Fetch user by email
         if ($user = $this->userRepository->findOneBy(
-            ['identifier' => $googleUser->getEmail()]
+            ['email' => $googleUser->getEmail()]
         )
         ) {
             // @todo remove: Update existing users google id
             $user->setGoogleId($googleUser->getId());
         } else {
+            throw new UserNotFoundException(
+                'You are not allowed to login. Please contact un administrator.'
+            );
             // Register new user
-            $user = (new User())
-                ->setIdentifier($googleUser->getEmail())
-                ->setGoogleId($googleUser->getId());
+            // $user = (new User())
+            //     ->setIdentifier($googleUser->getEmail())
+            //     ->setGoogleId($googleUser->getId());
         }
 
         $this->entityManager->persist($user);
