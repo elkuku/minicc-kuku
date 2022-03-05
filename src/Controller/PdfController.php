@@ -13,7 +13,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[IsGranted('ROLE_ADMIN')]
 class PdfController extends AbstractController
 {
     #[Route(path: '/store-transaction-pdf/{id}/{year}', name: 'store-transaction-pdf', methods: ['GET'])]
@@ -49,6 +48,7 @@ class PdfController extends AbstractController
         );
     }
 
+    #[IsGranted('ROLE_ADMIN')]
     #[Route(path: '/stores-transactions-pdf', name: 'stores-transactions-pdf', methods: ['GET'])]
     public function storesTransactions(
         TransactionRepository $transactionRepository,
@@ -82,6 +82,7 @@ class PdfController extends AbstractController
         );
     }
 
+    #[IsGranted('ROLE_ADMIN')]
     #[Route(path: '/planillas', name: 'planillas', methods: ['GET'])]
     public function planillas(
         PdfHelper $PdfHelper,
@@ -102,6 +103,7 @@ class PdfController extends AbstractController
         );
     }
 
+    #[IsGranted('ROLE_ADMIN')]
     #[Route(path: '/pdf', name: 'pdf-users', methods: ['GET'])]
     public function pdfList(
         UserRepository $userRepository,
@@ -118,6 +120,7 @@ class PdfController extends AbstractController
         );
     }
 
+    #[IsGranted('ROLE_ADMIN')]
     #[Route(path: '/ruclist', name: 'users-ruclist', methods: ['GET'])]
     public function rucList(
         UserRepository $userRepository,
