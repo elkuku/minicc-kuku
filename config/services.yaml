@@ -28,14 +28,17 @@ services:
     App\Service\TaxService:
         $taxValue: '%env(VALUE_IVA)%'
 
+    App\Service\EmailHelper:
+        $emailFromAddress: '%env(EMAIL_FROM_ADDR)%'
+        $emailFromName: '%env(EMAIL_FROM_NAME)%'
+
     App\DataCollector\GitDataCollector:
         tags:
-        -
-            name:     data_collector
-            template: 'data_collector/git_data.html.twig'
-            id: 'app.git_data_collector'
+            -   name: data_collector
+                template: 'data_collector/git_data.html.twig'
+                id: 'app.git_data_collector'
         public: false
 
     App\DataFixtures\:
         resource: '../src/DataFixtures'
-        tags: ['doctrine.fixture.orm']
+        tags: [ 'doctrine.fixture.orm' ]

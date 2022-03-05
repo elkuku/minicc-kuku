@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Repository\StoreRepository;
 use App\Repository\TransactionRepository;
+use App\Service\EmailHelper;
 use App\Service\PayrollHelper;
 use App\Service\PdfHelper;
 use Exception;
@@ -16,7 +17,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\Email;
 use Symfony\Component\Mime\Part\DataPart;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -30,7 +30,8 @@ class MailController extends AbstractController
         Request $request,
         Pdf $pdf,
         PdfHelper $PDFHelper,
-        MailerInterface $mailer
+        MailerInterface $mailer,
+        EmailHelper $emailHelper,
     ): RedirectResponse {
         $recipients = $request->get('recipients');
         $year = (int)date('Y');
@@ -66,11 +67,11 @@ class MailController extends AbstractController
                 )
             );
 
-            $email = (new Email())
-                ->from('minicckuku@gmail.com')
-                ->to($store->getUser()->getEmail())
-                ->subject("Movimientos del local {$store->getId()} ano $year")
-                // ->text('Backup - Date: '.date('Y-m-d'))
+            $email = $emailHelper
+                ->create(
+                    toAddress: $store->getUser()->getEmail(),
+                    subject: "Movimientos del local {$store->getId()} ano $year"
+                )
                 ->html($html)
                 ->attach($document, $fileName);
 
@@ -102,7 +103,8 @@ class MailController extends AbstractController
         StoreRepository $storeRepository,
         Pdf $pdf,
         PdfHelper $PDFHelper,
-        MailerInterface $mailer
+        MailerInterface $mailer,
+        EmailHelper $emailHelper,
     ): RedirectResponse {
         $year = (int)$request->get('year', date('Y'));
         $htmlPages = [];
@@ -124,10 +126,10 @@ class MailController extends AbstractController
                 'application/pdf'
             );
 
-            $email = (new Email())
-                ->from('minicckuku@gmail.com')
-                ->to('minicckuku@gmail.com')
-                ->subject("Movimientos de los locales ano $year")
+            $email = $emailHelper->create(
+                toAddress: 'minicckuku@gmail.com',
+                subject: "Movimientos de los locales ano $year"
+            )
                 ->text('Backup - Date: '.date('Y-m-d'))
                 ->html('<h3>Backup</h3>Date: '.date('Y-m-d'))
                 ->attachPart($attachment);
@@ -146,6 +148,7 @@ class MailController extends AbstractController
         Pdf $pdf,
         PdfHelper $PDFHelper,
         MailerInterface $mailer,
+        EmailHelper $emailHelper,
         PayrollHelper $payrollHelper,
     ): Response {
         $year = (int)date('Y');
@@ -160,9 +163,10 @@ class MailController extends AbstractController
             ),
             ['enable-local-file-access' => true]
         );
-        $email = (new Email())
-            ->from('minicckuku@gmail.com')
-            ->to('minicckuku@gmail.com')
+        $email = $emailHelper->create(
+            toAddress: 'minicckuku@gmail.com',
+            subject: "Planillas $year-$month"
+        )
             ->subject("Planillas $year-$month")
             ->html($html)
             ->attach($document, $fileName);
@@ -183,6 +187,7 @@ class MailController extends AbstractController
         Pdf $pdf,
         PdfHelper $PDFHelper,
         MailerInterface $mailer,
+        EmailHelper $emailHelper,
         PayrollHelper $payrollHelper
     ): RedirectResponse {
         $recipients = $request->get('recipients');
@@ -229,12 +234,10 @@ class MailController extends AbstractController
                 continue;
             }
 
-            $email = (new Email())
-                ->from('minicckuku@gmail.com')
-                ->to($user->getEmail())
-                ->subject(
-                    "Su planilla del local {$store->getId()} ($month - $year)"
-                )
+            $email = $emailHelper->create(
+                toAddress: $user->getEmail(),
+                subject: "Su planilla del local {$store->getId()} ($month - $year)"
+            )
                 ->html($html)
                 ->attach($document, $fileName);
 
@@ -261,7 +264,8 @@ class MailController extends AbstractController
 
     #[Route(path: '/backup', name: 'backup', methods: ['GET'])]
     public function backup(
-        MailerInterface $mailer
+        MailerInterface $mailer,
+        EmailHelper $emailHelper,
     ): RedirectResponse {
         try {
             $parts = parse_url($_ENV['DATABASE_URL']);
@@ -293,17 +297,17 @@ class MailController extends AbstractController
 
             $attachment = new DataPart((string)$gzip, $fileName, $mime);
 
-            $email = (new Email())
-                ->from('minicckuku@gmail.com')
-                ->to('minicckuku@gmail.com')
-                ->subject('Backup')
+            $email = $emailHelper->create(
+                toAddress: 'minicckuku@gmail.com',
+                subject: 'Backup'
+            )
                 ->text('Backup - Date: '.date('Y-m-d'))
                 ->html('<h3>Backup</h3>Date: '.date('Y-m-d'))
                 ->attachPart($attachment);
 
             $mailer->send($email);
             $this->addFlash('success', 'Backup has been sent to your inbox.');
-        } catch (Exception $exception) {
+        } catch (TransportExceptionInterface $exception) {
             $this->addFlash('danger', $exception->getMessage());
         }
 
