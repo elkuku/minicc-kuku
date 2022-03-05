@@ -266,6 +266,7 @@ class MailController extends AbstractController
     public function backup(
         MailerInterface $mailer,
         EmailHelper $emailHelper,
+        string $appEnv,
     ): RedirectResponse {
         try {
             $parts = parse_url($_ENV['DATABASE_URL']);
@@ -275,14 +276,28 @@ class MailController extends AbstractController
             $password = $parts['pass'];
             $database = ltrim($parts['path'], '/');
 
-            // $cmd = sprintf('mysqldump -h %s -u %s -p%s %s|gzip 2>&1', $hostname, $username, $password, $database);
-            $cmd = sprintf(
-                'docker exec minicc-kuku-database-1 /usr/bin/mysqldump -h %s -u %s -p%s %s|gzip 2>&1',
-                $hostname,
-                $username,
-                $password,
-                $database
-            );
+            switch ($appEnv) {
+                case 'dev':
+                    $cmd = sprintf(
+                        'docker exec minicc-kuku-database-1 /usr/bin/mysqldump -h %s -u %s -p%s %s|gzip 2>&1',
+                        $hostname,
+                        $username,
+                        $password,
+                        $database
+                    );
+                    break;
+                case 'prod':
+                    $cmd = sprintf(
+                        'mysqldump -h %s -u %s -p%s %s|gzip 2>&1',
+                        $hostname,
+                        $username,
+                        $password,
+                        $database
+                    );
+                    break;
+                default:
+                    throw new \UnexpectedValueException('Unknown env:'.$appEnv);
+            }
 
             ob_start();
             passthru($cmd, $retVal);
