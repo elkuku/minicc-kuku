@@ -18,7 +18,7 @@ trait PaginatorTrait
     /**
      * Get pagination options from request
      */
-    protected function getPaginatorOptions(Request $request): PaginatorOptions
+    protected function getPaginatorOptions(Request $request, int $listLimit): PaginatorOptions
     {
         $options = $request->get('paginatorOptions');
 
@@ -29,7 +29,7 @@ trait PaginatorTrait
             )
             ->setLimit(
                 isset($options['limit']) && $options['limit']
-                    ? (int)$options['limit'] : (int)$_ENV['list_limit']
+                    ? (int)$options['limit'] : $listLimit
             )
             ->setOrder(
                 isset($options['order']) && $options['order']

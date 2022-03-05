@@ -109,6 +109,7 @@ class StoreController extends AbstractController
     public function new(
         Request $request,
         ManagerRegistry $managerRegistry,
+        TaxService $taxService,
     ): Response {
         $store = new Store;
         $form = $this->createForm(StoreType::class, $store);
@@ -130,7 +131,7 @@ class StoreController extends AbstractController
             [
                 'form'          => $form->createView(),
                 'store'         => $store,
-                'ivaMultiplier' => $_ENV['value_iva'],
+                'ivaMultiplier' => $taxService->getTaxValue(),
             ]
         );
     }
@@ -141,6 +142,7 @@ class StoreController extends AbstractController
         Store $store,
         Request $request,
         ManagerRegistry $managerRegistry,
+        TaxService $taxService,
     ): Response {
         $form = $this->createForm(StoreType::class, $store);
         $form->handleRequest($request);
@@ -162,7 +164,7 @@ class StoreController extends AbstractController
             [
                 'form'          => $form->createView(),
                 'store'         => $store,
-                'ivaMultiplier' => $_ENV['value_iva'],
+                'ivaMultiplier' => $taxService->getTaxValue(),
             ]
         );
     }

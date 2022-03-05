@@ -8,6 +8,7 @@ use App\Helper\IntlConverter;
 use App\Repository\ContractRepository;
 use App\Repository\StoreRepository;
 use App\Repository\UserRepository;
+use App\Service\TaxService;
 use Doctrine\Persistence\ManagerRegistry;
 use IntlNumbersToWords\Numbers;
 use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
@@ -56,6 +57,7 @@ class ContractController extends AbstractController
         ContractRepository $contractRepo,
         Request $request,
         ManagerRegistry $managerRegistry,
+        TaxService $taxService,
     ): Response {
         $store = $storeRepo->find($request->request->getInt('store'));
         $user = $userRepo->find($request->request->getInt('user'));
@@ -89,7 +91,7 @@ class ContractController extends AbstractController
             [
                 'form'          => $form->createView(),
                 'data'          => $contract,
-                'ivaMultiplier' => $_ENV['value_iva'],
+                'ivaMultiplier' => $taxService->getTaxValue(),
                 'title'         => 'Nuevo Contrato',
             ]
         );
@@ -101,6 +103,7 @@ class ContractController extends AbstractController
         Contract $contract,
         Request $request,
         ManagerRegistry $managerRegistry,
+        TaxService $taxService,
     ): Response {
         $form = $this->createForm(ContractType::class, $contract);
         $form->handleRequest($request);
@@ -121,7 +124,7 @@ class ContractController extends AbstractController
             [
                 'form'          => $form->createView(),
                 'data'          => $contract,
-                'ivaMultiplier' => $_ENV['value_iva'],
+                'ivaMultiplier' => $taxService->getTaxValue(),
                 'title'         => 'Editar Contrato',
             ]
         );
@@ -148,6 +151,7 @@ class ContractController extends AbstractController
         ContractRepository $contractRepository,
         Request $request,
         ManagerRegistry $managerRegistry,
+        TaxService $taxService,
     ): Response {
         $data = $contractRepository->findPlantilla();
         $form = $this->createForm(ContractType::class, $data);
@@ -169,7 +173,7 @@ class ContractController extends AbstractController
             [
                 'form'          => $form->createView(),
                 'data'          => $data,
-                'ivaMultiplier' => $_ENV['value_iva'],
+                'ivaMultiplier' => $taxService->getTaxValue(),
                 'title'         => 'Plantilla',
             ]
         );

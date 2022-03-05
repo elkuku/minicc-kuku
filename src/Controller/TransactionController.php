@@ -81,9 +81,10 @@ class TransactionController extends AbstractController
         StoreRepository $storeRepo,
         TransactionRepository $transactionRepo,
         TransactionTypeRepository $transactionTypeRepo,
-        Request $request
+        Request $request,
+        int $listLimit,
     ): Response {
-        $paginatorOptions = $this->getPaginatorOptions($request);
+        $paginatorOptions = $this->getPaginatorOptions($request, $listLimit);
         $transactions = $transactionRepo->getRawList($paginatorOptions);
         $paginatorOptions->setMaxPages(
             (int)ceil(

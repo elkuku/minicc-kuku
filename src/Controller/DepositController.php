@@ -29,9 +29,10 @@ class DepositController extends AbstractController
     #[Route(path: '/', name: 'deposits', methods: ['GET', 'POST'])]
     public function index(
         DepositRepository $depositRepository,
-        Request $request
+        Request $request,
+        int $listLimit
     ): Response {
-        $paginatorOptions = $this->getPaginatorOptions($request);
+        $paginatorOptions = $this->getPaginatorOptions($request, $listLimit);
         $deposits = $depositRepository->getPaginatedList($paginatorOptions);
         $paginatorOptions->setMaxPages(
             (int)ceil(
