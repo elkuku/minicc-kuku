@@ -5,8 +5,10 @@
             <th>Numero</th>
             <th>Destino</th>
             <th class="text-right">Saldo</th>
+            <th class="text-left">Meses de Deuda</th>
         </tr>
         {% set saldo = 0 %}
+        {% set mesesDebt = 0 %}
         {% for store in stores %}
             <tr>
                 <td>{{ store.id }}</td>
@@ -20,9 +22,11 @@
                         {% if balance.store.id == store.id %}
                             {{ balance.amount|price|raw }}
                             {% set saldo = saldo + balance.amount %}
+                            {% set mesesDebt = balance.amount / balance.store.valAlq|conIva %}
                         {% endif %}
                     {% endfor %}
                 </td>
+                <td class="text-left"><b>{{ mesesDebt|invert|round(1, 'ceil') }}</b> meses de deuda</td>
             </tr>
         {% endfor %}
         <tr>
