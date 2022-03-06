@@ -297,8 +297,8 @@ class User implements UserInterface
      */
     public function __unserialize(array $data): void
     {
-        $this->id = $data['id'] ?: null;
-        $this->email = $data['email'] ?: null;
+        $this->id = $data['id'] ?? null;
+        $this->email = $data['email'] ?? null;
     }
 
     public function getGoogleId(): ?string
