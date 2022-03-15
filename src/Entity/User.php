@@ -28,7 +28,7 @@ class User implements UserInterface
 
     #[NotBlank]
     #[Column(type: Types::STRING, length: 255)]
-    private string $identifier;
+    private string $identifier = '';
 
     /**
      * @var PersistentCollection<int, Store>|ArrayCollection<int, Store> $stores
@@ -131,14 +131,9 @@ class User implements UserInterface
         return $this->name;
     }
 
-    public function getUsername(): string
-    {
-        return $this->email;
-    }
-
     public function getUserIdentifier(): string
     {
-        return $this->email;
+        return $this->identifier;
     }
 
     public function getEmail(): string
@@ -280,25 +275,25 @@ class User implements UserInterface
     }
 
     /**
-     * @return array{ id: integer|null, email: string|null}
+     * @return array{ id: integer|null, identifier: string|null}
      */
-    #[ArrayShape(['id' => "int|null", 'email' => "string"])]
+    #[ArrayShape(['id' => "int|null", 'identifier' => "string"])]
     public function __serialize(): array
     {
         return
             [
                 'id'    => $this->id,
-                'email' => $this->email,
+                'identifier' => $this->identifier,
             ];
     }
 
     /**
-     * @param array{ id: int|null, email: string|null} $data
+     * @param array{ id: int|null, identifier: string|null} $data
      */
     public function __unserialize(array $data): void
     {
         $this->id = $data['id'] ?? null;
-        $this->email = $data['email'] ?? null;
+        $this->identifier = $data['identifier'] ?? null;
     }
 
     public function getGoogleId(): ?string
