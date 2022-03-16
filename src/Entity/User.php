@@ -87,6 +87,34 @@ class User implements UserInterface
         $this->stores = new ArrayCollection;
     }
 
+
+    /**
+     * @return array{
+     *     id: integer|null,
+     *     identifier: string|null
+     * }
+     */
+    public function __serialize(): array
+    {
+        return
+            [
+                'id'    => $this->id,
+                'identifier' => $this->identifier,
+            ];
+    }
+
+    /**
+     * @param array{
+     *     id: int|null,
+     *     identifier: string|null
+     * } $data
+     */
+    public function __unserialize(array $data): void
+    {
+        $this->id = $data['id'] ?? null;
+        $this->identifier = $data['identifier'] ?? '';
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -272,28 +300,6 @@ class User implements UserInterface
         $this->identifier = $identifier;
 
         return $this;
-    }
-
-    /**
-     * @return array{ id: integer|null, identifier: string|null}
-     */
-    #[ArrayShape(['id' => "int|null", 'identifier' => "string"])]
-    public function __serialize(): array
-    {
-        return
-            [
-                'id'    => $this->id,
-                'identifier' => $this->identifier,
-            ];
-    }
-
-    /**
-     * @param array{ id: int|null, identifier: string|null} $data
-     */
-    public function __unserialize(array $data): void
-    {
-        $this->id = $data['id'] ?? null;
-        $this->identifier = $data['identifier'] ?? null;
     }
 
     public function getGoogleId(): ?string
