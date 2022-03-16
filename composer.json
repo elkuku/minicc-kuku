@@ -10,12 +10,13 @@
         "ext-intl": "*",
         "ext-json": "*",
         "ext-pcre": "*",
-        "composer/package-versions-deprecated": "1.11.99.3",
+        "composer/package-versions-deprecated": "1.11.99.5",
         "doctrine/annotations": "^1.0",
         "doctrine/doctrine-bundle": "^2.4",
         "doctrine/doctrine-fixtures-bundle": "^3.0",
         "doctrine/doctrine-migrations-bundle": "^3.1",
         "doctrine/orm": "^2.9",
+        "easycorp/easyadmin-bundle": "^4.0",
         "elkuku/intl-numbers-to-words": "1.*",
         "h4cc/wkhtmltopdf-amd64": "^0.12.3",
         "knplabs/knp-snappy-bundle": "^1.5",
@@ -56,7 +57,7 @@
         "twig/twig": "^2.12|^3.0"
     },
     "require-dev": {
-        "dbrekelmans/bdi": "^0.3.0",
+        "dbrekelmans/bdi": "^1.0",
         "elkuku/symfony-utils": "dev-master",
         "jetbrains/phpstorm-attributes": "^1.0",
         "phpstan/phpstan": "^1.4",
