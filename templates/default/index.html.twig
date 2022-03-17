@@ -9,7 +9,7 @@
 
 {% block body %}
     {% if app.user %}
-        {% if app.user.role == 'ROLE_ADMIN' %}
+        {% if is_granted('ROLE_ADMIN') %}
             {% include'default/_admin-dashboard.html.twig' %}
         {% else %}
             {% include'default/_user-dashboard.html.twig' %}

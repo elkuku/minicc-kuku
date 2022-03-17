@@ -1,4 +1,4 @@
-{% if app.user %}
+{% if 'dev' == appEnv and app.user %}
     <select name="userswitch" id="userSwitch" class="form-control col-sm-2 btn-dark">
         {% if is_granted('IS_IMPERSONATOR') %}
             <option value="{{ path('welcome', {'_switch_user': '_exit'}) }}">EXIT</option>
@@ -6,7 +6,7 @@
             <option value="">Switch user...</option>
         {% endif %}
         {% for user in systemUsers %}
-            {% set uri = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all|merge({'_switch_user': user.identifier }))) %}
+            {% set uri = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all|merge({'_switch_user': user.userIdentifier }))) %}
             {% set selected = '' %}
             {% if is_granted('IS_IMPERSONATOR') %}
                 {% if user.identifier == app.user.identifier %}
@@ -14,7 +14,7 @@
                 {% endif %}
             {% endif %}
             <option value="{{ uri }}" {{ selected }}>
-                {{ user.name }} ({{ user.identifier }})
+                {{ user.name }} ({{ user.userIdentifier }})
             </option>
         {% endfor %}
     </select>

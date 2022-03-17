@@ -89,7 +89,7 @@ class User implements UserInterface
     /**
      * @return array{
      *     id: integer|null,
-     *     identifier: string|null
+     *     email: string|null
      * }
      */
     public function __serialize(): array
@@ -97,27 +97,37 @@ class User implements UserInterface
         return
             [
                 'id'    => $this->id,
-                'identifier' => $this->identifier,
+                'email' => $this->email,
             ];
     }
 
     /**
      * @param array{
      *     id: int|null,
-     *     identifier: string|null
+     *     email: string|null
      * } $data
      */
     public function __unserialize(array $data): void
     {
         $this->id = $data['id'] ?? null;
-        $this->identifier = $data['identifier'] ?? '';
+        $this->email = $data['email'] ?? '';
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return $this->email;
+    }
+
+    public function eraseCredentials(): void
+    {
     }
 
     /**
-     * {@inheritdoc}
+     * @return string[]
      */
-    public function eraseCredentials(): void
+    public function getRoles(): array
     {
+        return [$this->getRole()];
     }
 
     public function getRole(): string
@@ -130,14 +140,6 @@ class User implements UserInterface
         $this->role = $role;
 
         return $this;
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getRoles(): array
-    {
-        return [$this->getRole()];
     }
 
     public function getId(): ?int
@@ -155,11 +157,6 @@ class User implements UserInterface
     public function getName(): ?string
     {
         return $this->name;
-    }
-
-    public function getUserIdentifier(): string
-    {
-        return $this->identifier;
     }
 
     public function getEmail(): string
