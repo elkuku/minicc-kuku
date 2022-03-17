@@ -11,7 +11,6 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\PersistentCollection;
-use JetBrains\PhpStorm\ArrayShape;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use App\Repository\UserRepository;
@@ -86,7 +85,6 @@ class User implements UserInterface
     {
         $this->stores = new ArrayCollection;
     }
-
 
     /**
      * @return array{
