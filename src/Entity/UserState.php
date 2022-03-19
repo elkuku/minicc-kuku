@@ -24,6 +24,11 @@ class UserState
     #[Column(type: Types::STRING, length: 150, nullable: false)]
     private string $name;
 
+    public function __toString()
+    {
+        return $this->name;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

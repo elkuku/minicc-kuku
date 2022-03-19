@@ -28,6 +28,8 @@ Encore
     .addEntry('js/default/background', './assets/js/default/background.js')
     .addEntry('js/transaction/form', './assets/js/transaction/form.js')
 
+    .addEntry('admin', './assets/admin.js')
+
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')
 

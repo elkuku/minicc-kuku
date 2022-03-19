@@ -18,8 +18,10 @@ trait PaginatorTrait
     /**
      * Get pagination options from request
      */
-    protected function getPaginatorOptions(Request $request, int $listLimit): PaginatorOptions
-    {
+    protected function getPaginatorOptions(
+        Request $request,
+        int $listLimit
+    ): PaginatorOptions {
         $options = $request->get('paginatorOptions');
 
         return (new PaginatorOptions)

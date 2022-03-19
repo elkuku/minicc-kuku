@@ -15,6 +15,7 @@ services:
             $appEnv: '%env(APP_ENV)%'
             $defaultLocale: '%env(APP_LOCALE)%'
             $listLimit: '%env(LIST_LIMIT)%'
+            $taxValue: '%env(VALUE_IVA)%'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
@@ -24,9 +25,6 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
-
-    App\Service\TaxService:
-        $taxValue: '%env(VALUE_IVA)%'
 
     App\Service\EmailHelper:
         $emailFromAddress: '%env(EMAIL_FROM_ADDR)%'

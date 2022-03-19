@@ -43,7 +43,6 @@ class UserFullType extends AbstractType
                 )
             )
             ->add('name', TextType::class)
-            ->add('identifier', TextType::class)
             ->add('email', EmailType::class)
             ->add('inqCi')
             ->add('inqRuc', null, ['required' => false])

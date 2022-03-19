@@ -54,18 +54,23 @@ class Store
     #[Column(type: Types::INTEGER, nullable: false)]
     private int $cntMedAgua = 0;
 
+    #[Column(type: Types::STRING, length: 50)]
+    private string $medAgua = '';
+
     #[Column(type: Types::INTEGER, nullable: false)]
     private int $cntMedElec = 0;
 
     #[Column(type: Types::STRING, length: 50)]
     private string $medElectrico = '';
 
-    #[Column(type: Types::STRING, length: 50)]
-    private string $medAgua = '';
-
     #[ManyToOne(targetEntity: User::class, inversedBy: 'stores')]
     #[JoinColumn(name: 'user_id', referencedColumnName: 'id')]
     private ?User $user = null;
+
+    public function __toString()
+    {
+        return sprintf('%d - %s', $this->id, $this->destination);
+    }
 
     public function getId(): ?int
     {
@@ -238,5 +243,17 @@ class Store
     public function getUser(): ?User
     {
         return $this->user;
+    }
+
+    /**
+     * @param int|null $id
+     *
+     * @return Store
+     */
+    public function setId(?int $id): Store
+    {
+        $this->id = $id;
+
+        return $this;
     }
 }

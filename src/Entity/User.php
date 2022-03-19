@@ -23,11 +23,7 @@ class User implements UserInterface
 {
     #[Id, GeneratedValue(strategy: 'AUTO')]
     #[Column(type: Types::INTEGER)]
-    private ?int $id = null;
-
-    #[NotBlank]
-    #[Column(type: Types::STRING, length: 255)]
-    private string $identifier = '';
+    private ?int $id = 0;
 
     /**
      * @var PersistentCollection<int, Store>|ArrayCollection<int, Store> $stores
@@ -111,6 +107,11 @@ class User implements UserInterface
     {
         $this->id = $data['id'] ?? null;
         $this->email = $data['email'] ?? '';
+    }
+
+    public function __toString()
+    {
+        return (string)$this->name;
     }
 
     public function getUserIdentifier(): string
@@ -283,18 +284,6 @@ class User implements UserInterface
     public function getGender(): ?UserGender
     {
         return $this->gender;
-    }
-
-    public function getIdentifier(): string
-    {
-        return $this->identifier;
-    }
-
-    public function setIdentifier(string $identifier): self
-    {
-        $this->identifier = $identifier;
-
-        return $this;
     }
 
     public function getGoogleId(): ?string

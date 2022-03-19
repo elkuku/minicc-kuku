@@ -40,7 +40,6 @@ class AppFixtures extends Fixture
             ->setGender($userGenderSra)
             ->setName('admin')
             ->setEmail('admin@example.com')
-            ->setIdentifier('admin@example.com')
             ->setRole('ROLE_ADMIN');
         $manager->persist($admin);
 
@@ -49,7 +48,6 @@ class AppFixtures extends Fixture
             ->setGender($userGenderSra)
             ->setName('user1')
             ->setEmail('user1@example.com')
-            ->setIdentifier('user1@example.com')
             ->setRole('ROLE_USER');
         $manager->persist($user1);
 
@@ -58,7 +56,6 @@ class AppFixtures extends Fixture
             ->setGender($userGenderSra)
             ->setName('user2')
             ->setEmail('user2@example.com')
-            ->setIdentifier('user2@example.com')
             ->setRole('ROLE_USER');
         $manager->persist($user2);
 
@@ -66,7 +63,6 @@ class AppFixtures extends Fixture
             ->setState($userStateInactive)
             ->setGender($userGenderSr)
             ->setName('user3')
-            ->setIdentifier('user3@example.com')
             ->setEmail('user3@example.com')
             ->setRole('ROLE_USER');
         $manager->persist($user3);

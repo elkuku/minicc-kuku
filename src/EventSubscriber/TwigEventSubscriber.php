@@ -14,6 +14,7 @@ class TwigEventSubscriber implements EventSubscriberInterface
         private readonly UserRepository $userRepository,
         private readonly string $rootDir,
         private readonly string $appEnv,
+        private readonly int $taxValue,
     ) {
     }
 
@@ -26,6 +27,7 @@ class TwigEventSubscriber implements EventSubscriberInterface
         $this->twig->addGlobal('currentYear', date('Y'));
         $this->twig->addGlobal('rootDir', $this->rootDir.'/public');
         $this->twig->addGlobal('appEnv', $this->appEnv);
+        $this->twig->addGlobal('taxValue', $this->taxValue);
     }
 
     /**
