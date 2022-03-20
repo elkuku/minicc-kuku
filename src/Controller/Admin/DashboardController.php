@@ -6,6 +6,8 @@ use App\Entity\Contract;
 use App\Entity\PaymentMethod;
 use App\Entity\Store;
 use App\Entity\User;
+use App\Repository\StoreRepository;
+use App\Repository\TransactionRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
@@ -19,11 +21,31 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DashboardController extends AbstractDashboardController
 {
+    public function __construct(
+        private readonly StoreRepository $storeRepository,
+        private readonly TransactionRepository $transactionRepository,
+    ) {
+    }
+
     #[Route('/admin', name: 'admin')]
     #[IsGranted(User::ROLES['admin'])]
     public function index(): Response
     {
-        return $this->render('easyadmin/index.html.twig');
+        $stores = $this->storeRepository->findAll();
+        $balances = [];
+
+        foreach ($stores as $store) {
+            $balances[$store->getId()] = $this->transactionRepository
+                ->getSaldo($store);
+        }
+
+        return $this->render(
+            'easyadmin/index.html.twig',
+            [
+                'stores' => $stores,
+                'balances' => $balances,
+            ]
+        );
     }
 
     public function configureDashboard(): Dashboard
@@ -76,5 +98,4 @@ class DashboardController extends AbstractDashboardController
         return parent::configureAssets()
             ->addWebpackEncoreEntry('admin');
     }
-
 }
