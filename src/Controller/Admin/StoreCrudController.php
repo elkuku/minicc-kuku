@@ -30,7 +30,6 @@ class StoreCrudController extends AbstractCrudController
     {
         yield IdField::new('id')
             ->hideOnForm();
-            // ->setFormTypeOption('disabled', true);
         yield TextField::new('destination');
         yield AssociationField::new('user')
             ->autocomplete()
@@ -63,9 +62,8 @@ class StoreCrudController extends AbstractCrudController
     public function configureCrud(Crud $crud): Crud
     {
         return $crud->overrideTemplates([
-            'crud/edit' =>            'easyadmin/crud/store/edit.html.twig',
-            'crud/new' =>            'easyadmin/crud/store/new.html.twig',
-
+                'crud/edit' => 'easyadmin/crud/store/edit.html.twig',
+                'crud/new'  => 'easyadmin/crud/store/new.html.twig',
             ]
         );
     }

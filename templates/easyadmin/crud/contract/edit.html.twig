@@ -1,0 +1,11 @@
+{% extends '@EasyAdmin/crud/edit.html.twig' %}
+
+{% block content_title %}
+    <h2>Edit Contract {{ entity.instance.id }}</h2>
+{% endblock %}
+
+{% block edit_form %}
+    {% set form = edit_form %}
+
+    {% include 'easyadmin/crud/contract/_form.html.twig' %}
+{% endblock edit_form %}

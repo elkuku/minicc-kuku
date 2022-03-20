@@ -61,9 +61,8 @@ class ContractController extends AbstractController
     ): Response {
         $store = $storeRepo->find($request->request->getInt('store'));
         $user = $userRepo->find($request->request->getInt('user'));
-        $plantilla = $contractRepo->findPlantilla();
         $contract = new Contract;
-        $contract->setText($plantilla->getText());
+        $contract->setText($contractRepo->findTemplate()->getText());
         if ($store) {
             $contract->setValuesFromStore($store);
         }
@@ -153,7 +152,7 @@ class ContractController extends AbstractController
         ManagerRegistry $managerRegistry,
         TaxService $taxService,
     ): Response {
-        $data = $contractRepository->findPlantilla();
+        $data = $contractRepository->findTemplate();
         $form = $this->createForm(ContractType::class, $data);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

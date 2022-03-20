@@ -4,6 +4,8 @@ namespace App\Controller\Admin;
 
 use App\Entity\Contract;
 use App\Repository\ContractRepository;
+use App\Repository\StoreRepository;
+use App\Repository\UserRepository;
 use App\Service\TaxService;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
@@ -12,20 +14,26 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
+use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
+use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
-use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class ContractCrudController extends AbstractCrudController
 {
     public function __construct(
         private readonly TaxService $taxService,
-        private readonly ContractRepository $contractRepository
+        private readonly ContractRepository $contractRepository,
+        private readonly StoreRepository $storeRepository,
+        private readonly UserRepository $userRepository,
     ) {
     }
 
@@ -34,12 +42,27 @@ class ContractCrudController extends AbstractCrudController
         return Contract::class;
     }
 
+    public function index(AdminContext $context): KeyValueStore|Response
+    {
+        $response = parent::index($context);
+
+        if ($response instanceof KeyValueStore) {
+            $response->set('stores', $this->storeRepository->getActive());
+            $response->set('users', $this->userRepository->findActiveUsers());
+        }
+
+        return $response;
+    }
+
     public function configureFields(string $pageName): iterable
     {
         return [
             IntegerField::new('storeNumber'),
             Field::new('date'),
-            Field::new('inqNombreapellido'),
+            AssociationField::new('gender')->onlyOnForms(),
+            Field::new('inqNombreApellido'),
+            Field::new('inqCi')
+                ->onlyOnForms(),
             NumberField::new('valAlq')
                 ->setFormTypeOptions([
                     'row_attr' => [
@@ -51,9 +74,22 @@ class ContractCrudController extends AbstractCrudController
                         'data-taxcalc2-target' => 'withoutTax',
                         'data-action'          => 'taxcalc2#calcWithTax',
                     ],
-                ]),
+                ])
+                ->onlyOnForms(),
             TextEditorField::new('text')
                 ->hideOnIndex(),
+            Field::new('destination')->onlyOnForms(),
+            Field::new('valGarantia')->onlyOnForms(),
+            Field::new('cntLanfort')->onlyOnForms(),
+            Field::new('cntNeon')->onlyOnForms(),
+            Field::new('cntSwitch')->onlyOnForms(),
+            Field::new('cntToma')->onlyOnForms(),
+            Field::new('cntVentana')->onlyOnForms(),
+            Field::new('cntLlaves')->onlyOnForms(),
+            Field::new('cntMedElec')->onlyOnForms(),
+            Field::new('medElectrico')->onlyOnForms(),
+            Field::new('cntMedAgua')->onlyOnForms(),
+            Field::new('medAgua')->onlyOnForms(),
         ];
     }
 
@@ -76,9 +112,30 @@ class ContractCrudController extends AbstractCrudController
 
     public function createEntity(string $entityFqcn): Contract
     {
-        $plantilla = $this->contractRepository->findPlantilla();
+        $request = $this->container->get('request_stack')->getCurrentRequest();
         $contract = new Contract;
-        $contract->setText($plantilla->getText());
+
+        if ($request instanceof Request) {
+            $store = $this->storeRepository
+                ->find($request->request->getInt('store'));
+            $user = $this->userRepository
+                ->find($request->request->getInt('user'));
+
+            if ($store) {
+                $contract->setValuesFromStore($store);
+            }
+
+            if ($user) {
+                $contract
+                    ->setInqNombreapellido($user->getName())
+                    ->setInqCi($user->getInqCi())
+                    ->setGender($user->getGender());
+            }
+        }
+
+        $contract->setText(
+            $this->contractRepository->findTemplate()->getText()
+        );
 
         return $contract;
     }
@@ -103,5 +160,14 @@ class ContractCrudController extends AbstractCrudController
         return $filters
             ->add('storeNumber')
             ->add('date');
+    }
+
+    public function configureCrud(Crud $crud): Crud
+    {
+        return $crud->overrideTemplates([
+            'crud/index' => 'easyadmin/crud/contract/index.html.twig',
+            'crud/new'   => 'easyadmin/crud/contract/new.html.twig',
+            'crud/edit'  => 'easyadmin/crud/contract/edit.html.twig',
+        ]);
     }
 }
