@@ -9,7 +9,7 @@
             {% set uri = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all|merge({'_switch_user': user.userIdentifier }))) %}
             {% set selected = '' %}
             {% if is_granted('IS_IMPERSONATOR') %}
-                {% if user.identifier == app.user.identifier %}
+                {% if user.userIdentifier == app.user.userIdentifier %}
                     {% set selected = ' selected="selected"' %}
                 {% endif %}
             {% endif %}
