@@ -42,16 +42,14 @@ class ContractCrudController extends AbstractCrudController
         return Contract::class;
     }
 
-    public function index(AdminContext $context): KeyValueStore|Response
+    public function configureResponseParameters(KeyValueStore $responseParameters): KeyValueStore
     {
-        $response = parent::index($context);
-
-        if ($response instanceof KeyValueStore) {
-            $response->set('stores', $this->storeRepository->getActive());
-            $response->set('users', $this->userRepository->findActiveUsers());
+        if (Crud::PAGE_INDEX === $responseParameters->get('pageName')) {
+            $responseParameters->set('stores', $this->storeRepository->getActive());
+            $responseParameters->set('users', $this->userRepository->findActiveUsers());
         }
 
-        return $response;
+        return $responseParameters;
     }
 
     public function configureFields(string $pageName): iterable

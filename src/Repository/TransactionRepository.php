@@ -10,12 +10,13 @@ namespace App\Repository;
 
 use App\Entity\Store;
 use App\Entity\Transaction;
+use App\Entity\User;
 use App\Helper\Paginator\PaginatorOptions;
 use App\Helper\Paginator\PaginatorRepoTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -30,7 +31,7 @@ use function count;
  *
  * @extends ServiceEntityRepository<TransactionRepository>
  */
-#[ORM\Entity]
+#[Entity]
 class TransactionRepository extends ServiceEntityRepository
 {
     use PaginatorRepoTrait;
@@ -54,6 +55,23 @@ class TransactionRepository extends ServiceEntityRepository
             ->andWhere('YEAR(p.date) = :year')
             ->setParameter('store', $store->getId())
             ->setParameter('year', $year)
+            ->orderBy('p.date, p.type', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @return Transaction[]
+     */
+    public function findByStoreYearAndUser(Store $store, int $year, User $user): array
+    {
+        return $this->createQueryBuilder('p')
+            ->where('p.store = :store')
+            ->andWhere('YEAR(p.date) = :year')
+            ->andWhere('p.user = :user')
+            ->setParameter('store', $store->getId())
+            ->setParameter('year', $year)
+            ->setParameter('user', $user)
             ->orderBy('p.date, p.type', 'ASC')
             ->getQuery()
             ->getResult();

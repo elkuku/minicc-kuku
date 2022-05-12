@@ -33,11 +33,6 @@ class StoreController extends AbstractController
         );
     }
 
-    /**
-     * @throws \Doctrine\ORM\NonUniqueResultException
-     * @throws \Doctrine\ORM\NoResultException
-     * @throws \JsonException
-     */
     #[Route(path: '/{id}', name: 'store-transactions', requirements: ['id' => '\d+'], methods: [
         'GET',
         'POST',
