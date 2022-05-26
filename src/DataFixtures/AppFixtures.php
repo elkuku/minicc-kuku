@@ -113,6 +113,11 @@ class AppFixtures extends Fixture
         $text = file_get_contents(__DIR__.'/contract-template.html');
         if ($text) {
             $contract = (new Contract)
+                ->setStoreNumber(1)
+                ->setInqNombreapellido('Tester')
+                ->setDestination('Testing')
+                ->setValAlq(123.45)
+                ->setValGarantia(123.45)
                 ->setText($text);
             $manager->persist($contract);
         }
