@@ -9,7 +9,6 @@
 namespace App\Entity;
 
 use App\Repository\PaymentMethodRepository;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
@@ -19,13 +18,11 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 #[Entity(repositoryClass: PaymentMethodRepository::class)]
 class PaymentMethod
 {
-    #[Id, GeneratedValue(strategy: 'AUTO')]
-    #[Column(type: Types::INTEGER)]
+    #[Column, Id, GeneratedValue]
     private ?int $id = null;
 
-    #[NotBlank]
-    #[Column(type: Types::STRING, length: 150, nullable: false)]
-    private string $name;
+    #[Column(length: 150, nullable: false), NotBlank]
+    private ?string $name = null;
 
     public function getId(): ?int
     {

@@ -20,66 +20,65 @@ use App\Repository\ContractRepository;
 #[Entity(repositoryClass: ContractRepository::class)]
 class Contract
 {
-    #[Id, GeneratedValue(strategy: 'AUTO')]
-    #[Column(type: Types::INTEGER)]
+    #[Column, Id, GeneratedValue]
     private ?int $id = null;
 
-    #[Column(type: Types::INTEGER)]
-    protected int $storeNumber = 0;
+    #[Column]
+    protected ?int $storeNumber = null;
 
-    #[Column(type: Types::STRING, length: 150)]
-    private string $inqNombreapellido = '';
+    #[Column(length: 150)]
+    private ?string $inqNombreapellido = null;
 
-    #[ManyToOne(targetEntity: UserGender::class)]
+    #[ManyToOne]
     private ?UserGender $gender = null;
 
-    #[Column(type: Types::STRING, length: 11)]
+    #[Column(length: 11)]
     private string $inqCi = '000000000-0';
 
-    #[Column(type: Types::STRING, length: 50)]
-    private string $destination = '';
+    #[Column(length: 50)]
+    private ?string $destination = null;
 
-    #[Column(type: Types::FLOAT, precision: 10, scale: 0)]
-    private float $valAlq = 0;
+    #[Column]
+    private ?float $valAlq = null;
 
-    #[Column(type: Types::FLOAT, precision: 10, scale: 0)]
-    private float $valGarantia = 0;
+    #[Column]
+    private ?float $valGarantia = null;
 
     #[Column(type: Types::DATE_MUTABLE)]
     private DateTime $date;
 
-    #[Column(type: Types::INTEGER)]
-    private int $cntLanfort = 0;
+    #[Column]
+    private ?int $cntLanfort = 0;
 
-    #[Column(type: Types::INTEGER)]
-    private int $cntNeon = 0;
+    #[Column]
+    private ?int $cntNeon = 0;
 
-    #[Column(type: Types::INTEGER)]
+    #[Column]
     private int $cntSwitch = 0;
 
-    #[Column(type: Types::INTEGER)]
+    #[Column]
     private int $cntToma = 0;
 
-    #[Column(type: Types::INTEGER)]
+    #[Column]
     private int $cntVentana = 0;
 
-    #[Column(type: Types::INTEGER)]
+    #[Column]
     private int $cntLlaves = 0;
 
-    #[Column(type: Types::INTEGER)]
+    #[Column]
     private int $cntMedAgua = 0;
 
-    #[Column(type: Types::INTEGER)]
+    #[Column]
     private int $cntMedElec = 0;
 
-    #[Column(type: Types::STRING, length: 50)]
-    private string $medElectrico = '';
+    #[Column(length: 50)]
+    private ?string $medElectrico = '';
 
-    #[Column(type: Types::STRING, length: 50)]
-    private string $medAgua = '';
+    #[Column(length: 50)]
+    private ?string $medAgua ='';
 
     #[Column(type: Types::TEXT, length: 65535, nullable: false)]
-    private string $text;
+    private ?string $text = null;
 
     public function __construct()
     {

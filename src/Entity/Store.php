@@ -20,47 +20,46 @@ use Doctrine\ORM\Mapping\ManyToOne;
 #[Entity(repositoryClass: StoreRepository::class)]
 class Store
 {
-    #[Id, GeneratedValue(strategy: 'AUTO')]
-    #[Column(type: Types::INTEGER)]
+    #[Column, Id, GeneratedValue]
     private ?int $id = null;
 
-    #[Column(type: Types::INTEGER, nullable: true)]
+    #[Column(nullable: true)]
     private ?int $userId = 0;
 
-    #[Column(type: Types::STRING, length: 50, nullable: false)]
+    #[Column(length: 50, nullable: false)]
     private string $destination = '';
 
     #[Column(type: Types::FLOAT, precision: 10, scale: 0, nullable: false)]
     private float $valAlq = 0;
 
-    #[Column(type: Types::INTEGER, nullable: false)]
+    #[Column(nullable: false)]
     private int $cntLanfort = 0;
 
-    #[Column(type: Types::INTEGER, nullable: false)]
+    #[Column(nullable: false)]
     private int $cntNeon = 0;
 
-    #[Column(type: Types::INTEGER, nullable: false)]
+    #[Column(nullable: false)]
     private int $cntSwitch = 0;
 
-    #[Column(type: Types::INTEGER, nullable: false)]
+    #[Column(nullable: false)]
     private int $cntToma = 0;
 
-    #[Column(type: Types::INTEGER, nullable: false)]
+    #[Column(nullable: false)]
     private int $cntVentana = 0;
 
-    #[Column(type: Types::INTEGER, nullable: false)]
+    #[Column(nullable: false)]
     private int $cntLlaves = 0;
 
-    #[Column(type: Types::INTEGER, nullable: false)]
+    #[Column(nullable: false)]
     private int $cntMedAgua = 0;
 
-    #[Column(type: Types::STRING, length: 50)]
+    #[Column(length: 50)]
     private string $medAgua = '';
 
-    #[Column(type: Types::INTEGER, nullable: false)]
+    #[Column(nullable: false)]
     private int $cntMedElec = 0;
 
-    #[Column(type: Types::STRING, length: 50)]
+    #[Column(length: 50)]
     private string $medElectrico = '';
 
     #[ManyToOne(targetEntity: User::class, inversedBy: 'stores')]

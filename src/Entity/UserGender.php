@@ -17,8 +17,7 @@ use Doctrine\ORM\Mapping\Id;
 #[Entity]
 class UserGender
 {
-    #[Id, GeneratedValue(strategy: 'AUTO')]
-    #[Column(type: Types::INTEGER)]
+    #[Column, Id, GeneratedValue]
     private ?int $id = null;
 
     #[Column(type: Types::STRING, length: 150, nullable: false)]

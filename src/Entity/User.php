@@ -21,8 +21,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 #[Entity(repositoryClass: UserRepository::class)]
 class User implements UserInterface
 {
-    #[Id, GeneratedValue(strategy: 'AUTO')]
-    #[Column(type: Types::INTEGER)]
+    #[Column, Id, GeneratedValue]
     private ?int $id = 0;
 
     /**

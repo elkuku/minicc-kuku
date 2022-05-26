@@ -24,17 +24,16 @@ use App\Repository\DepositRepository;
 #[Entity(repositoryClass: DepositRepository::class)]
 class Deposit implements JsonSerializable
 {
-    #[Id, GeneratedValue(strategy: 'AUTO')]
-    #[Column(type: Types::INTEGER)]
+    #[Column, Id, GeneratedValue]
     private ?int $id = null;
 
-    #[ManyToOne(targetEntity: PaymentMethod::class)]
+    #[ManyToOne]
     private PaymentMethod $entity;
 
     #[Column(type: Types::DATE_MUTABLE, nullable: false)]
     private DateTime $date;
 
-    #[Column(type: Types::STRING, length: 150, nullable: false)]
+    #[Column(length: 150, nullable: false)]
     private string $document;
 
     #[Column(type: Types::DECIMAL, precision: 13, scale: 2, nullable: false)]

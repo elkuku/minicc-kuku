@@ -23,8 +23,7 @@ use App\Repository\TransactionRepository;
 #[Entity(repositoryClass: TransactionRepository::class)]
 class Transaction implements JsonSerializable
 {
-    #[Id, GeneratedValue(strategy: 'AUTO')]
-    #[Column(type: Types::INTEGER)]
+    #[Column, Id, GeneratedValue]
     protected ?int $id = null;
 
     #[ManyToOne(targetEntity: Store::class)]
