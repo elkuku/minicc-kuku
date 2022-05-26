@@ -40,6 +40,7 @@ class StoreRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('s')
             ->where('s.user IS NOT NULL')
+            ->orderBy('s.id', 'ASC')
             ->getQuery()
             ->getResult();
     }
