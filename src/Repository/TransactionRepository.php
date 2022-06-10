@@ -63,8 +63,11 @@ class TransactionRepository extends ServiceEntityRepository
     /**
      * @return Transaction[]
      */
-    public function findByStoreYearAndUser(Store $store, int $year, User $user): array
-    {
+    public function findByStoreYearAndUser(
+        Store $store,
+        int $year,
+        User $user
+    ): array {
         return $this->createQueryBuilder('p')
             ->where('p.store = :store')
             ->andWhere('YEAR(p.date) = :year')

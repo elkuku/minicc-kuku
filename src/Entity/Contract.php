@@ -75,7 +75,7 @@ class Contract
     private ?string $medElectrico = '';
 
     #[Column(length: 50)]
-    private ?string $medAgua ='';
+    private ?string $medAgua = '';
 
     #[Column(type: Types::TEXT, length: 65535, nullable: false)]
     private ?string $text = null;
