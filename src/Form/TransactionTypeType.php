@@ -8,9 +8,13 @@
 
 namespace App\Form;
 
+use App\Entity\PaymentMethod;
 use App\Entity\Store;
+use App\Entity\TransactionType;
+use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
@@ -35,7 +39,7 @@ class TransactionTypeType extends AbstractType
                 'type',
                 EntityType::class,
                 [
-                    'class'        => 'App:TransactionType',
+                    'class'        => TransactionType::class,
                     'choice_label' => 'name',
                 ]
             )
@@ -43,7 +47,7 @@ class TransactionTypeType extends AbstractType
                 'store',
                 EntityType::class,
                 [
-                    'class'        => 'App:Store',
+                    'class'        => Store::class,
                     'choice_label' => fn(Store $store): string => $store->getId(
                         ).' - '.$store->getDestination(),
                 ]
@@ -52,7 +56,7 @@ class TransactionTypeType extends AbstractType
                 'user',
                 EntityType::class,
                 [
-                    'class'        => 'App:User',
+                    'class'        => User::class,
                     'choice_label' => 'name',
                 ]
             )
@@ -60,11 +64,11 @@ class TransactionTypeType extends AbstractType
                 'method',
                 EntityType::class,
                 [
-                    'class'        => 'App:PaymentMethod',
+                    'class'        => PaymentMethod::class,
                     'choice_label' => 'name',
                 ]
             )
-            ->add('amount')
+            ->add('amount', MoneyType::class)
             ->add('document')
             ->add('depId', null, ['label' => 'DepositoId'])
             ->add('recipeNo', null, ['label' => 'Factura']);

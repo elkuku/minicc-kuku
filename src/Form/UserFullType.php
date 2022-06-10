@@ -8,6 +8,8 @@
 
 namespace App\Form;
 
+use App\Entity\UserGender;
+use App\Entity\UserState;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -30,7 +32,7 @@ class UserFullType extends AbstractType
                 'state',
                 EntityType::class,
                 array(
-                    'class'        => 'App:UserState',
+                    'class'        => UserState::class,
                     'choice_label' => 'name',
                 )
             )
@@ -38,7 +40,7 @@ class UserFullType extends AbstractType
                 'gender',
                 EntityType::class,
                 array(
-                    'class'        => 'App:UserGender',
+                    'class'        => UserGender::class,
                     'choice_label' => 'name',
                 )
             )

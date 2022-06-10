@@ -9,6 +9,7 @@
 namespace App\Form;
 
 use App\Entity\Contract;
+use App\Entity\UserGender;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -51,7 +52,7 @@ class ContractType extends AbstractType
                 'gender',
                 EntityType::class,
                 [
-                    'class' => 'App:UserGender',
+                    'class' => UserGender::class,
                     'choice_label' => 'name',
                 ]
             )

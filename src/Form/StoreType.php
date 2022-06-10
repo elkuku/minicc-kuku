@@ -8,6 +8,7 @@
 
 namespace App\Form;
 
+use App\Entity\User;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -31,7 +32,7 @@ class StoreType extends AbstractType
                 'user',
                 EntityType::class,
                 [
-                    'class'         => 'App:User',
+                    'class'         => User::class,
                     'choice_label'  => 'name',
                     'placeholder'   => '-Desocupado-',
                     'required'      => false,
