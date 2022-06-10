@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataSource name="main@localhost">
-  <database-model serializer="dbm" dbms="MYSQL" family-id="MYSQL" format-version="4.39">
+  <database-model serializer="dbm" dbms="MYSQL" family-id="MYSQL" format-version="4.41">
     <root id="1"/>
     <collation id="2" parent="1" name="big5_chinese_ci">
       <Charset>big5</Charset>
@@ -888,9 +888,9 @@
       <Type>btree</Type>
     </index>
     <key id="266" parent="234" name="PRIMARY">
-      <ColNames>id</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
+      <UnderlyingIndexColNames>id</UnderlyingIndexColNames>
     </key>
     <column id="267" parent="235" name="id">
       <AutoIncrement>319</AutoIncrement>
@@ -927,9 +927,9 @@
       <Type>btree</Type>
     </index>
     <key id="274" parent="235" name="PRIMARY">
-      <ColNames>id</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
+      <UnderlyingIndexColNames>id</UnderlyingIndexColNames>
     </key>
     <column id="275" parent="236" name="version">
       <DataType>varchar(191)|0s</DataType>
@@ -945,9 +945,9 @@
       <Position>3</Position>
     </column>
     <key id="278" parent="236" name="PRIMARY">
-      <ColNames>version</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
+      <UnderlyingIndexColNames>version</UnderlyingIndexColNames>
     </key>
     <column id="279" parent="237" name="id">
       <AutoIncrement>4</AutoIncrement>
@@ -961,9 +961,9 @@
       <Position>2</Position>
     </column>
     <key id="281" parent="237" name="PRIMARY">
-      <ColNames>id</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
+      <UnderlyingIndexColNames>id</UnderlyingIndexColNames>
     </key>
     <column id="282" parent="238" name="id">
       <AutoIncrement>11</AutoIncrement>
@@ -1045,9 +1045,9 @@
       <Type>btree</Type>
     </index>
     <key id="298" parent="238" name="PRIMARY">
-      <ColNames>id</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
+      <UnderlyingIndexColNames>id</UnderlyingIndexColNames>
     </key>
     <column id="299" parent="239" name="id">
       <AutoIncrement>2245</AutoIncrement>
@@ -1148,12 +1148,11 @@
       <Type>btree</Type>
     </index>
     <key id="320" parent="239" name="PRIMARY">
-      <ColNames>id</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
+      <UnderlyingIndexColNames>id</UnderlyingIndexColNames>
     </key>
     <key id="321" parent="239" name="UNIQ_723705D19815E4B1">
-      <ColNames>deposit_id</ColNames>
       <UnderlyingIndexName>UNIQ_723705D19815E4B1</UnderlyingIndexName>
     </key>
     <column id="322" parent="240" name="id">
@@ -1168,9 +1167,9 @@
       <Position>2</Position>
     </column>
     <key id="324" parent="240" name="PRIMARY">
-      <ColNames>id</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
+      <UnderlyingIndexColNames>id</UnderlyingIndexColNames>
     </key>
     <column id="325" parent="241" name="id">
       <AutoIncrement>33</AutoIncrement>
@@ -1255,12 +1254,11 @@
       <Type>btree</Type>
     </index>
     <key id="343" parent="241" name="PRIMARY">
-      <ColNames>id</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
+      <UnderlyingIndexColNames>id</UnderlyingIndexColNames>
     </key>
     <key id="344" parent="241" name="UNIQ_8D93D649E7927C74">
-      <ColNames>email</ColNames>
       <UnderlyingIndexName>UNIQ_8D93D649E7927C74</UnderlyingIndexName>
     </key>
     <column id="345" parent="242" name="id">
@@ -1275,9 +1273,9 @@
       <Position>2</Position>
     </column>
     <key id="347" parent="242" name="PRIMARY">
-      <ColNames>id</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
+      <UnderlyingIndexColNames>id</UnderlyingIndexColNames>
     </key>
     <column id="348" parent="243" name="id">
       <AutoIncrement>3</AutoIncrement>
@@ -1291,9 +1289,9 @@
       <Position>2</Position>
     </column>
     <key id="350" parent="243" name="PRIMARY">
-      <ColNames>id</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
+      <UnderlyingIndexColNames>id</UnderlyingIndexColNames>
     </key>
   </database-model>
 </dataSource>
