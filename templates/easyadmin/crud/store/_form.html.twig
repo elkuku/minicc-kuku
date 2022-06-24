@@ -7,7 +7,7 @@
             {{ form_widget(form.destination) }}
         </div>
     </div>
-    <div class="col-sm-3 alert-warning" data-controller="taxcalc" data-taxcalc-taxrate-value="{{ taxValue }}">
+    <div class="col-sm-3 alert-warning" data-controller="taxcalc" data-taxcalc-taxrate-value="{{ tax_value }}">
         {{ form_label(form.valAlq) }}<br/>
         ConIVA:
         <input data-taxcalc-target="withTax" data-action="taxcalc#calcWithoutTax" type="text"/>

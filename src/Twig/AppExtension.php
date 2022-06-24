@@ -9,6 +9,7 @@
 namespace App\Twig;
 
 use App\Entity\User;
+use App\Repository\UserRepository;
 use App\Service\ShaFinder;
 use App\Service\TaxService;
 use DateTime;
@@ -25,8 +26,10 @@ use function strlen;
 class AppExtension extends AbstractExtension
     implements ServiceSubscriberInterface
 {
-    public function __construct(private readonly ContainerInterface $container)
-    {
+    public function __construct(
+        private readonly ContainerInterface $container,
+        private readonly UserRepository $userRepository,
+    ) {
     }
 
     /**
@@ -55,6 +58,7 @@ class AppExtension extends AbstractExtension
             new TwigFunction('intlDate', [$this, 'intlDate']),
             new TwigFunction('formatRUC', [$this, 'formatRUC']),
             new TwigFunction('getSHA', [$this, 'getSHA']),
+            new TwigFunction('findSystemUsers', [$this, 'findSystemUsers']),
         ];
     }
 
@@ -209,5 +213,13 @@ class AppExtension extends AbstractExtension
         }
 
         return trim($ruc);
+    }
+
+    /**
+     * @return User[]
+     */
+    public function findSystemUsers(): array
+    {
+        return $this->userRepository->findActiveUsers();
     }
 }

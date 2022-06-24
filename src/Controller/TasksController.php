@@ -24,7 +24,10 @@ class TasksController extends AbstractController
     #[Route(path: '/admin-tasks', name: 'admin-tasks', methods: ['GET'])]
     public function index(): Response
     {
-        return $this->render('admin/tasks.html.twig');
+        return $this->render(
+            'admin/tasks.html.twig',
+            ['currentYear' => date('Y')]
+        );
     }
 
     #[Route(path: '/console-view/{item}', name: 'console-view', methods: ['GET'])]

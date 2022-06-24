@@ -56,7 +56,7 @@
                     <span class="oi oi-account-logout"></span>
                 </a>
             {% else %}
-                <a class="nav-link" accesskey="l" href="{{ 'dev' == appEnv ? path('login') : path('connect_google_start') }}" title="Login">
+                <a class="nav-link" accesskey="l" href="{{ 'dev' == app_env ? path('login') : path('connect_google_start') }}" title="Login">
                     <span class="oi oi-account-login"></span>
                 </a>
             {% endif %}
