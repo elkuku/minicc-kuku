@@ -11,9 +11,9 @@
 
     {{ form_start(form) }}
 
-    <div class="pull-right">
-        <button type="submit" class="btn btn-light btn-success">Guardar</button>
-        <a class="btn btn-light" href="/{{ redirect }}">Cancelar</a>
+    <div class="float-end">
+        <button type="submit" class="btn btn-outline-success">Guardar</button>
+        <a class="btn btn-outline-secondary" href="/{{ redirect }}">Cancelar</a>
     </div>
 
     <h3>Editar Transacion</h3>
@@ -72,11 +72,6 @@
     {{ form_widget(form) }}
 
     <input type="hidden" name="redirect" value="{{ redirect }}"/>
-
-    <div class="pull-right">
-        <button type="submit" class="btn btn-light btn-success">Guardar</button>
-        <a class="btn btn-light" href="/{{ redirect }}">Cancelar</a>
-    </div>
 
     {{ form_end(form) }}
 

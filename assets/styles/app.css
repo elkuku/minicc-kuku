@@ -49,10 +49,6 @@ th {
     background-size: cover;
 }
 
-.jumbotron {
-    opacity: 0.8;
-}
-
 .fa-google-plus-square {
     background-image: url("../images/Google_Icon.png");
     height: 36px;
@@ -66,7 +62,6 @@ th {
     position: absolute;
     z-index: 100;
     width: 180px;
-    /*top: 144px;*/
 }
 
 .modal-body button, .modal-body a {

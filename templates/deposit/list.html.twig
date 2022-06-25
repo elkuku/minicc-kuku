@@ -11,8 +11,8 @@
 
 {% block body %}
 
-    <div class="float-right">
-        <a class="btn btn-light" data-toggle="collapse" href="#collapseExample" role="button">
+    <div class="float-end">
+        <a class="btn btn-outline-secondary" data-toggle="collapse" href="#collapseExample" role="button">
             CSV Upload
         </a>
         <div class="collapse" id="collapseExample">
@@ -22,12 +22,11 @@
 
     <h1>Depositos</h1>
 
-
     <form method="post">
 
         <div class="row">
-            <div class="col-xs-2">{{ paginator.listLimit(paginatorOptions) }}</div>
-            <div class="col-xs-10">{{ paginator.pagination(paginatorOptions) }}</div>
+            <div class="col-2">{{ paginator.listLimit(paginatorOptions) }}</div>
+            <div class="col-10">{{ paginator.pagination(paginatorOptions) }}</div>
         </div>
 
         <table class="table table-sm table-hover">
@@ -36,7 +35,7 @@
             <tr>
                 <th></th>
                 <th></th>
-                <th class="text-right">
+                <th class="text-end">
                     De{{ paginator.date('date_from', paginatorOptions) }}<br/>
                     A {{ paginator.date('date_to', paginatorOptions) }}<br/>
                 </th>

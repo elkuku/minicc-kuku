@@ -5,46 +5,52 @@
 {% block body %}
     <h1>Admin Tasks</h1>
 
-    <div class="card-columns">
+    <div class="row">
+        <div class="col-4">
+
         <div class="card">
             <h5 class="card-header">Documentos</h5>
 
-            <ul class="list-group">
-                <li class="list-group-item"><a href="{{ path('planillas') }}">Download Planillas</a></li>
-                <li class="list-group-item"><a href="{{ path('planillas-mail') }}">Mail Planillas</a></li>
-                <li class="list-group-item"><a href="{{ path('stores-transactions-pdf') }}">Transactions PDF</a></li>
-            </ul>
+            <div class="list-group">
+                <a class="list-group-item" href="{{ path('planillas') }}">Download Planillas</a>
+                <a class="list-group-item" href="{{ path('planillas-mail') }}">Mail Planillas</a>
+                <a class="list-group-item" href="{{ path('stores-transactions-pdf') }}">Transactions PDF</a>
+            </div>
             <form action="{{ path('mail-annual-transactions') }}" method="post">
                 Send all transactions for year
 
                 <select name="year">
-                    {% for i in currentYear..2010 %}
+                    {% for i in getCurrentYear()..2010 %}
                         <option>{{ i }}</option>
                     {% endfor %}
                 </select>
                 <button type="submit" class="btn btn-primary">Send</button>
 
             </form>
-            <ul class="list-group">
-                <li class="list-group-item"><a href="{{ path('users-ruclist') }}">Users RUC list</a></li>
-                <li class="list-group-item"><a href="{{ path('pdf-users') }}">Users list (test)</a></li>
-            </ul>
+            <div class="list-group">
+                <a class="list-group-item" href="{{ path('users-ruclist') }}">Users RUC list</a>
+                <a class="list-group-item" href="{{ path('pdf-users') }}">Users list (test)</a>
+            </div>
 
         </div>
+        </div>
+
+        <div class="col-4">
         <div class="card">
             <h5 class="card-header">Sync</h5>
             <h6 class="card-header">Export</h6>
-            <ul class="list-group">
-                <li class="list-group-item">
-                    <a href="{{ path('backup') }}">Send Backup per e-mail</a>
-                </li>
-            </ul>
+            <div class="list-group">
+                <a class="list-group-item" href="{{ path('backup') }}">Send Backup per e-mail</a>
+            </div>
         </div>
+        </div>
+
+        <div class="col-4">
         <div class="card">
             <h5 class="card-header">View</h5>
-            <ul class="list-group">
-                <li class="list-group-item"><a href="{{ path('console-view', {'item': 'routes'}) }}">Routes</a></li>
-                <li class="list-group-item">
+            <div class="list-group">
+                <a class="list-group-item" href="{{ path('console-view', {'item': 'routes'}) }}">Routes</a>
+                <div class="list-group-item">
                     <form enctype="multipart/form-data" method="post" class="form"
                           action="{{ path('console-view', {'item': 'route-match'}) }}">
                         <div class="form-group">
@@ -53,12 +59,11 @@
                             <button type="submit" class="btn btn-primary">Check</button>
                         </div>
                     </form>
-                </li>
-                <li class="list-group-item"><a href="{{ path('console-view', {'item': 'migrations'}) }}">Migrations</a>
-                </li>
-                <li class="list-group-item"><a href="{{ path('console-view', {'item': 'security'}) }}">Security
-                        check</a></li>
-            </ul>
+                </div>
+                <a class="list-group-item" href="{{ path('console-view', {'item': 'migrations'}) }}">Migrations</a>
+                <a class="list-group-item" href="{{ path('console-view', {'item': 'security'}) }}">Security check</a>
+            </div>
+        </div>
         </div>
     </div>
 

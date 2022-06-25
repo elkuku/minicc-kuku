@@ -4,15 +4,12 @@
 
 {% block body %}
     <div
-            {# class="container-fluid mt-4" #}
             {{ stimulus_controller('reload-content', {
                 url: path('payment-methods', {ajax: 1})
             }) }}
             data-action="modal-form:success->reload-content#refreshContent"
     >
-        <div class="float-right">
-{#            <a href="{{ path('payment-methods-new') }}" class="btn btn-info">Nuevo</a>#}
-
+        <div class="float-end">
             <div {{ stimulus_controller('modal-form', {
                 formUrl: path('payment-methods-new', { ajax: 1 })
             }) }}
@@ -27,8 +24,6 @@
                     modalTitle: 'Nuevo metodo de pago'
                 }) }}
             </div>
-
-
         </div>
 
         <h1>Payment methods</h1>
@@ -36,6 +31,5 @@
         <div data-reload-content-target="content">
             {{ include('payment-methods/_list.html.twig') }}
         </div>
-
     </div>
 {% endblock %}

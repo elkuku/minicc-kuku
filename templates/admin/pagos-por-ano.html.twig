@@ -12,7 +12,7 @@
 {% block body %}
 
     <form method="get">
-        <div class="float-right">
+        <div class="float-end">
             {{ field.selectYear(year) }}
         </div>
         <h1>Pagos del año {{ year }}</h1>
@@ -46,9 +46,9 @@
                 {% for loc in range(1, maxLoc) %}
                     <th class="text-center">{{ loc }}</th>
                 {% endfor %}
-                <th class="text-right">TOTAL</th>
-                <th class="text-right">IVA</th>
-                <th class="text-right">Deposito</th>
+                <th class="text-end">TOTAL</th>
+                <th class="text-end">IVA</th>
+                <th class="text-end">Deposito</th>
             </tr>
             {% for dia in range(1, 31) %}
                 {% for loc in range(1, maxLoc) %}
@@ -61,7 +61,7 @@
                     <td class="text-center" title="{{ dia~'.'~mes~'.'~year }}">{{ dia }}</td>
                     {% for loc in range(1, maxLoc) %}
                         {% if transactions[loc][mes][dia] is defined %}
-                            <td class="text-right">
+                            <td class="text-end">
                                 {% for t in transactions[loc][mes][dia] %}
                                     {% set totalDia = totalDia + t.amount %}
                                     {% set totalLocal = totalLocal|merge({('local'~loc): totalLocal['local'~loc]+t.amount}) %}
@@ -74,9 +74,9 @@
                     {% endfor %}
                     {% set totalTotal = totalTotal + totalDia %}
                     {% set totalTaxMonth = totalTaxMonth + totalDia|taxFromTotal %}
-                    <td class="text-right">{{ totalDia|price|raw }}</td>
-                    <td class="text-right">{{ totalDia|taxFromTotal|price|raw }}</td>
-                    <td class="text-right">{{ (totalDia - totalDia|taxFromTotal)|price|raw }}</td>
+                    <td class="text-end">{{ totalDia|price|raw }}</td>
+                    <td class="text-end">{{ totalDia|taxFromTotal|price|raw }}</td>
+                    <td class="text-end">{{ (totalDia - totalDia|taxFromTotal)|price|raw }}</td>
                 {% endif %}
                 {% set newRow, totalDia = false, 0 %}
                 </tr>
@@ -84,16 +84,16 @@
             <tr>
                 <th>TOTALES</th>
                 {% for loc in range(1, maxLoc) %}
-                    <th class="text-right">
+                    <th class="text-end">
                         <strong>
                             {{ totalLocal['local'~loc] ? totalLocal['local'~loc]|price|raw : '' }}
                             {% set totalLocal = totalLocal|merge({('local'~loc): 0}) %}
                         </strong>
                     </th>
                 {% endfor %}
-                <th class="text-right">{{ totalTotal|price|raw }}</th>
-                <th class="text-right">{{ totalTaxMonth|price|raw }}</th>
-                <th class="text-right">{{ (totalTotal - totalTaxMonth)|price|raw }}</th>
+                <th class="text-end">{{ totalTotal|price|raw }}</th>
+                <th class="text-end">{{ totalTaxMonth|price|raw }}</th>
+                <th class="text-end">{{ (totalTotal - totalTaxMonth)|price|raw }}</th>
             </tr>
             {% set totalAnoTotal = totalAnoTotal + totalTotal %}
             {% set totalTaxYear = totalTaxYear + totalTaxMonth %}
@@ -103,9 +103,9 @@
         <tr>
             <th>Totales del A&ntilde;o:</th>
             <th colspan="{{ maxLoc }}"></th>
-            <th class="text-right">{{ totalAnoTotal|price|raw }}</th>
-            <th class="text-right">{{ totalTaxYear|price|raw }}</th>
-            <th class="text-right">{{ (totalAnoTotal - totalTaxYear)|price|raw }}</th>
+            <th class="text-end">{{ totalAnoTotal|price|raw }}</th>
+            <th class="text-end">{{ totalTaxYear|price|raw }}</th>
+            <th class="text-end">{{ (totalAnoTotal - totalTaxYear)|price|raw }}</th>
         </tr>
         </tfoot>
     </table>

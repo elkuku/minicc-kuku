@@ -12,7 +12,7 @@
 
     {{ form_start(form) }}
 
-    <div class="float-right">
+    <div class="float-end">
         <button type="submit" class="btn btn-success">Guardar</button>
         <a class="btn btn-light" href="{{ path('contract-list') }}">Cancelar</a>
     </div>
@@ -113,10 +113,8 @@
     {{ form_errors(form.text) }}
     {{ form_widget(form.text) }}
 
-    <div class="pull-right">
-        <button type="submit" class="btn btn-light btn-success">Guardar</button>
-        <a class="btn btn-light" href="{{ path('contract-list') }}">Cancelar</a>
-    </div>
+    <button type="submit" class="btn btn-success">Guardar</button>
+    <a class="btn btn-light" href="{{ path('contract-list') }}">Cancelar</a>
 
     {{ form_end(form) }}
 

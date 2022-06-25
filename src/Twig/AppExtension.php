@@ -59,6 +59,7 @@ class AppExtension extends AbstractExtension
             new TwigFunction('formatRUC', [$this, 'formatRUC']),
             new TwigFunction('getSHA', [$this, 'getSHA']),
             new TwigFunction('findSystemUsers', [$this, 'findSystemUsers']),
+            new TwigFunction('getCurrentYear', [$this, 'getCurrentYear']),
         ];
     }
 
@@ -221,5 +222,10 @@ class AppExtension extends AbstractExtension
     public function findSystemUsers(): array
     {
         return $this->userRepository->findActiveUsers();
+    }
+
+    public function getCurrentYear(): int
+    {
+        return (int)date('Y');
     }
 }

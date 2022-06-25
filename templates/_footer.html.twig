@@ -3,12 +3,12 @@
         <div class="p-1">
             &copy; 2005 - {{ "now"|date("Y") }} MiniCC KuKu - Atacames
         </div>
-        <div class="p-1 ml-auto">
+        <div class="p-1 ms-auto">
             {% if app.user and app.user.role == 'ROLE_ADMIN' %}
                 v {{ getSHA()[:7] }}
             {% endif %}
         </div>
-        <div class="p-1 ml-auto">
+        <div class="p-1 ms-auto">
             Made with <a href="https://symfony.com">Symfony</a>
         </div>
     </footer>

@@ -2,64 +2,65 @@
         class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark"
         {{ is_granted('IS_IMPERSONATOR') ? 'style="background-color: red !important"' }}
 >
-    <a class="navbar-brand" href="{{ path('welcome') }}">MiniCC KuKu</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <div class="navbar-nav">
-            <ul class="nav navbar-nav">
-                <li class="nav-item"><a class="nav-link" href="{{ path('about') }}">Sobre</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ path('contact') }}">Contacto</a></li>
-                {% if is_granted('ROLE_ADMIN') %}
-                    <li class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button">Admin</a>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="{{ path('pay-day') }}">Pay Day</a>
-                            <a class="dropdown-item" href="{{ path('cobrar') }}">Cobrar Alquileres</a>
-                            <a class="dropdown-item" href="{{ path('pagos-por-ano') }}">Pagos por Año</a>
-                            <a class="dropdown-item" href="{{ path('admin-tasks') }}">Tasks</a>
-                            <div class="dropdown-divider"></div>
-                            <h6 class="dropdown-header">Mail</h6>
-                            <a class="dropdown-item" href="{{ path('mail-list-transactions') }}">Transactions</a>
-                            <a class="dropdown-item" href="{{ path('mail-list-planillas') }}">Planillas</a>
-                            <div class="dropdown-divider"></div>
-                            <h6 class="dropdown-header">etc</h6>
-                            <a class="dropdown-item" href="{{ path('transaction-rawlist') }}">Transactions RAW</a>
-                            <a class="dropdown-item" href="{{ path('deposits') }}">Depositos</a>
-                            <div class="dropdown-divider"></div>
-                            <h6 class="dropdown-header">System</h6>
-                            <a class="dropdown-item" href="{{ path('sysinfo') }}">Info</a>
-                        </div>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button">Setup</a>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="{{ path('stores-list') }}">Locales</a>
-                            <a class="dropdown-item" href="{{ path('users-list') }}">Clientes</a>
-                            <a class="dropdown-item" href="{{ path('contract-list') }}">Contratos</a>
-                            <div class="dropdown-divider"></div>
-                            <h6 class="dropdown-header">Params</h6>
-                            <a class="dropdown-item" href="{{ path('payment-methods') }}">Metodos de Pago</a>
-                        </div>
-                    </li>
-                    <li class="nav-item"><a class="nav-link" href="{{ path('admin') }}">Db</a></li>
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{{ path('welcome') }}">MiniCC KuKu</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="{{ path('about') }}">Sobre</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ path('contact') }}">Contacto</a></li>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li class="nav-item dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button">Admin</a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="{{ path('pay-day') }}">Pay Day</a>
+                                <a class="dropdown-item" href="{{ path('cobrar') }}">Cobrar Alquileres</a>
+                                <a class="dropdown-item" href="{{ path('pagos-por-ano') }}">Pagos por Año</a>
+                                <a class="dropdown-item" href="{{ path('admin-tasks') }}">Tasks</a>
+                                <div class="dropdown-divider"></div>
+                                <h6 class="dropdown-header">Mail</h6>
+                                <a class="dropdown-item" href="{{ path('mail-list-transactions') }}">Transactions</a>
+                                <a class="dropdown-item" href="{{ path('mail-list-planillas') }}">Planillas</a>
+                                <div class="dropdown-divider"></div>
+                                <h6 class="dropdown-header">etc</h6>
+                                <a class="dropdown-item" href="{{ path('transaction-rawlist') }}">Transactions RAW</a>
+                                <a class="dropdown-item" href="{{ path('deposits') }}">Depositos</a>
+                                <div class="dropdown-divider"></div>
+                                <h6 class="dropdown-header">System</h6>
+                                <a class="dropdown-item" href="{{ path('sysinfo') }}">Info</a>
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button">Setup</a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="{{ path('stores-list') }}">Locales</a>
+                                <a class="dropdown-item" href="{{ path('users-list') }}">Clientes</a>
+                                <a class="dropdown-item" href="{{ path('contract-list') }}">Contratos</a>
+                                <div class="dropdown-divider"></div>
+                                <h6 class="dropdown-header">Params</h6>
+                                <a class="dropdown-item" href="{{ path('payment-methods') }}">Metodos de Pago</a>
+                            </div>
+                        </li>
+                        <li class="nav-item"><a class="nav-link" href="{{ path('admin') }}">Db</a></li>
 
+                    {% endif %}
+                </ul>
+            {% include '_user_switcher.html.twig' %}
+            <div class="ms-auto">
+                {% if app.user %}
+                    <a class="nav-link" accesskey="l" href="{{ path('logout') }}" title="Logout">
+                        <span class="oi oi-account-logout"></span>
+                    </a>
+                {% else %}
+                    <a class="nav-link" accesskey="l"
+                       href="{{ 'dev' == app_env ? path('login') : path('connect_google_start') }}" title="Login">
+                        <span class="oi oi-account-login"></span>
+                    </a>
                 {% endif %}
-            </ul>
-        </div>
-        {% include '_user_switcher.html.twig' %}
-        <div class="ml-auto">
-            {% if app.user %}
-                <a class="nav-link" accesskey="l" href="{{ path('logout') }}" title="Logout">
-                    <span class="oi oi-account-logout"></span>
-                </a>
-            {% else %}
-                <a class="nav-link" accesskey="l" href="{{ 'dev' == app_env ? path('login') : path('connect_google_start') }}" title="Login">
-                    <span class="oi oi-account-login"></span>
-                </a>
-            {% endif %}
+            </div>
         </div>
     </div>
 </nav>

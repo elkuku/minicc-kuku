@@ -3,7 +3,7 @@
 {% block title %} {{ parent() }} - Stores{% endblock %}
 
 {% block body %}
-    <div class="float-right">
+    <div class="float-end">
         <a href="{{ path('stores-add') }}" class="btn btn-info">Nuevo Local</a>
     </div>
 
@@ -38,16 +38,16 @@
                         </a>
                     </td>
                     <td>{{ store.user ? store.user.name : '** Desocupado **' }}</td>
-                    <td class="text-right">{{ store.valAlq|price|raw }}</td>
-                    <td class="text-right">{{ store.valAlq|conIva|price|raw }}</td>
+                    <td class="text-end">{{ store.valAlq|price|raw }}</td>
+                    <td class="text-end">{{ store.valAlq|conIva|price|raw }}</td>
                 </tr>
                 {% set total = total + store.valAlq %}
                 {% set totalIva = totalIva + store.valAlq|conIva %}
             {% endfor %}
             <tr>
                 <td colspan="3"></td>
-                <td class="text-right">{{ total|price|raw }}</td>
-                <td class="text-right">{{ totalIva|price|raw }}</td>
+                <td class="text-end">{{ total|price|raw }}</td>
+                <td class="text-end">{{ totalIva|price|raw }}</td>
             </tr>
         </table>
     {% endif %}

@@ -7,7 +7,7 @@
     {% include('_breadcrumbs.html.twig') %}
     {% endif %}
 
-    <div class="float-right btn-group">
+    <div class="float-end btn-group">
         <a href="{{ path('store-transaction-pdf', {'id': store.id, 'year': year}) }}"
            class="btn btn-outline-success" title="Export">
             <span class="oi oi-file"></span>
@@ -58,8 +58,8 @@
                 <th>Inquilino</th>
                 {% endif %}
                 <th>Detalle</th>
-                <th class="text-right">Monto</th>
-                <th class="text-right">Saldo</th>
+                <th class="text-end">Monto</th>
+                <th class="text-end">Saldo</th>
                 {% if is_granted('ROLE_ADMIN') %}
                     <th class="text-center">Actions</th>
                 {% endif %}
@@ -73,8 +73,8 @@
                 {% endif %}
                 <td>Saldo Anterior</td>
                 {% if saldoAnterior %}
-                    <td class="text-right">{{ saldoAnterior|price|raw }}</td>
-                    <td class="text-right">{{ saldoAnterior|price|raw }}</td>
+                    <td class="text-end">{{ saldoAnterior|price|raw }}</td>
+                    <td class="text-end">{{ saldoAnterior|price|raw }}</td>
                 {% else %}
                     <td colspan="2"></td>
                 {% endif %}
@@ -99,8 +99,8 @@
                         <td>{{ transaction.user.name }}</td>
                 {% endif %}
                         <td>{{ transaction.type.name }}</td>
-                        <td class="text-right">{{ transaction.amount|price|raw }}</td>
-                        <td class="text-right">{{ saldo|price|raw }}</td>
+                        <td class="text-end">{{ transaction.amount|price|raw }}</td>
+                        <td class="text-end">{{ saldo|price|raw }}</td>
                         {% if is_granted('ROLE_ADMIN') %}
                             <td>
                                 <a href="{{ path('transaction-edit', {'id': transaction.id, 'view': 'stores/'~store.id}) }}">Edit</a>

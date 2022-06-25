@@ -24,10 +24,7 @@ class TasksController extends AbstractController
     #[Route(path: '/admin-tasks', name: 'admin-tasks', methods: ['GET'])]
     public function index(): Response
     {
-        return $this->render(
-            'admin/tasks.html.twig',
-            ['currentYear' => date('Y')]
-        );
+        return $this->render('admin/tasks.html.twig');
     }
 
     #[Route(path: '/console-view/{item}', name: 'console-view', methods: ['GET'])]
@@ -76,11 +73,7 @@ class TasksController extends AbstractController
     ): Response {
         $application = new Application($kernel);
         $application->setAutoExit(false);
-        $input = new ArrayInput(
-            [
-                'command' => 'about',
-            ]
-        );
+        $input = new ArrayInput(['command' => 'about',]);
         $output = new BufferedOutput();
         $application->run($input, $output);
 
