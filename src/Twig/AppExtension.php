@@ -94,7 +94,7 @@ class AppExtension extends AbstractExtension
      */
     public function invertFilter(int|float $value): int|float
     {
-        return -$value;
+        return $value ? -$value : 0;
     }
 
     /**
