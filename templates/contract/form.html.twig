@@ -13,8 +13,8 @@
     {{ form_start(form) }}
 
     <div class="float-end">
-        <button type="submit" class="btn btn-success">Guardar</button>
-        <a class="btn btn-light" href="{{ path('contract-list') }}">Cancelar</a>
+        <button type="submit" class="btn btn-outline-success">Guardar</button>
+        <a class="btn btn-outline-secondary" href="{{ path('contract-list') }}">Cancelar</a>
     </div>
 
     <h2>{{ title }}</h2>
@@ -113,8 +113,8 @@
     {{ form_errors(form.text) }}
     {{ form_widget(form.text) }}
 
-    <button type="submit" class="btn btn-success">Guardar</button>
-    <a class="btn btn-light" href="{{ path('contract-list') }}">Cancelar</a>
+    <button type="submit" class="btn btn-outline-success">Guardar</button>
+    <a class="btn btn-outline-secondary" href="{{ path('contract-list') }}">Cancelar</a>
 
     {{ form_end(form) }}
 

@@ -7,8 +7,8 @@
 {% block body %}
     <div class="float-end">
 
-        <a class="btn btn-info" data-bs-toggle="collapse" href="#collapseExample" role="button">Nuevo</a>
-        <a class="btn btn-light" href="{{ path('contracts-template') }}">Plantilla</a>
+        <a class="btn btn-outline-primary" data-bs-toggle="collapse" href="#collapseExample" role="button">Nuevo</a>
+        <a class="btn btn-outline-secondary" href="{{ path('contracts-template') }}">Plantilla</a>
         <div class="collapse" id="collapseExample">
             <div class="card card-body">
                 <form action="{{ path('contracts-new') }}" method="post" class="form-inline">
@@ -24,7 +24,7 @@
                             <option value="{{ user.id }}">{{ user.name }}</option>
                         {% endfor %}
                     </select>
-                    <button class="btn btn-success" type="submit">Crear</button>
+                    <button class="btn btn-outline-success" type="submit">Crear</button>
                 </form>
             </div>
         </div>

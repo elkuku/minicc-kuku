@@ -1,17 +1,17 @@
 <div class="btn-group btn-group-lg py-3">
-    <a href="{{ path('pagos-por-ano') }}" class="btn btn-success" title="Pagos por año">
+    <a href="{{ path('pagos-por-ano') }}" class="btn btn-outline-success" title="Pagos por año">
         <span class="oi oi-document"></span>
     </a>
-    <a href="{{ path('cobrar') }}" class="btn btn-success" title="Cobrar alquileres">
+    <a href="{{ path('cobrar') }}" class="btn btn-outline-success" title="Cobrar alquileres">
         <span class="oi oi-home"></span>
     </a>
-    <a href="{{ path('pay-day') }}" class="btn btn-success" title="Ingresar Pagos">
+    <a href="{{ path('pay-day') }}" class="btn btn-outline-success" title="Ingresar Pagos">
         <span class="oi oi-dollar"></span>
     </a>
-    <a href="{{ path('planillas-mail') }}" class="btn btn-primary" title="Mail Planillas">
+    <a href="{{ path('planillas-mail') }}" class="btn btn-outline-primary" title="Mail Planillas">
         <span class="oi oi-envelope-closed"></span>
     </a>
-    <a href="{{ path('backup') }}" class="btn btn-info" title="Backup">
+    <a href="{{ path('backup') }}" class="btn btn-outline-primary" title="Backup">
         <span class="oi oi-cloud-download"></span>
     </a>
 </div>
@@ -23,7 +23,7 @@
         <th>Destino</th>
         <th>Cliente</th>
         <th class="text-end">Saldo</th>
-        <th class="text-left">Meses</th>
+        <th class="text-center">Meses</th>
     </tr>
     </thead>
     <tbody>
@@ -39,7 +39,7 @@
                 </td>
                 <td>{{ balance.store.user.name }}</td>
                 <td class="text-end">{{ balance.amount|price|raw }}</td>
-                <td class="text-left">{{ mesesDebt|invert|round(1, 'ceil') }}</td>
+                <td class="text-center">{{ mesesDebt|invert|round(1, 'ceil') }}</td>
             </tr>
             {% set theyOweYou = theyOweYou + balance.amount %}
         {% endif %}
