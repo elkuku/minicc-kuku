@@ -18,7 +18,7 @@
             </a>
             {% if store.id > 1 %}
                 <a title="Local anterior" href="{{ path('store-transactions', {'id': store.id - 1}) }}"
-                   class="btn btn-outline-info">
+                   class="btn btn-outline-primary">
                     <span class="oi oi-chevron-left"></span>
                 </a>
             {% else %}
@@ -28,7 +28,7 @@
             {% endif %}
             {% if store.id < stores|length %}
                 <a title="Local siguiente" href="{{ path('store-transactions', {'id': store.id + 1}) }}"
-                   class="btn btn-outline-info">
+                   class="btn btn-outline-primary">
                     <span class="oi oi-chevron-right"></span>
                 </a>
             {% else %}
@@ -96,7 +96,7 @@
                     <tr{{ style|raw }}>
                         <td>{{ intlDate(transaction.date, 'MMMM d') }}</td>
                 {% if is_granted('ROLE_ADMIN') %}
-                        <td>{{ transaction.user.name }}</td>
+                        <td>{{ transaction.user.name|short_name }}</td>
                 {% endif %}
                         <td>{{ transaction.type.name }}</td>
                         <td class="text-end">{{ transaction.amount|price|raw }}</td>

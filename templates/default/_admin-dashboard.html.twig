@@ -37,7 +37,7 @@
                         {{ balance.store.destination }}
                     </a>
                 </td>
-                <td>{{ balance.store.user.name }}</td>
+                <td>{{ balance.store.user.name|short_name }}</td>
                 <td class="text-end">{{ balance.amount|price|raw }}</td>
                 <td class="text-center">{{ mesesDebt|invert|round(1, 'ceil') }}</td>
             </tr>
