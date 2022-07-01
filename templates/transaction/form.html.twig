@@ -8,12 +8,13 @@
 {% endblock %}
 
 {% block body %}
-
     {{ form_start(form) }}
 
     <div class="float-end">
         <button type="submit" class="btn btn-outline-success">Guardar</button>
         <a class="btn btn-outline-secondary" href="/{{ redirect }}">Cancelar</a>
+        <a class="btn btn-outline-danger"
+           href="{{ path('transaction-delete', {'id': form.vars.data.id, 'view': '/'~redirect}) }}">Delete</a>
     </div>
 
     <h3>Editar Transacion</h3>
@@ -59,8 +60,8 @@
         </div>
         <div class="col-sm-3">
             <label class="col-sm-2 control-label">Lookup</label><br/>
-{#            <a href="javascript:" onclick="searchDepId('{{ path('lookup-depo') }}')"#}
-{#               class="btn btn-info form-control">&raquo; &raquo; &raquo;</a>#}
+            {#            <a href="javascript:" onclick="searchDepId('{{ path('lookup-depo') }}')" #}
+            {#               class="btn btn-info form-control">&raquo; &raquo; &raquo;</a> #}
             <div id="messageContainer"></div>
         </div>
         <div class="col-sm-3">

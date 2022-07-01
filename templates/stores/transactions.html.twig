@@ -4,7 +4,7 @@
 
 {% block body %}
     {% if is_granted('ROLE_ADMIN') %}
-    {% include('_breadcrumbs.html.twig') %}
+        {% include('_breadcrumbs.html.twig') %}
     {% endif %}
 
     <div class="float-end btn-group">
@@ -55,21 +55,18 @@
                     </select>
                 </th>
                 {% if is_granted('ROLE_ADMIN') %}
-                <th>Inquilino</th>
+                    <th>Inquilino</th>
                 {% endif %}
                 <th>Detalle</th>
                 <th class="text-end">Monto</th>
                 <th class="text-end">Saldo</th>
-                {% if is_granted('ROLE_ADMIN') %}
-                    <th class="text-center">Actions</th>
-                {% endif %}
             </tr>
             </thead>
             <tbody>
             <tr class="table-primary">
                 <td>{{ intlDate(year~'-01-01', 'MMMM d') }}</td>
                 {% if is_granted('ROLE_ADMIN') %}
-                <td></td>
+                    <td></td>
                 {% endif %}
                 <td>Saldo Anterior</td>
                 {% if saldoAnterior %}
@@ -78,35 +75,31 @@
                 {% else %}
                     <td colspan="2"></td>
                 {% endif %}
-                {% if is_granted('ROLE_ADMIN') %}
-                <td></td>
-                {% endif %}
             </tr>
             {% set saldo = saldoAnterior %}
             {% for transaction in transactions %}
                 {% set saldo = saldo + transaction.amount %}
                 {% if transaction.type.name == 'Ajuste' %}
-                    {% set style = ' class="table-warning"' %}
+                    {% set style = 'table-warning' %}
                 {% elseif transaction.type.name == 'Alquiler' %}
-                    {% set style = ' class="table-success"' %}
+                    {% set style = 'table-success' %}
                 {% else %}
                     {% set style = '' %}
                 {% endif %}
                 {% if is_granted('ROLE_ADMIN') or transaction.user == app.user %}
-                    <tr{{ style|raw }}>
+                    <tr class="position-relative {{ style|raw }}">
                         <td>{{ intlDate(transaction.date, 'MMMM d') }}</td>
-                {% if is_granted('ROLE_ADMIN') %}
-                        <td>{{ transaction.user.name|short_name }}</td>
-                {% endif %}
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <td>
+                                <a href="{{ path('transaction-edit', {'id': transaction.id, 'view': 'stores/'~store.id}) }}"
+                                   class="stretched-link text-decoration-none" title="Edit transaction">
+                                    {{ transaction.user.name|short_name }}
+                                </a>
+                            </td>
+                        {% endif %}
                         <td>{{ transaction.type.name }}</td>
                         <td class="text-end">{{ transaction.amount|price|raw }}</td>
                         <td class="text-end">{{ saldo|price|raw }}</td>
-                        {% if is_granted('ROLE_ADMIN') %}
-                            <td>
-                                <a href="{{ path('transaction-edit', {'id': transaction.id, 'view': 'stores/'~store.id}) }}">Edit</a>
-                                <a href="{{ path('transaction-delete', {'id': transaction.id, 'view': 'stores/'~store.id}) }}">Delete</a>
-                            </td>
-                        {% endif %}
                     </tr>
                 {% endif %}
             {% else %}
