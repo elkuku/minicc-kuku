@@ -1,18 +1,15 @@
-<div class="btn-group btn-group-lg py-3">
-    <a href="{{ path('pagos-por-ano') }}" class="btn btn-outline-success" title="Pagos por año">
-        <span class="oi oi-document"></span>
-    </a>
+<div class="btn-group btn-group-lg">
     <a href="{{ path('cobrar') }}" class="btn btn-outline-success" title="Cobrar alquileres">
         <span class="oi oi-home"></span>
     </a>
     <a href="{{ path('pay-day') }}" class="btn btn-outline-success" title="Ingresar Pagos">
         <span class="oi oi-dollar"></span>
     </a>
+    <a href="{{ path('pagos-por-ano') }}" class="btn btn-outline-success" title="Pagos por año">
+        <span class="oi oi-document"></span>
+    </a>
     <a href="{{ path('planillas-mail') }}" class="btn btn-outline-primary" title="Mail Planillas">
         <span class="oi oi-envelope-closed"></span>
-    </a>
-    <a href="{{ path('backup') }}" class="btn btn-outline-primary" title="Backup">
-        <span class="oi oi-cloud-download"></span>
     </a>
 </div>
 {% set theyOweYou = 0 %}

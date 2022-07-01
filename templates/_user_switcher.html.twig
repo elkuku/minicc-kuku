@@ -14,7 +14,7 @@
                 {% endif %}
             {% endif %}
             <option value="{{ uri }}" {{ selected }}>
-                {{ user.name }} ({{ user.userIdentifier }})
+                {{ user.name|short_name }} ({{ user.userIdentifier }})
             </option>
         {% endfor %}
     </select>

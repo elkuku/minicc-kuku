@@ -7,7 +7,7 @@
         lastRecipeNo: lastRecipeNo
     }) }}>
 
-        <h1>Pay Day2</h1>
+        <h1>Pay Day</h1>
 
         <form method="post" action="{{ path('pay-day') }}">
             <div data-payday-target="tbody">
@@ -49,7 +49,8 @@
                         >
                     </div>
                     <div class="col-1">
-                        <input class="form-control" name="payments[recipe][]" type="text" size="7" value="{{ lastRecipeNo }}">
+                        <input class="form-control" name="payments[recipe][]" type="text" size="7"
+                               value="{{ lastRecipeNo }}">
                     </div>
 
 
@@ -75,7 +76,6 @@
                         >
                         </div>
                     </div>
-
 
                     <div class="col-1">
                         <input
