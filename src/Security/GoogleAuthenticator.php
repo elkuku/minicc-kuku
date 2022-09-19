@@ -111,7 +111,8 @@ class GoogleAuthenticator extends AbstractAuthenticator
             $user->setGoogleId($googleUser->getId());
         } else {
             throw new UserNotFoundException(
-                'You are not allowed to login. Please contact un administrator.'
+                'You are not allowed to login. Please contact un administrator. - '
+                .$googleUser->getEmail()
             );
             // Register new user
             // $user = (new User())
