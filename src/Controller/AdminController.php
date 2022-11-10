@@ -63,12 +63,11 @@ class AdminController extends AbstractController
                 throw new UnexpectedValueException('Store has no user.');
             }
 
-           $store = $storeRepository->find((int)$storeId);
+            $store = $storeRepository->find((int)$storeId);
 
             if (!$store) {
                 throw new UnexpectedValueException('Store does not exist.');
             }
-
 
             $transaction = (new Transaction)
                 ->setDate(

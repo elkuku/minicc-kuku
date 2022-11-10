@@ -185,7 +185,9 @@ class ContractController extends AbstractController
         Environment $environment
     ): PdfResponse {
         $numberToWord = new Numbers;
-        $genderId =  $contract->getGender() ?  $contract->getGender()->getId() : 0;
+        $genderId = $contract->getGender()
+            ? $contract->getGender()->getId()
+            : 0;
         $searchReplace = [
             '[local_no]'     => $contract->getStoreNumber(),
             '[destination]'  => $contract->getDestination(),
@@ -195,7 +197,10 @@ class ContractController extends AbstractController
                 'es_EC',
                 'USD'
             ),
-            '[val_garantia]' => number_format((float)$contract->getValGarantia(), 2),
+            '[val_garantia]' => number_format(
+                (float)$contract->getValGarantia(),
+                2
+            ),
             '[txt_garantia]' => $numberToWord->toCurrency(
                 (float)$contract->getValGarantia(),
                 'es_EC',

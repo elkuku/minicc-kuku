@@ -31,19 +31,19 @@ class ControllerAccessTest extends ControllerBaseTest
      */
     protected array $exceptions
         = [
-            'welcome' => [
+            'welcome'               => [
                 'statusCodes' => ['GET' => 200],
             ],
-            'about'   => [
+            'about'                 => [
                 'statusCodes' => ['GET' => 200],
             ],
-            'contact' => [
+            'contact'               => [
                 'statusCodes' => ['GET' => 200],
             ],
-            'login'   => [
+            'login'                 => [
                 'statusCodes' => ['GET' => 200, 'POST' => 302],
             ],
-            'store-transaction-pdf'   => [
+            'store-transaction-pdf' => [
                 'params' => ['{year}' => '2000'],
             ],
         ];
