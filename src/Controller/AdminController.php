@@ -57,12 +57,25 @@ class AdminController extends AbstractController
                 continue;
             }
 
+            $user = $userRepository->find((int)$users[$storeId]);
+
+            if (!$user) {
+                throw new UnexpectedValueException('Store has no user.');
+            }
+
+           $store = $storeRepository->find((int)$storeId);
+
+            if (!$store) {
+                throw new UnexpectedValueException('Store does not exist.');
+            }
+
+
             $transaction = (new Transaction)
                 ->setDate(
                     new DateTime((string)$request->request->get('date_cobro'))
                 )
-                ->setStore($storeRepository->find((int)$storeId))
-                ->setUser($userRepository->find((int)$users[$storeId]))
+                ->setStore($store)
+                ->setUser($user)
                 ->setType($type)
                 ->setMethod($method)
                 // Set negative value (!)
@@ -124,10 +137,16 @@ class AdminController extends AbstractController
                 throw new UnexpectedValueException('Invalid payment method.');
             }
 
+            $user = $store->getUser();
+
+            if (!$user) {
+                throw new UnexpectedValueException('Store has no user.');
+            }
+
             $transaction = (new Transaction)
                 ->setDate(new DateTime($dateCobro))
                 ->setStore($store)
-                ->setUser($store->getUser())
+                ->setUser($user)
                 ->setType($type)
                 ->setMethod($method)
                 ->setRecipeNo((int)$payments['recipe'][$i])

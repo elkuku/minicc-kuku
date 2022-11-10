@@ -129,10 +129,16 @@ class ContractCrudController extends AbstractCrudController
             }
 
             if ($user) {
+                $gender = $user->getGender();
+                if (!$gender) {
+                    throw new \UnexpectedValueException(
+                        'User has no gender.... :|'
+                    );
+                }
                 $contract
-                    ->setInqNombreapellido($user->getName())
+                    ->setInqNombreapellido((string)$user->getName())
                     ->setInqCi($user->getInqCi())
-                    ->setGender($user->getGender());
+                    ->setGender($gender);
             }
         }
 

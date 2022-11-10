@@ -44,7 +44,7 @@ class MailController extends AbstractController
         $failures = [];
         $successes = [];
         foreach ($stores as $store) {
-            if (!array_key_exists($store->getId(), $recipients)) {
+            if (!array_key_exists((int)$store->getId(), $recipients)) {
                 continue;
             }
 
@@ -69,7 +69,7 @@ class MailController extends AbstractController
 
             $email = $emailHelper
                 ->create(
-                    toAddress: $store->getUser()->getEmail(),
+                    toAddress: (string)$store->getUser()?->getEmail(),
                     subject: "Movimientos del local {$store->getId()} ano $year"
                 )
                 ->html($html)
@@ -204,7 +204,7 @@ class MailController extends AbstractController
         $successes = [];
 
         foreach ($stores as $store) {
-            if (!array_key_exists($store->getId(), $recipients)) {
+            if (!array_key_exists((int)$store->getId(), $recipients)) {
                 continue;
             }
 
@@ -213,7 +213,7 @@ class MailController extends AbstractController
                     $year,
                     $month,
                     $payrollHelper,
-                    $store->getId()
+                    (int)$store->getId()
                 ),
                 ['enable-local-file-access' => true]
             );

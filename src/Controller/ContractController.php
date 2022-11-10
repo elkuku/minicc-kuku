@@ -68,7 +68,7 @@ class ContractController extends AbstractController
         }
         if ($user) {
             $contract
-                ->setInqNombreapellido($user->getName())
+                ->setInqNombreapellido((string)$user->getName())
                 ->setInqCi($user->getInqCi());
         }
         $form = $this->createForm(ContractType::class, $contract);
@@ -185,18 +185,19 @@ class ContractController extends AbstractController
         Environment $environment
     ): PdfResponse {
         $numberToWord = new Numbers;
+        $genderId =  $contract->getGender() ?  $contract->getGender()->getId() : 0;
         $searchReplace = [
             '[local_no]'     => $contract->getStoreNumber(),
             '[destination]'  => $contract->getDestination(),
-            '[val_alq]'      => number_format($contract->getValAlq(), 2),
+            '[val_alq]'      => number_format((float)$contract->getValAlq(), 2),
             '[txt_alq]'      => $numberToWord->toCurrency(
-                $contract->getValAlq(),
+                (float)$contract->getValAlq(),
                 'es_EC',
                 'USD'
             ),
-            '[val_garantia]' => number_format($contract->getValGarantia(), 2),
+            '[val_garantia]' => number_format((float)$contract->getValGarantia(), 2),
             '[txt_garantia]' => $numberToWord->toCurrency(
-                $contract->getValGarantia(),
+                (float)$contract->getValGarantia(),
                 'es_EC',
                 'USD'
             ),
@@ -205,11 +206,9 @@ class ContractController extends AbstractController
             '[inq_nombreapellido]' => $contract->getInqNombreapellido(),
             '[inq_ci]'             => $contract->getInqCi(),
 
-            '[el_la]'   => $contract->getGender()->getId() === 1 ? 'el' : 'la',
-            '[del_la]'  => $contract->getGender()->getId() === 1 ? 'del'
-                : 'de la',
-            '[senor_a]' => $contract->getGender()->getId() === 1 ? 'señor'
-                : 'señora',
+            '[el_la]'   => $genderId === 1 ? 'el' : 'la',
+            '[del_la]'  => $genderId === 1 ? 'del' : 'de la',
+            '[senor_a]' => $genderId === 1 ? 'señor' : 'señora',
 
             '[cnt_lanfort]'  => $contract->getCntLanfort(),
             '[cnt_neon]'     => $contract->getCntNeon(),

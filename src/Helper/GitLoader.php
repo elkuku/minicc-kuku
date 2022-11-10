@@ -72,7 +72,7 @@ class GitLoader
         $logs = [];
 
         $logs['author'] = $matches[3] ?? 'not defined';
-        $logs['date'] = isset($matches[5]) ? date('Y/m/d H:i', $matches[5])
+        $logs['date'] = isset($matches[5]) ? date('Y/m/d H:i', (int)$matches[5])
             : 'not defined';
         $logs['sha'] = $sha;
 

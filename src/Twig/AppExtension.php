@@ -80,7 +80,7 @@ class AppExtension extends AbstractExtension
         string $decPoint = '.',
         string $thousandsSep = ','
     ): string {
-        $price = number_format($number, $decimals, $decPoint, $thousandsSep);
+        $price = $number ? number_format($number, $decimals, $decPoint, $thousandsSep) : 0;
 
         return sprintf(
             '<span class="%s">%s</span>',

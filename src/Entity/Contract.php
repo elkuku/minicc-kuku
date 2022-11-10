@@ -78,7 +78,7 @@ class Contract
     private ?string $medAgua = '';
 
     #[Column(type: Types::TEXT, length: 65535, nullable: false)]
-    private ?string $text = null;
+    private string $text = '';
 
     public function __construct()
     {
@@ -97,7 +97,7 @@ class Contract
         return $this;
     }
 
-    public function getInqNombreapellido(): string
+    public function getInqNombreapellido(): ?string
     {
         return $this->inqNombreapellido;
     }
@@ -121,7 +121,7 @@ class Contract
         return $this;
     }
 
-    public function getDestination(): string
+    public function getDestination(): ?string
     {
         return $this->destination;
     }
@@ -133,7 +133,7 @@ class Contract
         return $this;
     }
 
-    public function getValAlq(): float
+    public function getValAlq(): ?float
     {
         return $this->valAlq;
     }
@@ -145,7 +145,7 @@ class Contract
         return $this;
     }
 
-    public function getValGarantia(): float
+    public function getValGarantia(): ?float
     {
         return $this->valGarantia;
     }
@@ -169,7 +169,7 @@ class Contract
         return $this;
     }
 
-    public function getCntLanfort(): int
+    public function getCntLanfort(): ?int
     {
         return $this->cntLanfort;
     }
@@ -181,7 +181,7 @@ class Contract
         return $this;
     }
 
-    public function getCntNeon(): int
+    public function getCntNeon(): ?int
     {
         return $this->cntNeon;
     }
@@ -265,7 +265,7 @@ class Contract
         return $this;
     }
 
-    public function getMedElectrico(): string
+    public function getMedElectrico(): ?string
     {
         return $this->medElectrico;
     }
@@ -277,7 +277,7 @@ class Contract
         return $this;
     }
 
-    public function getMedAgua(): string
+    public function getMedAgua(): ?string
     {
         return $this->medAgua;
     }
@@ -313,14 +313,14 @@ class Contract
         return $this;
     }
 
-    public function getStoreNumber(): int
+    public function getStoreNumber(): ?int
     {
         return $this->storeNumber;
     }
 
     public function setValuesFromStore(Store $store): self
     {
-        $this->setStoreNumber($store->getId())
+        $this->setStoreNumber((int)$store->getId())
             ->setDestination($store->getDestination())
             ->setValAlq($store->getValAlq())
             ->setCntLanfort($store->getCntLanfort())
