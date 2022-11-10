@@ -52,6 +52,7 @@ class GitLoader
      */
     public function getLastCommitDetail(): array
     {
+        $matches = [];
         $gitLogFile = $this->rootDir.'/.git/logs/HEAD';
         $gitLogs = file_exists($gitLogFile)
             ? file($gitLogFile, FILE_USE_INCLUDE_PATH) : [];

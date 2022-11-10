@@ -18,7 +18,7 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 
 #[Entity(repositoryClass: StoreRepository::class)]
-class Store
+class Store implements \Stringable
 {
     #[Column, Id, GeneratedValue]
     private ?int $id = null;
@@ -66,7 +66,7 @@ class Store
     #[JoinColumn(name: 'user_id', referencedColumnName: 'id')]
     private ?User $user = null;
 
-    public function __toString()
+    public function __toString(): string
     {
         return sprintf('%d - %s', $this->id, $this->destination);
     }
@@ -244,11 +244,6 @@ class Store
         return $this->user;
     }
 
-    /**
-     * @param int|null $id
-     *
-     * @return Store
-     */
     public function setId(?int $id): Store
     {
         $this->id = $id;

@@ -29,8 +29,10 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
 
     public function supports(Request $request): bool
     {
-        return '/login' === $request->getPathInfo()
-            && $request->isMethod('POST');
+        if ('/login' !== $request->getPathInfo()) {
+            return false;
+        }
+        return $request->isMethod('POST');
     }
 
     protected function getLoginUrl(Request $request): string

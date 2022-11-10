@@ -101,11 +101,9 @@ class ContractCrudController extends AbstractCrudController
         $generateContract = Action::new('generateContract', 'Generate')
             ->linkToRoute(
                 'contract-generate',
-                function (Contract $contract): array {
-                    return [
-                        'id' => $contract->getId(),
-                    ];
-                }
+                fn(Contract $contract): array => [
+                    'id' => $contract->getId(),
+                ]
             );
 
         $actions->add(Crud::PAGE_INDEX, $generateContract);

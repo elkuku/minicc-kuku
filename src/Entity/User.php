@@ -19,7 +19,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 #[UniqueEntity(fields: 'email', message: 'This email address is already in use')]
 #[Entity(repositoryClass: UserRepository::class)]
-class User implements UserInterface
+class User implements UserInterface, \Stringable
 {
     #[Column, Id, GeneratedValue]
     private ?int $id = 0;
@@ -108,7 +108,7 @@ class User implements UserInterface
         $this->email = $data['email'] ?? '';
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return (string)$this->name;
     }

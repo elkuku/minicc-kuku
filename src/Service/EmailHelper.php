@@ -7,7 +7,7 @@ use Symfony\Component\Mime\Email;
 
 class EmailHelper
 {
-    private Address $emailFrom;
+    private readonly Address $emailFrom;
 
     public function __construct(string $emailFromAddress, string $emailFromName)
     {

@@ -15,7 +15,7 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 
 #[Entity]
-class UserState
+class UserState implements \Stringable
 {
     #[Column, Id, GeneratedValue]
     private ?int $id = null;
@@ -23,7 +23,7 @@ class UserState
     #[Column(type: Types::STRING, length: 150, nullable: false)]
     private string $name;
 
-    public function __toString()
+    public function __toString(): string
     {
         return $this->name;
     }
