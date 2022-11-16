@@ -11,45 +11,42 @@
 
     <h1>Clientes</h1>
 
-    <form method="post" action="{{ path('users-list') }}">
-        <table class="table table-sm table-hover">
-            <thead>
-            <tr>
-                <th>
-                    <select class="form-control" name="user_state" id="user_state" onchange="form.submit()">
-                        <option value="0">Estado...</option>
-                        {% for state in states %}
-                            <option value="{{ state.id }}"{{ state.id == userState ? ' selected="selected"' : '' }}>
-                                {{ state.name }}
-                            </option>
-                        {% endfor %}
+    <table class="table table-sm table-hover">
+        <thead>
+        <tr>
+            <th>
+                <form method="post" action="{{ path('users-list') }}">
+                    <select class="form-control" name="user_active" onchange="form.submit()">
+                        <option value="">Estado...</option>
+                        <option value="0"{{ 0 == userActive ? ' selected="selected"' : '' }}>Inactivo</option>
+                        <option value="1"{{ 1 == userActive ? ' selected="selected"' : '' }}>Activo</option>
                     </select>
-                </th>
-                <th>Gen</th>
-                <th>Nombre</th>
-                <th>Locales</th>
+                </form>
+            </th>
+            <th>Gen</th>
+            <th>Nombre</th>
+            <th>Locales</th>
+        </tr>
+        </thead>
+        {% for user in users %}
+            <tr>
+                <td><span class="oi oi-{{ user.isActive ? 'check' : 'x' }}"></span></td>
+                <td>{{ user.gender ? user.gender.name : '?' }}</td>
+                <td><a href="{{ path('user-edit', {'id': user.id}) }}">{{ user.name }}</a></td>
+                <td>
+                    {% for store in user.stores %}
+                        <a href="{{ path('store-transactions', {'id': store.id}) }}">
+                            # {{ store.id }}
+                        </a>
+                    {% else %}
+                        N/A
+                    {% endfor %}
+                </td>
             </tr>
-            </thead>
-            {% for user in users %}
-                <tr>
-                    <td>{{ user.state ? user.state.name : '?' }}</td>
-                    <td>{{ user.gender ? user.gender.name : '?' }}</td>
-                    <td><a href="{{ path('user-edit', {'id': user.id}) }}">{{ user.name }}</a></td>
-                    <td>
-                        {% for store in user.stores %}
-                            <a href="{{ path('store-transactions', {'id': store.id}) }}">
-                                # {{ store.id }}
-                            </a>
-                        {% else %}
-                            N/A
-                        {% endfor %}
-                    </td>
-                </tr>
-            {% else %}
-                <tr>
-                    <td colspan="6" class="alert alert-warning text-center">No hay usuarios que mostrar!</td>
-                </tr>
-            {% endfor %}
-        </table>
-    </form>
+        {% else %}
+            <tr>
+                <td colspan="6" class="alert alert-warning text-center">No hay usuarios que mostrar!</td>
+            </tr>
+        {% endfor %}
+    </table>
 {% endblock %}

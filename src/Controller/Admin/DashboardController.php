@@ -65,9 +65,9 @@ class DashboardController extends AbstractDashboardController
             'Users',
             'fa fa-question-circle',
             User::class
-        )
-            ->setQueryParameter('filters[state][comparison]', '=')
-            ->setQueryParameter('filters[state][value]', '1');
+        );
+            // ->setQueryParameter('filters[isActive][comparison]', '=')
+            // ->setQueryParameter('filters[isActive][value]', 1);
         yield MenuItem::linkToCrud(
             'Contracts',
             'fa fa-question-circle',

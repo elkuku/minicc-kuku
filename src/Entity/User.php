@@ -45,12 +45,6 @@ class User implements UserInterface, \Stringable
     #[ManyToOne(targetEntity: UserGender::class)]
     private ?UserGender $gender = null;
 
-    /**
-     * Active or Inactive
-     */
-    #[ManyToOne(targetEntity: UserState::class)]
-    private ?UserState $state = null;
-
     #[NotBlank]
     #[Column(type: Types::STRING, length: 50, nullable: false)]
     private string $inqCi = '';
@@ -69,6 +63,9 @@ class User implements UserInterface, \Stringable
 
     #[Column(type: Types::STRING, length: 100, nullable: true)]
     private ?string $googleId = '';
+
+    #[Column(nullable: true)]
+    private ?bool $isActive = null;
 
     public final const ROLES
         = [
@@ -179,18 +176,6 @@ class User implements UserInterface, \Stringable
     {
     }
 
-    public function setState(UserState $status): static
-    {
-        $this->state = $status;
-
-        return $this;
-    }
-
-    public function getState(): ?UserState
-    {
-        return $this->state;
-    }
-
     public function setInqCi(string $inqCi): static
     {
         $this->inqCi = $inqCi;
@@ -293,6 +278,18 @@ class User implements UserInterface, \Stringable
     public function setGoogleId(string $googleId): self
     {
         $this->googleId = $googleId;
+
+        return $this;
+    }
+
+    public function isIsActive(): ?bool
+    {
+        return $this->isActive;
+    }
+
+    public function setIsActive(bool $isActive): self
+    {
+        $this->isActive = $isActive;
 
         return $this;
     }

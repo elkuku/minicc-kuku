@@ -34,8 +34,8 @@ class StoreCrudController extends AbstractCrudController
         yield AssociationField::new('user')
             ->autocomplete()
             ->setQueryBuilder(function (QueryBuilder $qb) {
-                $qb->andWhere('entity.state = :state')
-                    ->setParameter('state', 1);
+                $qb->andWhere('entity.isActive = :active')
+                    ->setParameter('active', 1);
             });;
         yield NumberField::new('valAlq')
             ->setFormTypeOptions([

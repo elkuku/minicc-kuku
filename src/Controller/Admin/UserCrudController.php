@@ -24,7 +24,7 @@ class UserCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        yield AssociationField::new('state');//->onlyOnIndex();
+        yield Field::new('isActive');
         yield AssociationField::new('gender');
         yield TextField::new('name');
         yield TextField::new('inqCi')
@@ -42,6 +42,6 @@ class UserCrudController extends AbstractCrudController
     public function configureFilters(Filters $filters): Filters
     {
         return $filters
-            ->add('state');
+            ->add('isActive');
     }
 }

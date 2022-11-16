@@ -9,7 +9,6 @@
 namespace App\Form;
 
 use App\Entity\UserGender;
-use App\Entity\UserState;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -28,14 +27,7 @@ class UserFullType extends AbstractType
         array $options
     ): void {
         $builder
-            ->add(
-                'state',
-                EntityType::class,
-                array(
-                    'class'        => UserState::class,
-                    'choice_label' => 'name',
-                )
-            )
+            ->add('isActive')
             ->add(
                 'gender',
                 EntityType::class,

@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserFullType;
 use App\Repository\UserRepository;
-use App\Repository\UserStateRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,21 +19,21 @@ class UserController extends AbstractController
     #[Route(path: '/', name: 'users-list', methods: ['GET', 'POST'])]
     public function list(
         UserRepository $userRepo,
-        UserStateRepository $stateRepo,
         Request $request
     ): Response {
-        $userState = (int)$request->get('user_state', 1);
+        $userActive = $request->get('user_active', '1');
         $criteria = [];
-        if ($userState) {
-            $criteria['state'] = $stateRepo->find($userState);
+        if ('0' === $userActive || '1' === $userActive) {
+            $criteria['isActive'] = $userActive;
+        } else {
+            $userActive = null;
         }
 
         return $this->render(
             'user/list.html.twig',
             [
                 'users' => $userRepo->findBy($criteria),
-                'userState' => $userState,
-                'states' => $stateRepo->findAll(),
+                'userActive' => $userActive,
             ]
         );
     }
