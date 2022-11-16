@@ -115,7 +115,7 @@
             "@auto-scripts"
         ],
         "trans": [
-            "./bin/console translation:update es --output-format=yaml --force"
+            "./bin/console translation:extract es --format=yaml --force"
         ],
         "test-phpunit": ["make tests"],
         "test-phpstan": ["vendor/bin/phpstan analyse"],
