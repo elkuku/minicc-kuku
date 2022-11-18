@@ -31,7 +31,7 @@
         {% for user in users %}
             <tr>
                 <td><span class="oi oi-{{ user.isActive ? 'check' : 'x' }}"></span></td>
-                <td>{{ user.gender ? user.gender.name : '?' }}</td>
+                <td>{{ user.gender.title }}</td>
                 <td><a href="{{ path('user-edit', {'id': user.id}) }}">{{ user.name }}</a></td>
                 <td>
                     {% for store in user.stores %}

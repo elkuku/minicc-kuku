@@ -185,9 +185,6 @@ class ContractController extends AbstractController
         Environment $environment
     ): PdfResponse {
         $numberToWord = new Numbers;
-        $genderId = $contract->getGender()
-            ? $contract->getGender()->getId()
-            : 0;
         $searchReplace = [
             '[local_no]'     => $contract->getStoreNumber(),
             '[destination]'  => $contract->getDestination(),
@@ -211,9 +208,9 @@ class ContractController extends AbstractController
             '[inq_nombreapellido]' => $contract->getInqNombreapellido(),
             '[inq_ci]'             => $contract->getInqCi(),
 
-            '[el_la]'   => $genderId === 1 ? 'el' : 'la',
-            '[del_la]'  => $genderId === 1 ? 'del' : 'de la',
-            '[senor_a]' => $genderId === 1 ? 'señor' : 'señora',
+            '[senor_a]' => $contract->getGender()->titleLong(),
+            '[el_la]'   => $contract->getGender()->text_1(),
+            '[del_la]'  => $contract->getGender()->text_2(),
 
             '[cnt_lanfort]'  => $contract->getCntLanfort(),
             '[cnt_neon]'     => $contract->getCntNeon(),

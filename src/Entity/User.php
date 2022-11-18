@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
+use App\Type\Gender;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
-use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\PersistentCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -42,8 +42,8 @@ class User implements UserInterface, \Stringable
     #[Column(type: Types::STRING, length: 50)]
     private string $role = 'ROLE_USER';
 
-    #[ManyToOne(targetEntity: UserGender::class)]
-    private ?UserGender $gender = null;
+    #[Column(enumType: Gender::class)]
+    private Gender $gender;
 
     #[NotBlank]
     #[Column(type: Types::STRING, length: 50, nullable: false)]
@@ -258,14 +258,14 @@ class User implements UserInterface, \Stringable
         return $this->stores;
     }
 
-    public function setGender(UserGender $gender): static
+    public function setGender(Gender $gender): static
     {
         $this->gender = $gender;
 
         return $this;
     }
 
-    public function getGender(): ?UserGender
+    public function getGender(): Gender
     {
         return $this->gender;
     }

@@ -13,10 +13,8 @@
                 <td>{% for store in user.stores %}{{ store.id }}&nbsp;{% endfor %}</td>
             </tr>
             <tr>
-                <td>{{ 2 == user.gender.id ? 'Sra.' : 'Sr.' }}:</td>
-                <td>
-                    {{ user.name }}
-                </td>
+                <td>{{ user.gender.title }}:</td>
+                <td>{{ user.name }}</td>
             </tr>
             <tr>
                 <td>C.I.:</td>

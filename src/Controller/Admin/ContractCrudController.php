@@ -7,6 +7,7 @@ use App\Repository\ContractRepository;
 use App\Repository\StoreRepository;
 use App\Repository\UserRepository;
 use App\Service\TaxService;
+use App\Type\Gender;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
@@ -19,6 +20,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
@@ -62,7 +64,10 @@ class ContractCrudController extends AbstractCrudController
         return [
             IntegerField::new('storeNumber'),
             Field::new('date'),
-            AssociationField::new('gender')->onlyOnForms(),
+            // AssociationField::new('gender')->onlyOnForms(),
+            ChoiceField::new('gender')
+                ->setChoices(Gender::getChoices())
+                ->onlyOnForms(),
             Field::new('inqNombreApellido'),
             Field::new('inqCi')
                 ->onlyOnForms(),
@@ -127,16 +132,10 @@ class ContractCrudController extends AbstractCrudController
             }
 
             if ($user) {
-                $gender = $user->getGender();
-                if (!$gender) {
-                    throw new \UnexpectedValueException(
-                        'User has no gender.... :|'
-                    );
-                }
                 $contract
                     ->setInqNombreapellido((string)$user->getName())
                     ->setInqCi($user->getInqCi())
-                    ->setGender($gender);
+                    ->setGender($user->getGender());
             }
         }
 

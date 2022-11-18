@@ -9,7 +9,7 @@ use App\Entity\Store;
 use App\Entity\Transaction;
 use App\Entity\TransactionType;
 use App\Entity\User;
-use App\Entity\UserGender;
+use App\Type\Gender;
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -18,44 +18,36 @@ class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        $userGenderSr = (new UserGender)
-            ->setName('Sr');
-        $manager->persist($userGenderSr);
-
-        $userGenderSra = (new UserGender)
-            ->setName('Sra');
-        $manager->persist($userGenderSra);
-
         $admin = (new User)
             ->setIsActive(true)
-            ->setGender($userGenderSra)
+            ->setGender(Gender::female)
             ->setName('admin')
             ->setEmail('admin@example.com')
-            ->setRole('ROLE_ADMIN');
+            ->setRole(User::ROLES['admin']);
         $manager->persist($admin);
 
         $user1 = (new User)
             ->setIsActive(true)
-            ->setGender($userGenderSra)
+            ->setGender(Gender::female)
             ->setName('user1')
             ->setEmail('user1@example.com')
-            ->setRole('ROLE_USER');
+            ->setRole(User::ROLES['user']);
         $manager->persist($user1);
 
         $user2 = (new User)
             ->setIsActive(true)
-            ->setGender($userGenderSra)
+            ->setGender(Gender::female)
             ->setName('user2')
             ->setEmail('user2@example.com')
-            ->setRole('ROLE_USER');
+            ->setRole(User::ROLES['user']);
         $manager->persist($user2);
 
         $user3 = (new User)
             ->setIsActive(false)
-            ->setGender($userGenderSr)
+            ->setGender(Gender::male)
             ->setName('user3')
             ->setEmail('user3@example.com')
-            ->setRole('ROLE_USER');
+            ->setRole(User::ROLES['user']);
         $manager->persist($user3);
 
         /*

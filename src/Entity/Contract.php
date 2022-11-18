@@ -8,13 +8,13 @@
 
 namespace App\Entity;
 
+use App\Type\Gender;
 use DateTime;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
-use Doctrine\ORM\Mapping\ManyToOne;
 use App\Repository\ContractRepository;
 
 #[Entity(repositoryClass: ContractRepository::class)]
@@ -29,8 +29,8 @@ class Contract
     #[Column(length: 150)]
     private ?string $inqNombreapellido = null;
 
-    #[ManyToOne]
-    private ?UserGender $gender = null;
+    #[Column(enumType: Gender::class)]
+    private Gender $gender;
 
     #[Column(length: 11)]
     private string $inqCi = '000000000-0';
@@ -294,14 +294,14 @@ class Contract
         return $this->text;
     }
 
-    public function setGender(UserGender $gender): static
+    public function setGender(Gender $gender): static
     {
         $this->gender = $gender;
 
         return $this;
     }
 
-    public function getGender(): ?UserGender
+    public function getGender(): Gender
     {
         return $this->gender;
     }

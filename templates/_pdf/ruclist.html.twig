@@ -33,7 +33,7 @@
                     {% for store in user.stores %}{{ store.id }}&nbsp;{% endfor %}
                 </th>
                 <td class="user">
-                    {{ 2 == user.gender.id ? 'Sra.' : 'Sr.' }}
+                    {{ user.gender.title }}
                     {{ user.name }}
                 </td>
                 <td class="ruc">{{ formatRUC(user) }}</td>

@@ -8,10 +8,10 @@
 
 namespace App\Form;
 
-use App\Entity\UserGender;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use App\Type\Gender;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -28,14 +28,7 @@ class UserFullType extends AbstractType
     ): void {
         $builder
             ->add('isActive')
-            ->add(
-                'gender',
-                EntityType::class,
-                array(
-                    'class'        => UserGender::class,
-                    'choice_label' => 'name',
-                )
-            )
+            ->add('gender', EnumType::class, ['class' => Gender::class])
             ->add('name', TextType::class)
             ->add('email', EmailType::class)
             ->add('inqCi')

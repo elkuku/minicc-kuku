@@ -9,9 +9,9 @@
 namespace App\Form;
 
 use App\Entity\Contract;
-use App\Entity\UserGender;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use App\Type\Gender;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -48,14 +48,7 @@ class ContractType extends AbstractType
             ->add('valAlq', null, ['label' => 'Alquiler'])
             ->add('valGarantia')
             // User
-            ->add(
-                'gender',
-                EntityType::class,
-                [
-                    'class' => UserGender::class,
-                    'choice_label' => 'name',
-                ]
-            )
+            ->add('gender', EnumType::class, ['class' => Gender::class])
             ->add('inqNombreApellido')
             ->add('inqCi')
             // Accesories
