@@ -38,7 +38,7 @@ class ContractController extends AbstractController
         return $this->render(
             'contract/list.html.twig',
             [
-                'stores'    => $storeRepository->getActive(),
+                'stores'    => $storeRepository->findAll(),
                 'users'     => $userRepository->findActiveUsers(),
                 'contracts' => $contractRepository->findContracts(
                     $storeId,
