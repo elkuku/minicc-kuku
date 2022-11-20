@@ -7,9 +7,9 @@ use App\Entity\Deposit;
 use App\Entity\PaymentMethod;
 use App\Entity\Store;
 use App\Entity\Transaction;
-use App\Entity\TransactionType;
 use App\Entity\User;
 use App\Type\Gender;
+use App\Type\TransactionType;
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -70,22 +70,11 @@ class AppFixtures extends Fixture
             $manager->persist($paymentMethod);
         }
 
-        /*
-         * Transactions
-         */
-        $names = ['Alquiler', 'Pago', 'Saldo Inicial', 'Ajuste'];
-
-        foreach ($names as $name) {
-            $transactionType = (new TransactionType)
-                ->setName($name);
-            $manager->persist($transactionType);
-        }
-
         $transaction = (new Transaction())
             ->setStore($store)
             ->setUser($user1)
             ->setDate(new DateTime())
-            ->setType($transactionType)
+            ->setType(TransactionType::payment)
             ->setMethod($paymentMethod)
             ->setAmount(123.45);
         $manager->persist($transaction);
@@ -98,6 +87,7 @@ class AppFixtures extends Fixture
             $contract = (new Contract)
                 ->setStoreNumber(1)
                 ->setInqNombreapellido('Tester')
+                ->setGender(Gender::other)
                 ->setDestination('Testing')
                 ->setValAlq(123.45)
                 ->setValGarantia(123.45)

@@ -10,6 +10,7 @@ use App\Repository\StoreRepository;
 use App\Repository\TransactionRepository;
 use App\Service\ChartBuilderService;
 use App\Service\TaxService;
+use App\Type\TransactionType;
 use Doctrine\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -63,7 +64,7 @@ class StoreController extends AbstractController
             $rentalValues[$i] = $rentalValue;
         }
         foreach ($transactions as $transaction) {
-            if ($transaction->getType()->getName() === 'Pago') {
+            if ($transaction->getType() === TransactionType::payment) {
                 $monthPayments[$transaction->getDate()->format('n')]
                     += $transaction->getAmount();
             }

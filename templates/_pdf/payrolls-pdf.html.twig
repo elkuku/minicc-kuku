@@ -61,7 +61,7 @@
                                 {% set saldoIni = saldoIni + transaction.amount %}
                                 <tr>
                                     <td>{{ intlDate(transaction.date, "d 'de' MMMM") }}</td>
-                                    <td>{{ transaction.type.name }}</td>
+                                    <td>{{ transaction.type.translationKey|trans }}</td>
                                     <td class="text-right number">{{ transaction.amount|invert|price|raw }}</td>
                                 </tr>
                             {% else %}

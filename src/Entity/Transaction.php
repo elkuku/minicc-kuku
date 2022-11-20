@@ -8,6 +8,7 @@
 
 namespace App\Entity;
 
+use App\Type\TransactionType;
 use DateTime;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping\Column;
@@ -34,12 +35,7 @@ class Transaction implements JsonSerializable
     #[JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false)]
     protected User $user;
 
-    /**
-     * The type
-     * Alquiler, Pago, etc.
-     */
-    #[ManyToOne(targetEntity: TransactionType::class)]
-    #[JoinColumn(name: 'type_id', referencedColumnName: 'id', nullable: false)]
+    #[Column(enumType: TransactionType::class)]
     private TransactionType $type;
 
     /**
@@ -208,7 +204,7 @@ class Transaction implements JsonSerializable
             'id'       => $this->id,
             'store'    => $this->store->getId(),
             'user'     => $this->user->getId(),
-            'type'     => $this->type->getId(),
+            'type'     => $this->type->name,
             'method'   => $this->method->getId() ?: null,
             'date'     => $this->date->format('Y-m-d'),
             'amount'   => $this->amount,

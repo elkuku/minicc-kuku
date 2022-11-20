@@ -1,0 +1,5 @@
+'No results found :(': 'No se encontraron resultados :('
+TRANSACTION_TYPE_RENT: 'Alquiler'
+TRANSACTION_TYPE_PAYMENT: 'Pago'
+TRANSACTION_TYPE_INITIAL: 'Saldo inicial'
+TRANSACTION_TYPE_ADJUSTMENT: 'Ajuste'

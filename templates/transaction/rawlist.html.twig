@@ -48,9 +48,9 @@
                     <select name="paginatorOptions[criteria][type]" class="form-control paginatorResetChange">
                         <option value="0">...</option>
                         {% for type in transactionTypes %}
-                            <option value="{{ type.id }}"
-                                    {{ paginatorOptions.searchCriteria('type') == type.id ? ' selected="selected"' : '' }}>
-                                {{ type.name }}
+                            <option value="{{ type.value }}"
+                                    {{ paginatorOptions.searchCriteria('type') == type.value ? ' selected="selected"' : '' }}>
+                                {{ type.translationKey|trans }}
                             </option>
                         {% endfor %}
                     </select>
@@ -85,7 +85,7 @@
                     <td>{{ transaction.id }}</td>
                     <td>{{ transaction.store.id }}</td>
                     <td>{{ intlDate(transaction.date) }}</td>
-                    <td>{{ transaction.type.name }}</td>
+                    <td>{{ transaction.type.translationKey|trans }}</td>
                     <td class="text-end">{{ transaction.amount }}</td>
                     <td>{{ transaction.recipeNo }}</td>
                     <td>

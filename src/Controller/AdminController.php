@@ -6,8 +6,8 @@ use App\Entity\Transaction;
 use App\Repository\PaymentMethodRepository;
 use App\Repository\StoreRepository;
 use App\Repository\TransactionRepository;
-use App\Repository\TransactionTypeRepository;
 use App\Repository\UserRepository;
+use App\Type\TransactionType;
 use DateTime;
 use Doctrine\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -24,7 +24,6 @@ class AdminController extends AbstractController
     public function cobrar(
         StoreRepository $storeRepository,
         UserRepository $userRepository,
-        TransactionTypeRepository $transactionTypeRepository,
         PaymentMethodRepository $paymentMethodRepository,
         Request $request,
         ManagerRegistry $managerRegistry,
@@ -41,13 +40,11 @@ class AdminController extends AbstractController
 
         $em = $managerRegistry->getManager();
 
-        // Type "Alquiler"
-        $type = $transactionTypeRepository->find(1);
         $method = $paymentMethodRepository->find(1);
 
-        if (!$type || !$method) {
+        if (!$method) {
             throw new UnexpectedValueException(
-                'Invalid type or payment method.'
+                'Invalid payment method.'
             );
         }
 
@@ -75,7 +72,7 @@ class AdminController extends AbstractController
                 )
                 ->setStore($store)
                 ->setUser($user)
-                ->setType($type)
+                ->setType(TransactionType::rent)
                 ->setMethod($method)
                 // Set negative value (!)
                 ->setAmount(-$value);
@@ -95,7 +92,6 @@ class AdminController extends AbstractController
         StoreRepository $storeRepository,
         PaymentMethodRepository $paymentMethodRepository,
         TransactionRepository $transactionRepository,
-        TransactionTypeRepository $transactionTypeRepository,
         Request $request,
         ManagerRegistry $managerRegistry,
     ): Response {
@@ -113,10 +109,6 @@ class AdminController extends AbstractController
         }
 
         $em = $managerRegistry->getManager();
-        $type = $transactionTypeRepository->findOneBy(['name' => 'Pago']);
-        if (!$type) {
-            throw new UnexpectedValueException('Invalid transaction type');
-        }
         foreach ($payments['date_cobro'] as $i => $dateCobro) {
             if (!$dateCobro) {
                 continue;
@@ -146,7 +138,7 @@ class AdminController extends AbstractController
                 ->setDate(new DateTime($dateCobro))
                 ->setStore($store)
                 ->setUser($user)
-                ->setType($type)
+                ->setType(TransactionType::payment)
                 ->setMethod($method)
                 ->setRecipeNo((int)$payments['recipe'][$i])
                 ->setDocument((int)$payments['document'][$i])

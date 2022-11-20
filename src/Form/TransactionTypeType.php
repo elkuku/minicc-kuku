@@ -10,16 +10,15 @@ namespace App\Form;
 
 use App\Entity\PaymentMethod;
 use App\Entity\Store;
-use App\Entity\TransactionType;
 use App\Entity\User;
+use App\Type\TransactionType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Translation\TranslatableMessage;
 
-/**
- * Class TransactionType
- */
 class TransactionTypeType extends AbstractType
 {
     public function buildForm(
@@ -37,10 +36,11 @@ class TransactionTypeType extends AbstractType
             )
             ->add(
                 'type',
-                EntityType::class,
+                EnumType::class,
                 [
                     'class'        => TransactionType::class,
-                    'choice_label' => 'name',
+                    'choice_label' => fn(TransactionType $choice
+                    ) => new TranslatableMessage($choice->translationKey()),
                 ]
             )
             ->add(

@@ -79,15 +79,9 @@
             {% set saldo = saldoAnterior %}
             {% for transaction in transactions %}
                 {% set saldo = saldo + transaction.amount %}
-                {% if transaction.type.name == 'Ajuste' %}
-                    {% set style = 'table-warning' %}
-                {% elseif transaction.type.name == 'Alquiler' %}
-                    {% set style = 'table-success' %}
-                {% else %}
-                    {% set style = '' %}
-                {% endif %}
                 {% if is_granted('ROLE_ADMIN') or transaction.user == app.user %}
-                    <tr class="position-relative {{ style|raw }}">
+                    <!-- position-relative is required for the stretched-link class --!>
+                    <tr class="position-relative {{ transaction.type.cssClass }}">
                         <td>{{ intlDate(transaction.date, 'MMMM d') }}</td>
                         {% if is_granted('ROLE_ADMIN') %}
                             <td>
@@ -97,7 +91,7 @@
                                 </a>
                             </td>
                         {% endif %}
-                        <td>{{ transaction.type.name }}</td>
+                        <td>{{ transaction.type.translationKey|trans }}</td>
                         <td class="text-end">{{ transaction.amount|price|raw }}</td>
                         <td class="text-end">{{ saldo|price|raw }}</td>
                     </tr>

@@ -7,7 +7,7 @@ use App\Form\TransactionTypeType;
 use App\Helper\Paginator\PaginatorTrait;
 use App\Repository\StoreRepository;
 use App\Repository\TransactionRepository;
-use App\Repository\TransactionTypeRepository;
+use App\Type\TransactionType;
 use Doctrine\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -80,7 +80,6 @@ class TransactionController extends AbstractController
     public function rawList(
         StoreRepository $storeRepo,
         TransactionRepository $transactionRepo,
-        TransactionTypeRepository $transactionTypeRepo,
         Request $request,
         int $listLimit,
     ): Response {
@@ -97,7 +96,7 @@ class TransactionController extends AbstractController
             [
                 'transactions'     => $transactions,
                 'paginatorOptions' => $paginatorOptions,
-                'transactionTypes' => $transactionTypeRepo->findAll(),
+                'transactionTypes' => TransactionType::cases(),
                 'stores'           => $storeRepo->findAll(),
             ]
         );

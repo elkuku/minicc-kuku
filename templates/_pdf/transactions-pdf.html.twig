@@ -30,7 +30,7 @@
     {% set saldo = saldoAnterior %}
     <h2>Movimientos del Local {{ store.id }} Periodo {{ year }}</h2>
 
-    <h4>{{ store.user.name }} - {{ store.destination }}</h4>
+    <h4>{{ store.user ? store.user.name : 'n/a' }} - {{ store.destination }}</h4>
 
     <table>
         <thead>
@@ -42,7 +42,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr class="saldo">
+        <tr class="initial">
             <td>enero 1</td>
             <td>Saldo Anterior</td>
             <td class="text-right">{{ saldoAnterior|price|raw }}</td>
@@ -51,18 +51,9 @@
         {% for transaction in transactions %}
             {% if transaction.id %}
                 {% set saldo = saldo + transaction.amount %}
-                {% if transaction.type.name == 'Ajuste' %}
-                    {% set style = ' class="ajuste"' %}
-                {% elseif transaction.type.name == 'Alquiler' %}
-                    {% set style = ' class="alquiler"' %}
-                {% elseif transaction.type.name == 'Saldo Anterior' %}
-                    {% set style = ' class="saldo"' %}
-                {% else %}
-                    {% set style = '' %}
-                {% endif %}
-                <tr{{ style|raw }}>
+                <tr class="{{ transaction.type.cssClassPdf }}">
                     <td>{{ intlDate(transaction.date, 'MMMM d') }}</td>
-                    <td>{{ transaction.type.name }}</td>
+                    <td>{{ transaction.type.translationKey|trans }}</td>
                     <td class="text-right">{{ transaction.amount|price|raw }}</td>
                     <td class="text-right">{{ saldo|price|raw }}</td>
                 </tr>

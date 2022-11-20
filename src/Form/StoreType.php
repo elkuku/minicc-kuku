@@ -40,9 +40,9 @@ class StoreType extends AbstractType
                     'query_builder' => static fn(EntityRepository $er
                     ): QueryBuilder => $er->createQueryBuilder('u')
                         ->where('u.role = :role')
-                        ->andWhere('u.state = :state')
-                        ->setParameter('role', 'ROLE_USER')
-                        ->setParameter('state', 1)
+                        ->andWhere('u.isActive = :state')
+                        ->setParameter('role', User::ROLES['user'])
+                        ->setParameter('state', true)
                         ->orderBy('u.name'),
                 ]
             )
