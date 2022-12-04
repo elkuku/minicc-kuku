@@ -24,7 +24,6 @@
         "league/oauth2-google": "^4.0",
         "oro/doctrine-extensions": "^2.0",
         "phpdocumentor/reflection-docblock": "^5.2",
-        "sensio/framework-extra-bundle": "^6.0",
         "symfony/apache-pack": "*",
         "symfony/asset": "*",
         "symfony/console": "*",
