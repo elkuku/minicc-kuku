@@ -5,9 +5,9 @@ namespace App\Security;
 use App\Entity\Store;
 use App\Entity\User;
 use LogicException;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
-use Symfony\Component\Security\Core\Security;
 
 class StoreVoter extends Voter
 {
