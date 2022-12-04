@@ -19,6 +19,7 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Part\DataPart;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use UnexpectedValueException;
 
 #[IsGranted('ROLE_ADMIN')]
 class MailController extends AbstractController
@@ -132,7 +133,7 @@ class MailController extends AbstractController
             )
                 ->text('Backup - Date: '.date('Y-m-d'))
                 ->html('<h3>Backup</h3>Date: '.date('Y-m-d'))
-                ->attachPart($attachment);
+                ->addPart($attachment);
 
             $mailer->send($email);
             $this->addFlash('success', 'Mail has been sent succesfully.');
@@ -291,7 +292,7 @@ class MailController extends AbstractController
                     $password,
                     $database
                 ),
-                default => throw new \UnexpectedValueException('Unknown env:'.$appEnv),
+                default => throw new UnexpectedValueException('Unknown env:'.$appEnv),
             };
 
             ob_start();
@@ -313,7 +314,7 @@ class MailController extends AbstractController
             )
                 ->text('Backup - Date: '.date('Y-m-d'))
                 ->html('<h3>Backup</h3>Date: '.date('Y-m-d'))
-                ->attachPart($attachment);
+                ->addPart($attachment);
 
             $mailer->send($email);
             $this->addFlash('success', 'Backup has been sent to your inbox.');

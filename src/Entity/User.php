@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\PersistentCollection;
+use Stringable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use App\Repository\UserRepository;
@@ -19,7 +20,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 #[UniqueEntity(fields: 'email', message: 'This email address is already in use')]
 #[Entity(repositoryClass: UserRepository::class)]
-class User implements UserInterface, \Stringable
+class User implements UserInterface, Stringable
 {
     #[Column, Id, GeneratedValue]
     private ?int $id = 0;

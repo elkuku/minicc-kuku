@@ -16,8 +16,8 @@ use function is_object;
 class IntlConverter
 {
     public function __construct(
-        private string $defaultLocale,
-        private string $defaultCurrency
+        private readonly string $defaultLocale,
+        private readonly string $defaultCurrency
     ) {
     }
 
