@@ -8,7 +8,7 @@ use App\Helper\Paginator\PaginatorTrait;
 use App\Repository\DepositRepository;
 use App\Repository\PaymentMethodRepository;
 use DateTime;
-use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
 use RuntimeException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -54,7 +54,7 @@ class DepositController extends AbstractController
         PaymentMethodRepository $paymentMethodRepository,
         DepositRepository $depositRepository,
         Request $request,
-        ManagerRegistry $managerRegistry,
+        EntityManagerInterface $entityManager,
     ): RedirectResponse {
         $csvFile = $request->files->get('csv_file');
         if (!$csvFile) {
@@ -73,7 +73,6 @@ class DepositController extends AbstractController
         if (!$entity) {
             throw new UnexpectedValueException('Invalid entity');
         }
-        $em = $managerRegistry->getManager();
         $insertCount = 0;
         foreach ($csvData->lines as $line) {
             if (!isset(
@@ -100,11 +99,11 @@ class DepositController extends AbstractController
                 ->setAmount($line->credito);
 
             if (false === $depositRepository->has($deposit)) {
-                $em->persist($deposit);
+                $entityManager->persist($deposit);
                 $insertCount++;
             }
         }
-        $em->flush();
+        $entityManager->flush();
         $this->addFlash(
             ($insertCount ? 'success' : 'warning'),
             'Depositos insertados: '
@@ -145,11 +144,10 @@ class DepositController extends AbstractController
     #[Route(path: '/delete/{id}', name: 'deposits-delete', methods: ['GET'])]
     public function delete(
         Deposit $deposit,
-        ManagerRegistry $managerRegistry,
+        EntityManagerInterface $entityManager,
     ): RedirectResponse {
-        $em = $managerRegistry->getManager();
-        $em->remove($deposit);
-        $em->flush();
+        $entityManager->remove($deposit);
+        $entityManager->flush();
         $this->addFlash('success', 'Deposit method has been deleted');
 
         return $this->redirectToRoute('deposits');

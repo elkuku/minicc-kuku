@@ -8,7 +8,7 @@ use App\Helper\Paginator\PaginatorTrait;
 use App\Repository\StoreRepository;
 use App\Repository\TransactionRepository;
 use App\Type\TransactionType;
-use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -26,11 +26,10 @@ class TransactionController extends AbstractController
     public function delete(
         Request $request,
         Transaction $transaction,
-        ManagerRegistry $managerRegistry,
+        EntityManagerInterface $entityManager,
     ): RedirectResponse {
-        $em = $managerRegistry->getManager();
-        $em->remove($transaction);
-        $em->flush();
+        $entityManager->remove($transaction);
+        $entityManager->flush();
         $this->addFlash('success', 'Transaction has been deleted');
         $redirect = str_replace('@', '/', $request->get('redirect'));
 
@@ -44,7 +43,7 @@ class TransactionController extends AbstractController
     public function edit(
         Transaction $transaction,
         Request $request,
-        ManagerRegistry $managerRegistry,
+        EntityManagerInterface $entityManager,
     ): Response {
         $view = $request->query->get('view');
         $form = $this->createForm(TransactionTypeType::class, $transaction);
@@ -52,9 +51,8 @@ class TransactionController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $transaction = $form->getData();
 
-            $em = $managerRegistry->getManager();
-            $em->persist($transaction);
-            $em->flush();
+            $entityManager->persist($transaction);
+            $entityManager->flush();
 
             $this->addFlash('success', 'La Transaccion ha sido guardada.');
 

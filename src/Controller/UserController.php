@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserFullType;
 use App\Repository\UserRepository;
-use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,16 +42,15 @@ class UserController extends AbstractController
     public function edit(
         User $client,
         Request $request,
-        ManagerRegistry $managerRegistry,
+        EntityManagerInterface $entityManager,
     ): Response {
         $form = $this->createForm(UserFullType::class, $client);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $client = $form->getData();
 
-            $em = $managerRegistry->getManager();
-            $em->persist($client);
-            $em->flush();
+            $entityManager->persist($client);
+            $entityManager->flush();
 
             $this->addFlash('success', 'El usuario ha sido guardado');
 
@@ -70,7 +69,7 @@ class UserController extends AbstractController
     #[Route(path: '/new', name: 'register', methods: ['GET', 'POST'])]
     public function new(
         Request $request,
-        ManagerRegistry $managerRegistry,
+        EntityManagerInterface $entityManager,
     ): Response {
         $user = new User;
         $form = $this->createForm(UserFullType::class, $user);
@@ -78,9 +77,8 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $user->setRole('ROLE_USER');
 
-            $em = $managerRegistry->getManager();
-            $em->persist($user);
-            $em->flush();
+            $entityManager->persist($user);
+            $entityManager->flush();
 
             $this->addFlash('success', 'El usuario ha sido creado');
 

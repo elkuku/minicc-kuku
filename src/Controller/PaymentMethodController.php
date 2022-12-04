@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\PaymentMethod;
 use App\Form\PaymentMethodType;
 use App\Repository\PaymentMethodRepository;
-use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -38,7 +38,7 @@ class PaymentMethodController extends AbstractController
     ])]
     public function new(
         Request $request,
-        ManagerRegistry $managerRegistry,
+        EntityManagerInterface $entityManager,
     ): Response {
         $paymentMethod = new PaymentMethod;
         $form = $this->createForm(PaymentMethodType::class, $paymentMethod);
@@ -46,9 +46,8 @@ class PaymentMethodController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $paymentMethod = $form->getData();
 
-            $em = $managerRegistry->getManager();
-            $em->persist($paymentMethod);
-            $em->flush();
+            $entityManager->persist($paymentMethod);
+            $entityManager->flush();
 
             $this->addFlash('success', 'Payment method has been saved');
 
@@ -76,16 +75,15 @@ class PaymentMethodController extends AbstractController
     public function edit(
         PaymentMethod $data,
         Request $request,
-        ManagerRegistry $managerRegistry,
+        EntityManagerInterface $entityManager,
     ): Response {
         $form = $this->createForm(PaymentMethodType::class, $data);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
 
-            $em = $managerRegistry->getManager();
-            $em->persist($data);
-            $em->flush();
+            $entityManager->persist($data);
+            $entityManager->flush();
 
             $this->addFlash('success', 'Payment method has been updated');
 
@@ -109,11 +107,10 @@ class PaymentMethodController extends AbstractController
     #[Route(path: '/delete/{id}', name: 'payment-methods-delete', methods: ['GET'])]
     public function delete(
         PaymentMethod $paymentMethod,
-        ManagerRegistry $managerRegistry,
+        EntityManagerInterface $entityManager,
     ): RedirectResponse {
-        $em = $managerRegistry->getManager();
-        $em->remove($paymentMethod);
-        $em->flush();
+        $entityManager->remove($paymentMethod);
+        $entityManager->flush();
         $this->addFlash('success', 'Payment method has been deleted');
 
         return $this->redirectToRoute('payment-methods');

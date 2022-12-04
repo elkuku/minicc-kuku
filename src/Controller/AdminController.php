@@ -9,7 +9,7 @@ use App\Repository\TransactionRepository;
 use App\Repository\UserRepository;
 use App\Type\TransactionType;
 use DateTime;
-use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,7 +26,7 @@ class AdminController extends AbstractController
         UserRepository $userRepository,
         PaymentMethodRepository $paymentMethodRepository,
         Request $request,
-        ManagerRegistry $managerRegistry,
+        EntityManagerInterface $entityManager,
     ): Response {
         $values = $request->request->all('values');
         if (!$values) {
@@ -37,9 +37,6 @@ class AdminController extends AbstractController
         }
 
         $users = $request->request->all('users');
-
-        $em = $managerRegistry->getManager();
-
         $method = $paymentMethodRepository->find(1);
 
         if (!$method) {
@@ -77,10 +74,10 @@ class AdminController extends AbstractController
                 // Set negative value (!)
                 ->setAmount(-$value);
 
-            $em->persist($transaction);
+            $entityManager->persist($transaction);
         }
 
-        $em->flush();
+        $entityManager->flush();
 
         $this->addFlash('success', 'A cobrar...');
 
@@ -93,7 +90,7 @@ class AdminController extends AbstractController
         PaymentMethodRepository $paymentMethodRepository,
         TransactionRepository $transactionRepository,
         Request $request,
-        ManagerRegistry $managerRegistry,
+        EntityManagerInterface $entityManager,
     ): Response {
         $payments = $request->request->all('payments');
         if (!$payments) {
@@ -108,7 +105,6 @@ class AdminController extends AbstractController
             );
         }
 
-        $em = $managerRegistry->getManager();
         foreach ($payments['date_cobro'] as $i => $dateCobro) {
             if (!$dateCobro) {
                 continue;
@@ -145,9 +141,9 @@ class AdminController extends AbstractController
                 ->setDepId((int)$payments['depId'][$i])
                 ->setAmount($payments['amount'][$i]);
 
-            $em->persist($transaction);
+            $entityManager->persist($transaction);
         }
-        $em->flush();
+        $entityManager->flush();
         $this->addFlash('success', 'Sa ha pagado...');
 
         return $this->redirectToRoute('welcome');

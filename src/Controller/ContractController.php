@@ -9,7 +9,7 @@ use App\Repository\ContractRepository;
 use App\Repository\StoreRepository;
 use App\Repository\UserRepository;
 use App\Service\TaxService;
-use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
 use IntlNumbersToWords\Numbers;
 use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 use Knp\Snappy\Pdf;
@@ -56,7 +56,7 @@ class ContractController extends AbstractController
         UserRepository $userRepo,
         ContractRepository $contractRepo,
         Request $request,
-        ManagerRegistry $managerRegistry,
+        EntityManagerInterface $entityManager,
         TaxService $taxService,
     ): Response {
         $store = $storeRepo->find($request->request->getInt('store'));
@@ -76,9 +76,8 @@ class ContractController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $contract = $form->getData();
 
-            $em = $managerRegistry->getManager();
-            $em->persist($contract);
-            $em->flush();
+            $entityManager->persist($contract);
+            $entityManager->flush();
 
             $this->addFlash('success', 'El contrato fue guardado.');
 
@@ -101,7 +100,7 @@ class ContractController extends AbstractController
     public function edit(
         Contract $contract,
         Request $request,
-        ManagerRegistry $managerRegistry,
+        EntityManagerInterface $entityManager,
         TaxService $taxService,
     ): Response {
         $form = $this->createForm(ContractType::class, $contract);
@@ -109,9 +108,8 @@ class ContractController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $contract = $form->getData();
 
-            $em = $managerRegistry->getManager();
-            $em->persist($contract);
-            $em->flush();
+            $entityManager->persist($contract);
+            $entityManager->flush();
 
             $this->addFlash('success', 'Contrato has been saved');
 
@@ -132,11 +130,10 @@ class ContractController extends AbstractController
     #[Route(path: '/delete/{id}', name: 'contracts-delete', methods: ['GET'])]
     public function delete(
         Contract $contract,
-        ManagerRegistry $managerRegistry,
+        EntityManagerInterface $entityManager,
     ): RedirectResponse {
-        $em = $managerRegistry->getManager();
-        $em->remove($contract);
-        $em->flush();
+        $entityManager->remove($contract);
+        $entityManager->flush();
         $this->addFlash('success', 'Contract has been deleted');
 
         return $this->redirectToRoute('contract-list');
@@ -149,7 +146,7 @@ class ContractController extends AbstractController
     public function template(
         ContractRepository $contractRepository,
         Request $request,
-        ManagerRegistry $managerRegistry,
+        EntityManagerInterface $entityManager,
         TaxService $taxService,
     ): Response {
         $data = $contractRepository->findTemplate();
@@ -158,9 +155,8 @@ class ContractController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
 
-            $em = $managerRegistry->getManager();
-            $em->persist($data);
-            $em->flush();
+            $entityManager->persist($data);
+            $entityManager->flush();
 
             $this->addFlash('success', 'Template has been saved');
 
