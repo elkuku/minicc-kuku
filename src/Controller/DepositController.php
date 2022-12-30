@@ -74,7 +74,7 @@ class DepositController extends AbstractController
             }
 
             if (!str_starts_with(
-                $line->descripcion,
+                (string) $line->descripcion,
                 'TRANSFERENCIA DIRECTA DE'
             )
             ) {
@@ -84,7 +84,7 @@ class DepositController extends AbstractController
 
             $deposit = (new Deposit)
                 ->setEntity($entity)
-                ->setDate(new DateTime(str_replace('/', '-', $line->fecha)))
+                ->setDate(new DateTime(str_replace('/', '-', (string) $line->fecha)))
                 ->setDocument($line->{'numero de documento'})
                 ->setAmount($line->credito);
 

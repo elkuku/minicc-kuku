@@ -16,7 +16,7 @@ class PayrollHelper
     }
 
     /**
-     * @return array<string, array<int|string, Store|array<string, mixed>>|string>
+     * @return array{factDate: string, prevDate: string, stores: \App\Entity\Store[], storeData: array<string|int, array{saldoIni: mixed, transactions: float[]}>}
      */
     #[ArrayShape([
         'factDate'  => "string",

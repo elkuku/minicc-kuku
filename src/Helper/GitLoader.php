@@ -48,7 +48,7 @@ class GitLoader
     }
 
     /**
-     * @return array<string, mixed>
+     * @return array{author: string, date: string, sha: string}
      */
     public function getLastCommitDetail(): array
     {

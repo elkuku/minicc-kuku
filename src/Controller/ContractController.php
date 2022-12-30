@@ -87,7 +87,7 @@ class ContractController extends AbstractController
         return $this->render(
             'contract/form.html.twig',
             [
-                'form'          => $form->createView(),
+                'form'          => $form,
                 'data'          => $contract,
                 'ivaMultiplier' => $taxService->getTaxValue(),
                 'title'         => 'Nuevo Contrato',
@@ -119,7 +119,7 @@ class ContractController extends AbstractController
         return $this->render(
             'contract/form.html.twig',
             [
-                'form'          => $form->createView(),
+                'form'          => $form,
                 'data'          => $contract,
                 'ivaMultiplier' => $taxService->getTaxValue(),
                 'title'         => 'Editar Contrato',
@@ -166,7 +166,7 @@ class ContractController extends AbstractController
         return $this->render(
             'contract/form.html.twig',
             [
-                'form'          => $form->createView(),
+                'form'          => $form,
                 'data'          => $data,
                 'ivaMultiplier' => $taxService->getTaxValue(),
                 'title'         => 'Plantilla',

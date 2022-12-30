@@ -270,7 +270,7 @@ class MailController extends AbstractController
         string $appEnv,
     ): RedirectResponse {
         try {
-            $parts = parse_url($_ENV['DATABASE_URL']);
+            $parts = parse_url((string) $_ENV['DATABASE_URL']);
 
             $hostname = $parts['host'];
             $username = $parts['user'];

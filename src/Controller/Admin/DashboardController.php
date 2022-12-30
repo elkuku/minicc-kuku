@@ -54,7 +54,7 @@ class DashboardController extends AbstractDashboardController
             ->setTitle('Minicc Kuku DB');
     }
 
-    public function configureMenuItems(): iterable
+    public function configureMenuItems(): \Iterator
     {
         yield MenuItem::linkToCrud(
             'Stores',

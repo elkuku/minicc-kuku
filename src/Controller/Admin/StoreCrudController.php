@@ -24,14 +24,14 @@ class StoreCrudController extends AbstractCrudController
         return Store::class;
     }
 
-    public function configureFields(string $pageName): iterable
+    public function configureFields(string $pageName): \Iterator
     {
         yield IdField::new('id')
             ->hideOnForm();
         yield TextField::new('destination');
         yield AssociationField::new('user')
             ->autocomplete()
-            ->setQueryBuilder(function (QueryBuilder $qb) {
+            ->setQueryBuilder(function (QueryBuilder $qb): void {
                 $qb->andWhere('entity.isActive = :active')
                     ->setParameter('active', 1);
             });

@@ -60,7 +60,7 @@ class UserController extends AbstractController
         return $this->render(
             'user/form.html.twig',
             [
-                'form' => $form->createView(),
+                'form' => $form,
                 'data' => $client,
             ]
         );
@@ -88,7 +88,7 @@ class UserController extends AbstractController
         return $this->render(
             'user/form.html.twig',
             [
-                'form' => $form->createView(),
+                'form' => $form,
                 'data' => $user,
             ]
         );

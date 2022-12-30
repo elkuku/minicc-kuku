@@ -31,7 +31,7 @@ class TransactionController extends AbstractController
         $entityManager->remove($transaction);
         $entityManager->flush();
         $this->addFlash('success', 'Transaction has been deleted');
-        $redirect = str_replace('@', '/', $request->get('redirect'));
+        $redirect = str_replace('@', '/', (string) $request->get('redirect'));
 
         return $this->redirect('/'.$redirect);
     }
@@ -67,7 +67,7 @@ class TransactionController extends AbstractController
         return $this->render(
             'transaction/form.html.twig',
             [
-                'form'     => $form->createView(),
+                'form'     => $form,
                 'data'     => $transaction,
                 'redirect' => $view,
             ]

@@ -40,7 +40,9 @@ class TransactionTypeType extends AbstractType
                 [
                     'class'        => TransactionType::class,
                     'choice_label' => fn(TransactionType $choice
-                    ) => new TranslatableMessage($choice->translationKey()),
+                    ): TranslatableMessage => new TranslatableMessage(
+                        $choice->translationKey()
+                    ),
                 ]
             )
             ->add(

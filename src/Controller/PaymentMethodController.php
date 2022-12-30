@@ -61,7 +61,7 @@ class PaymentMethodController extends AbstractController
         return $this->render(
             'payment-methods/'.$template,
             [
-                'form' => $form->createView(),
+                'form' => $form,
                 'data' => $paymentMethod,
             ],
             new Response(null, $form->isSubmitted() ? 422 : 200)
@@ -97,7 +97,7 @@ class PaymentMethodController extends AbstractController
         return $this->render(
             'payment-methods/'.$template,
             [
-                'form' => $form->createView(),
+                'form' => $form,
                 'data' => $data,
             ],
             new Response(null, $form->isSubmitted() ? 422 : 200)

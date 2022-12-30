@@ -124,7 +124,7 @@ class StoreController extends AbstractController
         return $this->render(
             'stores/form.html.twig',
             [
-                'form'          => $form->createView(),
+                'form'          => $form,
                 'store'         => $store,
                 'ivaMultiplier' => $taxService->getTaxValue(),
             ]
@@ -155,7 +155,7 @@ class StoreController extends AbstractController
         return $this->render(
             'stores/form.html.twig',
             [
-                'form'          => $form->createView(),
+                'form'          => $form,
                 'store'         => $store,
                 'ivaMultiplier' => $taxService->getTaxValue(),
             ]

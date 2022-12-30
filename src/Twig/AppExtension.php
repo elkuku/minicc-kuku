@@ -39,12 +39,12 @@ class AppExtension extends AbstractExtension
     public function getFilters(): array
     {
         return [
-            new TwigFilter('price', [$this, 'priceFilter']),
-            new TwigFilter('conIva', [$this, 'conIvaFilter']),
-            new TwigFilter('taxFromTotal', [$this, 'taxFromTotalFilter']),
-            new TwigFilter('invert', [$this, 'invertFilter']),
-            new TwigFilter('cast_to_array', [$this, 'objectFilter']),
-            new TwigFilter('short_name', [$this, 'shortName']),
+            new TwigFilter('price', $this->priceFilter(...)),
+            new TwigFilter('conIva', $this->conIvaFilter(...)),
+            new TwigFilter('taxFromTotal', $this->taxFromTotalFilter(...)),
+            new TwigFilter('invert', $this->invertFilter(...)),
+            new TwigFilter('cast_to_array', $this->objectFilter(...)),
+            new TwigFilter('short_name', $this->shortName(...)),
         ];
     }
 
@@ -55,11 +55,11 @@ class AppExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('intlDate', [$this, 'intlDate']),
-            new TwigFunction('formatRUC', [$this, 'formatRUC']),
-            new TwigFunction('getSHA', [$this, 'getSHA']),
-            new TwigFunction('findSystemUsers', [$this, 'findSystemUsers']),
-            new TwigFunction('getCurrentYear', [$this, 'getCurrentYear']),
+            new TwigFunction('intlDate', $this->intlDate(...)),
+            new TwigFunction('formatRUC', $this->formatRUC(...)),
+            new TwigFunction('getSHA', $this->getSHA(...)),
+            new TwigFunction('findSystemUsers', $this->findSystemUsers(...)),
+            new TwigFunction('getCurrentYear', $this->getCurrentYear(...)),
         ];
     }
 

@@ -19,7 +19,7 @@ class UserCrudController extends AbstractCrudController
         return User::class;
     }
 
-    public function configureFields(string $pageName): iterable
+    public function configureFields(string $pageName): \Iterator
     {
         yield Field::new('isActive');
         yield ChoiceField::new('gender')

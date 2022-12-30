@@ -196,7 +196,7 @@ class Transaction implements JsonSerializable
     }
 
     /**
-     * @return array<string, float|int|string|null>
+     * @return array{id: int|null, store: int|null, user: int|null, type: string, method: int|null, date: string, amount: float, document: int, depId: int|null, recipeNo: int|null}
      */
     public function jsonSerialize(): array
     {
