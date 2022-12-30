@@ -3,6 +3,8 @@ parameters:
 	paths:
 		- src
 		- tests
-
+	cognitive_complexity:
+		class: 50
+		function: 8
 includes:
 	- phpstan-baseline.neon

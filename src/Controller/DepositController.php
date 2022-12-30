@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Deposit;
+use App\Helper\CsvParser\CsvObject;
 use App\Helper\CsvParser\CsvParser;
 use App\Helper\Paginator\PaginatorTrait;
 use App\Repository\DepositRepository;
@@ -56,23 +57,12 @@ class DepositController extends AbstractController
         Request $request,
         EntityManagerInterface $entityManager,
     ): RedirectResponse {
-        $csvFile = $request->files->get('csv_file');
-        if (!$csvFile) {
-            throw new RuntimeException('No CSV file recieved.');
-        }
-        $path = $csvFile->getRealPath();
-        if (!$path) {
-            throw new RuntimeException('Invalid CSV file.');
-        }
-        $contents = file($path);
-        if (!$contents) {
-            throw new RuntimeException('Cannot read CSV file.');
-        }
-        $csvData = (new CsvParser)->parseCSV($contents);
         $entity = $paymentMethodRepository->find(2);
         if (!$entity) {
             throw new UnexpectedValueException('Invalid entity');
         }
+
+        $csvData = $this->getCsvDataFromRequest($request);
         $insertCount = 0;
         foreach ($csvData->lines as $line) {
             if (!isset(
@@ -151,5 +141,25 @@ class DepositController extends AbstractController
         $this->addFlash('success', 'Deposit method has been deleted');
 
         return $this->redirectToRoute('deposits');
+    }
+
+    private function getCsvDataFromRequest(Request $request): CsvObject
+    {
+        $csvFile = $request->files->get('csv_file');
+        if (!$csvFile) {
+            throw new RuntimeException('No CSV file recieved.');
+        }
+
+        $path = $csvFile->getRealPath();
+        if (!$path) {
+            throw new RuntimeException('Invalid CSV file.');
+        }
+
+        $contents = file($path);
+        if (!$contents) {
+            throw new RuntimeException('Cannot read CSV file.');
+        }
+
+        return (new CsvParser)->parseCSV($contents);
     }
 }

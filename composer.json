@@ -59,9 +59,10 @@
         "dbrekelmans/bdi": "^1.0",
         "elkuku/symfony-utils": "dev-master",
         "jetbrains/phpstorm-attributes": "^1.0",
+        "phpstan/extension-installer": "^1.2",
         "phpstan/phpstan": "^1.4",
         "phpunit/phpunit": "^9.5",
-        "rector/rector": "^0.12.10",
+        "rector/rector": "^0.15",
         "roave/security-advisories": "dev-latest",
         "symfony/browser-kit": "*",
         "symfony/css-selector": "*",
@@ -69,7 +70,8 @@
         "symfony/maker-bundle": "^1.29",
         "symfony/phpunit-bridge": "*",
         "symfony/stopwatch": "*",
-        "symfony/web-profiler-bundle": "*"
+        "symfony/web-profiler-bundle": "*",
+        "tomasvotruba/cognitive-complexity": "^0.0.5"
     },
     "config": {
         "preferred-install": {
@@ -79,7 +81,8 @@
         "allow-plugins": {
             "composer/package-versions-deprecated": true,
             "symfony/flex": true,
-            "symfony/runtime": true
+            "symfony/runtime": true,
+            "phpstan/extension-installer": true
         }
     },
     "autoload": {
