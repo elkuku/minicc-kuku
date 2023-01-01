@@ -8,11 +8,13 @@
 
 namespace App\Service;
 
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
+
 class ShaFinder
 {
     private string $sha = 'n/a';
 
-    public function __construct(string $rootDir)
+    public function __construct(#[Autowire('%kernel.project_dir%')] string $rootDir)
     {
         if (file_exists($rootDir.'/sha.txt')) {
             $this->sha = file_get_contents($rootDir.'/sha.txt') ?: 'n/a';

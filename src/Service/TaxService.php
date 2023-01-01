@@ -8,10 +8,13 @@
 
 namespace App\Service;
 
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
+
 class TaxService
 {
-    public function __construct(private readonly int $taxValue)
-    {
+    public function __construct(
+        #[Autowire('%env(VALUE_IVA)%')] private readonly int $taxValue
+    ) {
     }
 
     public function getTaxValue(): int

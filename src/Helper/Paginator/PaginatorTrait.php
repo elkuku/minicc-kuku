@@ -8,6 +8,7 @@
 
 namespace App\Helper\Paginator;
 
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -20,7 +21,7 @@ trait PaginatorTrait
      */
     protected function getPaginatorOptions(
         Request $request,
-        int $listLimit
+        #[Autowire('%env(LIST_LIMIT)%')] int $listLimit
     ): PaginatorOptions {
         $options = $request->get('paginatorOptions');
 

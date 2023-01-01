@@ -9,11 +9,12 @@
 namespace App\Helper;
 
 use RuntimeException;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use function is_array;
 
 class GitLoader
 {
-    public function __construct(private readonly string $rootDir)
+    public function __construct(#[Autowire('%kernel.project_dir%')] private readonly string $rootDir)
     {
     }
 

@@ -11,6 +11,7 @@ use Exception;
 use Knp\Snappy\Pdf;
 use RuntimeException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -267,7 +268,7 @@ class MailController extends AbstractController
     public function backup(
         MailerInterface $mailer,
         EmailHelper $emailHelper,
-        string $appEnv,
+        #[Autowire('%env(APP_ENV)%')] string $appEnv,
     ): RedirectResponse {
         try {
             $parts = parse_url((string) $_ENV['DATABASE_URL']);

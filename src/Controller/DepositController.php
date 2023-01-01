@@ -12,6 +12,7 @@ use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use RuntimeException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,7 +32,7 @@ class DepositController extends AbstractController
     public function index(
         DepositRepository $depositRepository,
         Request $request,
-        int $listLimit
+        #[Autowire('%env(LIST_LIMIT)%')] int $listLimit
     ): Response {
         $paginatorOptions = $this->getPaginatorOptions($request, $listLimit);
         $deposits = $depositRepository->getPaginatedList($paginatorOptions);

@@ -12,12 +12,13 @@ use App\Entity\Store;
 use App\Entity\Transaction;
 use App\Repository\TransactionRepository;
 use Knp\Snappy\Pdf;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Twig\Environment;
 
 class PdfHelper
 {
     public function __construct(
-        private readonly string $rootDir,
+        #[Autowire('%kernel.project_dir%')] private readonly string $rootDir,
         private readonly Environment $twig,
         private readonly Pdf $pdfEngine,
     ) {
