@@ -50,12 +50,12 @@
             {% include '_user_switcher.html.twig' %}
             <div class="ms-auto">
                 {% if app.user %}
-                    <a class="nav-link" accesskey="l" href="{{ path('logout') }}" title="Logout">
+                    <a accesskey="l" href="{{ path('logout') }}" title="Logout">
                         <span class="oi oi-account-logout"></span>
                     </a>
                 {% else %}
                     {% if 'dev' == app.environment %}
-                        <a class="nav-link" accesskey="l" href="{{ path('login') }}" title="Login">
+                        <a accesskey="l" href="{{ path('login') }}" title="Login">
                             <span class="oi oi-account-login"></span>
                         </a>
                     {% else %}

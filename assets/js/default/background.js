@@ -1,5 +1,1 @@
-const $ = require('jquery')
-
-$(function () {
-    $('#app-layout').addClass('bg-atacames')
-})
+document.getElementById('app-layout').classList.add('bg-atacames')

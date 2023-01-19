@@ -16,8 +16,3 @@ import './styles/app.css';
 // start the Stimulus application
 import './bootstrap';
 
-const $ = require('jquery')
-
-$('#userSwitch').on('change', function () {
-    window.location.href = this.value
-})

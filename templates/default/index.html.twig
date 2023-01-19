@@ -3,16 +3,14 @@
 {% block javascripts %}
     {{ parent() }}
     {% if not app.user %}
-        {{ encore_entry_script_tags('js/default/index') }}
+        {{ encore_entry_script_tags('js/default/background') }}
     {% endif %}
 {% endblock %}
 
 {% block body %}
-    {% if app.user %}
-        {% if is_granted('ROLE_ADMIN') %}
-            {% include'default/_admin-dashboard.html.twig' %}
-        {% else %}
-            {% include'default/_user-dashboard.html.twig' %}
-        {% endif %}
+    {% if is_granted('ROLE_ADMIN') %}
+        {% include'default/_admin-dashboard.html.twig' %}
+    {% elseif app.user %}
+        {% include'default/_user-dashboard.html.twig' %}
     {% endif %}
 {% endblock %}
