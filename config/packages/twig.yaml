@@ -3,8 +3,8 @@ twig:
     form_themes: ['bootstrap_5_layout.html.twig']
     globals:
         public_path: '%kernel.project_dir%/public'
-        app_env: '%env(APP_ENV)%'
         tax_value: '%env(VALUE_IVA)%'
+        oauthGoogleId: '%env(OAUTH_GOOGLE_ID)%'
 
 when@test:
     twig:

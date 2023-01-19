@@ -117,6 +117,18 @@
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.5"
     },
+    "google/apiclient": {
+        "version": "2.13",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "2.10",
+            "ref": "07a97ec434d43b7903c78069a04c92adb6442e52"
+        },
+        "files": [
+            "config/packages/google_apiclient.yaml"
+        ]
+    },
     "guzzlehttp/guzzle": {
         "version": "7.4.1"
     },
@@ -144,26 +156,8 @@
             "ref": "c81bdcf4a9d4e7b1959071457f9608631865d381"
         }
     },
-    "knpuniversity/oauth2-client-bundle": {
-        "version": "1.20",
-        "recipe": {
-            "repo": "github.com/symfony/recipes-contrib",
-            "branch": "master",
-            "version": "1.20",
-            "ref": "1ff300d8c030f55c99219cc55050b97a695af3f6"
-        },
-        "files": [
-            "config/packages/knpu_oauth2_client.yaml"
-        ]
-    },
     "laminas/laminas-code": {
         "version": "4.5.1"
-    },
-    "league/oauth2-client": {
-        "version": "2.6.1"
-    },
-    "league/oauth2-google": {
-        "version": "4.0.0"
     },
     "monolog/monolog": {
         "version": "2.3.5"

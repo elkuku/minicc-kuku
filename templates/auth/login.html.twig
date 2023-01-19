@@ -12,10 +12,19 @@
         <div class="row">
             <div class="col">
                 <h2>Login</h2>
-                <a href="{{ path('connect_google_start') }}" title="Google Login">
-                    <img src="{{ asset('build/images/login-buttons/btn_google_signin_dark_normal_web.png') }}"
-                         alt="Google Login">
-                </a>
+                <div id="g_id_onload"
+                     data-client_id="{{ oauthGoogleId }}"
+                     data-login_uri="{{ url('connect_google_verify') }}"
+                     data-auto_prompt="false">
+                </div>
+                <div class="g_id_signin"
+                     data-type="standard"
+                     data-size="large"
+                     data-theme="outline"
+                     data-text="sign_in_with"
+                     data-shape="rectangular"
+                     data-logo_alignment="left">
+                </div>
             </div>
             {% if app.environment in ['dev', 'test'] %}
                 <div class="col">
@@ -30,7 +39,8 @@
                         <div class="form-group">
                             <input id="identifier" class="form-control" name="identifier"
                                    value="{{ last_username }}"
-                                   placeholder="email" required autofocus>
+                                   placeholder="email" required autofocus
+                            >
                         </div>
 
                         <input type="hidden" name="_csrf_token" value="{{ csrf_token('login') }}">

@@ -1,4 +1,4 @@
-{% if 'dev' == app_env and app.user %}
+{% if 'dev' == app.environment and app.user %}
     <select name="userswitch" id="userSwitch" class="ms-auto form-select-sm">
         {% if is_granted('IS_IMPERSONATOR') %}
             <option value="{{ path('welcome', {'_switch_user': '_exit'}) }}">EXIT</option>
