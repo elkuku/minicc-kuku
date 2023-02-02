@@ -5,16 +5,10 @@ namespace App\Type;
 final class GoogleUser
 {
     /**
-     * @var array<string>
-     */
-    protected array $response;
-
-    /**
      * @param array<string> $response
      */
-    public function __construct(array $response)
+    public function __construct(protected array $response)
     {
-        $this->response = $response;
     }
 
     public function getId(): string
