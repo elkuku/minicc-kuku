@@ -70,6 +70,9 @@ class Transaction implements JsonSerializable
     #[Column(type: Types::INTEGER, nullable: true)]
     private ?int $recipeNo = 0;
 
+    #[Column(length: 255, nullable: true)]
+    private ?string $comment = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -217,6 +220,18 @@ class Transaction implements JsonSerializable
     public function setId(int $id): static
     {
         $this->id = $id;
+
+        return $this;
+    }
+
+    public function getComment(): ?string
+    {
+        return $this->comment;
+    }
+
+    public function setComment(?string $comment): self
+    {
+        $this->comment = $comment;
 
         return $this;
     }

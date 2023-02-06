@@ -13,12 +13,13 @@
             <div data-payday-target="tbody">
                 <div class="row no-gutters bg-info text-center">
                     <div class="col-2"><h5>Fecha</h5></div>
-                    <div class="col-3"><h5>Local</h5></div>
+                    <div class="col-2"><h5>Local</h5></div>
                     <div class="col-1"><h5>Monto</h5></div>
                     <div class="col-1"><h5>Factura</h5></div>
-                    <div class="col-2"><h5>Forma</h5></div>
+                    <div class="col-1"><h5>Forma</h5></div>
                     <div class="col-2"><h5>Documento</h5></div>
                     <div class="col-1"><h5>DepId</h5></div>
+                    <div class="col-1"><h5>Comment</h5></div>
                 </div>
                 <div class="row no-gutters"
                      data-payday-target="row"
@@ -33,7 +34,7 @@
                                data-payday-row-target="date"
                         >
                     </div>
-                    <div class="col-3">
+                    <div class="col-2">
                         <select class="form-control" name="payments[store][]">
                             <option value="0">Local</option>
                             {% for store in stores %}
@@ -54,7 +55,7 @@
                     </div>
 
 
-                    <div class="col-2">
+                    <div class="col-1">
                         <select class="form-control" name="payments[method][]"
                                 data-payday-row-target="method"
                         >
@@ -81,6 +82,9 @@
                         <input
                                 data-payday-row-target="depid"
                                 class="form-control" name="payments[depId][]" type="text" size="7">
+                    </div>
+                    <div class="col-2">
+                        <input class="form-control" name="payments[comment][]" type="text" size="7">
                     </div>
                 </div>{# row #}
             </div>{# tbody #}

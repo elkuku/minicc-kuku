@@ -98,8 +98,7 @@ class AdminController extends AbstractController
                 'admin/payday-html.twig',
                 [
                     'stores'         => $storeRepository->getActive(),
-                    'lastRecipeNo'   => $transactionRepository->getLastRecipeNo(
-                        ) + 1,
+                    'lastRecipeNo'   => $transactionRepository->getLastRecipeNo() + 1,
                     'paymentMethods' => $paymentMethodRepository->findAll(),
                 ]
             );
@@ -116,9 +115,7 @@ class AdminController extends AbstractController
                 continue;
             }
 
-            $method = $paymentMethodRepository->find(
-                (int)$payments['method'][$i]
-            );
+            $method = $paymentMethodRepository->find((int)$payments['method'][$i]);
 
             if (!$method) {
                 throw new UnexpectedValueException('Invalid payment method.');
@@ -139,7 +136,8 @@ class AdminController extends AbstractController
                 ->setRecipeNo((int)$payments['recipe'][$i])
                 ->setDocument((int)$payments['document'][$i])
                 ->setDepId((int)$payments['depId'][$i])
-                ->setAmount($payments['amount'][$i]);
+                ->setAmount($payments['amount'][$i])
+                ->setComment($payments['comment'][$i]);
 
             $entityManager->persist($transaction);
         }

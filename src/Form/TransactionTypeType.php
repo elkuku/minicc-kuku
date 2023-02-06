@@ -72,6 +72,7 @@ class TransactionTypeType extends AbstractType
             )
             ->add('amount', MoneyType::class)
             ->add('document')
+            ->add('comment')
             ->add('depId', null, ['label' => 'DepositoId'])
             ->add('recipeNo', null, ['label' => 'Factura']);
     }
