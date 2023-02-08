@@ -12,6 +12,7 @@
 {% block body %}
 
     <h1>RAW List Transactions</h1>
+    <h2>{{ app.request.requesturi|trim('/', 'left') }}</h2>
 
     <form method="post">
 
@@ -93,8 +94,8 @@
                     <td>{{ transaction.recipeNo }}</td>
                     <td>{{ transaction.comment }}</td>
                     <td>
-                        <a href="{{ path('transaction-edit', {'id': transaction.id, 'view': 'transaction-rawlist'}) }}">Edit</a>
-                        <a href="{{ path('transaction-delete', {'id': transaction.id, 'view': 'transaction-rawlist'}) }}">Delete</a>
+                        <a href="{{ path('transaction-edit', {'id': transaction.id, 'view': app.request.requesturi }) }}">Edit</a>
+                        <a href="{{ path('transaction-delete', {'id': transaction.id, 'view': app.request.requesturi }) }}">Delete</a>
                     </td>
                 </tr>
             {% endfor %}

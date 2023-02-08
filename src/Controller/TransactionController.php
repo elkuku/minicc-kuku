@@ -25,27 +25,26 @@ class TransactionController extends AbstractController
 
     #[Route(path: '/delete/{id}', name: 'transaction-delete', methods: ['GET'])]
     public function delete(
-        Request $request,
-        Transaction $transaction,
+        Request                $request,
+        Transaction            $transaction,
         EntityManagerInterface $entityManager,
-    ): RedirectResponse {
+    ): RedirectResponse
+    {
         $entityManager->remove($transaction);
         $entityManager->flush();
         $this->addFlash('success', 'Transaction has been deleted');
-        $redirect = str_replace('@', '/', (string) $request->get('redirect'));
+        $redirect = $request->get('redirect');
 
-        return $this->redirect('/'.$redirect);
+        return $this->redirect($redirect);
     }
 
-    #[Route(path: '/edit/{id}', name: 'transaction-edit', methods: [
-        'GET',
-        'POST',
-    ])]
+    #[Route(path: '/edit/{id}', name: 'transaction-edit', methods: ['GET', 'POST',])]
     public function edit(
-        Transaction $transaction,
-        Request $request,
+        Transaction            $transaction,
+        Request                $request,
         EntityManagerInterface $entityManager,
-    ): Response {
+    ): Response
+    {
         $view = $request->query->get('view');
         $form = $this->createForm(TransactionTypeType::class, $transaction);
         $form->handleRequest($request);
@@ -56,6 +55,10 @@ class TransactionController extends AbstractController
             $entityManager->flush();
 
             $this->addFlash('success', 'La Transaccion ha sido guardada.');
+
+            if ($view) {
+                return $this->redirect($view);
+            }
 
             return $this->redirectToRoute(
                 'store-transactions',
@@ -68,8 +71,8 @@ class TransactionController extends AbstractController
         return $this->render(
             'transaction/form.html.twig',
             [
-                'form'     => $form,
-                'data'     => $transaction,
+                'form' => $form,
+                'data' => $transaction,
                 'redirect' => $view,
             ]
         );
@@ -77,11 +80,12 @@ class TransactionController extends AbstractController
 
     #[Route(path: '/', name: 'transaction-rawlist', methods: ['GET', 'POST'])]
     public function rawList(
-        StoreRepository $storeRepo,
-        TransactionRepository $transactionRepo,
-        Request $request,
+        StoreRepository                      $storeRepo,
+        TransactionRepository                $transactionRepo,
+        Request                              $request,
         #[Autowire('%env(LIST_LIMIT)%')] int $listLimit,
-    ): Response {
+    ): Response
+    {
         $paginatorOptions = $this->getPaginatorOptions($request, $listLimit);
         $transactions = $transactionRepo->getRawList($paginatorOptions);
         $paginatorOptions->setMaxPages(
@@ -93,10 +97,10 @@ class TransactionController extends AbstractController
         return $this->render(
             'transaction/rawlist.html.twig',
             [
-                'transactions'     => $transactions,
+                'transactions' => $transactions,
                 'paginatorOptions' => $paginatorOptions,
                 'transactionTypes' => TransactionType::cases(),
-                'stores'           => $storeRepo->findAll(),
+                'stores' => $storeRepo->findAll(),
             ]
         );
     }

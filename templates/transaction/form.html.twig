@@ -11,10 +11,11 @@
     {{ form_start(form) }}
 
     <div class="float-end">
+        {{ redirect }}
         <button type="submit" class="btn btn-outline-success">Guardar</button>
-        <a class="btn btn-outline-secondary" href="/{{ redirect }}">Cancelar</a>
+        <a class="btn btn-outline-secondary" href="{{ redirect }}">Cancelar</a>
         <a class="btn btn-outline-danger"
-           href="{{ path('transaction-delete', {'id': form.vars.data.id, 'view': '/'~redirect}) }}">Delete</a>
+           href="{{ path('transaction-delete', {'id': form.vars.data.id, 'view': redirect}) }}">Delete</a>
     </div>
 
     <h3>Editar Transacion</h3>
