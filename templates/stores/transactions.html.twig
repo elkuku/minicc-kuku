@@ -58,7 +58,7 @@
                     <th>Inquilino</th>
                 {% endif %}
                 <th>Detalle</th>
-                <th>Comentario</th>
+                <th title="Comentario">Com</th>
                 <th class="text-end">Monto</th>
                 <th class="text-end">Saldo</th>
                 {% if is_granted('ROLE_ADMIN') %}
@@ -94,7 +94,7 @@
                             <td>{{ transaction.user.name|short_name }}</td>
                         {% endif %}
                         <td>{{ transaction.type.translationKey|trans }}</td>
-                        <td title="{{ transaction.comment }}">{{ transaction.comment|u.truncate(10, '...', false) }}</td>
+                        <td title="{{ transaction.comment }}">{{ transaction.comment|u.truncate(8, '...', false) }}</td>
                         <td class="text-end">{{ transaction.amount|price|raw }}</td>
                         <td class="text-end">{{ saldo|price|raw }}</td>
                         {% if is_granted('ROLE_ADMIN') %}

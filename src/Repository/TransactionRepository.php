@@ -65,9 +65,10 @@ class TransactionRepository extends ServiceEntityRepository
      */
     public function findByStoreYearAndUser(
         Store $store,
-        int $year,
-        User $user
-    ): array {
+        int   $year,
+        User  $user
+    ): array
+    {
         return $this->createQueryBuilder('p')
             ->where('p.store = :store')
             ->andWhere('YEAR(p.date) = :year')
@@ -145,9 +146,10 @@ class TransactionRepository extends ServiceEntityRepository
      */
     public function findMonthPayments(
         Store $store,
-        int $month,
-        int $year
-    ): array {
+        int   $month,
+        int   $year
+    ): array
+    {
         return $this->createQueryBuilder('p')
             ->where('p.store = :store')
             ->andWhere('MONTH(p.date) = :month')
@@ -200,7 +202,7 @@ class TransactionRepository extends ServiceEntityRepository
         $criteria = $options->getCriteria();
 
         $query = $this->createQueryBuilder('t')
-            ->orderBy('t.'.$options->getOrder(), $options->getOrderDir());
+            ->orderBy('t.' . $options->getOrder(), $options->getOrderDir());
 
         if (isset($criteria['type']) && $criteria['type']) {
             $query->where('t.type = :type')
@@ -231,6 +233,16 @@ class TransactionRepository extends ServiceEntityRepository
         if ($options->searchCriteria('date_to')) {
             $query->andWhere('t.date <= :date_to')
                 ->setParameter('date_to', $options->searchCriteria('date_to'));
+        }
+
+        if ($options->searchCriteria('recipe')) {
+            $query->andWhere('t.recipeNo = :recipe')
+                ->setParameter('recipe', (int)$options->searchCriteria('recipe'));
+        }
+
+        if ($options->searchCriteria('comment')) {
+            $query->andWhere('t.comment LIKE :searchTerm')
+                ->setParameter('searchTerm', '%' . $options->searchCriteria('comment') . '%');
         }
 
         $query = $query->getQuery();

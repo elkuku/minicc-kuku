@@ -2,7 +2,7 @@
 
 {% import '_paginator-elements.html.twig' as paginator %}
 
-{% block title %} {{ parent() }} - Edit Transaction{% endblock %}
+{% block title %} {{ parent() }} - Rawlist Transaction{% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
@@ -59,13 +59,15 @@
                     <br/>
                     {{ paginator.criteria('amount', paginatorOptions) }}
                 </th>
-                <th></th>
+                <th>{{ paginator.criteria('recipe', paginatorOptions) }}</th>
+                <th>{{ paginator.criteria('comment', paginatorOptions) }}</th>
                 <th></th>
             </tr>
             <tr>
                 <th>{{ paginator.ordering('id', paginatorOptions) }}</th>
                 <th></th>
                 <th>{{ paginator.ordering('date', paginatorOptions) }}</th>
+                <th></th>
                 <th></th>
                 <th></th>
                 <th></th>
@@ -77,6 +79,7 @@
                 <th>Type</th>
                 <th>Monto</th>
                 <th>Recipe</th>
+                <th>Comment</th>
                 <th>Action</th>
             </tr>
             </thead>
@@ -88,6 +91,7 @@
                     <td>{{ transaction.type.translationKey|trans }}</td>
                     <td class="text-end">{{ transaction.amount }}</td>
                     <td>{{ transaction.recipeNo }}</td>
+                    <td>{{ transaction.comment }}</td>
                     <td>
                         <a href="{{ path('transaction-edit', {'id': transaction.id, 'view': 'transaction-rawlist'}) }}">Edit</a>
                         <a href="{{ path('transaction-delete', {'id': transaction.id, 'view': 'transaction-rawlist'}) }}">Delete</a>
