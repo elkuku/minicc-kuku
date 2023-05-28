@@ -46,6 +46,7 @@
         "symfony/translation": "*",
         "symfony/twig-bundle": "*",
         "symfony/ux-chartjs": "^2.0",
+        "symfony/ux-twig-component": "^2.9",
         "symfony/validator": "*",
         "symfony/web-link": "*",
         "symfony/webpack-encore-bundle": "*",
