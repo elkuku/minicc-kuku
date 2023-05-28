@@ -9,12 +9,11 @@
 
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
 
-    {{ encore_entry_link_tags('app') }}
-    {{ encore_entry_script_tags('app') }}
-
-    {% block stylesheets %}{% endblock %}
+     {% block stylesheets %}{% endblock %}
+            {{ encore_entry_link_tags('app') }}
             {{ ux_controller_link_tags() }}
     {% block javascripts %}{% endblock %}
+            {{ encore_entry_script_tags('app') }}
 
     {% if not app.user %}
         <script src="https://accounts.google.com/gsi/client" async defer></script>
