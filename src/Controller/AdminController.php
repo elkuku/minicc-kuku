@@ -17,10 +17,10 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use UnexpectedValueException;
 
-#[IsGranted('ROLE_ADMIN')]
 class AdminController extends AbstractController
 {
     #[Route(path: '/cobrar', name: 'cobrar', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function cobrar(
         StoreRepository $storeRepository,
         UserRepository $userRepository,
@@ -85,6 +85,7 @@ class AdminController extends AbstractController
     }
 
     #[Route(path: '/pay-day', name: 'pay-day', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function payDay(
         StoreRepository $storeRepository,
         PaymentMethodRepository $paymentMethodRepository,
@@ -148,6 +149,7 @@ class AdminController extends AbstractController
     }
 
     #[Route(path: '/pagos-por-ano', name: 'pagos-por-ano', methods: ['GET'])]
+    #[IsGranted('ROLE_CASHIER')]
     public function pagosPorAno(
         Request $request,
         TransactionRepository $repository
@@ -164,6 +166,7 @@ class AdminController extends AbstractController
     }
 
     #[Route(path: '/mail-list-transactions', name: 'mail-list-transactions', methods: ['GET'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function mailListTransactions(
         StoreRepository $storeRepository
     ): Response {
@@ -176,6 +179,7 @@ class AdminController extends AbstractController
     }
 
     #[Route(path: '/mail-list-planillas', name: 'mail-list-planillas', methods: ['GET'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function mailListPlanillas(
         StoreRepository $storeRepository
     ): Response {

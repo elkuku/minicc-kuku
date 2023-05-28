@@ -3,7 +3,7 @@
 {% block title %} {{ parent() }} - Transactions{% endblock %}
 
 {% block body %}
-    {% if is_granted('ROLE_ADMIN') %}
+    {% if is_granted('ROLE_CASHIER') %}
         {% include('_breadcrumbs.html.twig') %}
     {% endif %}
 
@@ -87,7 +87,7 @@
             {% set saldo = saldoAnterior %}
             {% for transaction in transactions %}
                 {% set saldo = saldo + transaction.amount %}
-                {% if is_granted('ROLE_ADMIN') or transaction.user == app.user %}
+                {% if is_granted('ROLE_CASHIER') or transaction.user == app.user %}
                     <tr {{ transaction.type.cssClass }}">
                         <td>{{ intlDate(transaction.date, 'MMMM d') }}</td>
                         {% if is_granted('ROLE_ADMIN') %}

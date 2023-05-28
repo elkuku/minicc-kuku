@@ -62,6 +62,10 @@ class StoreVoter extends Voter
 
     private function canView(Store $store, User $user): bool
     {
+        if ($this->security->isGranted(User::ROLES['cashier'])) {
+            return true;
+        }
+
         return $store->getUser() === $user;
     }
 

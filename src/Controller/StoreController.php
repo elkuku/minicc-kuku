@@ -23,7 +23,7 @@ class StoreController extends AbstractController
 {
     use BreadcrumbTrait;
 
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_CASHIER')]
     #[Route(path: '/', name: 'stores-list', methods: ['GET'])]
     public function index(
         StoreRepository $storeRepository

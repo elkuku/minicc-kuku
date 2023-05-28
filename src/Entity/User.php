@@ -71,6 +71,7 @@ class User implements UserInterface, Stringable
     public final const ROLES
         = [
             'user'  => 'ROLE_USER',
+            'cashier'  => 'ROLE_CASHIER',
             'admin' => 'ROLE_ADMIN',
         ];
 
@@ -116,6 +117,13 @@ class User implements UserInterface, Stringable
         return $this->email;
     }
 
+    public function setIdentifier(string $identifier): self
+    {
+        $this->email = $identifier;
+
+        return $this;
+    }
+
     public function eraseCredentials(): void
     {
     }
@@ -126,6 +134,16 @@ class User implements UserInterface, Stringable
     public function getRoles(): array
     {
         return [$this->getRole()];
+    }
+
+    /**
+     * @param string[] $roles
+     */
+    public function setRoles(array $roles): self
+    {
+        $this->role = $roles[0];
+
+        return $this;
     }
 
     public function getRole(): string

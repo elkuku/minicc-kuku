@@ -1,16 +1,20 @@
 <div class="btn-group btn-group-lg">
-    <a href="{{ path('cobrar') }}" class="btn btn-outline-success" title="Cobrar alquileres">
-        <span class="oi oi-home"></span>
-    </a>
-    <a href="{{ path('pay-day') }}" class="btn btn-outline-success" title="Ingresar Pagos">
-        <span class="oi oi-dollar"></span>
-    </a>
+    {% if is_granted('ROLE_ADMIN') %}
+        <a href="{{ path('cobrar') }}" class="btn btn-outline-success" title="Cobrar alquileres">
+            <span class="oi oi-home"></span>
+        </a>
+        <a href="{{ path('pay-day') }}" class="btn btn-outline-success" title="Ingresar Pagos">
+            <span class="oi oi-dollar"></span>
+        </a>
+    {% endif %}
     <a href="{{ path('pagos-por-ano') }}" class="btn btn-outline-success" title="Pagos por año">
         <span class="oi oi-document"></span>
     </a>
-    <a href="{{ path('planillas-mail') }}" class="btn btn-outline-primary" title="Mail Planillas">
-        <span class="oi oi-envelope-closed"></span>
-    </a>
+    {% if is_granted('ROLE_ADMIN') %}
+        <a href="{{ path('planillas-mail') }}" class="btn btn-outline-primary" title="Mail Planillas">
+            <span class="oi oi-envelope-closed"></span>
+        </a>
+    {% endif %}
 </div>
 {% set theyOweYou = 0 %}
 <table class="table table-sm table-hover">

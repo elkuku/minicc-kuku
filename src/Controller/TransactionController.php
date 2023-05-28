@@ -57,7 +57,7 @@ class TransactionController extends AbstractController
             $this->addFlash('success', 'La Transaccion ha sido guardada.');
 
             if ($view) {
-                return $this->redirect($view);
+                return $this->redirect((string)$view);
             }
 
             return $this->redirectToRoute(

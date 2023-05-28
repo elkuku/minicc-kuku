@@ -12,7 +12,6 @@
 {% block body %}
 
     <h1>RAW List Transactions</h1>
-    <h2>{{ app.request.requesturi|trim('/', 'left') }}</h2>
 
     <form method="post">
 
@@ -60,8 +59,12 @@
                     <br/>
                     {{ paginator.criteria('amount', paginatorOptions) }}
                 </th>
-                <th>{{ paginator.criteria('recipe', paginatorOptions) }}</th>
-                <th>{{ paginator.criteria('comment', paginatorOptions) }}</th>
+                <th{{ paginatorOptions.searchCriteria('recipe') ? ' class="cell-active"' : '' }}>
+                    {{ paginator.criteria('recipe', paginatorOptions) }}
+                </th>
+                <th{{ paginatorOptions.searchCriteria('comment') ? ' class="cell-active"' : '' }}>
+                    {{ paginator.criteria('comment', paginatorOptions) }}
+                </th>
                 <th></th>
             </tr>
             <tr>
@@ -97,6 +100,10 @@
                         <a href="{{ path('transaction-edit', {'id': transaction.id, 'view': app.request.requesturi }) }}">Edit</a>
                         <a href="{{ path('transaction-delete', {'id': transaction.id, 'view': app.request.requesturi }) }}">Delete</a>
                     </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <th colspan="8" class="text-center text-warning">No transactions found :(</th>
                 </tr>
             {% endfor %}
         </table>

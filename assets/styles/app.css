@@ -22,7 +22,7 @@ body {
     color: #bb331c;
 }
 
-.table-bordered tbody th.cell-active {
+th.cell-active {
     border: 2px solid #2e6da4;
 }
 

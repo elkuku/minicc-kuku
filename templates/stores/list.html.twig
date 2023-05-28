@@ -3,9 +3,11 @@
 {% block title %} {{ parent() }} - Stores{% endblock %}
 
 {% block body %}
-    <div class="float-end">
-        <a href="{{ path('stores-add') }}" class="btn btn-outline-primary">Nuevo Local</a>
-    </div>
+    {% if is_granted('ROLE_ADMIN') %}
+        <div class="float-end">
+            <a href="{{ path('stores-add') }}" class="btn btn-outline-primary">Nuevo Local</a>
+        </div>
+    {% endif %}
 
     <h1>Locales</h1>
 
@@ -26,10 +28,15 @@
             {% for store in stores %}
                 <tr>
                     <td class="text-center">
-                        <a href="{{ path('stores-edit', {'id': store.id}) }}"
-                           title="Editar Local {{ store.id }}">
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a href="{{ path('stores-edit', {'id': store.id}) }}"
+                               title="Editar Local {{ store.id }}">
+                                {{ store.id }}
+                            </a>
+                        {% else %}
                             {{ store.id }}
-                        </a>
+                        {% endif %}
+
                     </td>
                     <td>
                         <a href="{{ path('store-transactions', {'id': store.id}) }}"
@@ -46,8 +53,8 @@
             {% endfor %}
             <tr>
                 <td colspan="3"></td>
-                <td class="text-end">{{ total|price|raw }}</td>
-                <td class="text-end">{{ totalIva|price|raw }}</td>
+                <td class="text-end fw-bold">{{ total|price|raw }}</td>
+                <td class="text-end fw-bold">{{ totalIva|price|raw }}</td>
             </tr>
         </table>
     {% endif %}

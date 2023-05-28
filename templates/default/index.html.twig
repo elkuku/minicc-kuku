@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block body %}
-    {% if is_granted('ROLE_ADMIN') %}
+    {% if is_granted('ROLE_CASHIER') %}
         {% include'default/_admin-dashboard.html.twig' %}
     {% elseif app.user %}
         {% include'default/_user-dashboard.html.twig' %}
