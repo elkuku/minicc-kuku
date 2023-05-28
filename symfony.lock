@@ -598,6 +598,20 @@
     "symfony/service-contracts": {
         "version": "v2.4.1"
     },
+    "symfony/stimulus-bundle": {
+        "version": "2.9",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "2.9",
+            "ref": "a93bd27f5f84c8b6057f8c5a5d281de1fa041990"
+        },
+        "files": [
+            "assets/bootstrap.js",
+            "assets/controllers.json",
+            "assets/controllers/hello_controller.js"
+        ]
+    },
     "symfony/stopwatch": {
         "version": "v5.4.0"
     },

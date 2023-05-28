@@ -13,6 +13,7 @@
     {{ encore_entry_script_tags('app') }}
 
     {% block stylesheets %}{% endblock %}
+            {{ ux_controller_link_tags() }}
     {% block javascripts %}{% endblock %}
 
     {% if not app.user %}
