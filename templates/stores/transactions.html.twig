@@ -99,7 +99,7 @@
                         <td class="text-end">{{ saldo|price|raw }}</td>
                         {% if is_granted('ROLE_ADMIN') %}
                             <td>
-                                <a href="{{ path('transaction-edit', {'id': transaction.id, 'view': 'stores/'~store.id}) }}"
+                                <a href="{{ path('transaction-edit', {'id': transaction.id, 'view': path('store-transactions',{'id': store.id}) }) }}"
                                    title="Edit transaction">
                                    Edit
                                 </a>
