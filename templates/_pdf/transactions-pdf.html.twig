@@ -53,7 +53,7 @@
                 {% set saldo = saldo + transaction.amount %}
                 <tr class="{{ transaction.type.cssClassPdf }}">
                     <td>{{ intlDate(transaction.date, 'MMMM d') }}</td>
-                    <td>{{ transaction.type.translationKey|trans }}</td>
+                    <td>{{ transaction.type.translationKey|trans }} {{ transaction.comment ? '('~transaction.comment~')' : '' }}</td>
                     <td class="text-right">{{ transaction.amount|price|raw }}</td>
                     <td class="text-right">{{ saldo|price|raw }}</td>
                 </tr>
