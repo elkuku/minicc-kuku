@@ -604,7 +604,7 @@
             "repo": "github.com/symfony/recipes",
             "branch": "main",
             "version": "2.9",
-            "ref": "a93bd27f5f84c8b6057f8c5a5d281de1fa041990"
+            "ref": "05c45071c7ecacc1e48f94bc43c1f8d4405fb2b2"
         },
         "files": [
             "assets/bootstrap.js",
