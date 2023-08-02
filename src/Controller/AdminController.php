@@ -22,12 +22,13 @@ class AdminController extends AbstractController
     #[Route(path: '/cobrar', name: 'cobrar', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_ADMIN')]
     public function cobrar(
-        StoreRepository $storeRepository,
-        UserRepository $userRepository,
+        StoreRepository         $storeRepository,
+        UserRepository          $userRepository,
         PaymentMethodRepository $paymentMethodRepository,
-        Request $request,
-        EntityManagerInterface $entityManager,
-    ): Response {
+        Request                 $request,
+        EntityManagerInterface  $entityManager,
+    ): Response
+    {
         $values = $request->request->all('values');
         if (!$values) {
             return $this->render(
@@ -87,19 +88,20 @@ class AdminController extends AbstractController
     #[Route(path: '/pay-day', name: 'pay-day', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_ADMIN')]
     public function payDay(
-        StoreRepository $storeRepository,
+        StoreRepository         $storeRepository,
         PaymentMethodRepository $paymentMethodRepository,
-        TransactionRepository $transactionRepository,
-        Request $request,
-        EntityManagerInterface $entityManager,
-    ): Response {
+        TransactionRepository   $transactionRepository,
+        Request                 $request,
+        EntityManagerInterface  $entityManager,
+    ): Response
+    {
         $payments = $request->request->all('payments');
         if (!$payments) {
             return $this->render(
                 'admin/payday-html.twig',
                 [
-                    'stores'         => $storeRepository->getActive(),
-                    'lastRecipeNo'   => $transactionRepository->getLastRecipeNo() + 1,
+                    'stores' => $storeRepository->getActive(),
+                    'lastRecipeNo' => $transactionRepository->getLastRecipeNo() + 1,
                     'paymentMethods' => $paymentMethodRepository->findAll(),
                 ]
             );
@@ -151,15 +153,18 @@ class AdminController extends AbstractController
     #[Route(path: '/pagos-por-ano', name: 'pagos-por-ano', methods: ['GET'])]
     #[IsGranted('ROLE_CASHIER')]
     public function pagosPorAno(
-        Request $request,
+        Request               $request,
         TransactionRepository $repository
-    ): Response {
+    ): Response
+    {
         $year = $request->query->getInt('year', (int)date('Y'));
+        $month = $year === (int)date('Y') ? (int)date('m') : 1;
 
         return $this->render(
             'admin/pagos-por-ano.html.twig',
             [
-                'year'         => $year,
+                'year' => $year,
+                'month' => $month,
                 'transactions' => $repository->getPagosPorAno($year),
             ]
         );
@@ -169,7 +174,8 @@ class AdminController extends AbstractController
     #[IsGranted('ROLE_ADMIN')]
     public function mailListTransactions(
         StoreRepository $storeRepository
-    ): Response {
+    ): Response
+    {
         return $this->render(
             'admin/mail-list-transactions.twig',
             [
@@ -182,7 +188,8 @@ class AdminController extends AbstractController
     #[IsGranted('ROLE_ADMIN')]
     public function mailListPlanillas(
         StoreRepository $storeRepository
-    ): Response {
+    ): Response
+    {
         return $this->render(
             'admin/mail-list-planillas.twig',
             [
