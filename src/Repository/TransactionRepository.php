@@ -154,7 +154,7 @@ class TransactionRepository extends ServiceEntityRepository
             ->where('p.store = :store')
             ->andWhere('MONTH(p.date) = :month')
             ->andWhere('YEAR(p.date) = :year')
-            ->andWhere('p.type = 2')
+            ->andWhere('p.type = 2 OR p.type = 4')
             ->setParameter('store', $store->getId())
             ->setParameter('month', $month)
             ->setParameter('year', $year)
