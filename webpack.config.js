@@ -22,7 +22,6 @@ Encore
      */
     .addEntry('app', './assets/app.js')
     .addEntry('js/paginator', './assets/js/paginator.js')
-    .addEntry('js/admin/pagos-por-ano', './assets/js/admin/pagos-por-ano.js')
     .addEntry('js/contract/form', './assets/js/contract/form.js')
     .addEntry('js/default/background', './assets/js/default/background.js')
     .addEntry('js/transaction/form', './assets/js/transaction/form.js')

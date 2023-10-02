@@ -4,11 +4,6 @@
 
 {% block title %} {{ parent() }} - Pagos por Año{% endblock %}
 
-{% block javascripts %}
-    {{ parent() }}
-    {{ encore_entry_script_tags('js/admin/pagos-por-ano') }}
-{% endblock %}
-
 {% block body %}
     <h1>Pagos del año {{ year }}</h1>
     <div class="row">
@@ -32,33 +27,18 @@
     <div class="d-flex align-items-start">
 
         <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-            {% for mes in range(1, 13) %}
+            {% for mes in range(1, 12) %}
                 <button class="nav-link {{ mes == month ? 'active' : '' }}" id="v-pills-tab-{{ mes }}" data-bs-toggle="pill"
                         data-bs-target="#v-pills-{{ mes }}" type="button" role="tab">
-                        {% if 13 == mes %}
-                        Total
-                        {% else %}
                     {{ intlDate(year~'-'~mes~'-1', 'MMMM')|capitalize }}
-                    {% endif %}
                 </button>
             {% endfor %}
         </div>
 
         <div class="tab-content" id="v-pills-tabContent">
-            {% for mes in range(1, 13) %}
+            {% for mes in range(1, 12) %}
                 <div class="tab-pane fade {{ mes == month ? 'show active' : '' }}" id="v-pills-{{ mes }}" role="tabpanel">
-                    {% if 13 == mes %}
-                        <table class="table table-bordered table-hover">
-                            <tr>
-                                <th>Totales del A&ntilde;o:</th>
-                                <th colspan="{{ maxLoc }}"></th>
-                                <th class="text-end">{{ totalAnoTotal|price|raw }}</th>
-                                <th class="text-end">{{ totalTaxYear|price|raw }}</th>
-                                <th class="text-end">{{ (totalAnoTotal - totalTaxYear)|price|raw }}</th>
-                            </tr>
-                        </table>
-                    {% else %}
-                    
+
                     <table class="table table-bordered table-hover">
                         <tr>
                             <th class="text-center">Dia</th>
@@ -115,7 +95,7 @@
                             <th class="text-end">{{ (totalTotal - totalTaxMonth)|price|raw }}</th>
                         </tr>
                     </table>
-                    {% endif %}
+
 
                 </div>
 
@@ -124,95 +104,22 @@
                 {% set totalTotal, totalTaxMonth = 0, 0 %}
             {% endfor %}
         </div>
+
     </div>
 
-    <hr>
-    <hr>
-    <hr>
-
-    {% set totalDia, totalTotal, totalAnoTotal = 0, 0, 0 %}
-    {% set totalTaxMonth, totalTaxYear = 0, 0 %}
-    <table class="table table-bordered table-sm">
-        <colgroup></colgroup>
-        {% for loc in range(1, maxLoc) %}
-            <colgroup></colgroup>
-        {% endfor %}
-        <colgroup></colgroup>
-        <colgroup></colgroup>
-        <colgroup></colgroup>
-        <colgroup></colgroup>
-        {% for mes in range(1, 12) %}
-            <tr>
-                <th colspan="14" class="text-center alert-info">
-                    {{ intlDate(year~'-'~mes~'-1', 'MMMM')|capitalize }}
-                </th>
-            </tr>
-            <tr>
-                <th class="text-center">Dia</th>
-                {% for loc in range(1, maxLoc) %}
-                    <th class="text-center">{{ loc }}</th>
-                {% endfor %}
-                <th class="text-end">TOTAL</th>
-                <th class="text-end">IVA</th>
-                <th class="text-end">Deposito</th>
-            </tr>
-            {% for dia in range(1, 31) %}
-                {% for loc in range(1, maxLoc) %}
-                    {% if transactions[loc][mes][dia] is defined %}
-                        {% set newRow = true %}
-                    {% endif %}
-                {% endfor %}
-                {% if newRow %}
-                    <tr>
-                    <td class="text-center" title="{{ dia~'.'~mes~'.'~year }}">{{ dia }}</td>
-                    {% for loc in range(1, maxLoc) %}
-                        {% if transactions[loc][mes][dia] is defined %}
-                            <td class="text-end">
-                                {% for t in transactions[loc][mes][dia] %}
-                                    {% set totalDia = totalDia + t.amount %}
-                                    {% set totalLocal = totalLocal|merge({('local'~loc): totalLocal['local'~loc]+t.amount}) %}
-                                    <a href="{{ path('transaction-edit', {'id': t.id, 'view': path('pagos-por-ano') }) }}">{{ t.amount|price|raw }}</a>
-                                {% endfor %}
-                            </td>
-                        {% else %}
-                            <td>&nbsp;</td>
-                        {% endif %}
-                    {% endfor %}
-                    {% set totalTotal = totalTotal + totalDia %}
-                    {% set totalTaxMonth = totalTaxMonth + totalDia|taxFromTotal %}
-                    <td class="text-end">{{ totalDia|price|raw }}</td>
-                    <td class="text-end">{{ totalDia|taxFromTotal|price|raw }}</td>
-                    <td class="text-end">{{ (totalDia - totalDia|taxFromTotal)|price|raw }}</td>
-                {% endif %}
-                {% set newRow, totalDia = false, 0 %}
-                </tr>
-            {% endfor %}
-            <tr>
-                <th>TOTALES</th>
-                {% for loc in range(1, maxLoc) %}
-                    <th class="text-end">
-                        <strong>
-                            {{ totalLocal['local'~loc] ? totalLocal['local'~loc]|price|raw : '' }}
-                            {% set totalLocal = totalLocal|merge({('local'~loc): 0}) %}
-                        </strong>
-                    </th>
-                {% endfor %}
-                <th class="text-end">{{ totalTotal|price|raw }}</th>
-                <th class="text-end">{{ totalTaxMonth|price|raw }}</th>
-                <th class="text-end">{{ (totalTotal - totalTaxMonth)|price|raw }}</th>
-            </tr>
-            {% set totalAnoTotal = totalAnoTotal + totalTotal %}
-            {% set totalTaxYear = totalTaxYear + totalTaxMonth %}
-            {% set totalTotal, totalTaxMonth = 0, 0 %}
-        {% endfor %}
-        <tfoot>
+    <table class="table table-bordered">
         <tr>
-            <th>Totales del A&ntilde;o:</th>
-            <th colspan="{{ maxLoc }}"></th>
+            <th class="text-center">Totales del A&ntilde;o:</th>
+            <th class="text-end">TOTAL</th>
+            <th class="text-end">IVA</th>
+            <th class="text-end">Deposito</th>
+        </tr>
+        <tr>
+            <th></th>
             <th class="text-end">{{ totalAnoTotal|price|raw }}</th>
             <th class="text-end">{{ totalTaxYear|price|raw }}</th>
             <th class="text-end">{{ (totalAnoTotal - totalTaxYear)|price|raw }}</th>
         </tr>
-        </tfoot>
     </table>
+
 {% endblock %}
