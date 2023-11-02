@@ -99,7 +99,7 @@ class TransactionRepository extends ServiceEntityRepository
      */
     public function getSaldo(Store $store): ?float
     {
-        return $this->createQueryBuilder('t')
+        return (float)$this->createQueryBuilder('t')
             ->select('SUM(t.amount) AS amount')
             ->where('t.store = :store')
             ->setParameter('store', $store->getId())

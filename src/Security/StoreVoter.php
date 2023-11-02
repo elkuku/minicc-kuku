@@ -9,7 +9,9 @@ use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
-class StoreVoter extends Voter
+/**
+ * @extends Voter<string, string>
+ */class StoreVoter extends Voter
 {
     public final const VIEW = 'view';
     public final const EDIT = 'edit';
