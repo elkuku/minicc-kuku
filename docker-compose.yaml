@@ -1,10 +1,10 @@
 version: '3.3'
 services:
   database:
-    image: mysql:5.7
+    image: mysql:5.7.33
     environment:
       MYSQL_DATABASE: 'main'
-      MYSQL_USER: 'root'
+      MYSQL_USER: 'main'
       MYSQL_PASSWORD: 'main'
       MYSQL_ROOT_PASSWORD: 'main'
     ports:
