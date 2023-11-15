@@ -23,7 +23,7 @@ class TasksController extends AbstractController
         return $this->render('admin/tasks.html.twig');
     }
 
-    #[Route(path: '/console-view/{item}', name: 'console-view', methods: ['GET'])]
+    #[Route(path: '/console-view/{item}', name: 'console-view', methods: ['GET', 'POST'])]
     public function consoleView(
         string $item,
         Request $request,
@@ -41,9 +41,9 @@ class TasksController extends AbstractController
             case 'migrations':
                 $command['command'] = 'doctrine:migrations:status';
                 break;
-            case 'security':
-                $command['command'] = 'security:check';
-                $command['lockfile'] = dirname($kernel->getProjectDir());
+            case 'info':
+                define('STDIN',fopen("php://stdin","r"));
+                $command['command'] = 'about';
                 break;
             default:
                 throw new UnexpectedValueException('Unknown command');
