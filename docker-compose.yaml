@@ -14,6 +14,13 @@ services:
     volumes:
       - my-db:/var/lib/mysql
 
+  pma:
+    image: phpmyadmin
+    environment:
+      - PMA_HOST=database
+    ports:
+      - '6080:80'
+
 volumes:
   my-db:
 
