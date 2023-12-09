@@ -20,6 +20,8 @@ services:
       - PMA_HOST=database
     ports:
       - '6080:80'
+    depends_on:
+      - database
 
 volumes:
   my-db:
