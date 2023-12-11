@@ -11,6 +11,23 @@ then
 fi
 }
 
+function getContainerHealth {
+  docker inspect --format "{{.State.Health.Status}}" $1
+}
+
+function waitContainer {
+  while STATUS=$(getContainerHealth $1); [ $STATUS != "healthy" ]; do
+    if [ $STATUS == "unhealthy" ]; then
+      echo "Failed!"
+      exit 1
+    fi
+    printf .
+    lf=$'\n'
+    sleep 1
+  done
+  printf "$lf"
+}
+
 check "docker-compose"
 check "symfony"
 
@@ -20,6 +37,9 @@ cd "$DIR" || exit 1
 echo "Starting dev env in $DIR ..."
 
 docker-compose up -d
+
+printf "Waiting for DB to get ready ..."
+waitContainer minicc-kuku-database-1
 
 symfony server:start -d
 

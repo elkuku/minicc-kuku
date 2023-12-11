@@ -14,6 +14,11 @@ services:
       - '3306'
     volumes:
       - my-db:/var/lib/mysql
+    healthcheck:
+      test: [ "CMD-SHELL", "mysqladmin ping --silent" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
   ###< doctrine/doctrine-bundle ###
 
   pma:
