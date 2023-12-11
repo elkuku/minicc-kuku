@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3edc979d6b2b779f3e1b49ab776b18dd",
+    "content-hash": "dda7c0668213ede96ed6975f4be3c672",
     "packages": [
         {
             "name": "composer/package-versions-deprecated",
@@ -5646,28 +5646,28 @@
         },
         {
             "name": "symfony/mailgun-mailer",
-            "version": "v6.4.0",
+            "version": "v7.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/mailgun-mailer.git",
-                "reference": "72d2f72f2016e559d0152188bef5a5dc9ebf5ec7"
+                "reference": "3c1dea66d086deea11e10cbcd45a78b44f556cee"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/mailgun-mailer/zipball/72d2f72f2016e559d0152188bef5a5dc9ebf5ec7",
-                "reference": "72d2f72f2016e559d0152188bef5a5dc9ebf5ec7",
+                "url": "https://api.github.com/repos/symfony/mailgun-mailer/zipball/3c1dea66d086deea11e10cbcd45a78b44f556cee",
+                "reference": "3c1dea66d086deea11e10cbcd45a78b44f556cee",
                 "shasum": ""
             },
             "require": {
-                "php": ">=8.1",
-                "symfony/mailer": "^5.4.21|^6.2.7|^7.0"
+                "php": ">=8.2",
+                "symfony/mailer": "^6.4|^7.0"
             },
             "conflict": {
-                "symfony/http-foundation": "<6.2"
+                "symfony/http-foundation": "<6.4"
             },
             "require-dev": {
-                "symfony/http-client": "^6.3|^7.0",
-                "symfony/webhook": "^6.3|^7.0"
+                "symfony/http-client": "^6.4|^7.0",
+                "symfony/webhook": "^6.4|^7.0"
             },
             "type": "symfony-mailer-bridge",
             "autoload": {
@@ -5695,7 +5695,7 @@
             "description": "Symfony Mailgun Mailer Bridge",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/mailgun-mailer/tree/v6.4.0"
+                "source": "https://github.com/symfony/mailgun-mailer/tree/v7.0.0"
             },
             "funding": [
                 {
@@ -5711,7 +5711,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-11-06T17:20:05+00:00"
+            "time": "2023-11-07T15:10:37+00:00"
         },
         {
             "name": "symfony/mime",
@@ -9705,92 +9705,6 @@
             "time": "2023-03-08T13:26:56+00:00"
         },
         {
-            "name": "nette/utils",
-            "version": "v3.2.10",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/nette/utils.git",
-                "reference": "a4175c62652f2300c8017fb7e640f9ccb11648d2"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/nette/utils/zipball/a4175c62652f2300c8017fb7e640f9ccb11648d2",
-                "reference": "a4175c62652f2300c8017fb7e640f9ccb11648d2",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.2 <8.4"
-            },
-            "conflict": {
-                "nette/di": "<3.0.6"
-            },
-            "require-dev": {
-                "jetbrains/phpstorm-attributes": "dev-master",
-                "nette/tester": "~2.0",
-                "phpstan/phpstan": "^1.0",
-                "tracy/tracy": "^2.3"
-            },
-            "suggest": {
-                "ext-gd": "to use Image",
-                "ext-iconv": "to use Strings::webalize(), toAscii(), chr() and reverse()",
-                "ext-intl": "to use Strings::webalize(), toAscii(), normalize() and compare()",
-                "ext-json": "to use Nette\\Utils\\Json",
-                "ext-mbstring": "to use Strings::lower() etc...",
-                "ext-tokenizer": "to use Nette\\Utils\\Reflection::getUseStatements()",
-                "ext-xml": "to use Strings::length() etc. when mbstring is not available"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.2-dev"
-                }
-            },
-            "autoload": {
-                "classmap": [
-                    "src/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause",
-                "GPL-2.0-only",
-                "GPL-3.0-only"
-            ],
-            "authors": [
-                {
-                    "name": "David Grudl",
-                    "homepage": "https://davidgrudl.com"
-                },
-                {
-                    "name": "Nette Community",
-                    "homepage": "https://nette.org/contributors"
-                }
-            ],
-            "description": "🛠  Nette Utils: lightweight utilities for string & array manipulation, image handling, safe JSON encoding/decoding, validation, slug or strong password generating etc.",
-            "homepage": "https://nette.org",
-            "keywords": [
-                "array",
-                "core",
-                "datetime",
-                "images",
-                "json",
-                "nette",
-                "paginator",
-                "password",
-                "slugify",
-                "string",
-                "unicode",
-                "utf-8",
-                "utility",
-                "validation"
-            ],
-            "support": {
-                "issues": "https://github.com/nette/utils/issues",
-                "source": "https://github.com/nette/utils/tree/v3.2.10"
-            },
-            "time": "2023-07-30T15:38:18+00:00"
-        },
-        {
             "name": "nikic/php-parser",
             "version": "v4.18.0",
             "source": {
@@ -12804,32 +12718,21 @@
         },
         {
             "name": "tomasvotruba/cognitive-complexity",
-            "version": "0.0.5",
+            "version": "0.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TomasVotruba/cognitive-complexity.git",
-                "reference": "d14c2619ba8e932e82d941792198e0f9ce41001f"
+                "reference": "d3b18c444104004d78b4a5c25816dadf854e686a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TomasVotruba/cognitive-complexity/zipball/d14c2619ba8e932e82d941792198e0f9ce41001f",
-                "reference": "d14c2619ba8e932e82d941792198e0f9ce41001f",
+                "url": "https://api.github.com/repos/TomasVotruba/cognitive-complexity/zipball/d3b18c444104004d78b4a5c25816dadf854e686a",
+                "reference": "d3b18c444104004d78b4a5c25816dadf854e686a",
                 "shasum": ""
             },
             "require": {
-                "nette/utils": "^3.2",
-                "php": "^8.1",
-                "phpstan/phpstan": "^1.9.3"
-            },
-            "require-dev": {
-                "php-parallel-lint/php-parallel-lint": "^1.3",
-                "phpstan/extension-installer": "^1.2",
-                "phpunit/phpunit": "^9.5",
-                "rector/rector": "^0.15.1",
-                "symplify/easy-coding-standard": "^11.1",
-                "symplify/monorepo-builder": "^11.1",
-                "tomasvotruba/type-coverage": "^0.0.5",
-                "tracy/tracy": "^2.9"
+                "php": "^7.2 || ^8.0",
+                "phpstan/phpstan": "^1.10"
             },
             "type": "phpstan-extension",
             "extra": {
@@ -12851,9 +12754,19 @@
             "description": "PHPStan rules to measure cognitive complexity of your classes and methods",
             "support": {
                 "issues": "https://github.com/TomasVotruba/cognitive-complexity/issues",
-                "source": "https://github.com/TomasVotruba/cognitive-complexity/tree/0.0.5"
+                "source": "https://github.com/TomasVotruba/cognitive-complexity/tree/0.2.2"
             },
-            "time": "2022-12-29T13:35:06+00:00"
+            "funding": [
+                {
+                    "url": "https://www.paypal.me/rectorphp",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/tomasvotruba",
+                    "type": "github"
+                }
+            ],
+            "time": "2023-09-08T09:56:00+00:00"
         }
     ],
     "aliases": [],

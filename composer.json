@@ -31,7 +31,7 @@
         "symfony/form": "*",
         "symfony/framework-bundle": "*",
         "symfony/google-mailer": "*",
-        "symfony/mailgun-mailer": "6.*",
+        "symfony/mailgun-mailer": "7.*",
         "symfony/monolog-bundle": "^3.5",
         "symfony/process": "*",
         "symfony/property-access": "*",
@@ -71,7 +71,7 @@
         "symfony/phpunit-bridge": "*",
         "symfony/stopwatch": "*",
         "symfony/web-profiler-bundle": "*",
-        "tomasvotruba/cognitive-complexity": "^0.0.5"
+        "tomasvotruba/cognitive-complexity": "^0.2"
     },
     "config": {
         "preferred-install": {

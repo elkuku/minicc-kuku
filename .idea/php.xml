@@ -163,7 +163,6 @@
       <path value="$PROJECT_DIR$/vendor/easycorp/easyadmin-bundle" />
       <path value="$PROJECT_DIR$/vendor/masterminds/html5" />
       <path value="$PROJECT_DIR$/vendor/phpstan/extension-installer" />
-      <path value="$PROJECT_DIR$/vendor/nette/utils" />
       <path value="$PROJECT_DIR$/vendor/tomasvotruba/cognitive-complexity" />
       <path value="$PROJECT_DIR$/vendor/phpseclib/phpseclib" />
       <path value="$PROJECT_DIR$/vendor/firebase/php-jwt" />
