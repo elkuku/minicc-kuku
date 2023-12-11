@@ -11,7 +11,6 @@
         "ext-json": "*",
         "ext-pcre": "*",
         "composer/package-versions-deprecated": "1.11.99.5",
-        "doctrine/annotations": "^1.0",
         "doctrine/doctrine-bundle": "^2.4",
         "doctrine/doctrine-fixtures-bundle": "^3.0",
         "doctrine/doctrine-migrations-bundle": "^3.1",
