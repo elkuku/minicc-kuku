@@ -8,6 +8,6 @@ tests:
 	symfony console doctrine:migrations:migrate -n
 	symfony console doctrine:fixtures:load -n
 	symfony php bin/phpunit $@
-	vendor/bin/phpstan
+	vendor/bin/phpstan --memory-limit=2G
 	vendor/bin/rector process src --dry-run
 .PHONY: tests
