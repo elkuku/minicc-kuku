@@ -27,7 +27,7 @@ class PaymentMethodController extends AbstractController
             : 'list.html.twig';
 
         return $this->render(
-            'payment-methods/'.$template,
+            'payment-methods/' . $template,
             [
                 'paymentMethods' => $repository->findAll(),
             ]
@@ -61,7 +61,7 @@ class PaymentMethodController extends AbstractController
             : 'form.html.twig';
 
         return $this->render(
-            'payment-methods/'.$template,
+            'payment-methods/' . $template,
             [
                 'form' => $form,
                 'data' => $paymentMethod,
@@ -97,7 +97,7 @@ class PaymentMethodController extends AbstractController
             : 'form.html.twig';
 
         return $this->render(
-            'payment-methods/'.$template,
+            'payment-methods/' . $template,
             [
                 'form' => $form,
                 'data' => $data,

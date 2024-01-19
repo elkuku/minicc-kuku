@@ -25,8 +25,8 @@ class TransactionController extends AbstractController
 
     #[Route(path: '/delete/{id}', name: 'transaction-delete', methods: ['GET'])]
     public function delete(
-        Request                $request,
-        Transaction            $transaction,
+        Request $request,
+        Transaction $transaction,
         EntityManagerInterface $entityManager,
     ): RedirectResponse
     {
@@ -40,8 +40,8 @@ class TransactionController extends AbstractController
 
     #[Route(path: '/edit/{id}', name: 'transaction-edit', methods: ['GET', 'POST'])]
     public function edit(
-        Transaction            $transaction,
-        Request                $request,
+        Transaction $transaction,
+        Request $request,
         EntityManagerInterface $entityManager,
     ): Response
     {
@@ -57,7 +57,7 @@ class TransactionController extends AbstractController
             $this->addFlash('success', 'La Transaccion ha sido guardada.');
 
             if ($view) {
-                return $this->redirect((string)$view);
+                return $this->redirect((string) $view);
             }
 
             return $this->redirectToRoute(
@@ -80,16 +80,17 @@ class TransactionController extends AbstractController
 
     #[Route(path: '/', name: 'transaction-rawlist', methods: ['GET', 'POST'])]
     public function rawList(
-        StoreRepository                      $storeRepo,
-        TransactionRepository                $transactionRepo,
-        Request                              $request,
-        #[Autowire('%env(LIST_LIMIT)%')] int $listLimit,
+        StoreRepository $storeRepo,
+        TransactionRepository $transactionRepo,
+        Request $request,
+        #[Autowire('%env(LIST_LIMIT)%')]
+        int $listLimit,
     ): Response
     {
         $paginatorOptions = $this->getPaginatorOptions($request, $listLimit);
         $transactions = $transactionRepo->getRawList($paginatorOptions);
         $paginatorOptions->setMaxPages(
-            (int)ceil(
+            (int) ceil(
                 $transactions->count() / $paginatorOptions->getLimit()
             )
         );

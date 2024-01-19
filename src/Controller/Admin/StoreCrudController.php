@@ -15,7 +15,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class StoreCrudController extends AbstractCrudController
 {
-    public function __construct(private readonly TaxService $taxService)
+    public function __construct(
+        private readonly TaxService $taxService
+    )
     {
     }
 
@@ -38,13 +40,13 @@ class StoreCrudController extends AbstractCrudController
         yield NumberField::new('valAlq')
             ->setFormTypeOptions([
                 'row_attr' => [
-                    'data-controller'             => 'taxcalc2',
+                    'data-controller' => 'taxcalc2',
                     'data-taxcalc2-taxrate-value' => $this->taxService->getTaxValue(
                     ),
                 ],
-                'attr'     => [
+                'attr' => [
                     'data-taxcalc2-target' => 'withoutTax',
-                    'data-action'          => 'taxcalc2#calcWithTax',
+                    'data-action' => 'taxcalc2#calcWithTax',
                 ],
             ]);
         yield Field::new('cntLanfort', 'Lanfort')->onlyOnForms();
@@ -59,10 +61,11 @@ class StoreCrudController extends AbstractCrudController
 
     public function configureCrud(Crud $crud): Crud
     {
-        return $crud->overrideTemplates([
-            'crud/edit' => 'easyadmin/crud/store/edit.html.twig',
-            'crud/new'  => 'easyadmin/crud/store/new.html.twig',
-        ]
+        return $crud->overrideTemplates(
+            [
+                'crud/edit' => 'easyadmin/crud/store/edit.html.twig',
+                'crud/new' => 'easyadmin/crud/store/new.html.twig',
+            ]
         );
     }
 }

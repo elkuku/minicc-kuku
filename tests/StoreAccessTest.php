@@ -36,7 +36,7 @@ class StoreAccessTest extends WebTestCase
             ->findOneBy([
                 'email' => 'user2@example.com',
             ]);
-        if (!$testUser) {
+        if (! $testUser) {
             throw new \UnexpectedValueException('User not found.');
         }
         $client->loginUser($testUser);
@@ -62,7 +62,7 @@ class StoreAccessTest extends WebTestCase
             ->findOneBy([
                 'email' => 'user1@example.com',
             ]);
-        if (!$testUser) {
+        if (! $testUser) {
             throw new \UnexpectedValueException('User not found.');
         }
         $client->loginUser($testUser);

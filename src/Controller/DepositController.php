@@ -32,12 +32,13 @@ class DepositController extends AbstractController
     public function index(
         DepositRepository $depositRepository,
         Request $request,
-        #[Autowire('%env(LIST_LIMIT)%')] int $listLimit
+        #[Autowire('%env(LIST_LIMIT)%')]
+        int $listLimit
     ): Response {
         $paginatorOptions = $this->getPaginatorOptions($request, $listLimit);
         $deposits = $depositRepository->getPaginatedList($paginatorOptions);
         $paginatorOptions->setMaxPages(
-            (int)ceil(
+            (int) ceil(
                 count($deposits) / $paginatorOptions->getLimit()
             )
         );
@@ -59,14 +60,14 @@ class DepositController extends AbstractController
         EntityManagerInterface $entityManager,
     ): RedirectResponse {
         $entity = $paymentMethodRepository->find(2);
-        if (!$entity) {
+        if (! $entity) {
             throw new UnexpectedValueException('Invalid entity');
         }
 
         $csvData = $this->getCsvDataFromRequest($request);
         $insertCount = 0;
         foreach ($csvData->lines as $line) {
-            if (!isset(
+            if (! isset(
                 $line->descripcion, $line->fecha,
                 $line->{'numero de documento'}, $line->credito
             )
@@ -74,7 +75,7 @@ class DepositController extends AbstractController
                 continue;
             }
 
-            if (!str_starts_with(
+            if (! str_starts_with(
                 (string) $line->descripcion,
                 'TRANSFERENCIA DIRECTA DE'
             )
@@ -98,7 +99,7 @@ class DepositController extends AbstractController
         $this->addFlash(
             ($insertCount ? 'success' : 'warning'),
             'Depositos insertados: '
-            .$insertCount
+            . $insertCount
         );
 
         return $this->redirectToRoute('deposits');
@@ -109,7 +110,7 @@ class DepositController extends AbstractController
         DepositRepository $depositRepository,
         Request $request
     ): Response {
-        $documentId = (int)$request->get('q');
+        $documentId = (int) $request->get('q');
         $ids = $depositRepository->search($documentId);
 
         return $this->render(
@@ -147,17 +148,17 @@ class DepositController extends AbstractController
     private function getCsvDataFromRequest(Request $request): CsvObject
     {
         $csvFile = $request->files->get('csv_file');
-        if (!$csvFile) {
+        if (! $csvFile) {
             throw new RuntimeException('No CSV file recieved.');
         }
 
         $path = $csvFile->getRealPath();
-        if (!$path) {
+        if (! $path) {
             throw new RuntimeException('Invalid CSV file.');
         }
 
         $contents = file($path);
-        if (!$contents) {
+        if (! $contents) {
             throw new RuntimeException('Cannot read CSV file.');
         }
 

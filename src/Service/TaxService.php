@@ -13,7 +13,8 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 class TaxService
 {
     public function __construct(
-        #[Autowire('%env(VALUE_IVA)%')] private readonly int $taxValue
+        #[Autowire('%env(VALUE_IVA)%')]
+        private readonly int $taxValue
     ) {
     }
 

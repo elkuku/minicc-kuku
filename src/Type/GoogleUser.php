@@ -7,7 +7,9 @@ final class GoogleUser
     /**
      * @param array<string> $response
      */
-    public function __construct(protected array $response)
+    public function __construct(
+        protected array $response
+    )
     {
     }
 

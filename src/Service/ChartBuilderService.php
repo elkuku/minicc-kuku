@@ -48,14 +48,14 @@ class ChartBuilderService
         $chart = $this->chartBuilder->createChart(Chart::TYPE_BAR);
         $chart->setData(
             [
-                'labels'   => $labels,
+                'labels' => $labels,
                 'datasets' => [
                     [
-                        'label'           => $title,
+                        'label' => $title,
                         'backgroundColor' => $bgColors,
-                        'borderColor'     => $borderColors,
-                        'borderWidth'     => 1,
-                        'data'            => $data,
+                        'borderColor' => $borderColors,
+                        'borderWidth' => 1,
+                        'data' => $data,
                     ],
                 ],
             ]
@@ -77,22 +77,22 @@ class ChartBuilderService
         $chart = $this->chartBuilder->createChart(Chart::TYPE_LINE);
         $chart->setData(
             [
-                'labels'   => $labels,
+                'labels' => $labels,
                 'datasets' => [
                     [
-                        'label'           => 'Pagos',
-                        'data'            => $dataPayments,
-                        'fill'            => 'false',
-                        'lineTension'     => 0.1,
+                        'label' => 'Pagos',
+                        'data' => $dataPayments,
+                        'fill' => 'false',
+                        'lineTension' => 0.1,
                         'backgroundColor' => 'rgba(75,192,192,0.4)',
-                        'borderColor'     => 'rgba(75,192,192,1)',
+                        'borderColor' => 'rgba(75,192,192,1)',
                     ],
                     [
-                        'label'           => 'Alquiler',
-                        'data'            => $dataRent,
+                        'label' => 'Alquiler',
+                        'data' => $dataRent,
                         'backgroundColor' => 'rgba(255, 206, 86, 0.2)',
-                        'borderColor'     => 'rgba(255, 206, 86, 0.2)',
-                        'borderWidth'     => 1,
+                        'borderColor' => 'rgba(255, 206, 86, 0.2)',
+                        'borderWidth' => 1,
                     ],
                 ],
             ]

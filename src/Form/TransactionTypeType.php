@@ -38,8 +38,9 @@ class TransactionTypeType extends AbstractType
                 'type',
                 EnumType::class,
                 [
-                    'class'        => TransactionType::class,
-                    'choice_label' => fn(TransactionType $choice
+                    'class' => TransactionType::class,
+                    'choice_label' => fn(
+                        TransactionType $choice
                     ): TranslatableMessage => new TranslatableMessage(
                         $choice->translationKey()
                     ),
@@ -49,16 +50,16 @@ class TransactionTypeType extends AbstractType
                 'store',
                 EntityType::class,
                 [
-                    'class'        => Store::class,
+                    'class' => Store::class,
                     'choice_label' => fn(Store $store): string => $store->getId(
-                        ).' - '.$store->getDestination(),
+                        ) . ' - ' . $store->getDestination(),
                 ]
             )
             ->add(
                 'user',
                 EntityType::class,
                 [
-                    'class'        => User::class,
+                    'class' => User::class,
                     'choice_label' => 'name',
                 ]
             )
@@ -66,7 +67,7 @@ class TransactionTypeType extends AbstractType
                 'method',
                 EntityType::class,
                 [
-                    'class'        => PaymentMethod::class,
+                    'class' => PaymentMethod::class,
                     'choice_label' => 'name',
                 ]
             )

@@ -320,7 +320,7 @@ class Contract
 
     public function setValuesFromStore(Store $store): self
     {
-        $this->setStoreNumber((int)$store->getId())
+        $this->setStoreNumber((int) $store->getId())
             ->setDestination($store->getDestination())
             ->setValAlq($store->getValAlq())
             ->setCntLanfort($store->getCntLanfort())

@@ -14,13 +14,16 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 class GitLoader
 {
-    public function __construct(#[Autowire('%kernel.project_dir%')] private readonly string $rootDir)
+    public function __construct(
+        #[Autowire('%kernel.project_dir%')]
+        private readonly string $rootDir
+    )
     {
     }
 
     public function getBranchName(): string
     {
-        $gitHeadFile = $this->rootDir.'/.git/HEAD';
+        $gitHeadFile = $this->rootDir . '/.git/HEAD';
         $branchName = 'no branch name';
 
         $stringFromFile = file_exists($gitHeadFile)
@@ -41,7 +44,7 @@ class GitLoader
 
     public function getLastCommitMessage(): string
     {
-        $gitCommitMessageFile = $this->rootDir.'/.git/COMMIT_EDITMSG';
+        $gitCommitMessageFile = $this->rootDir . '/.git/COMMIT_EDITMSG';
         $commitMessage = file_exists($gitCommitMessageFile)
             ? file($gitCommitMessageFile, FILE_USE_INCLUDE_PATH) : '';
 
@@ -54,19 +57,19 @@ class GitLoader
     public function getLastCommitDetail(): array
     {
         $matches = [];
-        $gitLogFile = $this->rootDir.'/.git/logs/HEAD';
+        $gitLogFile = $this->rootDir . '/.git/logs/HEAD';
         $gitLogs = file_exists($gitLogFile)
             ? file($gitLogFile, FILE_USE_INCLUDE_PATH) : [];
         $sha = trim(
-            (string)$this->execCommand(
-                'cd '.$this->rootDir.' && git rev-parse --short HEAD'
+            (string) $this->execCommand(
+                'cd ' . $this->rootDir . ' && git rev-parse --short HEAD'
             )
         );
 
         if ($gitLogs) {
             preg_match(
                 "/([\w]+) ([\w]+) ([\w\s]+) (<[\w.@]+>) ([\d]+) ([\d-]+)\tcommit: ([\w\s]+)/",
-                (string)end($gitLogs),
+                (string) end($gitLogs),
                 $matches
             );
         }
@@ -74,7 +77,7 @@ class GitLoader
         $logs = [];
 
         $logs['author'] = $matches[3] ?? 'not defined';
-        $logs['date'] = isset($matches[5]) ? date('Y/m/d H:i', (int)$matches[5])
+        $logs['date'] = isset($matches[5]) ? date('Y/m/d H:i', (int) $matches[5])
             : 'not defined';
         $logs['sha'] = $sha;
 

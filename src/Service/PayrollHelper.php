@@ -18,9 +18,9 @@ class PayrollHelper
      * @return array{factDate: string, prevDate: string, stores: \App\Entity\Store[], storeData: array<string|int, array{saldoIni: mixed, transactions: float[]}>}
      */
     #[ArrayShape([
-        'factDate'  => "string",
-        'prevDate'  => "string",
-        'stores'    => "array",
+        'factDate' => "string",
+        'prevDate' => "string",
+        'stores' => "array",
         'storeData' => "array",
     ])]
     public function getData(
@@ -30,7 +30,7 @@ class PayrollHelper
     ): array {
         $stores = $this->storeRepository->findAll();
 
-        $factDate = $year.'-'.$month.'-1';
+        $factDate = $year . '-' . $month . '-1';
 
         if (1 === $month) {
             $prevYear = $year - 1;
@@ -40,7 +40,7 @@ class PayrollHelper
             $prevMonth = $month - 1;
         }
 
-        $prevDate = $prevYear.'-'.$prevMonth.'-01';
+        $prevDate = $prevYear . '-' . $prevMonth . '-01';
 
         $storeData = [];
         $selectedStores = [];
@@ -52,24 +52,24 @@ class PayrollHelper
 
             $storeData[$store->getId()]['saldoIni']
                 = $this->transactionRepository->getSaldoALaFecha(
-                $store,
-                $prevYear.'-'.$prevMonth.'-01'
-            );
+                    $store,
+                    $prevYear . '-' . $prevMonth . '-01'
+                );
 
             $storeData[$store->getId()]['transactions']
                 = $this->transactionRepository->findMonthPayments(
-                $store,
-                $prevMonth,
-                $prevYear
-            );
+                    $store,
+                    $prevMonth,
+                    $prevYear
+                );
 
             $selectedStores[] = $store;
         }
 
         return [
-            'factDate'  => $factDate,
-            'prevDate'  => $prevDate,
-            'stores'    => $selectedStores,
+            'factDate' => $factDate,
+            'prevDate' => $prevDate,
+            'stores' => $selectedStores,
             'storeData' => $storeData,
         ];
     }

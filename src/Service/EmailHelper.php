@@ -11,8 +11,10 @@ class EmailHelper
     private readonly Address $emailFrom;
 
     public function __construct(
-        #[Autowire('%env(EMAIL_FROM_ADDR)%')] string $emailFromAddress,
-        #[Autowire('%env(EMAIL_FROM_NAME)%')] string $emailFromName,
+        #[Autowire('%env(EMAIL_FROM_ADDR)%')]
+        string $emailFromAddress,
+        #[Autowire('%env(EMAIL_FROM_NAME)%')]
+        string $emailFromName,
     )
     {
         $this->emailFrom = new Address($emailFromAddress, $emailFromName);

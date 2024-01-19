@@ -38,14 +38,14 @@ class ContractController extends AbstractController
         return $this->render(
             'contract/list.html.twig',
             [
-                'stores'    => $storeRepository->findAll(),
-                'users'     => $userRepository->findActiveUsers(),
+                'stores' => $storeRepository->findAll(),
+                'users' => $userRepository->findActiveUsers(),
                 'contracts' => $contractRepository->findContracts(
                     $storeId,
                     $year
                 ),
-                'year'      => $year,
-                'storeId'   => $storeId,
+                'year' => $year,
+                'storeId' => $storeId,
             ]
         );
     }
@@ -68,7 +68,7 @@ class ContractController extends AbstractController
         }
         if ($user) {
             $contract
-                ->setInqNombreapellido((string)$user->getName())
+                ->setInqNombreapellido((string) $user->getName())
                 ->setInqCi($user->getInqCi());
         }
         $form = $this->createForm(ContractType::class, $contract);
@@ -87,18 +87,22 @@ class ContractController extends AbstractController
         return $this->render(
             'contract/form.html.twig',
             [
-                'form'          => $form,
-                'data'          => $contract,
+                'form' => $form,
+                'data' => $contract,
                 'ivaMultiplier' => $taxService->getTaxValue(),
-                'title'         => 'Nuevo Contrato',
+                'title' => 'Nuevo Contrato',
             ]
         );
     }
 
-    #[Route(path: '/{id}', name: 'contracts-edit', requirements: [
-        'id' => '\d+',
-    ],
-        methods: ['GET', 'POST'])]
+    #[Route(
+        path: '/{id}',
+        name: 'contracts-edit',
+        requirements: [
+            'id' => '\d+',
+        ],
+        methods: ['GET', 'POST']
+    )]
     public function edit(
         Contract $contract,
         Request $request,
@@ -121,10 +125,10 @@ class ContractController extends AbstractController
         return $this->render(
             'contract/form.html.twig',
             [
-                'form'          => $form,
-                'data'          => $contract,
+                'form' => $form,
+                'data' => $contract,
                 'ivaMultiplier' => $taxService->getTaxValue(),
-                'title'         => 'Editar Contrato',
+                'title' => 'Editar Contrato',
             ]
         );
     }
@@ -168,10 +172,10 @@ class ContractController extends AbstractController
         return $this->render(
             'contract/form.html.twig',
             [
-                'form'          => $form,
-                'data'          => $data,
+                'form' => $form,
+                'data' => $data,
                 'ivaMultiplier' => $taxService->getTaxValue(),
-                'title'         => 'Plantilla',
+                'title' => 'Plantilla',
             ]
         );
     }
@@ -186,43 +190,43 @@ class ContractController extends AbstractController
     ): PdfResponse {
         $numberToWord = new Numbers;
         $searchReplace = [
-            '[local_no]'     => $contract->getStoreNumber(),
-            '[destination]'  => $contract->getDestination(),
-            '[val_alq]'      => number_format((float)$contract->getValAlq(), 2),
-            '[txt_alq]'      => $numberToWord->toCurrency(
-                (float)$contract->getValAlq(),
+            '[local_no]' => $contract->getStoreNumber(),
+            '[destination]' => $contract->getDestination(),
+            '[val_alq]' => number_format((float) $contract->getValAlq(), 2),
+            '[txt_alq]' => $numberToWord->toCurrency(
+                (float) $contract->getValAlq(),
                 'es_EC',
                 'USD'
             ),
             '[val_garantia]' => number_format(
-                (float)$contract->getValGarantia(),
+                (float) $contract->getValGarantia(),
                 2
             ),
             '[txt_garantia]' => $numberToWord->toCurrency(
-                (float)$contract->getValGarantia(),
+                (float) $contract->getValGarantia(),
                 'es_EC',
                 'USD'
             ),
-            '[fecha_long]'   => IntlConverter::formatDate($contract->getDate()),
+            '[fecha_long]' => IntlConverter::formatDate($contract->getDate()),
 
             '[inq_nombreapellido]' => $contract->getInqNombreapellido(),
-            '[inq_ci]'             => $contract->getInqCi(),
+            '[inq_ci]' => $contract->getInqCi(),
 
             '[senor_a]' => $contract->getGender()->titleLong(),
-            '[el_la]'   => $contract->getGender()->text_1(),
-            '[del_la]'  => $contract->getGender()->text_2(),
+            '[el_la]' => $contract->getGender()->text_1(),
+            '[del_la]' => $contract->getGender()->text_2(),
 
-            '[cnt_lanfort]'  => $contract->getCntLanfort(),
-            '[cnt_neon]'     => $contract->getCntNeon(),
-            '[cnt_switch]'   => $contract->getCntSwitch(),
-            '[cnt_toma]'     => $contract->getCntToma(),
-            '[cnt_ventana]'  => $contract->getCntVentana(),
-            '[cnt_llaves]'   => $contract->getCntLlaves(),
+            '[cnt_lanfort]' => $contract->getCntLanfort(),
+            '[cnt_neon]' => $contract->getCntNeon(),
+            '[cnt_switch]' => $contract->getCntSwitch(),
+            '[cnt_toma]' => $contract->getCntToma(),
+            '[cnt_ventana]' => $contract->getCntVentana(),
+            '[cnt_llaves]' => $contract->getCntLlaves(),
             '[cnt_med_agua]' => $contract->getCntMedAgua(),
             '[cnt_med_elec]' => $contract->getCntMedElec(),
 
             '[med_electrico]' => $contract->getMedElectrico(),
-            '[med_agua]'      => $contract->getMedAgua(),
+            '[med_agua]' => $contract->getMedAgua(),
         ];
         $html = str_replace(
             array_keys($searchReplace),

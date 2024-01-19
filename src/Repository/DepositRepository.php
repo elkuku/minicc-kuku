@@ -40,9 +40,9 @@ class DepositRepository extends ServiceEntityRepository
 
     public function has(Deposit $deposit): bool
     {
-        return (bool)$this->findOneBy(
+        return (bool) $this->findOneBy(
             [
-                'date'     => $deposit->getDate(),
+                'date' => $deposit->getDate(),
                 'document' => $deposit->getDocument(),
             ]
         );
@@ -54,13 +54,13 @@ class DepositRepository extends ServiceEntityRepository
     public function getPaginatedList(PaginatorOptions $options): Paginator
     {
         $query = $this->createQueryBuilder('d')
-            ->orderBy('d.'.$options->getOrder(), $options->getOrderDir());
+            ->orderBy('d.' . $options->getOrder(), $options->getOrderDir());
 
         if ($options->searchCriteria('amount')) {
             $query->andWhere('d.amount = :amount')
                 ->setParameter(
                     'amount',
-                    (float)$options->searchCriteria('amount')
+                    (float) $options->searchCriteria('amount')
                 );
         }
 
@@ -68,8 +68,8 @@ class DepositRepository extends ServiceEntityRepository
             $query->andWhere('d.document LIKE :document')
                 ->setParameter(
                     'document',
-                    '%'.(int)$options->searchCriteria('document')
-                    .'%'
+                    '%' . (int) $options->searchCriteria('document')
+                    . '%'
                 );
         }
 
@@ -106,7 +106,7 @@ class DepositRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('d')
             ->where('d.document LIKE :document')
-            ->setParameter('document', '%'.$documentId.'%')
+            ->setParameter('document', '%' . $documentId . '%')
             ->addSelect(
                 '(SELECT t.id FROM App:Transaction t WHERE t.depId = d.id) AS tr_id'
             )
@@ -124,7 +124,7 @@ class DepositRepository extends ServiceEntityRepository
             ->leftJoin('d.transaction', 'tr')
             ->andWhere('d.document LIKE :document')
             ->andWhere('tr.id IS NULL')
-            ->setParameter('document', '%'.$documentId.'%')
+            ->setParameter('document', '%' . $documentId . '%')
             ->setMaxResults(10)
             ->getQuery()
             ->getResult();

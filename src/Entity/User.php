@@ -70,8 +70,8 @@ class User implements UserInterface, Stringable
 
     public final const ROLES
         = [
-            'user'  => 'ROLE_USER',
-            'cashier'  => 'ROLE_CASHIER',
+            'user' => 'ROLE_USER',
+            'cashier' => 'ROLE_CASHIER',
             'admin' => 'ROLE_ADMIN',
         ];
 
@@ -88,11 +88,10 @@ class User implements UserInterface, Stringable
      */
     public function __serialize(): array
     {
-        return
-            [
-                'id'    => $this->id,
-                'email' => $this->email,
-            ];
+        return [
+            'id' => $this->id,
+            'email' => $this->email,
+        ];
     }
 
     /**
@@ -109,7 +108,7 @@ class User implements UserInterface, Stringable
 
     public function __toString(): string
     {
-        return (string)$this->name;
+        return (string) $this->name;
     }
 
     public function getUserIdentifier(): string

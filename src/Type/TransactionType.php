@@ -13,7 +13,7 @@ enum TransactionType: string
 
     public function translationKey(): string
     {
-        return 'TRANSACTION_TYPE_'.strtoupper($this->name);
+        return 'TRANSACTION_TYPE_' . strtoupper($this->name);
     }
 
     public function translatedName(): string

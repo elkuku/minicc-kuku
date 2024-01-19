@@ -32,12 +32,13 @@ class StoreType extends AbstractType
                 'user',
                 EntityType::class,
                 [
-                    'class'         => User::class,
-                    'choice_label'  => 'name',
-                    'placeholder'   => '-Desocupado-',
-                    'required'      => false,
-                    'label'         => 'Inquilino',
-                    'query_builder' => static fn(EntityRepository $er
+                    'class' => User::class,
+                    'choice_label' => 'name',
+                    'placeholder' => '-Desocupado-',
+                    'required' => false,
+                    'label' => 'Inquilino',
+                    'query_builder' => static fn(
+                        EntityRepository $er
                     ): QueryBuilder => $er->createQueryBuilder('u')
                         ->where('u.role = :role')
                         ->andWhere('u.isActive = :state')

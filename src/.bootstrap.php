@@ -2,18 +2,18 @@
 
 use Symfony\Component\Dotenv\Dotenv;
 
-require dirname(__DIR__).'/vendor/autoload.php';
+require dirname(__DIR__) . '/vendor/autoload.php';
 
-if (!array_key_exists('APP_ENV', $_SERVER)) {
+if (! array_key_exists('APP_ENV', $_SERVER)) {
 	$_SERVER['APP_ENV'] = $_ENV['APP_ENV'] ?? null;
 }
 
 if ('prod' !== $_SERVER['APP_ENV']) {
-	if (!class_exists(Dotenv::class)) {
+	if (! class_exists(Dotenv::class)) {
 		throw new RuntimeException('The "APP_ENV" environment variable is not set to "prod". Please run "composer require symfony/dotenv" to load the ".env" files configuring the application.');
 	}
 
-	$path = dirname(__DIR__).'/.env';
+	$path = dirname(__DIR__) . '/.env';
 	$dotenv = new Dotenv();
 
 	if (method_exists($dotenv, 'loadEnv')) {
@@ -21,7 +21,7 @@ if ('prod' !== $_SERVER['APP_ENV']) {
 	} else {
 		// fallback code in case your Dotenv component is not 4.2 or higher (when loadEnv() was added)
 
-		if (file_exists($path) || !file_exists($p = "$path.dist")) {
+		if (file_exists($path) || ! file_exists($p = "$path.dist")) {
 			$dotenv->load($path);
 		} else {
 			$dotenv->load($p);

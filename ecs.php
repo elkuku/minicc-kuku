@@ -22,7 +22,7 @@ return ECSConfig::configure()
     ->withPreparedSets(
         arrays: true,
         namespaces: true,
-        // spaces: true,
+        spaces: true,
         // docblocks: true,
         // comments: true,
     );

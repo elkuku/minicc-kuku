@@ -41,7 +41,7 @@ class TasksController extends AbstractController
                 $command['command'] = 'doctrine:migrations:status';
                 break;
             case 'info':
-                define('STDIN',fopen("php://stdin","r"));
+                define('STDIN', fopen("php://stdin", "r"));
                 $command['command'] = 'about';
                 break;
             default:
@@ -57,7 +57,7 @@ class TasksController extends AbstractController
             'admin/tasks.html.twig',
             [
                 'consoleCommand' => $command,
-                'consoleOutput'  => $output->fetch(),
+                'consoleOutput' => $output->fetch(),
             ]
         );
     }

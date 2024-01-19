@@ -135,19 +135,20 @@ class Deposit implements JsonSerializable
     * @since 5.4.0
     */
     #[ArrayShape([
-        'id'       => "int|null",
-        'amount'   => "float",
+        'id' => "int|null",
+        'amount' => "float",
         'document' => "string",
-        'date'     => "string",
-        'entity'   => "int|null",
-    ])] public function jsonSerialize(): array
+        'date' => "string",
+        'entity' => "int|null",
+    ])]
+ public function jsonSerialize(): array
     {
         return [
-            'id'       => $this->id,
-            'amount'   => $this->amount,
+            'id' => $this->id,
+            'amount' => $this->amount,
             'document' => $this->document,
-            'date'     => $this->date->format('Y-m-d'),
-            'entity'   => $this->entity->getId(),
+            'date' => $this->date->format('Y-m-d'),
+            'entity' => $this->entity->getId(),
         ];
     }
 }

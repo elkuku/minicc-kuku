@@ -204,15 +204,15 @@ class Transaction implements JsonSerializable
     public function jsonSerialize(): array
     {
         return [
-            'id'       => $this->id,
-            'store'    => $this->store->getId(),
-            'user'     => $this->user->getId(),
-            'type'     => $this->type->name,
-            'method'   => $this->method->getId() ?: null,
-            'date'     => $this->date->format('Y-m-d'),
-            'amount'   => $this->amount,
+            'id' => $this->id,
+            'store' => $this->store->getId(),
+            'user' => $this->user->getId(),
+            'type' => $this->type->name,
+            'method' => $this->method->getId() ?: null,
+            'date' => $this->date->format('Y-m-d'),
+            'amount' => $this->amount,
             'document' => $this->document,
-            'depId'    => $this->depId,
+            'depId' => $this->depId,
             'recipeNo' => $this->recipeNo,
         ];
     }

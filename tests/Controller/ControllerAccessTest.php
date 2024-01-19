@@ -9,7 +9,7 @@ use Elkuku\SymfonyUtils\Test\ControllerBaseTest;
  */
 class ControllerAccessTest extends ControllerBaseTest
 {
-    protected string $controllerRoot = __DIR__.'/../../src/Controller';
+    protected string $controllerRoot = __DIR__ . '/../../src/Controller';
 
     /**
      * @var array<int, string>
@@ -25,22 +25,22 @@ class ControllerAccessTest extends ControllerBaseTest
      */
     protected array $exceptions
         = [
-            'welcome'               => [
+            'welcome' => [
                 'statusCodes' => [
                     'GET' => 200,
                 ],
             ],
-            'about'                 => [
+            'about' => [
                 'statusCodes' => [
                     'GET' => 200,
                 ],
             ],
-            'contact'               => [
+            'contact' => [
                 'statusCodes' => [
                     'GET' => 200,
                 ],
             ],
-            'login'                 => [
+            'login' => [
                 'statusCodes' => [
                     'GET' => 200,
                     'POST' => 302,

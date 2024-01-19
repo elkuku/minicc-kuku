@@ -82,7 +82,7 @@ class AppFixtures extends Fixture
         /*
          * Contract
          */
-        $text = file_get_contents(__DIR__.'/contract-template.html');
+        $text = file_get_contents(__DIR__ . '/contract-template.html');
         if ($text) {
             $contract = (new Contract)
                 ->setStoreNumber(1)

@@ -14,20 +14,24 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
  */class StoreVoter extends Voter
 {
     public final const VIEW = 'view';
+
     public final const EDIT = 'edit';
+
     public final const EXPORT = 'export';
 
-    public function __construct(private readonly Security $security)
+    public function __construct(
+        private readonly Security $security
+    )
     {
     }
 
     protected function supports(string $attribute, mixed $subject): bool
     {
-        if (!in_array($attribute, [self::VIEW, self::EDIT, self::EXPORT])) {
+        if (! in_array($attribute, [self::VIEW, self::EDIT, self::EXPORT])) {
             return false;
         }
 
-        if (!$subject instanceof Store) {
+        if (! $subject instanceof Store) {
             return false;
         }
 
@@ -45,7 +49,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
         $user = $token->getUser();
 
-        if (!$user instanceof User) {
+        if (! $user instanceof User) {
             // the user must be logged in; if not, deny access
             return false;
         }

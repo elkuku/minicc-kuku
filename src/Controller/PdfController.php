@@ -39,8 +39,8 @@ class PdfController extends AbstractController
             $pdfHelper->getOutputFromHtml(
                 $html,
                 [
-                    'header-html'              => $pdfHelper->getHeaderHtml(),
-                    'footer-html'              => $pdfHelper->getFooterHtml(),
+                    'header-html' => $pdfHelper->getHeaderHtml(),
+                    'footer-html' => $pdfHelper->getFooterHtml(),
                     'enable-local-file-access' => true,
                 ]
             ),
@@ -56,7 +56,7 @@ class PdfController extends AbstractController
         PdfHelper $pdfHelper
     ): PdfResponse {
         $htmlPages = [];
-        $year = (int)date('Y');
+        $year = (int) date('Y');
         $stores = $storeRepository->findAll();
         foreach ($stores as $store) {
             if ($store->getUserId()) {
@@ -73,8 +73,8 @@ class PdfController extends AbstractController
             $pdfHelper->getOutputFromHtml(
                 $htmlPages,
                 [
-                    'header-html'              => $pdfHelper->getHeaderHtml(),
-                    'footer-html'              => $pdfHelper->getFooterHtml(),
+                    'header-html' => $pdfHelper->getHeaderHtml(),
+                    'footer-html' => $pdfHelper->getFooterHtml(),
                     'enable-local-file-access' => true,
                 ]
             ),
@@ -88,8 +88,8 @@ class PdfController extends AbstractController
         PdfHelper $PdfHelper,
         PayrollHelper $payrollHelper,
     ): PdfResponse {
-        $year = (int)date('Y');
-        $month = (int)date('m');
+        $year = (int) date('Y');
+        $month = (int) date('m');
         $filename = sprintf('payrolls-%d-%d.pdf', $year, $month);
 
         $html = $PdfHelper->renderPayrollsHtml($year, $month, $payrollHelper);
@@ -141,8 +141,8 @@ class PdfController extends AbstractController
             $pdfHelper->getOutputFromHtml(
                 $html,
                 [
-                    'header-html'              => $pdfHelper->getHeaderHtml(),
-                    'footer-html'              => $pdfHelper->getFooterHtml(),
+                    'header-html' => $pdfHelper->getHeaderHtml(),
+                    'footer-html' => $pdfHelper->getFooterHtml(),
                     'enable-local-file-access' => true,
                 ]
             ),

@@ -51,9 +51,9 @@ class StoreController extends AbstractController
         ChartBuilderService $chartBuilder
     ): Response {
         $this->denyAccessUnlessGranted('view', $store);
-        $year = (int)$request->get('year', date('Y'));
+        $year = (int) $request->get('year', date('Y'));
         $this->addBreadcrumb('Stores', 'stores-list')
-            ->addBreadcrumb('Store '.$store->getId());
+            ->addBreadcrumb('Store ' . $store->getId());
         $transactions = $transactionRepository->findByStoreAndYear(
             $store,
             $year
@@ -63,7 +63,7 @@ class StoreController extends AbstractController
         $rentalValues = [];
         $rentalValue = $taxService->getValueConTax($store->getValAlq());
         for ($i = 1; $i < 13; $i++) {
-            $headers[] = IntlConverter::formatDate('1966-'.$i.'-1', 'MMMM');
+            $headers[] = IntlConverter::formatDate('1966-' . $i . '-1', 'MMMM');
             $monthPayments[$i] = 0;
             $rentalValues[$i] = $rentalValue;
         }
@@ -77,25 +77,25 @@ class StoreController extends AbstractController
         return $this->render(
             'stores/transactions.html.twig',
             [
-                'transactions'  => $transactions,
+                'transactions' => $transactions,
                 'saldoAnterior' => $transactionRepository->getSaldoAnterior(
                     $store,
                     $year
                 ),
-                'headerStr'     => json_encode($headers, JSON_THROW_ON_ERROR),
+                'headerStr' => json_encode($headers, JSON_THROW_ON_ERROR),
                 'monthPayments' => json_encode(
                     array_values($monthPayments),
                     JSON_THROW_ON_ERROR
                 ),
-                'rentalValStr'  => json_encode(
+                'rentalValStr' => json_encode(
                     array_values($rentalValues),
                     JSON_THROW_ON_ERROR
                 ),
-                'store'         => $store,
-                'stores'        => $storeRepository->findAll(),
-                'year'          => $year,
-                'breadcrumbs'   => $this->getBreadcrumbs(),
-                'chart'         => $chartBuilder->getStoreChart(
+                'store' => $store,
+                'stores' => $storeRepository->findAll(),
+                'year' => $year,
+                'breadcrumbs' => $this->getBreadcrumbs(),
+                'chart' => $chartBuilder->getStoreChart(
                     $headers,
                     array_values($monthPayments),
                     array_values($rentalValues)
@@ -128,8 +128,8 @@ class StoreController extends AbstractController
         return $this->render(
             'stores/form.html.twig',
             [
-                'form'          => $form,
-                'store'         => $store,
+                'form' => $form,
+                'store' => $store,
                 'ivaMultiplier' => $taxService->getTaxValue(),
             ]
         );
@@ -159,8 +159,8 @@ class StoreController extends AbstractController
         return $this->render(
             'stores/form.html.twig',
             [
-                'form'          => $form,
-                'store'         => $store,
+                'form' => $form,
+                'store' => $store,
                 'ivaMultiplier' => $taxService->getTaxValue(),
             ]
         );

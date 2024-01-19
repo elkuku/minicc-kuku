@@ -27,7 +27,8 @@ class GoogleIdentityAuthenticator extends AbstractAuthenticator
     use TargetPathTrait;
 
     public function __construct(
-        #[Autowire('%env(OAUTH_GOOGLE_ID)%')] private readonly string $oauthGoogleId,
+        #[Autowire('%env(OAUTH_GOOGLE_ID)%')]
+        private readonly string $oauthGoogleId,
         private readonly UserRepository $userRepository,
         private readonly EntityManagerInterface $entityManager,
         private readonly UrlGeneratorInterface $urlGenerator,
@@ -43,7 +44,7 @@ class GoogleIdentityAuthenticator extends AbstractAuthenticator
     {
         $idToken = (string) $request->request->get('credential');
 
-        if (!$idToken) {
+        if (! $idToken) {
             throw new AuthenticationException('Missing credentials :(');
         }
 
@@ -52,7 +53,7 @@ class GoogleIdentityAuthenticator extends AbstractAuthenticator
         ]))
             ->verifyIdToken($idToken);
 
-        if (!$payload) {
+        if (! $payload) {
             throw new AuthenticationException('Invalid ID token :(');
         }
 
@@ -123,7 +124,7 @@ class GoogleIdentityAuthenticator extends AbstractAuthenticator
 
         throw new UserNotFoundException(
             'You are not allowed to login. Please contact an administrator. - '
-            .$googleUser->getEmail()
+            . $googleUser->getEmail()
         );
     }
 }

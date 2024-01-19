@@ -18,7 +18,8 @@ use Twig\Environment;
 class PdfHelper
 {
     public function __construct(
-        #[Autowire('%kernel.project_dir%')] private readonly string $rootDir,
+        #[Autowire('%kernel.project_dir%')]
+        private readonly string $rootDir,
         private readonly Environment $twig,
         private readonly Pdf $pdfEngine,
     ) {
@@ -40,7 +41,7 @@ class PdfHelper
             $year
         );
 
-        $pages = (int)(count($transactions) / $transactionsPerPage) + 1;
+        $pages = (int) (count($transactions) / $transactionsPerPage) + 1;
         $fillers = $transactionsPerPage - (count($transactions) - ($pages - 1)
                 * $transactionsPerPage);
 
@@ -56,9 +57,9 @@ class PdfHelper
                     $store,
                     $year
                 ),
-                'transactions'  => $transactions,
-                'store'         => $store,
-                'year'          => $year,
+                'transactions' => $transactions,
+                'store' => $store,
+                'year' => $year,
             ]
         );
     }
@@ -91,7 +92,7 @@ class PdfHelper
         return $this->twig->render(
             '_header-pdf.html.twig',
             [
-                'rootPath' => $this->rootDir.'/public',
+                'rootPath' => $this->rootDir . '/public',
             ]
         );
     }

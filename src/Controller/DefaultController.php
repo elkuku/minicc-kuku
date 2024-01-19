@@ -22,14 +22,14 @@ class DefaultController extends BaseController
         $user = $this->getUser();
         $balances = null;
         $chartData = [
-            'headers'    => [],
+            'headers' => [],
             'monthsDebt' => [],
-            'balances'   => [],
+            'balances' => [],
         ];
         if ($user) {
             foreach ($storeRepository->getActive() as $store) {
                 $balance = $transactionRepository->getSaldo($store);
-                $chartData['headers'][] = 'Local '.$store->getId();
+                $chartData['headers'][] = 'Local ' . $store->getId();
                 $valAlq = $taxService->getValueConTax($store->getValAlq());
 
                 $chartData['monthsDebt'][] = $valAlq
@@ -48,9 +48,9 @@ class DefaultController extends BaseController
         return $this->render(
             'default/index.html.twig',
             [
-                'stores'          => $user?->getStores(),
-                'balances'        => $balances,
-                'chartBalances'   => $chartBuilderService->getDashboardChart(
+                'stores' => $user?->getStores(),
+                'balances' => $balances,
+                'chartBalances' => $chartBuilderService->getDashboardChart(
                     'Saldo en $',
                     $chartData['headers'],
                     $chartData['balances']

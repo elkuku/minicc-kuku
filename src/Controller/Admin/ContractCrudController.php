@@ -77,9 +77,9 @@ class ContractCrudController extends AbstractCrudController
                         'data-taxcalc2-taxrate-value' => $this->taxService->getTaxValue(
                         ),
                     ],
-                    'attr'     => [
+                    'attr' => [
                         'data-taxcalc2-target' => 'withoutTax',
-                        'data-action'          => 'taxcalc2#calcWithTax',
+                        'data-action' => 'taxcalc2#calcWithTax',
                     ],
                 ])
                 ->onlyOnForms(),
@@ -132,7 +132,7 @@ class ContractCrudController extends AbstractCrudController
 
             if ($user) {
                 $contract
-                    ->setInqNombreapellido((string)$user->getName())
+                    ->setInqNombreapellido((string) $user->getName())
                     ->setInqCi($user->getInqCi())
                     ->setGender($user->getGender());
             }
@@ -171,8 +171,8 @@ class ContractCrudController extends AbstractCrudController
     {
         return $crud->overrideTemplates([
             'crud/index' => 'easyadmin/crud/contract/index.html.twig',
-            'crud/new'   => 'easyadmin/crud/contract/new.html.twig',
-            'crud/edit'  => 'easyadmin/crud/contract/edit.html.twig',
+            'crud/new' => 'easyadmin/crud/contract/new.html.twig',
+            'crud/edit' => 'easyadmin/crud/contract/edit.html.twig',
         ]);
     }
 }

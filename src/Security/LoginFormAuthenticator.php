@@ -24,7 +24,8 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
 
     public function __construct(
         private readonly RouterInterface $router,
-        #[Autowire('%env(APP_ENV)%')] private readonly string $appEnv
+        #[Autowire('%env(APP_ENV)%')]
+        private readonly string $appEnv
     ) {
     }
 
@@ -85,8 +86,8 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
         Request $request
     ): array {
         $credentials = [
-            'identifier' => (string)$request->request->get('identifier'),
-            'csrf_token' => (string)$request->request->get('_csrf_token'),
+            'identifier' => (string) $request->request->get('identifier'),
+            'csrf_token' => (string) $request->request->get('_csrf_token'),
         ];
 
         $request->getSession()->set(

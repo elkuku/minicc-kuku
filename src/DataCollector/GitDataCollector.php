@@ -10,7 +10,9 @@ use Throwable;
 
 class GitDataCollector extends DataCollector
 {
-    public function __construct(private readonly GitLoader $gitLoader)
+    public function __construct(
+        private readonly GitLoader $gitLoader
+    )
     {
     }
 
@@ -20,9 +22,9 @@ class GitDataCollector extends DataCollector
         Throwable $exception = null
     ): void {
         $this->data = [
-            'git_branch'          => $this->gitLoader->getBranchName(),
+            'git_branch' => $this->gitLoader->getBranchName(),
             'last_commit_message' => $this->gitLoader->getLastCommitMessage(),
-            'logs'                => $this->gitLoader->getLastCommitDetail(),
+            'logs' => $this->gitLoader->getLastCommitDetail(),
         ];
     }
 

@@ -136,7 +136,7 @@ class AppExtension extends AbstractExtension
      */
     public function objectFilter(object $classObject): array
     {
-        $array = (array)$classObject;
+        $array = (array) $classObject;
         $response = [];
 
         $className = $classObject::class;
@@ -163,12 +163,12 @@ class AppExtension extends AbstractExtension
 
         if (3 === count($parts)) {
             // Juan José Perez => Juan Perez
-            return $parts[0].' '.$parts[2];
+            return $parts[0] . ' ' . $parts[2];
         }
 
         if (4 === count($parts)) {
             // Juan José Perez Pillo => Juan Perez
-            return $parts[0].' '.$parts[2];
+            return $parts[0] . ' ' . $parts[2];
         }
 
         return $longName;
@@ -209,7 +209,7 @@ class AppExtension extends AbstractExtension
             if (13 === strlen($ruc)) {
                 $rucs = str_split($ruc, 10);
 
-                $ruc = trim(chunk_split($rucs[0], 3, ' ')).' '.$rucs[1];
+                $ruc = trim(chunk_split($rucs[0], 3, ' ')) . ' ' . $rucs[1];
             } else {
                 $ruc = chunk_split($ruc, 3, ' ');
             }
@@ -231,6 +231,6 @@ class AppExtension extends AbstractExtension
 
     public function getCurrentYear(): int
     {
-        return (int)date('Y');
+        return (int) date('Y');
     }
 }
