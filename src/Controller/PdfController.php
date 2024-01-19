@@ -97,7 +97,9 @@ class PdfController extends AbstractController
         return new PdfResponse(
             $PdfHelper->getOutputFromHtml(
                 $html,
-                ['enable-local-file-access' => true]
+                [
+                    'enable-local-file-access' => true,
+                ]
             ),
             $filename
         );
@@ -111,7 +113,9 @@ class PdfController extends AbstractController
     ): PdfResponse {
         $html = $this->renderView(
             '_pdf/user-pdf-list.html.twig',
-            ['users' => $userRepository->getSortedByStore()]
+            [
+                'users' => $userRepository->getSortedByStore(),
+            ]
         );
 
         return new PdfResponse(
@@ -128,7 +132,9 @@ class PdfController extends AbstractController
     ): PdfResponse {
         $html = $this->renderView(
             '_pdf/ruclist.html.twig',
-            ['users' => $userRepository->getSortedByStore()]
+            [
+                'users' => $userRepository->getSortedByStore(),
+            ]
         );
 
         return new PdfResponse(

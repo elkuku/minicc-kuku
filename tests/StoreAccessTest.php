@@ -33,7 +33,9 @@ class StoreAccessTest extends WebTestCase
          */
         $userRepository = self::getContainer()->get(UserRepository::class);
         $testUser = $userRepository
-            ->findOneBy(['email' => 'user2@example.com']);
+            ->findOneBy([
+                'email' => 'user2@example.com',
+            ]);
         if (!$testUser) {
             throw new \UnexpectedValueException('User not found.');
         }
@@ -57,7 +59,9 @@ class StoreAccessTest extends WebTestCase
          */
         $userRepository = self::getContainer()->get(UserRepository::class);
         $testUser = $userRepository
-            ->findOneBy(['email' => 'user1@example.com']);
+            ->findOneBy([
+                'email' => 'user1@example.com',
+            ]);
         if (!$testUser) {
             throw new \UnexpectedValueException('User not found.');
         }

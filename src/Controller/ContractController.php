@@ -95,7 +95,9 @@ class ContractController extends AbstractController
         );
     }
 
-    #[Route(path: '/{id}', name: 'contracts-edit', requirements: ['id' => '\d+'],
+    #[Route(path: '/{id}', name: 'contracts-edit', requirements: [
+        'id' => '\d+',
+    ],
         methods: ['GET', 'POST'])]
     public function edit(
         Contract $contract,
@@ -174,7 +176,9 @@ class ContractController extends AbstractController
         );
     }
 
-    #[Route(path: '/generate/{id}', name: 'contract-generate', requirements: ['id' => '\d+'], methods: ['GET'])]
+    #[Route(path: '/generate/{id}', name: 'contract-generate', requirements: [
+        'id' => '\d+',
+    ], methods: ['GET'])]
     public function generate(
         Contract $contract,
         Pdf $pdf,
@@ -231,7 +235,9 @@ class ContractController extends AbstractController
             $pdf->getOutputFromHtml(
                 $twig->createTemplate($html)
                     ->render([]),
-                ['encoding' => 'utf-8']
+                [
+                    'encoding' => 'utf-8',
+                ]
             ),
             sprintf(
                 'contrato-local-%d-%s.pdf',

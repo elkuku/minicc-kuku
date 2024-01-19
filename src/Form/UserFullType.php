@@ -28,14 +28,24 @@ class UserFullType extends AbstractType
     ): void {
         $builder
             ->add('isActive')
-            ->add('gender', EnumType::class, ['class' => Gender::class])
+            ->add('gender', EnumType::class, [
+                'class' => Gender::class,
+            ])
             ->add('name', TextType::class)
             ->add('email', EmailType::class)
             ->add('inqCi')
-            ->add('inqRuc', null, ['required' => false])
-            ->add('telefono', null, ['required' => false])
-            ->add('telefono2', null, ['required' => false])
-            ->add('direccion', null, ['required' => false]);
+            ->add('inqRuc', null, [
+                'required' => false,
+            ])
+            ->add('telefono', null, [
+                'required' => false,
+            ])
+            ->add('telefono2', null, [
+                'required' => false,
+            ])
+            ->add('direccion', null, [
+                'required' => false,
+            ]);
     }
 
     /**

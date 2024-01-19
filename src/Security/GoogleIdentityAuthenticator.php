@@ -47,7 +47,9 @@ class GoogleIdentityAuthenticator extends AbstractAuthenticator
             throw new AuthenticationException('Missing credentials :(');
         }
 
-        $payload = (new Client(['client_id' => $this->oauthGoogleId]))
+        $payload = (new Client([
+            'client_id' => $this->oauthGoogleId,
+        ]))
             ->verifyIdToken($idToken);
 
         if (!$payload) {
@@ -94,7 +96,9 @@ class GoogleIdentityAuthenticator extends AbstractAuthenticator
     private function getUser(GoogleUser $googleUser): User
     {
         $user = $this->userRepository->findOneBy(
-            ['googleId' => $googleUser->getId()]
+            [
+                'googleId' => $googleUser->getId(),
+            ]
         );
 
         if ($user) {
@@ -103,7 +107,9 @@ class GoogleIdentityAuthenticator extends AbstractAuthenticator
 
         // @todo remove: Fetch user by email
         $user = $this->userRepository->findOneBy(
-            ['email' => $googleUser->getEmail()]
+            [
+                'email' => $googleUser->getEmail(),
+            ]
         );
 
         if ($user) {

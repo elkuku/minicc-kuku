@@ -28,7 +28,9 @@ class PaymentMethodController extends AbstractController
 
         return $this->render(
             'payment-methods/'.$template,
-            ['paymentMethods' => $repository->findAll()]
+            [
+                'paymentMethods' => $repository->findAll(),
+            ]
         );
     }
 

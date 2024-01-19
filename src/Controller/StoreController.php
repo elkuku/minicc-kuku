@@ -30,11 +30,15 @@ class StoreController extends AbstractController
     ): Response {
         return $this->render(
             'stores/list.html.twig',
-            ['stores' => $storeRepository->findAll()]
+            [
+                'stores' => $storeRepository->findAll(),
+            ]
         );
     }
 
-    #[Route(path: '/{id}', name: 'store-transactions', requirements: ['id' => '\d+'], methods: [
+    #[Route(path: '/{id}', name: 'store-transactions', requirements: [
+        'id' => '\d+',
+    ], methods: [
         'GET',
         'POST',
     ])]

@@ -163,7 +163,9 @@ class MailController extends AbstractController
                 $month,
                 $payrollHelper
             ),
-            ['enable-local-file-access' => true]
+            [
+                'enable-local-file-access' => true,
+            ]
         );
         $email = $emailHelper->create(
             toAddress: 'minicckuku@gmail.com',
@@ -217,7 +219,9 @@ class MailController extends AbstractController
                     $payrollHelper,
                     (int)$store->getId()
                 ),
-                ['enable-local-file-access' => true]
+                [
+                    'enable-local-file-access' => true,
+                ]
             );
 
             $html = $this->renderView(

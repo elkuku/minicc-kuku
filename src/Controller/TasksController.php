@@ -12,7 +12,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use UnexpectedValueException;
-use function dirname;
 
 #[IsGranted('ROLE_ADMIN')]
 class TasksController extends AbstractController
@@ -69,7 +68,9 @@ class TasksController extends AbstractController
     ): Response {
         $application = new Application($kernel);
         $application->setAutoExit(false);
-        $input = new ArrayInput(['command' => 'about',]);
+        $input = new ArrayInput([
+            'command' => 'about',
+        ]);
         $output = new BufferedOutput();
         $application->run($input, $output);
 

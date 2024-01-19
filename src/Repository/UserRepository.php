@@ -39,8 +39,13 @@ class UserRepository extends ServiceEntityRepository
     public function findActiveUsers(): array
     {
         return $this->findBy(
-            ['role' => 'ROLE_USER', 'isActive' => 1],
-            ['name' => 'ASC']
+            [
+                'role' => 'ROLE_USER',
+                'isActive' => 1,
+            ],
+            [
+                'name' => 'ASC',
+            ]
         );
     }
 

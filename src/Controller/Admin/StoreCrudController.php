@@ -60,9 +60,9 @@ class StoreCrudController extends AbstractCrudController
     public function configureCrud(Crud $crud): Crud
     {
         return $crud->overrideTemplates([
-                'crud/edit' => 'easyadmin/crud/store/edit.html.twig',
-                'crud/new'  => 'easyadmin/crud/store/new.html.twig',
-            ]
+            'crud/edit' => 'easyadmin/crud/store/edit.html.twig',
+            'crud/new'  => 'easyadmin/crud/store/new.html.twig',
+        ]
         );
     }
 }

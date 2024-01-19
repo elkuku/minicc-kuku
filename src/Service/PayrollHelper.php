@@ -2,7 +2,6 @@
 
 namespace App\Service;
 
-use App\Entity\Store;
 use App\Repository\StoreRepository;
 use App\Repository\TransactionRepository;
 use JetBrains\PhpStorm\ArrayShape;

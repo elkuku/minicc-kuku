@@ -33,7 +33,9 @@ class AdminController extends AbstractController
         if (!$values) {
             return $this->render(
                 'admin/cobrar.html.twig',
-                ['stores' => $storeRepository->getActive()]
+                [
+                    'stores' => $storeRepository->getActive(),
+                ]
             );
         }
 
