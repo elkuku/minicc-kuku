@@ -7,29 +7,14 @@ use UnexpectedValueException;
 
 class PaginatorOptions
 {
-    /**
-     * @var int
-     */
     private int $page = 0;
 
-    /**
-     * @var int
-     */
     private int $maxPages = 0;
 
-    /**
-     * @var int
-     */
     private int $limit = 10;
 
-    /**
-     * @var string
-     */
     private string $order = 'id';
 
-    /**
-     * @var string
-     */
     private string $orderDir = 'ASC';
 
     /**

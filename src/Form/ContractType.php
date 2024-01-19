@@ -15,14 +15,8 @@ use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class ContractType
- */
 class ContractType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(
@@ -32,9 +26,6 @@ class ContractType extends AbstractType
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(
         FormBuilderInterface $builder,
         array $options

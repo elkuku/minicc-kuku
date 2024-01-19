@@ -33,7 +33,6 @@ class AppExtension extends AbstractExtension
     }
 
     /**
-     * {@inheritdoc}
      * @return \Twig\TwigFilter[]
      */
     public function getFilters(): array
@@ -49,7 +48,6 @@ class AppExtension extends AbstractExtension
     }
 
     /**
-     * {@inheritdoc}
      * @return \Twig\TwigFunction[]
      */
     public function getFunctions(): array

@@ -8,9 +8,6 @@
 
 namespace App\Helper;
 
-/**
- * Class BreadcrumbTrait
- */
 trait BreadcrumbTrait
 {
     /**

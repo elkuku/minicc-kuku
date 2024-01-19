@@ -23,6 +23,6 @@ return ECSConfig::configure()
         arrays: true,
         namespaces: true,
         spaces: true,
-        // docblocks: true,
+        docblocks: true,
         // comments: true,
     );

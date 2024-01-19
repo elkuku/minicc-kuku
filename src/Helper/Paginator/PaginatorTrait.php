@@ -11,9 +11,6 @@ namespace App\Helper\Paginator;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * Class PaginatorTrait
- */
 trait PaginatorTrait
 {
     /**

@@ -15,14 +15,8 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-/**
- * Class StoreType
- */
 class StoreType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(
         FormBuilderInterface $builder,
         array $options
