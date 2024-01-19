@@ -7,9 +7,7 @@ use App\Repository\TransactionRepository;
 use App\Service\EmailHelper;
 use App\Service\PayrollHelper;
 use App\Service\PdfHelper;
-use Exception;
 use Knp\Snappy\Pdf;
-use RuntimeException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -20,7 +18,6 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Part\DataPart;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use UnexpectedValueException;
 
 #[IsGranted('ROLE_ADMIN')]
 class MailController extends AbstractController
@@ -138,7 +135,7 @@ class MailController extends AbstractController
 
             $mailer->send($email);
             $this->addFlash('success', 'Mail has been sent succesfully.');
-        } catch (Exception|TransportExceptionInterface $exception) {
+        } catch (\Exception|TransportExceptionInterface $exception) {
             $this->addFlash('danger', $exception->getMessage());
         }
 
@@ -298,7 +295,7 @@ class MailController extends AbstractController
                     $password,
                     $database
                 ),
-                default => throw new UnexpectedValueException('Unknown env:' . $appEnv),
+                default => throw new \UnexpectedValueException('Unknown env:' . $appEnv),
             };
 
             ob_start();
@@ -306,7 +303,7 @@ class MailController extends AbstractController
             $gzip = ob_get_clean();
 
             if ($retVal) {
-                throw new RuntimeException('Error creating DB backup: ' . $gzip);
+                throw new \RuntimeException('Error creating DB backup: ' . $gzip);
             }
 
             $fileName = date('Y-m-d') . '_backup.gz';

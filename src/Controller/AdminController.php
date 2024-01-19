@@ -8,14 +8,12 @@ use App\Repository\StoreRepository;
 use App\Repository\TransactionRepository;
 use App\Repository\UserRepository;
 use App\Type\TransactionType;
-use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use UnexpectedValueException;
 
 class AdminController extends AbstractController
 {
@@ -27,8 +25,7 @@ class AdminController extends AbstractController
         PaymentMethodRepository $paymentMethodRepository,
         Request $request,
         EntityManagerInterface $entityManager,
-    ): Response
-    {
+    ): Response {
         $values = $request->request->all('values');
         if (! $values) {
             return $this->render(
@@ -43,9 +40,7 @@ class AdminController extends AbstractController
         $method = $paymentMethodRepository->find(1);
 
         if (! $method) {
-            throw new UnexpectedValueException(
-                'Invalid payment method.'
-            );
+            throw new \UnexpectedValueException('Invalid payment method.');
         }
 
         foreach ($values as $storeId => $value) {
@@ -57,18 +52,18 @@ class AdminController extends AbstractController
             $user = $userRepository->find((int) $users[$storeId]);
 
             if (! $user) {
-                throw new UnexpectedValueException('Store has no user.');
+                throw new \UnexpectedValueException('Store has no user.');
             }
 
             $store = $storeRepository->find((int) $storeId);
 
             if (! $store) {
-                throw new UnexpectedValueException('Store does not exist.');
+                throw new \UnexpectedValueException('Store does not exist.');
             }
 
-            $transaction = (new Transaction)
+            $transaction = (new Transaction())
                 ->setDate(
-                    new DateTime((string) $request->request->get('date_cobro'))
+                    new \DateTime((string) $request->request->get('date_cobro'))
                 )
                 ->setStore($store)
                 ->setUser($user)
@@ -95,8 +90,7 @@ class AdminController extends AbstractController
         TransactionRepository $transactionRepository,
         Request $request,
         EntityManagerInterface $entityManager,
-    ): Response
-    {
+    ): Response {
         $payments = $request->request->all('payments');
         if (! $payments) {
             return $this->render(
@@ -123,17 +117,17 @@ class AdminController extends AbstractController
             $method = $paymentMethodRepository->find((int) $payments['method'][$i]);
 
             if (! $method) {
-                throw new UnexpectedValueException('Invalid payment method.');
+                throw new \UnexpectedValueException('Invalid payment method.');
             }
 
             $user = $store->getUser();
 
             if (! $user) {
-                throw new UnexpectedValueException('Store has no user.');
+                throw new \UnexpectedValueException('Store has no user.');
             }
 
-            $transaction = (new Transaction)
-                ->setDate(new DateTime($dateCobro))
+            $transaction = (new Transaction())
+                ->setDate(new \DateTime($dateCobro))
                 ->setStore($store)
                 ->setUser($user)
                 ->setType(TransactionType::payment)
@@ -157,8 +151,7 @@ class AdminController extends AbstractController
     public function pagosPorAno(
         Request $request,
         TransactionRepository $repository
-    ): Response
-    {
+    ): Response {
         $year = $request->query->getInt('year', (int) date('Y'));
         $month = $year === (int) date('Y') ? (int) date('m') : 1;
 
@@ -176,8 +169,7 @@ class AdminController extends AbstractController
     #[IsGranted('ROLE_ADMIN')]
     public function mailListTransactions(
         StoreRepository $storeRepository
-    ): Response
-    {
+    ): Response {
         return $this->render(
             'admin/mail-list-transactions.twig',
             [
@@ -190,8 +182,7 @@ class AdminController extends AbstractController
     #[IsGranted('ROLE_ADMIN')]
     public function mailListPlanillas(
         StoreRepository $storeRepository
-    ): Response
-    {
+    ): Response {
         return $this->render(
             'admin/mail-list-planillas.twig',
             [

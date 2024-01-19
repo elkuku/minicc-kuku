@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: elkuku
  * Date: 13.01.19
- * Time: 13:18
+ * Time: 13:18.
  */
 
 namespace App\Service;
@@ -45,8 +45,8 @@ class PdfHelper
         $fillers = $transactionsPerPage - (count($transactions) - ($pages - 1)
                 * $transactionsPerPage);
 
-        for ($i = 1; $i < $fillers; $i++) {
-            $transaction = new Transaction;
+        for ($i = 1; $i < $fillers; ++$i) {
+            $transaction = new Transaction();
             $transactions[] = $transaction;
         }
 
@@ -77,7 +77,7 @@ class PdfHelper
     }
 
     /**
-     * @param array<string>|string $htmlPages
+     * @param array<string>|string       $htmlPages
      * @param array<string, string|bool> $options
      */
     public function getOutputFromHtml(

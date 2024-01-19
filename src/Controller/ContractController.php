@@ -61,7 +61,7 @@ class ContractController extends AbstractController
     ): Response {
         $store = $storeRepo->find($request->request->getInt('store'));
         $user = $userRepo->find($request->request->getInt('user'));
-        $contract = new Contract;
+        $contract = new Contract();
         $contract->setText($contractRepo->findTemplate()->getText());
         if ($store) {
             $contract->setValuesFromStore($store);
@@ -188,7 +188,7 @@ class ContractController extends AbstractController
         Pdf $pdf,
         Environment $environment
     ): PdfResponse {
-        $numberToWord = new Numbers;
+        $numberToWord = new Numbers();
         $searchReplace = [
             '[local_no]' => $contract->getStoreNumber(),
             '[destination]' => $contract->getDestination(),

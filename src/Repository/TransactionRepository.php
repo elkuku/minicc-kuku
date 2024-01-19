@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: elkuku
  * Date: 19.03.17
- * Time: 12:40
+ * Time: 12:40.
  */
 
 namespace App\Repository;
@@ -13,7 +13,6 @@ use App\Entity\Transaction;
 use App\Entity\User;
 use App\Helper\Paginator\PaginatorOptions;
 use App\Helper\Paginator\PaginatorRepoTrait;
-use function count;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\NonUniqueResultException;
@@ -21,7 +20,6 @@ use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
-use Exception;
 
 /**
  * @method Transaction|null find($id, $lockMode = null, $lockVersion = null)
@@ -67,8 +65,7 @@ class TransactionRepository extends ServiceEntityRepository
         Store $store,
         int $year,
         User $user
-    ): array
-    {
+    ): array {
         return $this->createQueryBuilder('p')
             ->where('p.store = :store')
             ->andWhere('YEAR(p.date) = :year')
@@ -109,6 +106,7 @@ class TransactionRepository extends ServiceEntityRepository
 
     /**
      * @return int|mixed|string
+     *
      * @throws NoResultException
      * @throws NonUniqueResultException
      */
@@ -148,8 +146,7 @@ class TransactionRepository extends ServiceEntityRepository
         Store $store,
         int $month,
         int $year
-    ): array
-    {
+    ): array {
         return $this->createQueryBuilder('p')
             ->where('p.store = :store')
             ->andWhere('MONTH(p.date) = :month')
@@ -164,7 +161,7 @@ class TransactionRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return  array<int|string, array<int, array<int, array<int, Transaction>>>>
+     * @return array<int|string, array<int, array<int, array<int, Transaction>>>>
      */
     public function getPagosPorAno(int $year): array
     {
@@ -176,7 +173,7 @@ class TransactionRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
 
-        if (! (is_countable($transactions) ? count($transactions) : 0)) {
+        if (! (is_countable($transactions) ? \count($transactions) : 0)) {
             return [];
         }
 
@@ -261,7 +258,7 @@ class TransactionRepository extends ServiceEntityRepository
                 ->select('MAX(t.recipeNo)')
                 ->getQuery()
                 ->getSingleScalarResult();
-        } catch (Exception) {
+        } catch (\Exception) {
             $number = 0;
         }
 

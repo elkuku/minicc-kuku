@@ -37,7 +37,7 @@ class GoogleIdentityAuthenticator extends AbstractAuthenticator
 
     public function supports(Request $request): bool
     {
-        return $request->getPathInfo() === '/connect/google/verify';
+        return '/connect/google/verify' === $request->getPathInfo();
     }
 
     public function authenticate(Request $request): Passport
@@ -122,9 +122,6 @@ class GoogleIdentityAuthenticator extends AbstractAuthenticator
             return $user;
         }
 
-        throw new UserNotFoundException(
-            'You are not allowed to login. Please contact an administrator. - '
-            . $googleUser->getEmail()
-        );
+        throw new UserNotFoundException('You are not allowed to login. Please contact an administrator. - ' . $googleUser->getEmail());
     }
 }

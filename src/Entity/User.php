@@ -12,7 +12,6 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\PersistentCollection;
-use Stringable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints\Email;
@@ -20,7 +19,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 #[UniqueEntity(fields: 'email', message: 'This email address is already in use')]
 #[Entity(repositoryClass: UserRepository::class)]
-class User implements UserInterface, Stringable
+class User implements UserInterface, \Stringable
 {
     #[Column, Id, GeneratedValue]
     private ?int $id = 0;
@@ -68,7 +67,7 @@ class User implements UserInterface, Stringable
     #[Column(nullable: true)]
     private ?bool $isActive = null;
 
-    public final const ROLES
+    final public const ROLES
         = [
             'user' => 'ROLE_USER',
             'cashier' => 'ROLE_CASHIER',
@@ -77,7 +76,7 @@ class User implements UserInterface, Stringable
 
     public function __construct()
     {
-        $this->stores = new ArrayCollection;
+        $this->stores = new ArrayCollection();
     }
 
     /**

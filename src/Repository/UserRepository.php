@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: elkuku
  * Date: 19.03.17
- * Time: 12:40
+ * Time: 12:40.
  */
 
 namespace App\Repository;
@@ -62,12 +62,12 @@ class UserRepository extends ServiceEntityRepository
                 $aId = 0;
                 $bId = 0;
 
-                /** @type User $a */
+                /** @var User $a */
                 foreach ($a->getStores() as $store) {
                     $aId = $store->getId();
                 }
 
-                /** @type User $b */
+                /** @var User $b */
                 foreach ($b->getStores() as $store) {
                     $bId = $store->getId();
                 }

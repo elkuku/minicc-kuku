@@ -6,20 +6,18 @@ use App\Helper\GitLoader;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
-use Throwable;
 
 class GitDataCollector extends DataCollector
 {
     public function __construct(
         private readonly GitLoader $gitLoader
-    )
-    {
+    ) {
     }
 
     public function collect(
         Request $request,
         Response $response,
-        Throwable $exception = null
+        \Throwable $exception = null
     ): void {
         $this->data = [
             'git_branch' => $this->gitLoader->getBranchName(),

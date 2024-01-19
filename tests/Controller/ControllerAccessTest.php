@@ -5,7 +5,7 @@ namespace App\Tests\Controller;
 use Elkuku\SymfonyUtils\Test\ControllerBaseTest;
 
 /**
- * Controller "smoke" test
+ * Controller "smoke" test.
  */
 class ControllerAccessTest extends ControllerBaseTest
 {

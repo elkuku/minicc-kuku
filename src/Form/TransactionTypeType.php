@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: elkuku
  * Date: 19.03.17
- * Time: 12:40
+ * Time: 12:40.
  */
 
 namespace App\Form;
@@ -39,7 +39,7 @@ class TransactionTypeType extends AbstractType
                 EnumType::class,
                 [
                     'class' => TransactionType::class,
-                    'choice_label' => fn(
+                    'choice_label' => fn (
                         TransactionType $choice
                     ): TranslatableMessage => new TranslatableMessage(
                         $choice->translationKey()
@@ -51,8 +51,8 @@ class TransactionTypeType extends AbstractType
                 EntityType::class,
                 [
                     'class' => Store::class,
-                    'choice_label' => fn(Store $store): string => $store->getId(
-                        ) . ' - ' . $store->getDestination(),
+                    'choice_label' => fn (Store $store): string => $store->getId(
+                    ) . ' - ' . $store->getDestination(),
                 ]
             )
             ->add(

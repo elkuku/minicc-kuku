@@ -71,7 +71,7 @@ class UserController extends AbstractController
         Request $request,
         EntityManagerInterface $entityManager,
     ): Response {
-        $user = new User;
+        $user = new User();
         $form = $this->createForm(UserFullType::class, $user);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

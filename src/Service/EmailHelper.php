@@ -15,8 +15,7 @@ class EmailHelper
         string $emailFromAddress,
         #[Autowire('%env(EMAIL_FROM_NAME)%')]
         string $emailFromName,
-    )
-    {
+    ) {
         $this->emailFrom = new Address($emailFromAddress, $emailFromName);
     }
 

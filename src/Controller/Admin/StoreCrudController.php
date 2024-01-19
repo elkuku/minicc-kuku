@@ -17,8 +17,7 @@ class StoreCrudController extends AbstractCrudController
 {
     public function __construct(
         private readonly TaxService $taxService
-    )
-    {
+    ) {
     }
 
     public static function getEntityFqcn(): string

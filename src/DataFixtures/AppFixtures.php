@@ -10,7 +10,6 @@ use App\Entity\Transaction;
 use App\Entity\User;
 use App\Type\Gender;
 use App\Type\TransactionType;
-use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -18,7 +17,7 @@ class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        $admin = (new User)
+        $admin = (new User())
             ->setIsActive(true)
             ->setGender(Gender::female)
             ->setName('admin')
@@ -26,7 +25,7 @@ class AppFixtures extends Fixture
             ->setRole(User::ROLES['admin']);
         $manager->persist($admin);
 
-        $user1 = (new User)
+        $user1 = (new User())
             ->setIsActive(true)
             ->setGender(Gender::female)
             ->setName('user1')
@@ -34,7 +33,7 @@ class AppFixtures extends Fixture
             ->setRole(User::ROLES['user']);
         $manager->persist($user1);
 
-        $user2 = (new User)
+        $user2 = (new User())
             ->setIsActive(true)
             ->setGender(Gender::female)
             ->setName('user2')
@@ -42,7 +41,7 @@ class AppFixtures extends Fixture
             ->setRole(User::ROLES['user']);
         $manager->persist($user2);
 
-        $user3 = (new User)
+        $user3 = (new User())
             ->setIsActive(false)
             ->setGender(Gender::male)
             ->setName('user3')
@@ -65,7 +64,7 @@ class AppFixtures extends Fixture
         $names = ['Bar', 'pch-765', 'gye-1005345'];
 
         foreach ($names as $name) {
-            $paymentMethod = (new PaymentMethod)
+            $paymentMethod = (new PaymentMethod())
                 ->setName($name);
             $manager->persist($paymentMethod);
         }
@@ -73,7 +72,7 @@ class AppFixtures extends Fixture
         $transaction = (new Transaction())
             ->setStore($store)
             ->setUser($user1)
-            ->setDate(new DateTime())
+            ->setDate(new \DateTime())
             ->setType(TransactionType::payment)
             ->setMethod($paymentMethod)
             ->setAmount(123.45);
@@ -84,7 +83,7 @@ class AppFixtures extends Fixture
          */
         $text = file_get_contents(__DIR__ . '/contract-template.html');
         if ($text) {
-            $contract = (new Contract)
+            $contract = (new Contract())
                 ->setStoreNumber(1)
                 ->setInqNombreapellido('Tester')
                 ->setGender(Gender::other)
@@ -99,7 +98,7 @@ class AppFixtures extends Fixture
          * Deposit
          */
         $deposit = (new Deposit())
-            ->setDate(new DateTime())
+            ->setDate(new \DateTime())
             ->setDocument('123')
             ->setAmount(123);
         $manager->persist($deposit);

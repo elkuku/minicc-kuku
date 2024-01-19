@@ -62,13 +62,13 @@ class StoreController extends AbstractController
         $monthPayments = [];
         $rentalValues = [];
         $rentalValue = $taxService->getValueConTax($store->getValAlq());
-        for ($i = 1; $i < 13; $i++) {
+        for ($i = 1; $i < 13; ++$i) {
             $headers[] = IntlConverter::formatDate('1966-' . $i . '-1', 'MMMM');
             $monthPayments[$i] = 0;
             $rentalValues[$i] = $rentalValue;
         }
         foreach ($transactions as $transaction) {
-            if ($transaction->getType() === TransactionType::payment) {
+            if (TransactionType::payment === $transaction->getType()) {
                 $monthPayments[$transaction->getDate()->format('n')]
                     += $transaction->getAmount();
             }
@@ -111,7 +111,7 @@ class StoreController extends AbstractController
         EntityManagerInterface $entityManager,
         TaxService $taxService,
     ): Response {
-        $store = new Store;
+        $store = new Store();
         $form = $this->createForm(StoreType::class, $store);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

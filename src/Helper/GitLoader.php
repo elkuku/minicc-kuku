@@ -3,13 +3,11 @@
  * Created by PhpStorm.
  * User: test
  * Date: 08/07/18
- * Time: 18:00
+ * Time: 18:00.
  */
 
 namespace App\Helper;
 
-use function is_array;
-use RuntimeException;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 class GitLoader
@@ -17,8 +15,7 @@ class GitLoader
     public function __construct(
         #[Autowire('%kernel.project_dir%')]
         private readonly string $rootDir
-    )
-    {
+    ) {
     }
 
     public function getBranchName(): string
@@ -29,7 +26,7 @@ class GitLoader
         $stringFromFile = file_exists($gitHeadFile)
             ? file($gitHeadFile, FILE_USE_INCLUDE_PATH) : '';
 
-        if (is_array($stringFromFile)) {
+        if (\is_array($stringFromFile)) {
             // Get the string from the array
             $firstLine = $stringFromFile[0];
 
@@ -48,7 +45,7 @@ class GitLoader
         $commitMessage = file_exists($gitCommitMessageFile)
             ? file($gitCommitMessageFile, FILE_USE_INCLUDE_PATH) : '';
 
-        return is_array($commitMessage) ? trim($commitMessage[0]) : '';
+        return \is_array($commitMessage) ? trim($commitMessage[0]) : '';
     }
 
     /**
@@ -92,10 +89,10 @@ class GitLoader
         if ($status) {
             // Command exited with a status != 0
             if ($lastLine) {
-                throw new RuntimeException($lastLine);
+                throw new \RuntimeException($lastLine);
             }
 
-            throw new RuntimeException('An unknown error occurred');
+            throw new \RuntimeException('An unknown error occurred');
         }
 
         ob_end_clean();

@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: elkuku
  * Date: 19.03.17
- * Time: 12:40
+ * Time: 12:40.
  */
 
 namespace App\Twig;
@@ -12,19 +12,13 @@ use App\Entity\User;
 use App\Repository\UserRepository;
 use App\Service\ShaFinder;
 use App\Service\TaxService;
-use function count;
-use DateTime;
-use Exception;
-use IntlDateFormatter;
 use Psr\Container\ContainerInterface;
-use function strlen;
 use Symfony\Contracts\Service\ServiceSubscriberInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 
-class AppExtension extends AbstractExtension
-    implements ServiceSubscriberInterface
+class AppExtension extends AbstractExtension implements ServiceSubscriberInterface
 {
     public function __construct(
         private readonly ContainerInterface $container,
@@ -87,13 +81,13 @@ class AppExtension extends AbstractExtension
 
         return sprintf(
             '<span class="%s">%s</span>',
-            ($price < 0 ? 'amount amount-red' : 'amount'),
+            $price < 0 ? 'amount amount-red' : 'amount',
             $price
         );
     }
 
     /**
-     * Invert a value
+     * Invert a value.
      */
     public function invertFilter(int|float $value): int|float
     {
@@ -104,22 +98,22 @@ class AppExtension extends AbstractExtension
      * @throws \Exception
      */
     public function intlDate(
-        string|DateTime $date,
+        string|\DateTime $date,
         string $format = "d 'de' MMMM YYYY",
         string $lang = 'es_ES'
     ): string {
-        $formatter = new IntlDateFormatter(
+        $formatter = new \IntlDateFormatter(
             'es_ES',
-            IntlDateFormatter::LONG,
-            IntlDateFormatter::NONE
+            \IntlDateFormatter::LONG,
+            \IntlDateFormatter::NONE
         );
 
-        if ($date instanceof DateTime) {
+        if ($date instanceof \DateTime) {
             $dateTime = $date;
         } else {
             try {
-                $dateTime = new DateTime($date);
-            } catch (Exception) {
+                $dateTime = new \DateTime($date);
+            } catch (\Exception) {
                 return $date;
             }
         }
@@ -147,24 +141,24 @@ class AppExtension extends AbstractExtension
     }
 
     /**
-     * Shorten a (latin) name
+     * Shorten a (latin) name.
      */
     public function shortName(string $longName): string
     {
         // E.g. Juan José Perez Pillo
         $parts = explode(' ', $longName);
 
-        if (2 === count($parts)) {
+        if (2 === \count($parts)) {
             // Juan Perez => Juan Perez
             return $longName;
         }
 
-        if (3 === count($parts)) {
+        if (3 === \count($parts)) {
             // Juan José Perez => Juan Perez
             return $parts[0] . ' ' . $parts[2];
         }
 
-        if (4 === count($parts)) {
+        if (4 === \count($parts)) {
             // Juan José Perez Pillo => Juan Perez
             return $parts[0] . ' ' . $parts[2];
         }
@@ -204,7 +198,7 @@ class AppExtension extends AbstractExtension
         if ($user->getInqRuc()) {
             $ruc = $user->getInqRuc();
 
-            if (13 === strlen($ruc)) {
+            if (13 === \strlen($ruc)) {
                 $rucs = str_split($ruc, 10);
 
                 $ruc = trim(chunk_split($rucs[0], 3, ' ')) . ' ' . $rucs[1];

@@ -105,7 +105,7 @@ class ContractCrudController extends AbstractCrudController
         $generateContract = Action::new('generateContract', 'Generate')
             ->linkToRoute(
                 'contract-generate',
-                fn(Contract $contract): array => [
+                fn (Contract $contract): array => [
                     'id' => $contract->getId(),
                 ]
             );
@@ -118,7 +118,7 @@ class ContractCrudController extends AbstractCrudController
     public function createEntity(string $entityFqcn): Contract
     {
         $request = $this->container->get('request_stack')->getCurrentRequest();
-        $contract = new Contract;
+        $contract = new Contract();
 
         if ($request instanceof Request) {
             $store = $this->storeRepository

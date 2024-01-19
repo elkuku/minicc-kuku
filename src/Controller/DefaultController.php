@@ -6,7 +6,6 @@ use App\Repository\StoreRepository;
 use App\Repository\TransactionRepository;
 use App\Service\ChartBuilderService;
 use App\Service\TaxService;
-use stdClass;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -37,7 +36,7 @@ class DefaultController extends BaseController
                     : 0;
                 $chartData['balances'][] = -$balance;
 
-                $s = new stdClass();
+                $s = new \stdClass();
                 $s->amount = $balance;
                 $s->store = $store;
 

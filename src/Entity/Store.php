@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: elkuku
  * Date: 19.03.17
- * Time: 12:40
+ * Time: 12:40.
  */
 
 namespace App\Entity;
@@ -16,10 +16,9 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
-use Stringable;
 
 #[Entity(repositoryClass: StoreRepository::class)]
-class Store implements Stringable
+class Store implements \Stringable
 {
     #[Column, Id, GeneratedValue]
     private ?int $id = null;

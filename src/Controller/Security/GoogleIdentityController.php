@@ -13,8 +13,6 @@ class GoogleIdentityController extends AbstractController
     #[Route(path: '/connect/google/verify', name: 'connect_google_verify', methods: ['POST'])]
     public function connectVerify(): never
     {
-        throw new \UnexpectedValueException(
-            'Seems like the authenticator is missing :('
-        );
+        throw new \UnexpectedValueException('Seems like the authenticator is missing :(');
     }
 }

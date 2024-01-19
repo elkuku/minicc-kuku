@@ -23,8 +23,7 @@ enum TransactionType: string
 
     public function cssClass(): string
     {
-        return match($this)
-        {
+        return match ($this) {
             self::rent => 'table-success',
             self::payment => '',
             self::initial => 'x',
@@ -34,8 +33,7 @@ enum TransactionType: string
 
     public function cssClassPdf(): string
     {
-        return match($this)
-        {
+        return match ($this) {
             self::rent => 'rent',
             self::payment => '',
             self::initial => 'initial',

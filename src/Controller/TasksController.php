@@ -11,7 +11,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use UnexpectedValueException;
 
 #[IsGranted('ROLE_ADMIN')]
 class TasksController extends AbstractController
@@ -41,16 +40,16 @@ class TasksController extends AbstractController
                 $command['command'] = 'doctrine:migrations:status';
                 break;
             case 'info':
-                define('STDIN', fopen("php://stdin", "r"));
+                define('STDIN', fopen('php://stdin', 'r'));
                 $command['command'] = 'about';
                 break;
             default:
-                throw new UnexpectedValueException('Unknown command');
+                throw new \UnexpectedValueException('Unknown command');
         }
         $application = new Application($kernel);
         $application->setAutoExit(false);
         $input = new ArrayInput($command);
-        $output = new BufferedOutput;
+        $output = new BufferedOutput();
         $application->run($input, $output);
 
         return $this->render(

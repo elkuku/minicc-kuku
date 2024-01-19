@@ -28,8 +28,7 @@ class TransactionController extends AbstractController
         Request $request,
         Transaction $transaction,
         EntityManagerInterface $entityManager,
-    ): RedirectResponse
-    {
+    ): RedirectResponse {
         $entityManager->remove($transaction);
         $entityManager->flush();
         $this->addFlash('success', 'Transaction has been deleted');
@@ -43,8 +42,7 @@ class TransactionController extends AbstractController
         Transaction $transaction,
         Request $request,
         EntityManagerInterface $entityManager,
-    ): Response
-    {
+    ): Response {
         $view = $request->query->get('view');
         $form = $this->createForm(TransactionTypeType::class, $transaction);
         $form->handleRequest($request);
@@ -85,8 +83,7 @@ class TransactionController extends AbstractController
         Request $request,
         #[Autowire('%env(LIST_LIMIT)%')]
         int $listLimit,
-    ): Response
-    {
+    ): Response {
         $paginatorOptions = $this->getPaginatorOptions($request, $listLimit);
         $transactions = $transactionRepo->getRawList($paginatorOptions);
         $paginatorOptions->setMaxPages(

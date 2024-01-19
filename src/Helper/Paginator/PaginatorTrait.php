@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: test
  * Date: 25.05.18
- * Time: 15:08
+ * Time: 15:08.
  */
 
 namespace App\Helper\Paginator;
@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 trait PaginatorTrait
 {
     /**
-     * Get pagination options from request
+     * Get pagination options from request.
      */
     protected function getPaginatorOptions(
         Request $request,
@@ -23,7 +23,7 @@ trait PaginatorTrait
     ): PaginatorOptions {
         $options = $request->get('paginatorOptions');
 
-        return (new PaginatorOptions)
+        return (new PaginatorOptions())
             ->setPage(
                 isset($options['page']) && $options['page']
                     ? (int) $options['page'] : 1

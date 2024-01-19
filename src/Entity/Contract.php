@@ -3,14 +3,13 @@
  * Created by PhpStorm.
  * User: elkuku
  * Date: 19.03.17
- * Time: 12:40
+ * Time: 12:40.
  */
 
 namespace App\Entity;
 
 use App\Repository\ContractRepository;
 use App\Type\Gender;
-use DateTime;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -45,7 +44,7 @@ class Contract
     private ?float $valGarantia = null;
 
     #[Column(type: Types::DATE_MUTABLE)]
-    private DateTime $date;
+    private \DateTime $date;
 
     #[Column]
     private ?int $cntLanfort = 0;
@@ -82,7 +81,7 @@ class Contract
 
     public function __construct()
     {
-        $this->date = new DateTime;
+        $this->date = new \DateTime();
     }
 
     public function getId(): ?int
@@ -150,14 +149,14 @@ class Contract
         return $this->valGarantia;
     }
 
-    public function setDate(DateTime $date): static
+    public function setDate(\DateTime $date): static
     {
         $this->date = $date;
 
         return $this;
     }
 
-    public function getDate(): DateTime
+    public function getDate(): \DateTime
     {
         return $this->date;
     }

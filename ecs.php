@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use PhpCsFixer\Fixer\ArrayNotation\ArraySyntaxFixer;
 use PhpCsFixer\Fixer\Import\NoUnusedImportsFixer;
 use Symplify\EasyCodingStandard\Config\ECSConfig;
 
@@ -24,5 +25,6 @@ return ECSConfig::configure()
         namespaces: true,
         spaces: true,
         docblocks: true,
-        // comments: true,
-    );
+        comments: true,
+    )
+    ->withPhpCsFixerSets(symfony: true);

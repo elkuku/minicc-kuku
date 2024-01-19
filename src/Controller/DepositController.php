@@ -8,10 +8,7 @@ use App\Helper\CsvParser\CsvParser;
 use App\Helper\Paginator\PaginatorTrait;
 use App\Repository\DepositRepository;
 use App\Repository\PaymentMethodRepository;
-use function count;
-use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
-use RuntimeException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -20,7 +17,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use UnexpectedValueException;
 
 #[IsGranted('ROLE_ADMIN')]
 #[Route(path: '/deposits')]
@@ -39,7 +35,7 @@ class DepositController extends AbstractController
         $deposits = $depositRepository->getPaginatedList($paginatorOptions);
         $paginatorOptions->setMaxPages(
             (int) ceil(
-                count($deposits) / $paginatorOptions->getLimit()
+                \count($deposits) / $paginatorOptions->getLimit()
             )
         );
 
@@ -61,7 +57,7 @@ class DepositController extends AbstractController
     ): RedirectResponse {
         $entity = $paymentMethodRepository->find(2);
         if (! $entity) {
-            throw new UnexpectedValueException('Invalid entity');
+            throw new \UnexpectedValueException('Invalid entity');
         }
 
         $csvData = $this->getCsvDataFromRequest($request);
@@ -84,20 +80,20 @@ class DepositController extends AbstractController
                 continue;
             }
 
-            $deposit = (new Deposit)
+            $deposit = (new Deposit())
                 ->setEntity($entity)
-                ->setDate(new DateTime(str_replace('/', '-', (string) $line->fecha)))
+                ->setDate(new \DateTime(str_replace('/', '-', (string) $line->fecha)))
                 ->setDocument($line->{'numero de documento'})
                 ->setAmount($line->credito);
 
             if (false === $depositRepository->has($deposit)) {
                 $entityManager->persist($deposit);
-                $insertCount++;
+                ++$insertCount;
             }
         }
         $entityManager->flush();
         $this->addFlash(
-            ($insertCount ? 'success' : 'warning'),
+            $insertCount ? 'success' : 'warning',
             'Depositos insertados: '
             . $insertCount
         );
@@ -149,19 +145,19 @@ class DepositController extends AbstractController
     {
         $csvFile = $request->files->get('csv_file');
         if (! $csvFile) {
-            throw new RuntimeException('No CSV file recieved.');
+            throw new \RuntimeException('No CSV file recieved.');
         }
 
         $path = $csvFile->getRealPath();
         if (! $path) {
-            throw new RuntimeException('Invalid CSV file.');
+            throw new \RuntimeException('Invalid CSV file.');
         }
 
         $contents = file($path);
         if (! $contents) {
-            throw new RuntimeException('Cannot read CSV file.');
+            throw new \RuntimeException('Cannot read CSV file.');
         }
 
-        return (new CsvParser)->parseCSV($contents);
+        return (new CsvParser())->parseCSV($contents);
     }
 }

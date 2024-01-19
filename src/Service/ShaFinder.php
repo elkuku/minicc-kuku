@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: elkuku
  * Date: 16/05/17
- * Time: 2:45
+ * Time: 2:45.
  */
 
 namespace App\Service;

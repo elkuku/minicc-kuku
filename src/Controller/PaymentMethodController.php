@@ -42,7 +42,7 @@ class PaymentMethodController extends AbstractController
         Request $request,
         EntityManagerInterface $entityManager,
     ): Response {
-        $paymentMethod = new PaymentMethod;
+        $paymentMethod = new PaymentMethod();
         $form = $this->createForm(PaymentMethodType::class, $paymentMethod);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

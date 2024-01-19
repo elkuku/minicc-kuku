@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: elkuku
  * Date: 19.03.17
- * Time: 12:40
+ * Time: 12:40.
  */
 
 namespace App\Repository;
@@ -17,7 +17,8 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * DepositRepository
+ * DepositRepository.
+ *
  * @method Deposit|null find($id, $lockMode = null, $lockVersion = null)
  * @method Deposit|null findOneBy(array $criteria, array $orderBy = null)
  * @method Deposit[]    findAll()

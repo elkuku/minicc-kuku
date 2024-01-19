@@ -25,8 +25,7 @@ enum Gender: string
     // @TODO This should be translatable!
     public function title(): string
     {
-        return match($this)
-        {
+        return match ($this) {
             self::male => 'Sr.',
             self::female => 'Sra.',
             self::other => 'Sr@.',
@@ -35,8 +34,7 @@ enum Gender: string
 
     public function titleLong(): string
     {
-        return match($this)
-        {
+        return match ($this) {
             self::male => 'señor',
             self::female => 'señora',
             self::other => 'señor@',
@@ -45,8 +43,7 @@ enum Gender: string
 
     public function salutation(): string
     {
-        return match($this)
-        {
+        return match ($this) {
             self::male => 'Estimado',
             self::female => 'Estimada',
             self::other => 'Estimad@',
@@ -55,8 +52,7 @@ enum Gender: string
 
     public function text_1(): string
     {
-        return match($this)
-        {
+        return match ($this) {
             self::male => 'el',
             self::female => 'la',
             self::other => 'l@',
@@ -65,8 +61,7 @@ enum Gender: string
 
     public function text_2(): string
     {
-        return match($this)
-        {
+        return match ($this) {
             self::male => 'del',
             self::female => 'de la',
             self::other => 'de l@',

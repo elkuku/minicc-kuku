@@ -18,10 +18,10 @@ class PayrollHelper
      * @return array{factDate: string, prevDate: string, stores: \App\Entity\Store[], storeData: array<string|int, array{saldoIni: mixed, transactions: float[]}>}
      */
     #[ArrayShape([
-        'factDate' => "string",
-        'prevDate' => "string",
-        'stores' => "array",
-        'storeData' => "array",
+        'factDate' => 'string',
+        'prevDate' => 'string',
+        'stores' => 'array',
+        'storeData' => 'array',
     ])]
     public function getData(
         int $year,

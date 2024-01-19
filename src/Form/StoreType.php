@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: elkuku
  * Date: 19.03.17
- * Time: 12:40
+ * Time: 12:40.
  */
 
 namespace App\Form;
@@ -31,7 +31,7 @@ class StoreType extends AbstractType
                     'placeholder' => '-Desocupado-',
                     'required' => false,
                     'label' => 'Inquilino',
-                    'query_builder' => static fn(
+                    'query_builder' => static fn (
                         EntityRepository $er
                     ): QueryBuilder => $er->createQueryBuilder('u')
                         ->where('u.role = :role')

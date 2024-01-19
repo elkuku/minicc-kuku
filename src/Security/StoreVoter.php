@@ -4,25 +4,23 @@ namespace App\Security;
 
 use App\Entity\Store;
 use App\Entity\User;
-use LogicException;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 /**
  * @extends Voter<string, string>
- */class StoreVoter extends Voter
+ */ class StoreVoter extends Voter
 {
-    public final const VIEW = 'view';
+    final public const VIEW = 'view';
 
-    public final const EDIT = 'edit';
+    final public const EDIT = 'edit';
 
-    public final const EXPORT = 'export';
+    final public const EXPORT = 'export';
 
     public function __construct(
         private readonly Security $security
-    )
-    {
+    ) {
     }
 
     protected function supports(string $attribute, mixed $subject): bool
@@ -60,9 +58,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
         return match ($attribute) {
             self::VIEW, self::EXPORT => $this->canView($store, $user),
             self::EDIT => $this->canEdit(),
-            default => throw new LogicException(
-                'This code should not be reached!'
-            ),
+            default => throw new \LogicException('This code should not be reached!'),
         };
     }
 
