@@ -8,6 +8,7 @@ use App\Helper\CsvParser\CsvParser;
 use App\Helper\Paginator\PaginatorTrait;
 use App\Repository\DepositRepository;
 use App\Repository\PaymentMethodRepository;
+use function count;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use RuntimeException;
@@ -20,7 +21,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use UnexpectedValueException;
-use function count;
 
 #[IsGranted('ROLE_ADMIN')]
 #[Route(path: '/deposits')]

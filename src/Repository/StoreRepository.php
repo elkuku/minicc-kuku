@@ -10,8 +10,8 @@ namespace App\Repository;
 
 use App\Entity\Store;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method Store|null find($id, $lockMode = null, $lockVersion = null)

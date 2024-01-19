@@ -2,8 +2,8 @@
 
 namespace App\Helper\Paginator;
 
-use UnexpectedValueException;
 use function in_array;
+use UnexpectedValueException;
 
 class PaginatorOptions
 {

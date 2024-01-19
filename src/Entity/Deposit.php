@@ -8,6 +8,7 @@
 
 namespace App\Entity;
 
+use App\Repository\DepositRepository;
 use DateTime;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping\Column;
@@ -19,7 +20,6 @@ use Doctrine\ORM\Mapping\OneToOne;
 use JetBrains\PhpStorm\ArrayShape;
 use JsonSerializable;
 use UnexpectedValueException;
-use App\Repository\DepositRepository;
 
 #[Entity(repositoryClass: DepositRepository::class)]
 class Deposit implements JsonSerializable

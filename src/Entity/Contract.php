@@ -8,6 +8,7 @@
 
 namespace App\Entity;
 
+use App\Repository\ContractRepository;
 use App\Type\Gender;
 use DateTime;
 use Doctrine\DBAL\Types\Types;
@@ -15,7 +16,6 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
-use App\Repository\ContractRepository;
 
 #[Entity(repositoryClass: ContractRepository::class)]
 class Contract

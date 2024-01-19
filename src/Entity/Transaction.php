@@ -8,6 +8,7 @@
 
 namespace App\Entity;
 
+use App\Repository\TransactionRepository;
 use App\Type\TransactionType;
 use DateTime;
 use Doctrine\DBAL\Types\Types;
@@ -19,7 +20,6 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToOne;
 use JsonSerializable;
-use App\Repository\TransactionRepository;
 
 #[Entity(repositoryClass: TransactionRepository::class)]
 class Transaction implements JsonSerializable

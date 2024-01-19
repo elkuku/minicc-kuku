@@ -8,9 +8,9 @@
 
 namespace App\Helper;
 
+use function is_array;
 use RuntimeException;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
-use function is_array;
 
 class GitLoader
 {

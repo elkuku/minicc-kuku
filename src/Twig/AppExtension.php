@@ -12,16 +12,16 @@ use App\Entity\User;
 use App\Repository\UserRepository;
 use App\Service\ShaFinder;
 use App\Service\TaxService;
+use function count;
 use DateTime;
 use Exception;
 use IntlDateFormatter;
 use Psr\Container\ContainerInterface;
+use function strlen;
 use Symfony\Contracts\Service\ServiceSubscriberInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
-use function count;
-use function strlen;
 
 class AppExtension extends AbstractExtension
     implements ServiceSubscriberInterface
