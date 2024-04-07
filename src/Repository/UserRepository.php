@@ -58,16 +58,14 @@ class UserRepository extends ServiceEntityRepository
 
         usort(
             $users,
-            static function ($a, $b): int {
+            static function (User $a, User $b): int {
                 $aId = 0;
                 $bId = 0;
 
-                /** @var User $a */
                 foreach ($a->getStores() as $store) {
                     $aId = $store->getId();
                 }
 
-                /** @var User $b */
                 foreach ($b->getStores() as $store) {
                     $bId = $store->getId();
                 }
