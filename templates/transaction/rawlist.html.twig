@@ -13,7 +13,7 @@
 
     <h1>RAW List Transactions</h1>
 
-    <form method="post">
+    <form method="post" {{ stimulus_controller('paginator') }}>
 
         <div class="row">
             <div class="col-2">{{ paginator.listLimit(paginatorOptions) }}</div>
@@ -25,7 +25,9 @@
             <tr>
                 <th></th>
                 <th{{ paginatorOptions.searchCriteria('store') ? ' class="cell-active"' : '' }}>
-                    <select name="paginatorOptions[criteria][store]" class="form-control paginatorResetChange">
+                    <select name="paginatorOptions[criteria][store]" class="form-control"
+                            {{ stimulus_action('paginator', 'changeAndSubmit') }}
+                    >
                         <option value="0">...</option>
                         {% for store in stores %}
                             <option value="{{ store.id }}"
@@ -45,7 +47,9 @@
 
                 </th>
                 <th{{ paginatorOptions.searchCriteria('type') ? ' class="cell-active"' : '' }}>
-                    <select name="paginatorOptions[criteria][type]" class="form-control paginatorResetChange">
+                    <select name="paginatorOptions[criteria][type]" class="form-control"
+                    {{ stimulus_action('paginator', 'changeAndSubmit') }}
+                    >
                         <option value="0">...</option>
                         {% for type in transactionTypes %}
                             <option value="{{ type.value }}"
