@@ -2,9 +2,9 @@
     {% for id in ids %}
         <div
                 class="list-group-item list-group-item-action"
-                data-action="click->payday-row#queryDepo"
+                data-action="click->deposit-lookup#queryDepo"
+                data-deposit-lookup-target="resultItem"
                 data-id="{{ id.id }}"
-                data-payday-row-target="resultItem"
         >
             {{ id.document }}
         </div>

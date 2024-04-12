@@ -2,13 +2,13 @@
 
 {% block title %} {{ parent() }} - Edit Transaction{% endblock %}
 
-{% block javascripts %}
-    {{ parent() }}
-    <script type="text/javascript" src="{{ asset('build/js/transaction/form.js') }}"></script>
-{% endblock %}
-
 {% block body %}
-    {{ form_start(form) }}
+    {{ form_start(form, {attr:stimulus_controller(
+        'deposit-lookup', {
+            urlSearch: path('deposito_search'),
+            urlLookup: path('deposito_lookup'),
+        }
+    ).toArray()}) }}
 
     <div class="float-end">
         <button type="submit" class="btn btn-outline-success">Guardar</button>
@@ -22,7 +22,7 @@
     <div class="row">
         <div class="col-sm-3">
             {{ form_label(form.date) }}
-            {{ form_widget(form.date) }}
+            {{ form_widget(form.date, {attr:{'data-deposit-lookup-target':'date'}}) }}
         </div>
         <div class="col-sm-3">
             {{ form_label(form.type) }}
@@ -30,7 +30,7 @@
         </div>
         <div class="col-sm-3">
             {{ form_label(form.amount) }}
-            {{ form_widget(form.amount) }}
+            {{ form_widget(form.amount, {attr:stimulus_target('deposit-lookup', 'amount').toArray()}) }}
         </div>
         <div class="col-sm-3">
             {{ form_label(form.recipeNo) }}
@@ -50,23 +50,27 @@
     </div>
 
     <div class="row">
-        <div class="col-sm-3">
+        <div class="col-sm-4">
             {{ form_label(form.method) }}
-            {{ form_widget(form.method) }}
+            {{ form_widget(form.method, {attr:{'data-deposit-lookup-target':'method'}}) }}
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-4">
             {{ form_label(form.document) }}
-            {{ form_widget(form.document) }}
+            {{ form_widget(form.document, {attr:
+                stimulus_target('deposit-lookup', 'document')
+                |stimulus_action('deposit-lookup','onSearchInput')
+                |stimulus_action('deposit-lookup','onKeydown', 'keydown')
+                    .toArray()
+            }) }}
+            <div
+                    class="search-preview"
+                    {{ stimulus_target('deposit-lookup', 'result') }}
+            >
+            </div>
         </div>
-        <div class="col-sm-3">
-            <label class="col-sm-2 control-label">Lookup</label><br/>
-            {#            <a href="javascript:" onclick="searchDepId('{{ path('lookup-depo') }}')" #}
-            {#               class="btn btn-info form-control">&raquo; &raquo; &raquo;</a> #}
-            <div id="messageContainer"></div>
-        </div>
-        <div class="col-sm-3">
+        <div class="col-sm-4">
             {{ form_label(form.depId) }}
-            {{ form_widget(form.depId) }}
+            {{ form_widget(form.depId, {attr:{'data-deposit-lookup-target':'depid'}}) }}
         </div>
     </div>
 

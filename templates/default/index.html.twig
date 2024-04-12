@@ -1,16 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block javascripts %}
-    {{ parent() }}
-    {% if not app.user %}
-        {{ encore_entry_script_tags('js/default/background') }}
-    {% endif %}
-{% endblock %}
-
 {% block body %}
-    {% if is_granted('ROLE_CASHIER') %}
-        {% include'default/_admin-dashboard.html.twig' %}
-    {% elseif app.user %}
-        {% include'default/_user-dashboard.html.twig' %}
+    {% if not app.user %}
+        <span {{ stimulus_controller('background') }}></span>
+    {% else %}
+        {% if is_granted('ROLE_CASHIER') %}
+            {% include'default/_admin-dashboard.html.twig' %}
+        {% elseif app.user %}
+            {% include'default/_user-dashboard.html.twig' %}
+        {% endif %}
     {% endif %}
 {% endblock %}

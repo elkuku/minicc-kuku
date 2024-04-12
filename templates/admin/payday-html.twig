@@ -23,7 +23,7 @@
                 </div>
                 <div class="row no-gutters"
                      data-payday-target="row"
-                        {{ stimulus_controller('payday-row', {
+                        {{ stimulus_controller('deposit-lookup', {
                             urlSearch: path('deposito_search'),
                             urlLookup: path('deposito_lookup'),
                         }) }}
@@ -31,7 +31,7 @@
                     <div class="col-2">
                         <input class="form-control" name="payments[date_cobro][]" type="date" size="9"
                                data-action="payday#changeDate"
-                               data-payday-row-target="date"
+                               data-deposit-lookup-target="date"
                         >
                     </div>
                     <div class="col-2">
@@ -46,7 +46,7 @@
                     </div>
                     <div class="col-1 text-monospace">
                         <input class="form-control" name="payments[amount][]" type="text" size="7"
-                               data-payday-row-target="amount"
+                               data-deposit-lookup-target="amount"
                         >
                     </div>
                     <div class="col-1">
@@ -57,7 +57,7 @@
 
                     <div class="col-1">
                         <select class="form-control" name="payments[method][]"
-                                data-payday-row-target="method"
+                                data-deposit-lookup-target="method"
                         >
                             {% for method in paymentMethods %}
                                 <option value="{{ method.id }}">{{ method.name }}</option>
@@ -68,19 +68,19 @@
 
                     <div class="col-2">
                         <input
-                                data-action="payday-row#onSearchInput keydown->payday-row#onKeydown"
-                                data-payday-row-target="document"
+                                data-action="deposit-lookup#onSearchInput keydown->deposit-lookup#onKeydown"
+                                data-deposit-lookup-target="document"
                                 class="form-control" name="payments[document][]" type="text" size="7">
                         <div
                                 class="search-preview"
-                                data-payday-row-target="result"
+                                data-deposit-lookup-target="result"
                         >
                         </div>
                     </div>
 
                     <div class="col-1">
                         <input
-                                data-payday-row-target="depid"
+                                data-deposit-lookup-target="depid"
                                 class="form-control" name="payments[depId][]" type="text" size="7">
                     </div>
                     <div class="col-2">

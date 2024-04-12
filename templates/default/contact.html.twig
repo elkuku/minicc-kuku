@@ -2,13 +2,8 @@
 
 {% block title %} {{ parent() }} - Contact{% endblock %}
 
-{% block javascripts %}
-    {{ parent() }}
-    {{ encore_entry_script_tags('js/default/background') }}
-{% endblock %}
-
 {% block body %}
-    <div class="row">
+    <div class="row" {{ stimulus_controller('background') }}>
         <div class="col-12">
             <div class="h-100 p-5 bg-light bg-opacity-50">
                 <h1><span class="oi oi-person"></span> Contact</h1>

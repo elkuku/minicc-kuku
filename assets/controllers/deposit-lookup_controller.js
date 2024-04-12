@@ -15,6 +15,7 @@ export default class extends Controller {
     currentSelection = 0
 
     connect() {
+        console.log('eyyy')
         useClickOutside(this)
         useDebounce(this)
     }
@@ -28,7 +29,7 @@ export default class extends Controller {
         this.currentSelection = 0
     }
 
-    onKeydown(event){
+    onKeydown(event) {
         switch (event.code) {
             case 'ArrowDown':
                 event.preventDefault()
@@ -90,7 +91,7 @@ export default class extends Controller {
 
         const resp = JSON.parse(await response.text())
 
-        this.dateTarget.value = resp.date
+        this.dateTarget.value = resp.date;
         this.amountTarget.value = resp.amount
         this.methodTarget.value = resp.entity
         this.documentTarget.value = resp.document
