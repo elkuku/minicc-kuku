@@ -2,13 +2,7 @@
 
 {% block title %} {{ parent() }} - Contrato Edit{% endblock %}
 
-{% block javascripts %}
-    {{ parent() }}
-    {{ encore_entry_script_tags('js/contract/form') }}
-{% endblock %}
 {% block body %}
-
-    <span id="tax-rate" data-tax-rate="{{ ivaMultiplier }}"></span>
 
     {{ form_start(form) }}
 
@@ -17,7 +11,7 @@
         <a class="btn btn-outline-secondary" href="{{ path('contract-list') }}">Cancelar</a>
     </div>
 
-    <h2>{{ title }}</h2>
+    <h2 {{ stimulus_controller('tinymce') }}>{{ title }}</h2>
 
     {# Check if this is the template - only display the text #}
     <div {{ form.vars.data.id == 1 ? ' style="display: none"' : '' }}>
