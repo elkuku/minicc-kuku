@@ -19,8 +19,10 @@ final class Version20240525151359 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
+        // WTF??
+
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('DROP TABLE user_statex');
+        $this->addSql('DROP TABLE IF EXISTS user_statex');
     }
 
     public function down(Schema $schema): void
