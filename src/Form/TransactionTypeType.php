@@ -71,7 +71,7 @@ class TransactionTypeType extends AbstractType
                     'choice_label' => 'name',
                 ]
             )
-            ->add('amount', MoneyType::class)
+            ->add('amount', MoneyType::class, ['currency'=>'usd'])
             ->add('document')
             ->add('comment')
             ->add('depId', null, [
