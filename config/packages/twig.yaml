@@ -5,6 +5,7 @@ twig:
         public_path: '%kernel.project_dir%/public'
         tax_value: '%env(VALUE_IVA)%'
         oauthGoogleId: '%env(OAUTH_GOOGLE_ID)%'
+    file_name_pattern: '*.twig'
 
 when@test:
     twig:
