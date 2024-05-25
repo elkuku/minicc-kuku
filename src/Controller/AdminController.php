@@ -44,8 +44,7 @@ class AdminController extends AbstractController
         }
 
         foreach ($values as $storeId => $value) {
-            if (0 === $value) {
-                // No value
+            if (!$value) {
                 continue;
             }
 
@@ -70,7 +69,7 @@ class AdminController extends AbstractController
                 ->setType(TransactionType::rent)
                 ->setMethod($method)
                 // Set negative value (!)
-                ->setAmount(-$value);
+                ->setAmount((string)-$value);
 
             $entityManager->persist($transaction);
         }

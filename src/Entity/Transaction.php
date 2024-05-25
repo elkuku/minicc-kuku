@@ -48,7 +48,7 @@ class Transaction implements \JsonSerializable
     private \DateTime $date;
 
     #[Column(type: Types::DECIMAL, precision: 13, scale: 2, nullable: false)]
-    private float $amount = 0;
+    private string $amount = '0';
 
     #[Column(type: Types::INTEGER, length: 20, nullable: true)]
     private int $document;
@@ -88,12 +88,12 @@ class Transaction implements \JsonSerializable
         return $this;
     }
 
-    public function getAmount(): float
+    public function getAmount(): string
     {
         return $this->amount;
     }
 
-    public function setAmount(float $amount): self
+    public function setAmount(string $amount): self
     {
         $this->amount = $amount;
 
@@ -197,7 +197,7 @@ class Transaction implements \JsonSerializable
     }
 
     /**
-     * @return array{id: int|null, store: int|null, user: int|null, type: string, method: int|null, date: string, amount: float, document: int, depId: int|null, recipeNo: int|null}
+     * @return array{id: int|null, store: int|null, user: int|null, type: string, method: int|null, date: string, amount: string, document: int, depId: int|null, recipeNo: int|null}
      */
     public function jsonSerialize(): array
     {
