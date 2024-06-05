@@ -16,8 +16,6 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToOne;
-use JetBrains\PhpStorm\ArrayShape;
-use JsonSerializable;
 
 #[Entity(repositoryClass: DepositRepository::class)]
 class Deposit implements \JsonSerializable
@@ -132,13 +130,6 @@ class Deposit implements \JsonSerializable
      *
      * @since 5.4.0
      */
-    #[ArrayShape([
-        'id' => 'int|null',
-        'amount' => 'float',
-        'document' => 'string',
-        'date' => 'string',
-        'entity' => 'int|null',
-    ])]
     public function jsonSerialize(): array
     {
         return [

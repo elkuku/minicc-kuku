@@ -2,7 +2,6 @@
 
 namespace App\Security;
 
-use JetBrains\PhpStorm\ArrayShape;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -78,10 +77,6 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
     /**
      * @return array{identifier: string, csrf_token: string}
      */
-    #[ArrayShape([
-        'identifier' => 'string',
-        'csrf_token' => 'string',
-    ])]
     private function getCredentials(
         Request $request
     ): array {
