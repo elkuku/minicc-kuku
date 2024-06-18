@@ -31,7 +31,6 @@ export default class extends Controller {
     }
 
     calcWithoutTax() {
-        console.log('calc without')
         this.withoutTaxTarget.value = (this.withTaxTarget.value / this.taxRate).toFixed(2)
     }
 

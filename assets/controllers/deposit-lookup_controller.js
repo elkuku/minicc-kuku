@@ -15,7 +15,6 @@ export default class extends Controller {
     currentSelection = 0
 
     connect() {
-        console.log('eyyy')
         useClickOutside(this)
         useDebounce(this)
     }

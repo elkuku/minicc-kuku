@@ -8,7 +8,6 @@ import 'tinymce/plugins/fullscreen'
 /* stimulusFetch: 'lazy' */
 export default class extends Controller {
     connect() {
-        console.log('tiny')
         tinymce.init({
             selector: 'textarea',
             height: 500,

@@ -40,9 +40,5 @@ import $ from 'jquery'
             this.modalBodyTarget.innerHTML = e.responseText
         }
     }
-
-    modalHidden(event) {
-console.log('juhu')
-    }
 }
 
