@@ -4,7 +4,7 @@ namespace Twig;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
-use App\Twig\AppExtension;
+use App\Twig\Extension\AppExtension;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class TwigExtensionTest extends WebTestCase
@@ -14,10 +14,7 @@ class TwigExtensionTest extends WebTestCase
     public function setUp(): void
     {
         static::createClient();
-        $this->twigExtension = new AppExtension(
-            self::getContainer(),
-            $this->createMock(UserRepository::class)
-        );
+        $this->twigExtension = new AppExtension();
     }
 
     public function testPriceFilter(): void
@@ -30,12 +27,6 @@ class TwigExtensionTest extends WebTestCase
             '<span class="amount amount-red">-112.00</span>',
             $this->twigExtension->priceFilter(-112)
         );
-    }
-
-    public function testX(): void
-    {
-        self::assertSame(112.0, $this->twigExtension->conIvaFilter(100));
-        self::assertSame(12.0, $this->twigExtension->taxFromTotalFilter(112));
     }
 
     public function testFormatRuc(): void
