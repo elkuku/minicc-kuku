@@ -1,40 +1,29 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: elkuku
- * Date: 19.03.17
- * Time: 12:40.
- */
 
-namespace App\Twig;
+namespace App\Twig\Extension;
 
 use App\Entity\User;
-use App\Repository\UserRepository;
-use App\Service\ShaFinder;
-use App\Service\TaxService;
-use Psr\Container\ContainerInterface;
-use Symfony\Contracts\Service\ServiceSubscriberInterface;
+use App\Twig\Runtime\AppExtensionRuntime;
+use DateTime;
+use Exception;
+use IntlDateFormatter;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
+use function count;
+use function strlen;
 
-class AppExtension extends AbstractExtension implements ServiceSubscriberInterface
+class AppExtension extends AbstractExtension
 {
-    public function __construct(
-        private readonly ContainerInterface $container,
-        private readonly UserRepository $userRepository,
-    ) {
-    }
-
     /**
-     * @return \Twig\TwigFilter[]
+     * @return TwigFilter[]
      */
     public function getFilters(): array
     {
         return [
             new TwigFilter('price', $this->priceFilter(...)),
-            new TwigFilter('conIva', $this->conIvaFilter(...)),
-            new TwigFilter('taxFromTotal', $this->taxFromTotalFilter(...)),
+            new TwigFilter('conIva', [AppExtensionRuntime::class, 'getValueWithTax']),
+            new TwigFilter('taxFromTotal', [AppExtensionRuntime::class, 'getTaxFromTotal']),
             new TwigFilter('invert', $this->invertFilter(...)),
             new TwigFilter('cast_to_array', $this->objectFilter(...)),
             new TwigFilter('short_name', $this->shortName(...)),
@@ -42,27 +31,16 @@ class AppExtension extends AbstractExtension implements ServiceSubscriberInterfa
     }
 
     /**
-     * @return \Twig\TwigFunction[]
+     * @return TwigFunction[]
      */
     public function getFunctions(): array
     {
         return [
             new TwigFunction('intlDate', $this->intlDate(...)),
             new TwigFunction('formatRUC', $this->formatRUC(...)),
-            new TwigFunction('getSHA', $this->getSHA(...)),
-            new TwigFunction('findSystemUsers', $this->findSystemUsers(...)),
+            new TwigFunction('getSHA', [AppExtensionRuntime::class, 'getSHA']),
+            new TwigFunction('findSystemUsers', [AppExtensionRuntime::class, 'getSystemUsers']),
             new TwigFunction('getCurrentYear', $this->getCurrentYear(...)),
-        ];
-    }
-
-    /**
-     * @return class-string[]
-     */
-    public static function getSubscribedServices(): array
-    {
-        return [
-            ShaFinder::class,
-            TaxService::class,
         ];
     }
 
@@ -94,26 +72,23 @@ class AppExtension extends AbstractExtension implements ServiceSubscriberInterfa
         return $value ? -$value : 0;
     }
 
-    /**
-     * @throws \Exception
-     */
     public function intlDate(
-        string|\DateTime $date,
-        string $format = "d 'de' MMMM YYYY",
-        string $lang = 'es_ES'
+        string|DateTime $date,
+        string          $format = "d 'de' MMMM YYYY",
+        string          $lang = 'es_ES'
     ): string {
-        $formatter = new \IntlDateFormatter(
+        $formatter = new IntlDateFormatter(
             'es_ES',
-            \IntlDateFormatter::LONG,
-            \IntlDateFormatter::NONE
+            IntlDateFormatter::LONG,
+            IntlDateFormatter::NONE
         );
 
-        if ($date instanceof \DateTime) {
+        if ($date instanceof DateTime) {
             $dateTime = $date;
         } else {
             try {
-                $dateTime = new \DateTime($date);
-            } catch (\Exception) {
+                $dateTime = new DateTime($date);
+            } catch (Exception) {
                 return $date;
             }
         }
@@ -148,44 +123,22 @@ class AppExtension extends AbstractExtension implements ServiceSubscriberInterfa
         // E.g. Juan José Perez Pillo
         $parts = explode(' ', $longName);
 
-        if (2 === \count($parts)) {
+        if (2 === count($parts)) {
             // Juan Perez => Juan Perez
             return $longName;
         }
 
-        if (3 === \count($parts)) {
+        if (3 === count($parts)) {
             // Juan José Perez => Juan Perez
             return $parts[0] . ' ' . $parts[2];
         }
 
-        if (4 === \count($parts)) {
+        if (4 === count($parts)) {
             // Juan José Perez Pillo => Juan Perez
             return $parts[0] . ' ' . $parts[2];
         }
 
         return $longName;
-    }
-
-    /**
-     * Add the tax value to a given amount.
-     */
-    public function conIvaFilter(float $value): float
-    {
-        return $this->container->get(TaxService::class)->getValueConTax($value);
-    }
-
-    /**
-     * Add the tax value to a given amount.
-     */
-    public function taxFromTotalFilter(float $value): float
-    {
-        return $this->container->get(TaxService::class)
-            ->getTaxFromTotal($value);
-    }
-
-    public function getSHA(): string
-    {
-        return $this->container->get(ShaFinder::class)->getSha();
     }
 
     /**
@@ -198,7 +151,7 @@ class AppExtension extends AbstractExtension implements ServiceSubscriberInterfa
         if ($user->getInqRuc()) {
             $ruc = $user->getInqRuc();
 
-            if (13 === \strlen($ruc)) {
+            if (13 === strlen($ruc)) {
                 $rucs = str_split($ruc, 10);
 
                 $ruc = trim(chunk_split($rucs[0], 3, ' ')) . ' ' . $rucs[1];
@@ -211,14 +164,6 @@ class AppExtension extends AbstractExtension implements ServiceSubscriberInterfa
         }
 
         return trim($ruc);
-    }
-
-    /**
-     * @return User[]
-     */
-    public function findSystemUsers(): array
-    {
-        return $this->userRepository->findActiveUsers();
     }
 
     public function getCurrentYear(): int
