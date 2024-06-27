@@ -3,6 +3,11 @@
 {% block body %}
     {% if not app.user %}
         <span {{ stimulus_controller('background') }}></span>
+        <div class="col-12">
+            <div class="h-100 p-5 bg-light bg-opacity-50 text-on-image">
+                <h1>Atacames - Ecuador</h1>
+            </div>
+        </div>
     {% else %}
         {% if is_granted('ROLE_CASHIER') %}
             {% include'default/_admin-dashboard.html.twig' %}

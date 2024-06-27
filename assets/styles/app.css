@@ -12,6 +12,7 @@ body {
     position: absolute;
     bottom: 0;
     width: 100%;
+    color: #6e6e6e;
 }
 
 .amount {
@@ -45,7 +46,7 @@ th {
 
 .bg-atacames {
     height: 100%;
-    background: #635584 url("../images/atacames-sunset-4711.jpg") no-repeat center;
+    background: #635584 url("../images/atacames-sunset-4711.webp") no-repeat center;
     background-size: cover;
 }
 
@@ -66,4 +67,8 @@ th {
 
 .modal-body button, .modal-body a {
     display: none;
+}
+
+.text-on-image {
+    color: #3a3333;
 }
