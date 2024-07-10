@@ -42,18 +42,6 @@ return [
     'stimulus-use' => [
         'version' => '0.52.2',
     ],
-    'tinymce' => [
-        'version' => '7.2.1',
-    ],
-    'tinymce/themes/silver' => [
-        'version' => '7.2.1',
-    ],
-    'tinymce/icons/default' => [
-        'version' => '7.2.1',
-    ],
-    'tinymce/plugins/fullscreen' => [
-        'version' => '7.2.1',
-    ],
     '@tiptap/core' => [
         'version' => '2.4.0',
     ],
