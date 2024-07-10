@@ -1,0 +1,104 @@
+.tiptap {
+    border: 1px solid #ccc;
+    overflow: scroll;
+}
+
+.editorContent:fullscreen {
+    background-color: #fff;
+    color: #000;
+    overflow: scroll;
+}
+
+.bootstrap-dark .editorContent:fullscreen {
+    background-color: #000;
+    color: #fff;
+    overflow: scroll;
+}
+
+/* Table-specific styling */
+.tiptap table {
+    border-collapse: collapse;
+    margin: 0;
+    overflow: hidden;
+    table-layout: fixed;
+    width: 100%;
+
+    td,
+    th {
+        border: 1px dashed #6e6e6e;
+        box-sizing: border-box;
+        min-width: 1em;
+        padding: 6px 8px;
+        position: relative;
+        vertical-align: top;
+
+        > * {
+            margin-bottom: 0;
+        }
+    }
+
+    th {
+        background-color: #6e6e6e;
+        font-weight: bold;
+        text-align: left;
+    }
+
+    .selectedCell:after {
+        background: #6e6e6e;
+        content: "";
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        pointer-events: none;
+        position: absolute;
+        z-index: 2;
+    }
+
+}
+
+.tiptap .mention {
+    background-color: mediumpurple;
+    border-radius: 0.4rem;
+    box-decoration-break: clone;
+    color: purple;
+    padding: 0.1rem 0.3rem;
+}
+
+.tippy-box {
+    background: white;
+    color: black;
+    border: 1px solid gray;
+    border-radius: 0.7rem;
+    box-shadow:  10px 5px 5px limegreen;
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    overflow: auto;
+    padding: 0.4rem;
+    position: relative;
+
+    button {
+        align-items: center;
+        background-color: transparent;
+        color: black;
+        display: flex;
+        gap: 0.25rem;
+        text-align: left;
+        width: 100%;
+
+        &:hover,
+        &:hover.is-selected {
+            background-color: gray;
+        }
+
+        &.is-selected {
+            background-color: lightblue;
+        }
+    }
+}
+
+.tableWrapper {
+    margin: 1.5rem 0;
+    overflow-x: auto;
+}

@@ -4,22 +4,21 @@ namespace App\Controller;
 
 use App\Entity\Contract;
 use App\Form\ContractType;
-use App\Helper\IntlConverter;
 use App\Repository\ContractRepository;
 use App\Repository\StoreRepository;
 use App\Repository\UserRepository;
+use App\Service\ContractTemplateHelper;
 use App\Service\TaxService;
 use Doctrine\ORM\EntityManagerInterface;
-use IntlNumbersToWords\Numbers;
 use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 use Knp\Snappy\Pdf;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Twig\Environment;
 
 #[IsGranted('ROLE_ADMIN')]
 #[Route(path: 'contracts')]
@@ -27,11 +26,12 @@ class ContractController extends AbstractController
 {
     #[Route(path: '/', name: 'contract-list', methods: ['GET', 'POST'])]
     public function list(
-        StoreRepository $storeRepository,
-        UserRepository $userRepository,
+        StoreRepository    $storeRepository,
+        UserRepository     $userRepository,
         ContractRepository $contractRepository,
-        Request $request
-    ): Response {
+        Request            $request
+    ): Response
+    {
         $storeId = $request->request->getInt('store_id');
         $year = $request->request->getInt('year');
 
@@ -52,13 +52,14 @@ class ContractController extends AbstractController
 
     #[Route(path: '/new', name: 'contracts-new', methods: ['POST'])]
     public function new(
-        StoreRepository $storeRepo,
-        UserRepository $userRepo,
-        ContractRepository $contractRepo,
-        Request $request,
+        StoreRepository        $storeRepo,
+        UserRepository         $userRepo,
+        ContractRepository     $contractRepo,
+        Request                $request,
         EntityManagerInterface $entityManager,
-        TaxService $taxService,
-    ): Response {
+        TaxService             $taxService,
+    ): Response
+    {
         $store = $storeRepo->find($request->request->getInt('store'));
         $user = $userRepo->find($request->request->getInt('user'));
         $contract = new Contract();
@@ -68,7 +69,7 @@ class ContractController extends AbstractController
         }
         if ($user) {
             $contract
-                ->setInqNombreapellido((string) $user->getName())
+                ->setInqNombreapellido((string)$user->getName())
                 ->setInqCi($user->getInqCi());
         }
         $form = $this->createForm(ContractType::class, $contract);
@@ -104,11 +105,12 @@ class ContractController extends AbstractController
         methods: ['GET', 'POST']
     )]
     public function edit(
-        Contract $contract,
-        Request $request,
+        Contract               $contract,
+        Request                $request,
         EntityManagerInterface $entityManager,
-        TaxService $taxService,
-    ): Response {
+        TaxService             $taxService,
+    ): Response
+    {
         $form = $this->createForm(ContractType::class, $contract);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -135,9 +137,10 @@ class ContractController extends AbstractController
 
     #[Route(path: '/delete/{id}', name: 'contracts-delete', methods: ['GET'])]
     public function delete(
-        Contract $contract,
+        Contract               $contract,
         EntityManagerInterface $entityManager,
-    ): RedirectResponse {
+    ): RedirectResponse
+    {
         $entityManager->remove($contract);
         $entityManager->flush();
         $this->addFlash('success', 'Contract has been deleted');
@@ -150,11 +153,12 @@ class ContractController extends AbstractController
         'POST',
     ])]
     public function template(
-        ContractRepository $contractRepository,
-        Request $request,
+        ContractRepository     $contractRepository,
+        Request                $request,
         EntityManagerInterface $entityManager,
-        TaxService $taxService,
-    ): Response {
+        TaxService             $taxService,
+    ): Response
+    {
         $data = $contractRepository->findTemplate();
         $form = $this->createForm(ContractType::class, $data);
         $form->handleRequest($request);
@@ -184,64 +188,15 @@ class ContractController extends AbstractController
         'id' => '\d+',
     ], methods: ['GET'])]
     public function generate(
-        Contract $contract,
-        Pdf $pdf,
-        Environment $environment
-    ): PdfResponse {
-        $numberToWord = new Numbers();
-        $searchReplace = [
-            '[local_no]' => $contract->getStoreNumber(),
-            '[destination]' => $contract->getDestination(),
-            '[val_alq]' => number_format((float) $contract->getValAlq(), 2),
-            '[txt_alq]' => $numberToWord->toCurrency(
-                (float) $contract->getValAlq(),
-                'es_EC',
-                'USD'
-            ),
-            '[val_garantia]' => number_format(
-                (float) $contract->getValGarantia(),
-                2
-            ),
-            '[txt_garantia]' => $numberToWord->toCurrency(
-                (float) $contract->getValGarantia(),
-                'es_EC',
-                'USD'
-            ),
-            '[fecha_long]' => IntlConverter::formatDate($contract->getDate()),
-
-            '[inq_nombreapellido]' => $contract->getInqNombreapellido(),
-            '[inq_ci]' => $contract->getInqCi(),
-
-            '[senor_a]' => $contract->getGender()->titleLong(),
-            '[el_la]' => $contract->getGender()->text_1(),
-            '[del_la]' => $contract->getGender()->text_2(),
-
-            '[cnt_lanfort]' => $contract->getCntLanfort(),
-            '[cnt_neon]' => $contract->getCntNeon(),
-            '[cnt_switch]' => $contract->getCntSwitch(),
-            '[cnt_toma]' => $contract->getCntToma(),
-            '[cnt_ventana]' => $contract->getCntVentana(),
-            '[cnt_llaves]' => $contract->getCntLlaves(),
-            '[cnt_med_agua]' => $contract->getCntMedAgua(),
-            '[cnt_med_elec]' => $contract->getCntMedElec(),
-
-            '[med_electrico]' => $contract->getMedElectrico(),
-            '[med_agua]' => $contract->getMedAgua(),
-        ];
-        $html = str_replace(
-            array_keys($searchReplace),
-            $searchReplace,
-            $contract->getText()
-        );
-        $twig = clone $environment;
-
+        Contract               $contract,
+        Pdf                    $pdf,
+        ContractTemplateHelper $templateHelper,
+    ): PdfResponse
+    {
         return new PdfResponse(
             $pdf->getOutputFromHtml(
-                $twig->createTemplate($html)
-                    ->render([]),
-                [
-                    'encoding' => 'utf-8',
-                ]
+                $templateHelper->replaceContent($contract),
+                ['encoding' => 'utf-8']
             ),
             sprintf(
                 'contrato-local-%d-%s.pdf',
@@ -249,5 +204,11 @@ class ContractController extends AbstractController
                 date('Y-m-d')
             )
         );
+    }
+
+    #[Route(path: '/get-template-strings', name: 'contract-template-strings', methods: ['GET'])]
+    public function getTemplateStrings(ContractTemplateHelper $templateHelper): JsonResponse
+    {
+        return $this->json($templateHelper->getReplacementStrings());
     }
 }

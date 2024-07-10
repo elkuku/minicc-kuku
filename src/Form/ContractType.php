@@ -45,7 +45,7 @@ class ContractType extends AbstractType
             ->add('gender', EnumType::class, [
                 'class' => Gender::class,
             ])
-            ->add('inqNombreApellido')
+            ->add('inqNombreApellido', null, ['empty_data' => ''])
             ->add('inqCi')
             // Accesories
             ->add('cntLanfort', null, [
@@ -79,8 +79,6 @@ class ContractType extends AbstractType
                 'label' => 'Agua',
             ])
             // Text
-            ->add('text', null, [
-                'required' => false,
-            ]);
+            ->add('text');
     }
 }

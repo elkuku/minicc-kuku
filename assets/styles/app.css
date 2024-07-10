@@ -72,3 +72,8 @@ th {
 .text-on-image {
     color: #3a3333;
 }
+
+.icon24{
+    height: 24px;
+    width: 24px;
+}

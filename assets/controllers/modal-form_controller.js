@@ -1,9 +1,7 @@
- import { Controller } from '@hotwired/stimulus';
-import { Modal } from 'bootstrap'
-import $ from 'jquery'
- import {useDispatch} from 'stimulus-use'
+import {Controller} from '@hotwired/stimulus';
+import {Modal} from 'bootstrap'
 
- export default class extends Controller {
+export default class extends Controller {
     static targets = [
         'modal', 'modalBody'
     ]
@@ -15,28 +13,42 @@ import $ from 'jquery'
     modal = null
 
     connect() {
-        useDispatch(this)
         this.modal = new Modal(this.modalTarget)
     }
 
     async openModal(event) {
         this.modalBodyTarget.innerHTML = 'Loading....'
         this.modal.show()
-        this.modalBodyTarget.innerHTML = await $.ajax(this.formUrlValue)
+        const response = await fetch(this.formUrlValue)
+        this.modalBodyTarget.innerHTML = await response.text()
     }
 
     async submitForm(event) {
         event.preventDefault()
-        const $form = $(this.modalBodyTarget).find('form')
+        //const $form = $(this.modalBodyTarget).find('form')
+        //const $form = document.getElementsByTagName('form')
+        //console.log($form)
+        //console.log($form.serialize())
+        console.log(this.formUrlValue)
+        const formdata = new FormData(document.querySelector('form'));
+        const params = new URLSearchParams(formdata);
+        console.log('Serialized data:', params.toString())
+
         try {
+            const response = await fetch(this.formUrlValue, {
+                method: 'POST',
+                body: params,
+            })
+            /*
             await $.ajax({
                 url: this.formUrlValue,
                 method: $form.prop('method'),
                 data: $form.serialize()
             });
+            */
             this.modal.hide()
             this.dispatch('success')
-        } catch (e){
+        } catch (e) {
             this.modalBodyTarget.innerHTML = e.responseText
         }
     }

@@ -12,10 +12,9 @@
     <script src="{{ asset('js/twbs/color-modes.js') }}"></script>
 
      {% block stylesheets %}{% endblock %}
-            {{ encore_entry_link_tags('app') }}
-            {# {{ ux_controller_link_tags() }} #}
-    {% block javascripts %}{% endblock %}
-            {{ encore_entry_script_tags('app') }}
+    {% block javascripts %}
+        {% block importmap %}{{ importmap('app') }}{% endblock %}
+    {% endblock %}
 
     {% if not app.user %}
         <script src="https://accounts.google.com/gsi/client" async defer></script>
