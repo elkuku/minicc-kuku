@@ -1,5 +1,5 @@
 import {Controller} from '@hotwired/stimulus'
-import {useClickOutside, useDebounce} from 'stimulus-use'
+import {useClickOutside} from 'stimulus-use'
 
 export default class extends Controller {
     static values = {
@@ -10,13 +10,10 @@ export default class extends Controller {
     static targets = ['result', 'resultItem',
         'date', 'amount', 'method', 'document', 'depid']
 
-    static debounces = ['_search']
-
     currentSelection = 0
 
     connect() {
         useClickOutside(this)
-        useDebounce(this)
     }
 
     clickOutside(event) {
