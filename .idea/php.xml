@@ -119,7 +119,6 @@
       <path value="$PROJECT_DIR$/vendor/friendsofphp/proxy-manager-lts" />
       <path value="$PROJECT_DIR$/vendor/ocramius/proxy-manager" />
       <path value="$PROJECT_DIR$/vendor/webimpress/safe-writer" />
-      <path value="$PROJECT_DIR$/vendor/dbrekelmans/bdi" />
       <path value="$PROJECT_DIR$/vendor/doctrine/deprecations" />
       <path value="$PROJECT_DIR$/vendor/phpunit/php-file-iterator" />
       <path value="$PROJECT_DIR$/vendor/phpunit/php-code-coverage" />
@@ -153,9 +152,6 @@
       <path value="$PROJECT_DIR$/vendor/symfony/intl" />
       <path value="$PROJECT_DIR$/vendor/twig/intl-extra" />
       <path value="$PROJECT_DIR$/vendor/elkuku/symfony-utils" />
-      <path value="$PROJECT_DIR$/vendor/symfony/uid" />
-      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-uuid" />
-      <path value="$PROJECT_DIR$/vendor/easycorp/easyadmin-bundle" />
       <path value="$PROJECT_DIR$/vendor/masterminds/html5" />
       <path value="$PROJECT_DIR$/vendor/phpstan/extension-installer" />
       <path value="$PROJECT_DIR$/vendor/tomasvotruba/cognitive-complexity" />
@@ -175,7 +171,6 @@
       <path value="$PROJECT_DIR$/vendor/doctrine/annotations" />
       <path value="$PROJECT_DIR$/vendor/knplabs/knp-snappy" />
       <path value="$PROJECT_DIR$/vendor/knplabs/knp-snappy-bundle" />
-      <path value="$PROJECT_DIR$/vendor/symplify/easy-coding-standard" />
       <path value="$PROJECT_DIR$/vendor/symfony/ux-twig-component" />
       <path value="$PROJECT_DIR$/vendor/symfony/type-info" />
       <path value="$PROJECT_DIR$/vendor/doctrine/common" />
