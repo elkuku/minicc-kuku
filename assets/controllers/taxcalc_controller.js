@@ -1,11 +1,11 @@
 import {Controller} from '@hotwired/stimulus'
 
 export default class extends Controller {
-    static targets = [ "withTax", "withoutTax" ]
-    static values = { taxrate: String }
+    static targets = ["withTax", "withoutTax"]
+    static values = {taxrate: String}
     taxRate = 0
 
-    connect () {
+    connect() {
         this.taxRate = 1 + this.taxrateValue / 100
         this.calcWithTax()
     }
@@ -15,6 +15,6 @@ export default class extends Controller {
     }
 
     calcWithTax() {
-        this.withTaxTarget.value = (this.withoutTaxTarget.value * this.taxRate).toFixed(2)
+        this.withTaxTarget.value = (this.withoutTaxTarget.value.replace(',', '.') * this.taxRate).toFixed(2)
     }
 }
