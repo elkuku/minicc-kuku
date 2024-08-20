@@ -190,6 +190,9 @@
     <option name="level" value="6" />
     <option name="transferred" value="true" />
   </component>
+  <component name="PhpTerminalSettingsCustomizer">
+    <option name="myIsInterpreterAdded" value="false" />
+  </component>
   <component name="PhpUnit">
     <phpunit_settings>
       <PhpUnitSettings load_method="PHPUNIT_PHAR" bootstrap_file_path="$PROJECT_DIR$/tests/bootstrap.php" configuration_file_path="$PROJECT_DIR$/phpunit.xml.dist" custom_loader_path="$PROJECT_DIR$/vendor/autoload.php" phpunit_phar_path="$PROJECT_DIR$/bin/phpunit" use_bootstrap_file="true" use_configuration_file="true" />
