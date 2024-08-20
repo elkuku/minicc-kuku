@@ -1,0 +1,242 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ parent() }} - Pay Day{% endblock %}
+
+{% block body %}
+
+    <h1>Pay Day 2</h1>
+
+    <div {{ stimulus_controller('payday2', { lastRecipeNo: lastRecipeNo }) }}>
+
+        <button class="btn btn-primary" data-action="payday2#showModal">
+            Add Payment
+        </button>
+
+        <div {{ stimulus_target('payday2', 'template') }} style="display: none">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row">
+
+                        <div data-field="date" class="col-4">15-09-1966</div>
+                        <div data-field="store" class="col-2 text-center">8</div>
+                        <div data-field="amount" class="col-3 text-end">150.00</div>
+                        <div class="col-3 text-end">
+                            <div class="btn-group-sm">
+                                <button data-action="payday2#editElement" class="btn btn-warning" title="Editar">
+                                    E
+                                </button>
+                                <button data-action="payday2#deleteElement" class="btn btn-danger" title="Borrar">
+                                    D
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+
+                    <div class="row">
+                        <div data-field="recipe" class="col">888888</div>
+                        <div data-field="method" class="col" title="Method">Pch-1234</div>
+                        <div data-field="document" class="col" title="No Documento">123456</div>
+                        <div data-field="depid" class="col" title="Dep ID">123456</div>
+
+                    </div>
+                    <div>
+                    </div>
+
+                    <div style="display: xnone">
+                        <input name="payments[date_cobro][]">
+                        <input name="payments[store][]">
+                        <input name="payments[amount][]">
+                        <input name="payments[recipe][]">
+                        <input name="payments[method][]">
+
+                        <input name="payments[document][]">
+                        <input name="payments[depId][]">
+                        <input name="payments[comment][]">
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+        <form method="post" action="{{ path('pay-day2') }}">
+            <div data-payday2-target="body">
+
+                <div style="display: none">
+                    <div class="card" data-payday2-target="row"
+                            {{ stimulus_controller('deposit-lookup', {
+                                urlSearch: path('deposito_search'),
+                                urlLookup: path('deposito_lookup'),
+                            }) }}>
+                        <div class="row g-0">
+                            <div class="col">
+                                <input class="form-control" name="payments[date_cobro][]" type="date"
+                                       data-action="payday2#changeDate"
+                                       data-deposit-lookup-target="date"
+                                >
+                            </div>
+                            <div class="col">
+                                <select class="form-control" name="payments[store][]">
+                                    <option value="0">Local</option>
+                                    {% for store in stores %}
+                                        <option value="{{ store.id }}">
+                                            {{ store.id }} - {{ store.destination }}
+                                            - {{ store.user ? store.user.name|short_name : 'n/a' }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col">
+                                <input class="form-control" name="payments[amount][]" type="text" size="7"
+                                       data-deposit-lookup-target="amount"
+                                >
+                            </div>
+                            <div class="col">
+                                <input class="form-control" name="payments[recipe][]" type="text" size="7"
+                                       value="{{ lastRecipeNo }}">
+                            </div>
+                            <div class="col">
+                                <select class="form-control" name="payments[method][]"
+                                        data-deposit-lookup-target="method"
+                                >
+                                    {% for method in paymentMethods %}
+                                        <option value="{{ method.id }}">{{ method.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">b</div>
+                            <div class="col">b</div>
+                            <div class="col">b
+                                <div
+                                        class="search-preview"
+                                        data-deposit-lookup-target="result"
+                                >
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div class="row no-gutters"
+                         data-payday-target="row"
+                            {{ stimulus_controller('deposit-lookup', {
+                                urlSearch: path('deposito_search'),
+                                urlLookup: path('deposito_lookup'),
+                            }) }}
+                    >
+                        <div class="col-2">
+                            <input class="form-control" name="payments[date_cobro][]" type="date" size="9"
+                                   data-action="payday#changeDate"
+                                   data-deposit-lookup-target="date"
+                            >
+                        </div>
+                        <div class="col-2">
+                            <select class="form-control" name="payments[store][]">
+                                <option value="0">Local</option>
+                                {% for store in stores %}
+                                    <option value="{{ store.id }}">
+                                        {{ store.id }} - {{ store.destination }}
+                                        - {{ store.user ? store.user.name|short_name : 'n/a' }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-1 text-monospace">
+                            <input class="form-control" name="payments[amount][]" type="text" size="7"
+                                   data-deposit-lookup-target="amount"
+                            >
+                        </div>
+                        <div class="col-1">
+                            <input class="form-control" name="payments[recipe][]" type="text" size="7"
+                                   value="{{ lastRecipeNo }}">
+                        </div>
+
+
+                        <div class="col-1">
+                            <select class="form-control" name="payments[method][]"
+                                    data-deposit-lookup-target="method"
+                            >
+                                {% for method in paymentMethods %}
+                                    <option value="{{ method.id }}">{{ method.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+
+                        <div class="col-2">
+                            <input
+                                    data-action="deposit-lookup#onSearchInput keydown->deposit-lookup#onKeydown"
+                                    data-deposit-lookup-target="document"
+                                    class="form-control" name="payments[document][]" type="text" size="7">
+                            <div
+                                    class="search-preview"
+                                    data-deposit-lookup-target="result"
+                            >
+                            </div>
+                        </div>
+
+                        <div class="col-1">
+                            <input
+                                    data-deposit-lookup-target="depid"
+                                    class="form-control" name="payments[depId][]" type="text" size="7">
+                        </div>
+                        <div class="col-2">
+                            <input class="form-control" name="payments[comment][]" type="text" size="7">
+                        </div>
+                    </div>{# row #}
+                </div>
+            </div>{# tbody #}
+
+            <div class="card-footer">
+                <button type="button" class="btn btn-outline-info" data-action="payday2#addRow" accesskey="n">
+                    <span class="oi oi-plus"></span>
+                </button>
+                <button type="submit" class="btn btn-outline-success">A Cobrar</button>
+            </div>
+
+        </form>
+
+
+        <!-- Modal -->
+        <div
+                {{ stimulus_target('payday2', 'modal') }}
+                class="modal fade" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input
+                                {{ stimulus_target('payday2', 'modalDate') }}
+                                class="form-control" type="date"
+                               data-deposit-lookup-target="date"
+                        >
+                        <select
+                                {{ stimulus_target('payday2', 'modalStore') }}
+                                class="form-control" name="payments[store][]" >
+                            <option value="0">Local</option>
+                            {% for store in stores %}
+                                <option value="{{ store.id }}">
+                                    {{ store.id }} - {{ store.destination }}
+                                    - {{ store.user ? store.user.name|short_name : 'n/a' }}</option>
+                            {% endfor %}
+                        </select>
+                        <input
+                                {{ stimulus_target('payday2', 'modalRecipe') }}
+                                class="form-control" type="text">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary" data-action="payday2#saveModal">Save changes
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
