@@ -1,0 +1,45 @@
+<div {{ stimulus_target('payday2', 'template') }} style="display: none">
+    <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <div data-field="date" class="col-4"></div>
+                <div data-field="store" class="col-2 text-center"></div>
+                <div data-field="amount" class="col-3 text-end"></div>
+                <div class="col-3 text-end">
+                    <div class="btn-group-sm">
+                        <button data-action="payday2#editElement" class="btn btn-warning" title="Editar">
+                            E
+                        </button>
+                        <button data-action="payday2#deleteElement" class="btn btn-danger" title="Borrar">
+                            D
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+
+            <div class="row">
+                <div data-field="recipe" class="col"></div>
+                <div data-field="method" class="col" title="Method"></div>
+                <div data-field="document" class="col" title="No Documento"></div>
+                <div data-field="depid" class="col" title="Dep ID"></div>
+            </div>
+            <div data-field="comment">
+            </div>
+
+            <div style="display: none">
+                <input name="payments[date_cobro][]">
+                <input name="payments[store][]">
+                <input name="payments[amount][]">
+                <input name="payments[recipe][]">
+                <input name="payments[method][]">
+
+                <input name="payments[document][]">
+                <input name="payments[depId][]">
+                <input name="payments[comment][]">
+            </div>
+
+        </div>
+    </div>
+</div>

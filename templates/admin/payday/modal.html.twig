@@ -1,0 +1,59 @@
+<div
+        {{ stimulus_target('payday2', 'modal') }}
+        class="modal fade" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">Add Payment</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <input
+                        {{ stimulus_target('payday2', 'modalDate') }}
+                        class="form-control" type="date"
+                        data-deposit-lookup-target="date"
+                        placeholder="Date"
+                >
+                <select
+                        {{ stimulus_target('payday2', 'modalStore') }}
+                        class="form-control">
+                    <option value="0">Local</option>
+                    {% for store in stores %}
+                        <option value="{{ store.id }}">
+                            {{ store.id }} - {{ store.destination }}
+                            - {{ store.user ? store.user.name|short_name : 'n/a' }}</option>
+                    {% endfor %}
+                </select>
+                <input
+                        {{ stimulus_target('payday2', 'modalAmount') }}
+                        class="form-control"
+                        data-deposit-lookup-target="amount"
+                        placeholder="Amount"
+                        type="number"
+                >
+                <input
+                        {{ stimulus_target('payday2', 'modalRecipe') }}
+                        class="form-control" type="text">
+                <select
+                        {{ stimulus_target('payday2', 'modalMethod') }}
+                        class="form-control"
+                        data-deposit-lookup-target="method"
+                >
+                    {% for method in paymentMethods %}
+                        <option value="{{ method.id }}">{{ method.name }}</option>
+                    {% endfor %}
+                </select>
+                <input
+                        {{ stimulus_target('payday2', 'modalComment') }}
+                        class="form-control" type="text"
+                placeholder="Comment"
+                >
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" data-action="payday2#saveModal">Guardar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

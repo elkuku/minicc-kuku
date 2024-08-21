@@ -14,20 +14,24 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 class AdminController extends AbstractController
 {
     #[Route(path: '/cobrar', name: 'cobrar', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_ADMIN')]
     public function cobrar(
-        StoreRepository $storeRepository,
-        UserRepository $userRepository,
+        StoreRepository         $storeRepository,
+        UserRepository          $userRepository,
         PaymentMethodRepository $paymentMethodRepository,
-        Request $request,
-        EntityManagerInterface $entityManager,
-    ): Response {
+        Request                 $request,
+        EntityManagerInterface  $entityManager,
+    ): Response
+    {
         $values = $request->request->all('values');
-        if (! $values) {
+        if (!$values) {
             return $this->render(
                 'admin/cobrar.html.twig',
                 [
@@ -39,7 +43,7 @@ class AdminController extends AbstractController
         $users = $request->request->all('users');
         $method = $paymentMethodRepository->find(1);
 
-        if (! $method) {
+        if (!$method) {
             throw new \UnexpectedValueException('Invalid payment method.');
         }
 
@@ -48,21 +52,21 @@ class AdminController extends AbstractController
                 continue;
             }
 
-            $user = $userRepository->find((int) $users[$storeId]);
+            $user = $userRepository->find((int)$users[$storeId]);
 
-            if (! $user) {
+            if (!$user) {
                 throw new \UnexpectedValueException('Store has no user.');
             }
 
-            $store = $storeRepository->find((int) $storeId);
+            $store = $storeRepository->find((int)$storeId);
 
-            if (! $store) {
+            if (!$store) {
                 throw new \UnexpectedValueException('Store does not exist.');
             }
 
             $transaction = (new Transaction())
                 ->setDate(
-                    new \DateTime((string) $request->request->get('date_cobro'))
+                    new \DateTime((string)$request->request->get('date_cobro'))
                 )
                 ->setStore($store)
                 ->setUser($user)
@@ -84,14 +88,15 @@ class AdminController extends AbstractController
     #[Route(path: '/pay-day', name: 'pay-day', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_ADMIN')]
     public function payDay(
-        StoreRepository $storeRepository,
+        StoreRepository         $storeRepository,
         PaymentMethodRepository $paymentMethodRepository,
-        TransactionRepository $transactionRepository,
-        Request $request,
-        EntityManagerInterface $entityManager,
-    ): Response {
+        TransactionRepository   $transactionRepository,
+        Request                 $request,
+        EntityManagerInterface  $entityManager,
+    ): Response
+    {
         $payments = $request->request->all('payments');
-        if (! $payments) {
+        if (!$payments) {
             return $this->render(
                 'admin/payday-html.twig',
                 [
@@ -103,25 +108,25 @@ class AdminController extends AbstractController
         }
 
         foreach ($payments['date_cobro'] as $i => $dateCobro) {
-            if (! $dateCobro) {
+            if (!$dateCobro) {
                 continue;
             }
 
-            $store = $storeRepository->find((int) $payments['store'][$i]);
+            $store = $storeRepository->find((int)$payments['store'][$i]);
 
-            if (! $store) {
+            if (!$store) {
                 continue;
             }
 
-            $method = $paymentMethodRepository->find((int) $payments['method'][$i]);
+            $method = $paymentMethodRepository->find((int)$payments['method'][$i]);
 
-            if (! $method) {
+            if (!$method) {
                 throw new \UnexpectedValueException('Invalid payment method.');
             }
 
             $user = $store->getUser();
 
-            if (! $user) {
+            if (!$user) {
                 throw new \UnexpectedValueException('Store has no user.');
             }
 
@@ -131,9 +136,9 @@ class AdminController extends AbstractController
                 ->setUser($user)
                 ->setType(TransactionType::payment)
                 ->setMethod($method)
-                ->setRecipeNo((int) $payments['recipe'][$i])
-                ->setDocument((int) $payments['document'][$i])
-                ->setDepId((int) $payments['depId'][$i])
+                ->setRecipeNo((int)$payments['recipe'][$i])
+                ->setDocument((int)$payments['document'][$i])
+                ->setDepId((int)$payments['depId'][$i])
                 ->setAmount($payments['amount'][$i])
                 ->setComment($payments['comment'][$i]);
 
@@ -148,44 +153,50 @@ class AdminController extends AbstractController
     #[Route(path: '/pay-day2', name: 'pay-day2', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_ADMIN')]
     public function payDay2(
-        StoreRepository $storeRepository,
+        StoreRepository         $storeRepository,
         PaymentMethodRepository $paymentMethodRepository,
-        TransactionRepository $transactionRepository,
-        Request $request,
-        EntityManagerInterface $entityManager,
-    ): Response {
+        TransactionRepository   $transactionRepository,
+        Request                 $request,
+        EntityManagerInterface  $entityManager,
+    ): Response
+    {
         $payments = $request->request->all('payments');
-        if (! $payments) {
+        if (!$payments) {
+            $paymentMethods = $paymentMethodRepository->findAll();
+            $serializer = new Serializer([new GetSetMethodNormalizer()], ['json' => new JsonEncoder()]);
             return $this->render(
                 'admin/payday2.html.twig',
                 [
                     'stores' => $storeRepository->getActive(),
                     'lastRecipeNo' => $transactionRepository->getLastRecipeNo() + 1,
-                    'paymentMethods' => $paymentMethodRepository->findAll(),
+                    'paymentMethods' => $paymentMethods,
+                    'paymentMethodsString' => $serializer->serialize($paymentMethods, 'json'),
                 ]
             );
         }
 
+        dd($payments);
+
         foreach ($payments['date_cobro'] as $i => $dateCobro) {
-            if (! $dateCobro) {
+            if (!$dateCobro) {
                 continue;
             }
 
-            $store = $storeRepository->find((int) $payments['store'][$i]);
+            $store = $storeRepository->find((int)$payments['store'][$i]);
 
-            if (! $store) {
+            if (!$store) {
                 continue;
             }
 
-            $method = $paymentMethodRepository->find((int) $payments['method'][$i]);
+            $method = $paymentMethodRepository->find((int)$payments['method'][$i]);
 
-            if (! $method) {
+            if (!$method) {
                 throw new \UnexpectedValueException('Invalid payment method.');
             }
 
             $user = $store->getUser();
 
-            if (! $user) {
+            if (!$user) {
                 throw new \UnexpectedValueException('Store has no user.');
             }
 
@@ -195,9 +206,9 @@ class AdminController extends AbstractController
                 ->setUser($user)
                 ->setType(TransactionType::payment)
                 ->setMethod($method)
-                ->setRecipeNo((int) $payments['recipe'][$i])
-                ->setDocument((int) $payments['document'][$i])
-                ->setDepId((int) $payments['depId'][$i])
+                ->setRecipeNo((int)$payments['recipe'][$i])
+                ->setDocument((int)$payments['document'][$i])
+                ->setDepId((int)$payments['depId'][$i])
                 ->setAmount($payments['amount'][$i])
                 ->setComment($payments['comment'][$i]);
 
@@ -212,11 +223,12 @@ class AdminController extends AbstractController
     #[Route(path: '/pagos-por-ano', name: 'pagos-por-ano', methods: ['GET'])]
     #[IsGranted('ROLE_CASHIER')]
     public function pagosPorAno(
-        Request $request,
+        Request               $request,
         TransactionRepository $repository
-    ): Response {
-        $year = $request->query->getInt('year', (int) date('Y'));
-        $month = $year === (int) date('Y') ? (int) date('m') : 1;
+    ): Response
+    {
+        $year = $request->query->getInt('year', (int)date('Y'));
+        $month = $year === (int)date('Y') ? (int)date('m') : 1;
 
         return $this->render(
             'admin/pagos-por-ano.html.twig',
@@ -232,7 +244,8 @@ class AdminController extends AbstractController
     #[IsGranted('ROLE_ADMIN')]
     public function mailListTransactions(
         StoreRepository $storeRepository
-    ): Response {
+    ): Response
+    {
         return $this->render(
             'admin/mail-list-transactions.twig',
             [
@@ -245,7 +258,8 @@ class AdminController extends AbstractController
     #[IsGranted('ROLE_ADMIN')]
     public function mailListPlanillas(
         StoreRepository $storeRepository
-    ): Response {
+    ): Response
+    {
         return $this->render(
             'admin/mail-list-planillas.twig',
             [
