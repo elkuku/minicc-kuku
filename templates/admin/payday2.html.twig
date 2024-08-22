@@ -8,12 +8,11 @@
 
     <div {{ stimulus_controller('payday2', { lastRecipeNo: lastRecipeNo, paymentMethods: paymentMethodsString }) }}>
 
-        <button data-action="payday2#showModal" class="btn btn-primary">
+        <button data-action="payday2#addPayment" class="btn btn-primary">
             Add Payment
         </button>
 
         {{ include('admin/payday/template.html.twig') }}
-
 
         <form method="post" action="{{ path('pay-day2') }}">
 

@@ -46,8 +46,12 @@
                 <input
                         {{ stimulus_target('payday2', 'modalComment') }}
                         class="form-control" type="text"
-                placeholder="Comment"
+                        placeholder="Comment"
                 >
+                <input
+                        {{ stimulus_target('payday2', 'modalIsEdit') }}
+                        type="xhidden"
+                        value="0">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
