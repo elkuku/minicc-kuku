@@ -1,5 +1,9 @@
 <div
         {{ stimulus_target('payday2', 'modal') }}
+        {{ stimulus_controller('deposit-lookup', {
+            urlSearch: path('deposito_search'),
+            urlLookup: path('deposito_lookup'),
+        }) }}
         class="modal fade" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -16,33 +20,73 @@
                 >
                 <select
                         {{ stimulus_target('payday2', 'modalStore') }}
-                        class="form-control">
+                        class="form-control"
+                >
                     <option value="0">Local</option>
                     {% for store in stores %}
                         <option value="{{ store.id }}">
                             {{ store.id }} - {{ store.destination }}
-                            - {{ store.user ? store.user.name|short_name : 'n/a' }}</option>
+                            - {{ store.user ? store.user.name|short_name : 'n/a' }}
+                        </option>
                     {% endfor %}
                 </select>
-                <input
-                        {{ stimulus_target('payday2', 'modalAmount') }}
-                        class="form-control"
-                        data-deposit-lookup-target="amount"
-                        placeholder="Amount"
-                        type="number"
-                >
-                <input
-                        {{ stimulus_target('payday2', 'modalRecipe') }}
-                        class="form-control" type="text">
+                <div class="row">
+                    <div class="col-8">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">$</span>
+                            <input
+                                    {{ stimulus_target('payday2', 'modalAmount') }}
+                                    {{ stimulus_target('deposit-lookup', 'amount') }}
+                                    class="form-control form-control-lg"
+                                    placeholder="Amount"
+                                    type="number"
+                                    list="amountOptions"
+                            >
+                            <datalist id="amountOptions">
+                                <option value="50">
+                                <option value="100">
+                                <option value="150">
+                            </datalist>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-floating mb-3">
+                            <input
+                                    {{ stimulus_target('payday2', 'modalRecipe') }}
+                                    class="form-control form-control-sm" type="text">
+                            <label>Factura</label>
+                        </div>
+
+
+                    </div>
+                </div>
+
+                <hr>
+
                 <select
                         {{ stimulus_target('payday2', 'modalMethod') }}
                         class="form-control"
                         data-deposit-lookup-target="method"
+                        data-action="payday2#switchPaymentMethod"
                 >
                     {% for method in paymentMethods %}
                         <option value="{{ method.id }}">{{ method.name }}</option>
                     {% endfor %}
                 </select>
+                <input
+                        data-action="deposit-lookup#onSearchInput keydown->deposit-lookup#onKeydown"
+                        data-deposit-lookup-target="document"
+                        class="form-control" name="payments[document][]" type="text" size="7">
+                <div
+                        class="search-preview"
+                        data-deposit-lookup-target="result"
+                >
+                </div>
+                <input
+                        data-deposit-lookup-target="depid"
+                        class="form-control" name="payments[depId][]" type="text" size="7">
+
+                <hr>
                 <input
                         {{ stimulus_target('payday2', 'modalComment') }}
                         class="form-control" type="text"
@@ -50,13 +94,13 @@
                 >
                 <input
                         {{ stimulus_target('payday2', 'modalIsEdit') }}
-                        type="xhidden"
-                        value="0">
+                        type="hidden"
+                        value="0"
+                >
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary" data-action="payday2#saveModal">Guardar
-                </button>
+                <button type="button" class="btn btn-primary" data-action="payday2#saveModal">Guardar</button>
             </div>
         </div>
     </div>
