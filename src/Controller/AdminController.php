@@ -177,7 +177,7 @@ class AdminController extends AbstractController
 
         dd($payments);
 
-        foreach ($payments['date_cobro'] as $i => $dateCobro) {
+        foreach ($payments['date'] as $i => $dateCobro) {
             if (!$dateCobro) {
                 continue;
             }
@@ -208,7 +208,7 @@ class AdminController extends AbstractController
                 ->setMethod($method)
                 ->setRecipeNo((int)$payments['recipe'][$i])
                 ->setDocument((int)$payments['document'][$i])
-                ->setDepId((int)$payments['depId'][$i])
+                ->setDepId((int)$payments['deposit'][$i])
                 ->setAmount($payments['amount'][$i])
                 ->setComment($payments['comment'][$i]);
 

@@ -2,9 +2,10 @@
     <div class="card">
         <div class="card-header">
             <div class="row">
-                <div data-field="date" class="col-4"></div>
+                <div data-field="date" class="col-3"></div>
                 <div data-field="store" class="col-2 text-center"></div>
-                <div data-field="amount" class="col-3 text-end"></div>
+                <div data-field="amount" class="col-2 text-end"></div>
+                <div data-field="recipe" class="col-2 text-end"></div>
                 <div class="col-3 text-end">
                     <div class="btn-group-sm">
                         <button data-action="payday2#editPayment" class="btn btn-warning" title="Editar">
@@ -20,23 +21,22 @@
         <div class="card-body">
 
             <div class="row">
-                <div data-field="recipe" class="col"></div>
                 <div data-field="method" class="col" title="Method"></div>
                 <div data-field="document" class="col" title="No Documento"></div>
-                <div data-field="depid" class="col" title="Dep ID"></div>
+                <div data-field="deposit" class="col" title="Dep ID"></div>
             </div>
             <div data-field="comment">
             </div>
 
             <div style="display: xnone">
-                <input name="payments[date_cobro][]">
+                <input name="payments[date][]">
                 <input name="payments[store][]">
                 <input name="payments[amount][]">
                 <input name="payments[recipe][]">
                 <input name="payments[method][]">
 
                 <input name="payments[document][]">
-                <input name="payments[depId][]">
+                <input name="payments[deposit][]">
                 <input name="payments[comment][]">
             </div>
 

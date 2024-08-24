@@ -67,26 +67,34 @@
                         {{ stimulus_target('payday2', 'modalMethod') }}
                         class="form-control"
                         data-deposit-lookup-target="method"
-                        data-action="payday2#switchPaymentMethod"
                 >
                     {% for method in paymentMethods %}
                         <option value="{{ method.id }}">{{ method.name }}</option>
                     {% endfor %}
                 </select>
-                <input
-                        data-action="deposit-lookup#onSearchInput keydown->deposit-lookup#onKeydown"
-                        data-deposit-lookup-target="document"
-                        class="form-control" name="payments[document][]" type="text" size="7">
-                <div
-                        class="search-preview"
-                        data-deposit-lookup-target="result"
-                >
+                <div class="row">
+                    <div class="col">
+                        <input
+                                {{ stimulus_target('payday2', 'modalDocument') }}
+                                data-action="deposit-lookup#onSearchInput keydown->deposit-lookup#onKeydown"
+                                data-deposit-lookup-target="document"
+                                class="form-control" type="text">
+                        <div
+                                class="search-preview"
+                                data-deposit-lookup-target="result"
+                        >
+                        </div>
+                    </div>
+                    <div class="col">
+                        <input
+                                {{ stimulus_target('payday2', 'modalDeposit') }}
+                                data-deposit-lookup-target="depid"
+                                class="form-control" type="text" readonly>
+                    </div>
                 </div>
-                <input
-                        data-deposit-lookup-target="depid"
-                        class="form-control" name="payments[depId][]" type="text" size="7">
 
                 <hr>
+
                 <input
                         {{ stimulus_target('payday2', 'modalComment') }}
                         class="form-control" type="text"
