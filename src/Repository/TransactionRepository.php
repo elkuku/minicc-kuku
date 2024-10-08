@@ -13,6 +13,7 @@ use App\Entity\Transaction;
 use App\Entity\User;
 use App\Helper\Paginator\PaginatorOptions;
 use App\Helper\Paginator\PaginatorRepoTrait;
+use App\Type\TransactionType;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\NonUniqueResultException;
@@ -263,5 +264,17 @@ class TransactionRepository extends ServiceEntityRepository
         }
 
         return $number;
+    }
+
+    public function getLastChargementDate(): \DateTime
+    {
+        $date = $this->createQueryBuilder('t')
+            ->select('MAX(t.date)')
+            ->andWhere('t.type = :type')
+            ->setParameter('type', TransactionType::rent)
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return new \DateTime($date);
     }
 }

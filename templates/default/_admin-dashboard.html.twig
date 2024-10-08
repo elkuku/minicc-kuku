@@ -1,3 +1,10 @@
+{% if is_granted('ROLE_ADMIN') %}
+    {% if chargementRequired %}
+        <div class="alert alert-warning">
+            Hay que <a href="{{ path('cobrar') }}">cobrar los alquileres</a>...
+        </div>
+    {% endif %}
+{% endif %}
 <div class="btn-group btn-group-lg">
     {% if is_granted('ROLE_ADMIN') %}
         <a href="{{ path('cobrar') }}" class="btn btn-outline-success" title="Cobrar alquileres">

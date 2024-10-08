@@ -18,6 +18,10 @@ class DefaultController extends BaseController
         TaxService $taxService,
         ChartBuilderService $chartBuilderService
     ): Response {
+        $lastChargedMonth = $transactionRepository->getLastChargementDate()->format('m');
+        $currentMonth = (new \DateTime())->format('m');
+        $chargementRequired = $lastChargedMonth<$currentMonth;
+
         $user = $this->getUser();
         $balances = null;
         $chartData = [
@@ -59,6 +63,7 @@ class DefaultController extends BaseController
                     $chartData['headers'],
                     $chartData['monthsDebt']
                 ),
+                'chargementRequired' => $chargementRequired,
             ]
         );
     }
