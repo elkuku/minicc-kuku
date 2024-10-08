@@ -21,6 +21,13 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 #[Entity(repositoryClass: UserRepository::class)]
 class User implements UserInterface, \Stringable
 {
+    final public const array ROLES
+        = [
+            'user' => 'ROLE_USER',
+            'cashier' => 'ROLE_CASHIER',
+            'admin' => 'ROLE_ADMIN',
+        ];
+
     #[Column, Id, GeneratedValue]
     private ?int $id = 0;
 
@@ -67,13 +74,6 @@ class User implements UserInterface, \Stringable
     #[Column(nullable: true)]
     private ?bool $isActive = null;
 
-    final public const ROLES
-        = [
-            'user' => 'ROLE_USER',
-            'cashier' => 'ROLE_CASHIER',
-            'admin' => 'ROLE_ADMIN',
-        ];
-
     public function __construct()
     {
         $this->stores = new ArrayCollection();
@@ -107,7 +107,7 @@ class User implements UserInterface, \Stringable
 
     public function __toString(): string
     {
-        return (string) $this->name;
+        return (string)$this->name;
     }
 
     public function getUserIdentifier(): string
