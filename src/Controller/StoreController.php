@@ -12,6 +12,9 @@ use App\Service\ChartBuilderService;
 use App\Service\TaxService;
 use App\Type\TransactionType;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
+use JsonException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -36,6 +39,11 @@ class StoreController extends AbstractController
         );
     }
 
+    /**
+     * @throws NonUniqueResultException
+     * @throws NoResultException
+     * @throws JsonException
+     */
     #[Route(path: '/{id}', name: 'store-transactions', requirements: [
         'id' => '\d+',
     ], methods: [
@@ -59,6 +67,7 @@ class StoreController extends AbstractController
             $year
         );
         $headers = [];
+        /** @var array<int, float> $monthPayments */
         $monthPayments = [];
         $rentalValues = [];
         $rentalValue = $taxService->getValueConTax($store->getValAlq());
@@ -70,7 +79,7 @@ class StoreController extends AbstractController
         foreach ($transactions as $transaction) {
             if (TransactionType::payment === $transaction->getType()) {
                 $monthPayments[$transaction->getDate()->format('n')]
-                    += $transaction->getAmount();
+                    += (float)$transaction->getAmount();
             }
         }
 

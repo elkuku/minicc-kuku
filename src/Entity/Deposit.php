@@ -33,7 +33,7 @@ class Deposit implements \JsonSerializable
     private string $document;
 
     #[Column(type: Types::DECIMAL, precision: 13, scale: 2, nullable: false)]
-    private float $amount;
+    private string $amount;
 
     #[OneToOne(mappedBy: 'deposit', targetEntity: Transaction::class, cascade: [
         'persist',
@@ -86,14 +86,14 @@ class Deposit implements \JsonSerializable
         return $this->document;
     }
 
-    public function setAmount(float $amount): static
+    public function setAmount(string $amount): static
     {
         $this->amount = $amount;
 
         return $this;
     }
 
-    public function getAmount(): float
+    public function getAmount(): string
     {
         return $this->amount;
     }
@@ -125,7 +125,7 @@ class Deposit implements \JsonSerializable
      *
      * @see  http://php.net/manual/en/jsonserializable.jsonserialize.php
      *
-     * @return array{id: int|null, amount: float, document: string, date: string, entity: int|null} data which can be serialized by <b>json_encode</b>,
+     * @return array{id: int|null, amount: string, document: string, date: string, entity: int|null} data which can be serialized by <b>json_encode</b>,
      *                                                                                              which is a value of any type other than a resource
      *
      * @since 5.4.0

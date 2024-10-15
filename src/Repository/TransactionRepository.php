@@ -275,6 +275,6 @@ class TransactionRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
 
-        return new \DateTime($date);
+        return new \DateTime((string)$date);
     }
 }

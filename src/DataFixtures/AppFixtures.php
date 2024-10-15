@@ -100,7 +100,7 @@ class AppFixtures extends Fixture
         $deposit = (new Deposit())
             ->setDate(new \DateTime())
             ->setDocument('123')
-            ->setAmount(123);
+            ->setAmount('123');
         $manager->persist($deposit);
 
         $manager->flush();
