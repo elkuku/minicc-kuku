@@ -88,7 +88,7 @@
             {% for transaction in transactions %}
                 {% set saldo = saldo + transaction.amount %}
                 {% if is_granted('ROLE_CASHIER') or transaction.user == app.user %}
-                    <tr {{ transaction.type.cssClass }}">
+                    <tr class="{{ transaction.type.cssClass }}">
                         <td>{{ intlDate(transaction.date, 'MMMM d') }}</td>
                         {% if is_granted('ROLE_ADMIN') %}
                             <td>{{ transaction.user.name|short_name }}</td>

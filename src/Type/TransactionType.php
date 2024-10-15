@@ -26,7 +26,7 @@ enum TransactionType: string
         return match ($this) {
             self::rent => 'table-success',
             self::payment => '',
-            self::initial => 'x',
+            self::initial => 'table-info',
             self::adjustment => 'table-warning',
         };
     }
