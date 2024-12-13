@@ -38,7 +38,7 @@ class TransactionRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         /**
-         * @var class-string<TransactionRepository>
+         * @var class-string<TransactionRepository> $className
          */
         $className = Transaction::class;
         parent::__construct($registry, $className);
@@ -166,6 +166,9 @@ class TransactionRepository extends ServiceEntityRepository
      */
     public function getPagosPorAno(int $year): array
     {
+        /**
+         * @var Transaction[]|null $transactions
+         */
         $transactions = $this->createQueryBuilder('t')
             ->where('YEAR(t.date) = :year')
             ->andWhere('t.type = :type')
