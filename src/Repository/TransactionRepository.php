@@ -167,7 +167,7 @@ class TransactionRepository extends ServiceEntityRepository
     public function getPagosPorAno(int $year): array
     {
         /**
-         * @var Transaction[]|null $transactions
+         * @var Transaction[] $transactions
          */
         $transactions = $this->createQueryBuilder('t')
             ->where('YEAR(t.date) = :year')
@@ -177,13 +177,8 @@ class TransactionRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
 
-        if (! (is_countable($transactions) ? \count($transactions) : 0)) {
-            return [];
-        }
-
         $payments = [];
 
-        /** @var Transaction $transaction */
         foreach ($transactions as $transaction) {
             $mes = (int) $transaction->getDate()->format('m');
             $day = (int) $transaction->getDate()->format('d');
