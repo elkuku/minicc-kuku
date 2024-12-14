@@ -175,8 +175,6 @@ class AdminController extends AbstractController
             );
         }
 
-        #dd($payments);
-
         foreach ($payments['date'] as $i => $dateCobro) {
             if (!$dateCobro) {
                 continue;
