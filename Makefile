@@ -9,4 +9,7 @@ tests:
 	symfony php bin/phpunit $@
 	vendor/bin/phpstan --memory-limit=2G
 	vendor/bin/rector process src --dry-run
+tests2:
+	vendor/bin/phpstan --memory-limit=2G
+	vendor/bin/rector process src --dry-run
 .PHONY: tests
