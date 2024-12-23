@@ -32,14 +32,14 @@ class ContractTemplateHelper
     }
 
     /**
-     * @return array<string, string|int|null>
+     * @return array<string, string>
      */
     private function getReplacements(Contract $contract): array
     {
         $numberToWord = new Numbers();
         return [
-            'local_no' => $contract->getStoreNumber(),
-            'destination' => $contract->getDestination(),
+            'local_no' => (string)$contract->getStoreNumber(),
+            'destination' => (string)$contract->getDestination(),
             'val_alq' => number_format((float)$contract->getValAlq(), 2),
             'txt_alq' => $numberToWord->toCurrency(
                 (float)$contract->getValAlq(),
@@ -57,24 +57,24 @@ class ContractTemplateHelper
             ),
             'fecha_long' => IntlConverter::formatDate($contract->getDate()),
 
-            'inq_nombreapellido' => $contract->getInqNombreapellido(),
+            'inq_nombreapellido' => (string)$contract->getInqNombreapellido(),
             'inq_ci' => $contract->getInqCi(),
 
             'senor_a' => $contract->getGender()->titleLong(),
             'el_la' => $contract->getGender()->text_1(),
             'del_la' => $contract->getGender()->text_2(),
 
-            'cnt_lanfort' => $contract->getCntLanfort(),
-            'cnt_neon' => $contract->getCntNeon(),
-            'cnt_switch' => $contract->getCntSwitch(),
-            'cnt_toma' => $contract->getCntToma(),
-            'cnt_ventana' => $contract->getCntVentana(),
-            'cnt_llaves' => $contract->getCntLlaves(),
-            'cnt_med_agua' => $contract->getCntMedAgua(),
-            'cnt_med_elec' => $contract->getCntMedElec(),
+            'cnt_lanfort' => (string)$contract->getCntLanfort(),
+            'cnt_neon' => (string)$contract->getCntNeon(),
+            'cnt_switch' => (string)$contract->getCntSwitch(),
+            'cnt_toma' => (string)$contract->getCntToma(),
+            'cnt_ventana' => (string)$contract->getCntVentana(),
+            'cnt_llaves' => (string)$contract->getCntLlaves(),
+            'cnt_med_agua' => (string)$contract->getCntMedAgua(),
+            'cnt_med_elec' => (string)$contract->getCntMedElec(),
 
-            'med_electrico' => $contract->getMedElectrico(),
-            'med_agua' => $contract->getMedAgua(),
+            'med_electrico' => (string)$contract->getMedElectrico(),
+            'med_agua' => (string)$contract->getMedAgua(),
         ];
     }
 }
