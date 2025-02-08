@@ -2,28 +2,38 @@
 
 namespace App\Service;
 
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 
-class EmailHelper
+readonly class EmailHelper
 {
-    private readonly Address $emailFrom;
+    private Address $addressFrom;
 
     public function __construct(
         #[Autowire('%env(EMAIL_FROM_ADDR)%')]
-        string $emailFromAddress,
+        string $addressFrom,
         #[Autowire('%env(EMAIL_FROM_NAME)%')]
-        string $emailFromName,
-    ) {
-        $this->emailFrom = new Address($emailFromAddress, $emailFromName);
+        string $nameFrom,
+    )
+    {
+        $this->addressFrom = new Address($addressFrom, $nameFrom);
     }
 
-    public function create(string $toAddress, string $subject): Email
+    public function createEmail(string $toAddress, string $subject): Email
     {
         return (new Email())
-            ->from($this->emailFrom)
+            ->from($this->addressFrom)
             ->to($toAddress)
+            ->subject($subject);
+    }
+
+    public function createTemplatedEmail(Address $addressTo, string $subject): TemplatedEmail
+    {
+        return (new TemplatedEmail())
+            ->from($this->addressFrom)
+            ->to($addressTo)
             ->subject($subject);
     }
 }

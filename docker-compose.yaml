@@ -6,6 +6,7 @@ services:
       MYSQL_DATABASE: 'main'
       MYSQL_USER: 'main'
       MYSQL_PASSWORD: 'main'
+      MYSQL_ROOT_PASSWORD: 'main'
     ports:
       - '3306'
     expose:

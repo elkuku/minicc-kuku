@@ -1,4 +1,4 @@
-<h3>Bienvenido {{ app.user.name }}</h3>
+<h3>Bienvenid{{ app.user.gender.value == 1 ? 'o':'a'}} {{ app.user.gender.titleLong }} {{ app.user.name }}</h3>
 {% if stores.count() %}
     <table class="table">
         <tr>

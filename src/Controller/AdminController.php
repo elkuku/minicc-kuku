@@ -237,32 +237,4 @@ class AdminController extends AbstractController
             ]
         );
     }
-
-    #[Route(path: '/mail-list-transactions', name: 'mail-list-transactions', methods: ['GET'])]
-    #[IsGranted('ROLE_ADMIN')]
-    public function mailListTransactions(
-        StoreRepository $storeRepository
-    ): Response
-    {
-        return $this->render(
-            'admin/mail-list-transactions.twig',
-            [
-                'stores' => $storeRepository->getActive(),
-            ]
-        );
-    }
-
-    #[Route(path: '/mail-list-planillas', name: 'mail-list-planillas', methods: ['GET'])]
-    #[IsGranted('ROLE_ADMIN')]
-    public function mailListPlanillas(
-        StoreRepository $storeRepository
-    ): Response
-    {
-        return $this->render(
-            'admin/mail-list-planillas.twig',
-            [
-                'stores' => $storeRepository->getActive(),
-            ]
-        );
-    }
 }

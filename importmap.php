@@ -213,4 +213,7 @@ return [
     'tippy.js' => [
         'version' => '6.3.7',
     ],
+    '@stimulus-components/checkbox-select-all' => [
+        'version' => '6.1.0',
+    ],
 ];

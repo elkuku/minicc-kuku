@@ -1,0 +1,19 @@
+.text-red {
+    color: red;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.amount {
+    font-family: monospace;
+}
+
+.amount-red {
+    color: red;
+}
+
+.result {
+    border-top: 1px solid silver
+}

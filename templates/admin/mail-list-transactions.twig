@@ -1,5 +1,3 @@
-{% import "_macro/stores.twig" as storeUtil %}
-
 {% extends 'base.html.twig' %}
 
 {% block title %} {{ parent() }} - Cobrar alquileres{% endblock %}
@@ -10,7 +8,20 @@
         <div class="alert alert-danger">No stores defined</div>
     {% else %}
         <form method="post" action="{{ path('mail-transactions') }}">
-            {{ storeUtil.table(stores) }}
+
+            {% include '_/_stores_table.html.twig' %}
+
+            <label>
+                <select name="year" id="selYear">
+                    {% for year in years %}
+                        <option value="{{ year }}">{{ year }}</option>
+                    {% endfor %}
+                </select>
+                Year
+            </label>
+
+            <button type="submit" class="btn btn-outline-success">Send mails</button>
+
         </form>
     {% endif %}
 {% endblock %}

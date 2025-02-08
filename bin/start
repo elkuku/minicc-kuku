@@ -40,7 +40,7 @@ docker-compose up -d
 
 printf "Waiting for DB to get ready ..."
 waitContainer minicc-kuku-database-1
-
+echo OK
 symfony server:start -d
 
 symfony open:local

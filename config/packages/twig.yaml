@@ -6,6 +6,9 @@ twig:
         tax_value: '%env(VALUE_IVA)%'
         oauthGoogleId: '%env(OAUTH_GOOGLE_ID)%'
     file_name_pattern: '*.twig'
+    paths:
+        '%kernel.project_dir%/assets/images': images
+        '%kernel.project_dir%/assets/styles': styles
 
 when@test:
     twig:

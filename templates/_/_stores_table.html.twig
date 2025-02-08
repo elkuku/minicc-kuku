@@ -1,0 +1,50 @@
+<table
+        class="table table-bordered table-sm table-hover"
+        {{ stimulus_controller('checkbox-select-all') }}
+>
+    <thead>
+    <tr>
+        <th class="text-center">Store</th>
+        <th>Destiny</th>
+        <th>Client</th>
+        <th>G</th>
+        <th>e-mail</th>
+        <th>Send
+            <label>
+                <input
+                        type="checkbox"
+                        {{ stimulus_target('checkbox-select-all', 'checkboxAll') }}
+                />
+                <span>All</span>
+            </label>
+        </th>
+    </tr>
+    </thead>
+
+    <tbody>
+    {% for store in stores %}
+        <tr>
+            <td class="text-center">{{ store.id }}</td>
+            <td>{{ store.destination }}</td>
+            <td>{{ store.user ? store.user.name|short_name : 'n/a' }}</td>
+            <td class="text-center">
+                {% if store.user.googleId %}
+                    ✅
+                {% endif %}
+            </td>
+            <td>{{ store.user ? store.user.email : 'n/a' }}</td>
+            <td>
+                <label>
+                    <input
+                            type="checkbox"
+                            class="form-check-input"
+                            name="recipients[{{ store.id }}]"
+                            {{ stimulus_target('checkbox-select-all', 'checkbox') }}
+                    >
+                    <span>Send</span>
+                </label>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

@@ -1,5 +1,3 @@
-{% import "_macro/stores.twig" as storeUtil %}
-
 {% extends 'base.html.twig' %}
 
 {% block title %} {{ parent() }} - Cobrar alquileres{% endblock %}
@@ -10,7 +8,11 @@
         <div class="alert alert-danger">No stores defined</div>
     {% else %}
         <form method="post" action="{{ path('planilla-mail') }}">
-            {{ storeUtil.table(stores) }}
+
+            {% include '_/_stores_table.html.twig' %}
+
+            <button type="submit" class="btn btn-outline-success">Send mails</button>
+
         </form>
     {% endif %}
 {% endblock %}

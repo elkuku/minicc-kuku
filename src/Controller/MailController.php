@@ -7,7 +7,10 @@ use App\Repository\TransactionRepository;
 use App\Service\EmailHelper;
 use App\Service\PayrollHelper;
 use App\Service\PdfHelper;
+use Exception;
 use Knp\Snappy\Pdf;
+use RuntimeException;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -15,48 +18,59 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Part\DataPart;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use UnexpectedValueException;
 
 #[IsGranted('ROLE_ADMIN')]
 class MailController extends AbstractController
 {
+    #[Route(path: '/mail-transactions', name: 'mail-list-transactions', methods: ['GET'])]
+    public function mailListTransactions(
+        StoreRepository $storeRepository
+    ): Response
+    {
+        return $this->render(
+            'admin/mail-list-transactions.twig',
+            [
+                'stores' => $storeRepository->getActive(),
+                'years' => range(date('Y'), date('Y', strtotime('-5 year'))),
+            ]
+        );
+    }
+
     #[Route(path: '/mail-transactions', name: 'mail-transactions', methods: ['POST'])]
-    public function mail(
-        StoreRepository $storeRepository,
+    public function mailTransactionsClients(
+        StoreRepository       $storeRepository,
         TransactionRepository $transactionRepository,
-        Request $request,
-        Pdf $pdf,
-        PdfHelper $PDFHelper,
-        MailerInterface $mailer,
-        EmailHelper $emailHelper,
-    ): RedirectResponse {
+        Request               $request,
+        Pdf                   $pdf,
+        PdfHelper             $PDFHelper,
+        MailerInterface       $mailer,
+        EmailHelper           $emailHelper,
+    ): RedirectResponse
+    {
         $recipients = $request->get('recipients');
-        $year = (int) date('Y');
-        if (! $recipients) {
+
+        if (!$recipients) {
             $this->addFlash('warning', 'No recipients selected');
 
             return $this->redirectToRoute('mail-list-transactions');
         }
+
+        $year = (int)$request->get('year', date('Y'));
         $stores = $storeRepository->getActive();
         $failures = [];
         $successes = [];
+
         foreach ($stores as $store) {
-            if (! array_key_exists((int) $store->getId(), $recipients)) {
+            if (!array_key_exists((int)$store->getId(), $recipients)) {
                 continue;
             }
 
             $fileName = "movimientos-{$store->getId()}-$year.pdf";
-            $html = $this->renderView(
-                '_mail/client-transactions.twig',
-                [
-                    'user' => $store->getUser(),
-                    'store' => $store,
-                    'fileName' => $fileName,
-                    'year' => $year,
-                ]
-            );
 
             $document = $pdf->getOutputFromHtml(
                 $PDFHelper->renderTransactionHtml(
@@ -67,11 +81,17 @@ class MailController extends AbstractController
             );
 
             $email = $emailHelper
-                ->create(
-                    toAddress: (string) $store->getUser()?->getEmail(),
+                ->createTemplatedEmail(
+                    addressTo: new Address((string)$store->getUser()?->getEmail(), (string)$store->getUser()?->getName()),
                     subject: "Movimientos del local {$store->getId()} ano $year"
                 )
-                ->html($html)
+                ->htmlTemplate('email/client-transactions.twig')
+                ->context([
+                    'user' => $store->getUser(),
+                    'store' => $store,
+                    'fileName' => $fileName,
+                    'year' => $year,
+                ])
                 ->attach($document, $fileName);
 
             try {
@@ -96,16 +116,17 @@ class MailController extends AbstractController
     }
 
     #[Route(path: '/mail-annual-transactions', name: 'mail-annual-transactions', methods: ['POST'])]
-    public function mailStores(
-        Request $request,
+    public function mailTransactions(
+        Request               $request,
         TransactionRepository $transactionRepository,
-        StoreRepository $storeRepository,
-        Pdf $pdf,
-        PdfHelper $PDFHelper,
-        MailerInterface $mailer,
-        EmailHelper $emailHelper,
-    ): RedirectResponse {
-        $year = (int) $request->get('year', date('Y'));
+        StoreRepository       $storeRepository,
+        Pdf                   $pdf,
+        PdfHelper             $PDFHelper,
+        MailerInterface       $mailer,
+        EmailHelper           $emailHelper,
+    ): RedirectResponse
+    {
+        $year = (int)$request->get('year', date('Y'));
         $htmlPages = [];
         $stores = $storeRepository->findAll();
         foreach ($stores as $store) {
@@ -125,7 +146,7 @@ class MailController extends AbstractController
                 'application/pdf'
             );
 
-            $email = $emailHelper->create(
+            $email = $emailHelper->createEmail(
                 toAddress: 'minicckuku@gmail.com',
                 subject: "Movimientos de los locales ano $year"
             )
@@ -134,24 +155,38 @@ class MailController extends AbstractController
                 ->addPart($attachment);
 
             $mailer->send($email);
-            $this->addFlash('success', 'Mail has been sent succesfully.');
-        } catch (\Exception|TransportExceptionInterface $exception) {
+            $this->addFlash('success', 'Mail has been sent successfully.');
+        } catch (Exception|TransportExceptionInterface $exception) {
             $this->addFlash('danger', $exception->getMessage());
         }
 
         return $this->redirectToRoute('welcome');
     }
 
+    #[Route(path: '/mail-list-planillas', name: 'mail-list-planillas', methods: ['GET'])]
+    public function mailListPlanillas(
+        StoreRepository $storeRepository
+    ): Response
+    {
+        return $this->render(
+            'admin/mail-list-planillas.twig',
+            [
+                'stores' => $storeRepository->getActive(),
+            ]
+        );
+    }
+
     #[Route(path: '/planillas-mail', name: 'planillas-mail', methods: ['GET'])]
     public function mailPlanillas(
-        Pdf $pdf,
-        PdfHelper $PDFHelper,
+        Pdf             $pdf,
+        PdfHelper       $PDFHelper,
         MailerInterface $mailer,
-        EmailHelper $emailHelper,
-        PayrollHelper $payrollHelper,
-    ): Response {
-        $year = (int) date('Y');
-        $month = (int) date('m');
+        EmailHelper     $emailHelper,
+        PayrollHelper   $payrollHelper,
+    ): Response
+    {
+        $year = (int)date('Y');
+        $month = (int)date('m');
         $fileName = "payrolls-$year-$month.pdf";
         $html = 'Attachment: ' . $fileName;
         $document = $pdf->getOutputFromHtml(
@@ -164,7 +199,7 @@ class MailController extends AbstractController
                 'enable-local-file-access' => true,
             ]
         );
-        $email = $emailHelper->create(
+        $email = $emailHelper->createEmail(
             toAddress: 'minicckuku@gmail.com',
             subject: "Planillas $year-$month"
         )
@@ -184,28 +219,35 @@ class MailController extends AbstractController
     #[Route(path: '/planilla-mail', name: 'planilla-mail', methods: ['POST'])]
     public function mailPlanillasClients(
         StoreRepository $storeRepository,
-        Request $request,
-        Pdf $pdf,
-        PdfHelper $PDFHelper,
+        Request         $request,
+        Pdf             $pdf,
+        PdfHelper       $PDFHelper,
         MailerInterface $mailer,
-        EmailHelper $emailHelper,
-        PayrollHelper $payrollHelper
-    ): RedirectResponse {
+        EmailHelper     $emailHelper,
+        PayrollHelper   $payrollHelper
+    ): RedirectResponse
+    {
         $recipients = $request->get('recipients');
-        if (! $recipients) {
+        if (!$recipients) {
             $this->addFlash('warning', 'No recipients selected');
 
             return $this->redirectToRoute('mail-list-transactions');
         }
-        $year = (int) date('Y');
-        $month = (int) date('m');
+        $year = (int)date('Y');
+        $month = (int)date('m');
         $fileName = "planilla-$year-$month.pdf";
         $stores = $storeRepository->getActive();
         $failures = [];
         $successes = [];
 
         foreach ($stores as $store) {
-            if (! array_key_exists((int) $store->getId(), $recipients)) {
+            if (!array_key_exists((int)$store->getId(), $recipients)) {
+                continue;
+            }
+
+            $user = $store->getUser();
+
+            if (!$user) {
                 continue;
             }
 
@@ -214,34 +256,25 @@ class MailController extends AbstractController
                     $year,
                     $month,
                     $payrollHelper,
-                    (int) $store->getId()
+                    (int)$store->getId()
                 ),
                 [
                     'enable-local-file-access' => true,
                 ]
             );
 
-            $html = $this->renderView(
-                '_mail/client-planillas.twig',
-                [
+            $email = $emailHelper->createTemplatedEmail(
+                addressTo: new Address($user->getEmail(), $user->getName()),
+                subject: "Su planilla del local {$store->getId()} ($month - $year)"
+            )
+                ->htmlTemplate('email/client-planillas.twig')
+                ->context([
                     'user' => $store->getUser(),
                     'store' => $store,
                     'factDate' => "$year-$month-1",
                     'fileName' => $fileName,
-                ]
-            );
-
-            $user = $store->getUser();
-
-            if (! $user) {
-                continue;
-            }
-
-            $email = $emailHelper->create(
-                toAddress: $user->getEmail(),
-                subject: "Su planilla del local {$store->getId()} ($month - $year)"
-            )
-                ->html($html)
+                    'payroll' => $payrollHelper->getData($year, $month, $store->getId()),
+                ])
                 ->attach($document, $fileName);
 
             try {
@@ -268,12 +301,13 @@ class MailController extends AbstractController
     #[Route(path: '/backup', name: 'backup', methods: ['GET'])]
     public function backup(
         MailerInterface $mailer,
-        EmailHelper $emailHelper,
+        EmailHelper     $emailHelper,
         #[Autowire('%env(APP_ENV)%')]
-        string $appEnv,
-    ): RedirectResponse {
+        string          $appEnv,
+    ): RedirectResponse
+    {
         try {
-            $parts = parse_url((string) $_ENV['DATABASE_URL']);
+            $parts = parse_url((string)$_ENV['DATABASE_URL']);
 
             $hostname = $parts['host'];
             $username = $parts['user'];
@@ -295,7 +329,7 @@ class MailController extends AbstractController
                     $password,
                     $database
                 ),
-                default => throw new \UnexpectedValueException('Unknown env:' . $appEnv),
+                default => throw new UnexpectedValueException('Unknown env:' . $appEnv),
             };
 
             ob_start();
@@ -303,15 +337,15 @@ class MailController extends AbstractController
             $gzip = ob_get_clean();
 
             if ($retVal) {
-                throw new \RuntimeException('Error creating DB backup: ' . $gzip);
+                throw new RuntimeException('Error creating DB backup: ' . $gzip);
             }
 
             $fileName = date('Y-m-d') . '_backup.gz';
             $mime = 'application/x-gzip';
 
-            $attachment = new DataPart((string) $gzip, $fileName, $mime);
+            $attachment = new DataPart((string)$gzip, $fileName, $mime);
 
-            $email = $emailHelper->create(
+            $email = $emailHelper->createEmail(
                 toAddress: 'minicckuku@gmail.com',
                 subject: 'Backup'
             )
