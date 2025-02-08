@@ -1756,16 +1756,16 @@
         },
         {
             "name": "elkuku/kuku-sf-system-tools-bundle",
-            "version": "1.0",
+            "version": "1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/elkuku/SFSystemToolsBundle.git",
-                "reference": "71623d8435f2946124c687d1f33677e2c0a560a9"
+                "reference": "fd13170c335ee50bd6001525b8f7402341f27157"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/elkuku/SFSystemToolsBundle/zipball/71623d8435f2946124c687d1f33677e2c0a560a9",
-                "reference": "71623d8435f2946124c687d1f33677e2c0a560a9",
+                "url": "https://api.github.com/repos/elkuku/SFSystemToolsBundle/zipball/fd13170c335ee50bd6001525b8f7402341f27157",
+                "reference": "fd13170c335ee50bd6001525b8f7402341f27157",
                 "shasum": ""
             },
             "require": {
@@ -1797,9 +1797,9 @@
             "description": "System tools for Symfony",
             "support": {
                 "issues": "https://github.com/elkuku/SFSystemToolsBundle/issues",
-                "source": "https://github.com/elkuku/SFSystemToolsBundle/tree/1.0"
+                "source": "https://github.com/elkuku/SFSystemToolsBundle/tree/1.1"
             },
-            "time": "2024-12-29T14:53:34+00:00"
+            "time": "2025-02-08T13:22:30+00:00"
         },
         {
             "name": "firebase/php-jwt",
