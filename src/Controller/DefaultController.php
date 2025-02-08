@@ -13,15 +13,12 @@ class DefaultController extends BaseController
 {
     #[Route(path: '/', name: 'welcome', methods: ['GET'])]
     public function index(
-        StoreRepository $storeRepository,
+        StoreRepository       $storeRepository,
         TransactionRepository $transactionRepository,
-        TaxService $taxService,
-        ChartBuilderService $chartBuilderService
-    ): Response {
-        $lastChargedMonth = $transactionRepository->getLastChargementDate()->format('m');
-        $currentMonth = (new \DateTime())->format('m');
-        $chargementRequired = $lastChargedMonth<$currentMonth;
-
+        TaxService            $taxService,
+        ChartBuilderService   $chartBuilderService
+    ): Response
+    {
         $user = $this->getUser();
         $balances = null;
         $chartData = [
@@ -63,7 +60,7 @@ class DefaultController extends BaseController
                     $chartData['headers'],
                     $chartData['monthsDebt']
                 ),
-                'chargementRequired' => $chargementRequired,
+                'chargementRequired' => $transactionRepository->checkChargementRequired(),
             ]
         );
     }
