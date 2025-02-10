@@ -3,6 +3,7 @@
 namespace App\Twig\Extension;
 
 use App\Entity\User;
+use App\Service\TextFormatter;
 use App\Twig\Runtime\AppExtensionRuntime;
 use DateTime;
 use Exception;
@@ -15,6 +16,10 @@ use function strlen;
 
 class AppExtension extends AbstractExtension
 {
+    public function __construct(private readonly TextFormatter $textFormatter)
+    {
+    }
+
     /**
      * @return TwigFilter[]
      */
@@ -146,24 +151,7 @@ class AppExtension extends AbstractExtension
      */
     public function formatRUC(User $user): string
     {
-        $ruc = '?';
-
-        if ($user->getInqRuc()) {
-            $ruc = $user->getInqRuc();
-
-            if (13 === strlen($ruc)) {
-                $rucs = str_split($ruc, 10);
-
-                $ruc = trim(chunk_split($rucs[0], 3, ' ')) . ' ' . $rucs[1];
-            } else {
-                $ruc = chunk_split($ruc, 3, ' ');
-            }
-        } elseif ($user->getInqCi()) {
-            $ruc = str_replace('-', '', $user->getInqCi());
-            $ruc = chunk_split($ruc, 3, ' ');
-        }
-
-        return trim($ruc);
+        return $this->textFormatter->formatRUC($user);
     }
 
     public function getCurrentYear(): int
