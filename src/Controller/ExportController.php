@@ -23,14 +23,14 @@ class ExportController extends AbstractController
         $users = $userRepository->getSortedByStore();
 
         $rows = [];
-        $rows[] = ['Nombre', 'Email', 'RUC'];
+        $rows[] = ['Nombre', 'Email', 'RUC', 'Direccion', 'Telefono'];
 
         foreach ($users as $user) {
-            $rows[] = [$user->getName(),$user->getEmail(),$textFormatter->formatRUC($user)];
+            $rows[] = [$user->getName(),$user->getEmail(),$textFormatter->formatRUC($user), $user->getDireccion(), $user->getTelefono()];
         }
 
         $xlsx = PhpXlsxGenerator::fromArray( $rows );
-        $xlsx->downloadAs('clientes-'.gmdate('Y-m-d-Hi') . '.xlsx');
+        $xlsx->downloadAs('clientes-'.gmdate('Y-m-d') . '.xlsx');
 
         return $this->redirectToRoute('admin-tasks');
     }
