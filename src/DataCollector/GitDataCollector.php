@@ -17,7 +17,7 @@ class GitDataCollector extends DataCollector
     public function collect(
         Request $request,
         Response $response,
-        \Throwable $exception = null
+        ?\Throwable $exception = null
     ): void {
         $this->data = [
             'git_branch' => $this->gitLoader->getBranchName(),
