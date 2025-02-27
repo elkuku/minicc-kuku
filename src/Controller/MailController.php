@@ -10,7 +10,6 @@ use App\Service\PdfHelper;
 use Exception;
 use Knp\Snappy\Pdf;
 use RuntimeException;
-use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -25,9 +24,10 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use UnexpectedValueException;
 
 #[IsGranted('ROLE_ADMIN')]
+#[Route(path: '/mail')]
 class MailController extends AbstractController
 {
-    #[Route(path: '/mail-transactions', name: 'mail-list-transactions', methods: ['GET'])]
+    #[Route(path: '/transactions', name: 'mail_list_transactions', methods: ['GET'])]
     public function mailListTransactions(
         StoreRepository $storeRepository
     ): Response
@@ -41,7 +41,7 @@ class MailController extends AbstractController
         );
     }
 
-    #[Route(path: '/mail-transactions', name: 'mail-transactions', methods: ['POST'])]
+    #[Route(path: '/transactions', name: 'mail_transactions', methods: ['POST'])]
     public function mailTransactionsClients(
         StoreRepository       $storeRepository,
         TransactionRepository $transactionRepository,
@@ -360,5 +360,54 @@ class MailController extends AbstractController
         }
 
         return $this->redirectToRoute('admin-tasks');
+    }
+
+    #[Route(path: '/cobros-contador', name: 'mail_cobros_contador', methods: ['GET', 'POST'])]
+    public function paymentsAccountant(
+        Request               $request,
+        TransactionRepository $repository,
+        EmailHelper           $emailHelper,
+        MailerInterface       $mailer,
+    ): Response
+    {
+        $year = $request->request->getInt('year', (int)date('Y'));
+        $month = $request->request->getInt('month', (int)date('m'));
+        $ii = $request->get('ids');
+        $ids = is_array($ii) ? array_filter($ii, 'is_numeric') : [];
+
+        if ($ids) {
+            $payments = $repository->findByIds($ids);
+            $accountantName = 'Contador';
+            $accountantEmail = 'Con@ta.dor';
+
+            $email = $emailHelper->createTemplatedEmail(
+                addressTo: new Address($accountantEmail, $accountantName),
+                subject: "Pagos del MiniCC KuKu - $month / $year"
+            )
+                ->htmlTemplate('email/cobros-contador.twig')
+                ->context([
+                    'year' => $year,
+                    'month' => $month,
+                    'payments' => $payments,
+                    'fileName' => '@todo$fileName',//@todo ->attach($document, $fileName)
+                ])
+            ;
+
+            try {
+                $mailer->send($email);
+                $this->addFlash('success', 'Payments have been mailed.');
+            } catch (TransportExceptionInterface $exception) {
+                $this->addFlash('danger', 'Payments have NOT been mailed! - ' . $exception->getMessage());
+            }
+
+            //@todo redirect elsewhere
+            return $this->redirectToRoute('mail_cobros_contador');
+        }
+
+        return $this->render('mail/cobros-contador.html.twig',
+            ['month' => $month,
+                'year' => $year,
+                'payments' => $repository->findByDate($year, $month),]
+        );
     }
 }

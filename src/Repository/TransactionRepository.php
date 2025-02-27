@@ -154,11 +154,43 @@ class TransactionRepository extends ServiceEntityRepository
             ->where('p.store = :store')
             ->andWhere('MONTH(p.date) = :month')
             ->andWhere('YEAR(p.date) = :year')
-            ->andWhere('p.type = 2 OR p.type = 4')
+            ->andWhere('p.type =  :type1 OR p.type = :type2')
             ->setParameter('store', $store->getId())
             ->setParameter('month', $month)
             ->setParameter('year', $year)
+            ->setParameter('type1', TransactionType::payment)
+            ->setParameter('type2', TransactionType::adjustment)
             ->orderBy('p.date', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @return Transaction[]
+     */
+    public function findByDate(int $year, int $month):array
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('YEAR(t.date) = :year')
+            ->andWhere('MONTH(t.date) = :month')
+            ->andWhere('t.type = :type')
+            ->setParameter('year', $year)
+            ->setParameter('month', $month)
+            ->setParameter('type', TransactionType::payment)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @param array<int> $ids
+     * @return Transaction[]
+     */
+    public function findByIds(array $ids): array
+    {
+        return $this->createQueryBuilder('t')
+            //->andWhere('t.id IN (:ids)')
+            ->andWhere('t.id IN('.implode(',', $ids).')')
+         //   ->setParameter('ids', implode(',', $ids))
             ->getQuery()
             ->getResult();
     }
@@ -175,7 +207,7 @@ class TransactionRepository extends ServiceEntityRepository
             ->where('YEAR(t.date) = :year')
             ->andWhere('t.type = :type')
             ->setParameter('year', $year)
-            ->setParameter('type', 2)
+            ->setParameter('type', TransactionType::payment)
             ->getQuery()
             ->getResult();
 

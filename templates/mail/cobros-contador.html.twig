@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ parent() }} - Mail Cobros COntador{% endblock %}
+
+{% block body %}
+    <h1>Mail Cobros Contador</h1>
+    <form method="post">
+    <label>
+        <select name="month" onchange="this.form.submit()">
+            {% for m in 1..12 %}
+                <option value="{{ m }}"{% if m == month %} selected{% endif %}>{{ m }}</option>
+            {% endfor %}
+        </select>
+        Month
+    </label>
+    <label>
+        <select name="year" onchange="this.form.submit()">
+            {% for y in 2020..'now' | date('Y') %}
+                <option value="{{ y }}"{% if y == year %} selected{% endif %}>{{ y }}</option>
+            {% endfor %}
+        </select>
+        Year
+    </label>
+    {% if payments is empty %}
+        <div class="alert alert-danger">No payments to show defined</div>
+    {% else %}
+        {% set total = 0 %}
+        <table>
+            <tr>
+                <th>Fecha</th>
+                <th>Local</th>
+                <th>Inquilino</th>
+                <th>Monto</th>
+                <th>Send</th>
+            </tr>
+            {% for payment in payments %}
+                <tr>
+                    <td>{{ payment.date|date("d-m") }}</td>
+                    <td>{{ payment.store.id }}</td>
+                    <td>{{ payment.user.name }}</td>
+                    <td>{{ payment.amount }}</td>
+                    <td>
+                        <label>
+                            <input type="checkbox" name="ids[]" value="{{ payment.id }}">Send
+                        </label>
+                    </td>
+                </tr>
+                {% set total = total + payment.amount %}
+            {% endfor %}
+            <tr>
+                <td colspan="2"></td>
+                <td>Total:</td>
+                <td>{{ total }}</td>
+            </tr>
+
+        </table>
+        <hr>
+        <label>
+            <input type="checkbox" name="ids[]" value="FOO">TEST
+
+        </label>
+
+        <button type="submit" class="btn btn-outline-success">Send mails</button>
+
+        </form>
+    {% endif %}
+{% endblock %}
+
