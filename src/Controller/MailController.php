@@ -28,7 +28,7 @@ use UnexpectedValueException;
 class MailController extends AbstractController
 {
     #[Route(path: '/transactions', name: 'mail_list_transactions', methods: ['GET'])]
-    public function mailListTransactions(
+    public function listTransactions(
         StoreRepository $storeRepository
     ): Response
     {
@@ -42,7 +42,7 @@ class MailController extends AbstractController
     }
 
     #[Route(path: '/transactions', name: 'mail_transactions', methods: ['POST'])]
-    public function mailTransactionsClients(
+    public function transactionsClients(
         StoreRepository       $storeRepository,
         TransactionRepository $transactionRepository,
         Request               $request,
@@ -116,7 +116,7 @@ class MailController extends AbstractController
     }
 
     #[Route(path: '/mail-annual-transactions', name: 'mail-annual-transactions', methods: ['POST'])]
-    public function mailTransactions(
+    public function transactions(
         Request               $request,
         TransactionRepository $transactionRepository,
         StoreRepository       $storeRepository,
@@ -164,7 +164,7 @@ class MailController extends AbstractController
     }
 
     #[Route(path: '/mail-list-planillas', name: 'mail-list-planillas', methods: ['GET'])]
-    public function mailListPlanillas(
+    public function listPlanillas(
         StoreRepository $storeRepository
     ): Response
     {
@@ -177,7 +177,7 @@ class MailController extends AbstractController
     }
 
     #[Route(path: '/planillas-mail', name: 'planillas-mail', methods: ['GET'])]
-    public function mailPlanillas(
+    public function planillas(
         Pdf             $pdf,
         PdfHelper       $PDFHelper,
         MailerInterface $mailer,
@@ -217,7 +217,7 @@ class MailController extends AbstractController
     }
 
     #[Route(path: '/planilla-mail', name: 'planilla-mail', methods: ['POST'])]
-    public function mailPlanillasClients(
+    public function planillasClients(
         StoreRepository $storeRepository,
         Request         $request,
         Pdf             $pdf,

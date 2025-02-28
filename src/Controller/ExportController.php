@@ -14,7 +14,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_ADMIN')]
 class ExportController extends AbstractController
 {
-    #[Route(path: '/users/to/excel', name: 'app_export_users_to_excel', methods: ['GET'])]
+    #[Route(path: '/users-to-excel', name: 'app_export_users_to_excel', methods: ['GET'])]
     public function usersToExcel(
         UserRepository $userRepository,
         TextFormatter  $textFormatter,
