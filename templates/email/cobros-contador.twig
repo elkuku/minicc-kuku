@@ -30,12 +30,12 @@
 
                     <hr>
 
-                    <table>
+                    <table class="body">
                         <tr>
                             <th>Fecha</th>
-                            <th>Local</th>
+                            <th class="text-center">Local</th>
                             <th>Inquilino</th>
-                            <th>Monto</th>
+                            <th class="text-right">Monto</th>
                         </tr>
                         {% for payment in payments %}
                             <tr>
@@ -47,9 +47,7 @@
                         {% endfor %}
                     </table>
 
-
                     <hr>
-
 
                     <b>Archivo adjunto</b>: {{ fileName }}
                 </center>

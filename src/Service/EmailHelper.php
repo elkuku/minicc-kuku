@@ -9,31 +9,33 @@ use Symfony\Component\Mime\Email;
 
 readonly class EmailHelper
 {
-    private Address $addressFrom;
+    private Address $from;
 
     public function __construct(
-        #[Autowire('%env(EMAIL_FROM_ADDR)%')]
-        string $addressFrom,
-        #[Autowire('%env(EMAIL_FROM_NAME)%')]
-        string $nameFrom,
+        #[Autowire('%env(EMAIL_FROM)%')] string $from,
     )
     {
-        $this->addressFrom = new Address($addressFrom, $nameFrom);
+        $this->from = Address::create($from);
     }
 
-    public function createEmail(string $toAddress, string $subject): Email
+    public function createEmail(Address $to, string $subject): Email
     {
         return (new Email())
-            ->from($this->addressFrom)
-            ->to($toAddress)
+            ->from($this->from)
+            ->to($to)
             ->subject($subject);
     }
 
-    public function createTemplatedEmail(Address $addressTo, string $subject): TemplatedEmail
+    public function createTemplatedEmail(Address $to, string $subject): TemplatedEmail
     {
         return (new TemplatedEmail())
-            ->from($this->addressFrom)
-            ->to($addressTo)
+            ->from($this->from)
+            ->to($to)
             ->subject($subject);
+    }
+
+    public function getFrom(): Address
+    {
+        return $this->from;
     }
 }

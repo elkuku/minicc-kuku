@@ -44,6 +44,10 @@ th {
     white-space: nowrap;
 }
 
+tr.tr-underlined {
+    border-bottom: 2px solid #2e6da4;
+}
+
 .bg-atacames {
     height: 100%;
     background: #635584 url("../images/atacames-sunset-4711.webp") no-repeat center;

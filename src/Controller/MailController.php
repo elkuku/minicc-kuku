@@ -82,7 +82,7 @@ class MailController extends AbstractController
 
             $email = $emailHelper
                 ->createTemplatedEmail(
-                    addressTo: new Address((string)$store->getUser()?->getEmail(), (string)$store->getUser()?->getName()),
+                    to: new Address((string)$store->getUser()?->getEmail(), (string)$store->getUser()?->getName()),
                     subject: "Movimientos del local {$store->getId()} ano $year"
                 )
                 ->htmlTemplate('email/client-transactions.twig')
@@ -147,7 +147,7 @@ class MailController extends AbstractController
             );
 
             $email = $emailHelper->createEmail(
-                toAddress: 'minicckuku@gmail.com',
+                to: $emailHelper->getFrom(),
                 subject: "Movimientos de los locales ano $year"
             )
                 ->text('Backup - Date: ' . date('Y-m-d'))
@@ -200,7 +200,7 @@ class MailController extends AbstractController
             ]
         );
         $email = $emailHelper->createEmail(
-            toAddress: 'minicckuku@gmail.com',
+            to: $emailHelper->getFrom(),
             subject: "Planillas $year-$month"
         )
             ->subject("Planillas $year-$month")
@@ -264,7 +264,7 @@ class MailController extends AbstractController
             );
 
             $email = $emailHelper->createTemplatedEmail(
-                addressTo: new Address($user->getEmail(), $user->getName()),
+                to: new Address($user->getEmail(), $user->getName()),
                 subject: "Su planilla del local {$store->getId()} ($month - $year)"
             )
                 ->htmlTemplate('email/client-planillas.twig')
@@ -346,7 +346,7 @@ class MailController extends AbstractController
             $attachment = new DataPart((string)$gzip, $fileName, $mime);
 
             $email = $emailHelper->createEmail(
-                toAddress: 'minicckuku@gmail.com',
+                to: $emailHelper->getFrom(),
                 subject: 'Backup'
             )
                 ->text('Backup - Date: ' . date('Y-m-d'))
@@ -364,10 +364,11 @@ class MailController extends AbstractController
 
     #[Route(path: '/cobros-contador', name: 'mail_cobros_contador', methods: ['GET', 'POST'])]
     public function paymentsAccountant(
-        Request               $request,
-        TransactionRepository $repository,
-        EmailHelper           $emailHelper,
-        MailerInterface       $mailer,
+        Request                                       $request,
+        TransactionRepository                         $repository,
+        EmailHelper                                   $emailHelper,
+        MailerInterface                               $mailer,
+        #[Autowire('%env(EMAIL_ACCOUNTANT)%')] string $emailAccountant,
     ): Response
     {
         $year = $request->request->getInt('year', (int)date('Y'));
@@ -376,22 +377,17 @@ class MailController extends AbstractController
         $ids = is_array($ii) ? array_filter($ii, 'is_numeric') : [];
 
         if ($ids) {
-            $payments = $repository->findByIds($ids);
-            $accountantName = 'Contador';
-            $accountantEmail = 'Con@ta.dor';
-
             $email = $emailHelper->createTemplatedEmail(
-                addressTo: new Address($accountantEmail, $accountantName),
+                to: Address::create($emailAccountant),
                 subject: "Pagos del MiniCC KuKu - $month / $year"
             )
                 ->htmlTemplate('email/cobros-contador.twig')
                 ->context([
                     'year' => $year,
                     'month' => $month,
-                    'payments' => $payments,
+                    'payments' => $repository->findByIds($ids),
                     'fileName' => '@todo$fileName',//@todo ->attach($document, $fileName)
-                ])
-            ;
+                ]);
 
             try {
                 $mailer->send($email);
@@ -401,13 +397,15 @@ class MailController extends AbstractController
             }
 
             //@todo redirect elsewhere
-            return $this->redirectToRoute('mail_cobros_contador');
+            //return $this->redirectToRoute('mail_cobros_contador');
         }
 
         return $this->render('mail/cobros-contador.html.twig',
-            ['month' => $month,
+            [
+                'month' => $month,
                 'year' => $year,
-                'payments' => $repository->findByDate($year, $month),]
+                'payments' => $repository->findByDate($year, $month),
+            ]
         );
     }
 }

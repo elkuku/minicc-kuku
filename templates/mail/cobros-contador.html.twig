@@ -25,23 +25,41 @@
         <div class="alert alert-danger">No payments to show defined</div>
     {% else %}
         {% set total = 0 %}
-        <table>
+        <table
+                {{ stimulus_controller('checkbox-select-all') }}
+        >
             <tr>
                 <th>Fecha</th>
-                <th>Local</th>
+                <th class="text-center">Local</th>
                 <th>Inquilino</th>
                 <th>Monto</th>
-                <th>Send</th>
+                <th>Send
+                    <label>
+                        <input
+                                type="checkbox"
+                                {{ stimulus_target('checkbox-select-all', 'checkboxAll') }}
+                        />
+                        <span>All</span>
+                    </label>
+                </th>
             </tr>
             {% for payment in payments %}
-                <tr>
+                <tr
+                        {% if loop.index < payments|length
+                            and payments[loop.index].date != payment.date
+                            or loop.index == payments|length %}
+                            class="tr-underlined"
+                        {% endif %}
+                >
                     <td>{{ payment.date|date("d-m") }}</td>
-                    <td>{{ payment.store.id }}</td>
+                    <td class="text-center">{{ payment.store.id }}</td>
                     <td>{{ payment.user.name }}</td>
-                    <td>{{ payment.amount }}</td>
+                    <td class="text-end amount">{{ payment.amount }}</td>
                     <td>
                         <label>
-                            <input type="checkbox" name="ids[]" value="{{ payment.id }}">Send
+                            <input type="checkbox" name="ids[]" value="{{ payment.id }}"
+                                    {{ stimulus_target('checkbox-select-all', 'checkbox') }}
+                            >Send
                         </label>
                     </td>
                 </tr>
@@ -49,16 +67,12 @@
             {% endfor %}
             <tr>
                 <td colspan="2"></td>
-                <td>Total:</td>
-                <td>{{ total }}</td>
+                <td class="text-end">Total:</td>
+                <td class="text-end amount">{{ total|number_format(2) }}</td>
             </tr>
-
         </table>
-        <hr>
-        <label>
-            <input type="checkbox" name="ids[]" value="FOO">TEST
 
-        </label>
+        <hr>
 
         <button type="submit" class="btn btn-outline-success">Send mails</button>
 
