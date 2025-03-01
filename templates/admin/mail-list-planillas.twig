@@ -7,7 +7,7 @@
     {% if stores is empty %}
         <div class="alert alert-danger">No stores defined</div>
     {% else %}
-        <form method="post" action="{{ path('planilla-mail') }}">
+        <form method="post">
 
             {% include '_/_stores_table.html.twig' %}
 

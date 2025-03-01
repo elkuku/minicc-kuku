@@ -27,21 +27,7 @@ use UnexpectedValueException;
 #[Route(path: '/mail')]
 class MailController extends AbstractController
 {
-    #[Route(path: '/transactions', name: 'mail_list_transactions', methods: ['GET'])]
-    public function listTransactions(
-        StoreRepository $storeRepository
-    ): Response
-    {
-        return $this->render(
-            'admin/mail-list-transactions.twig',
-            [
-                'stores' => $storeRepository->getActive(),
-                'years' => range(date('Y'), date('Y', strtotime('-5 year'))),
-            ]
-        );
-    }
-
-    #[Route(path: '/transactions', name: 'mail_transactions', methods: ['POST'])]
+    #[Route(path: '/transactions-clients', name: 'mail_transactions_clients', methods: ['GET', 'POST'])]
     public function transactionsClients(
         StoreRepository       $storeRepository,
         TransactionRepository $transactionRepository,
@@ -50,14 +36,18 @@ class MailController extends AbstractController
         PdfHelper             $PDFHelper,
         MailerInterface       $mailer,
         EmailHelper           $emailHelper,
-    ): RedirectResponse
+    ): Response
     {
         $recipients = $request->get('recipients');
 
         if (!$recipients) {
-            $this->addFlash('warning', 'No recipients selected');
-
-            return $this->redirectToRoute('mail-list-transactions');
+            return $this->render(
+                'admin/mail-list-transactions.twig',
+                [
+                    'stores' => $storeRepository->getActive(),
+                    'years' => range(date('Y'), date('Y', strtotime('-5 year'))),
+                ]
+            );
         }
 
         $year = (int)$request->get('year', date('Y'));
@@ -163,19 +153,6 @@ class MailController extends AbstractController
         return $this->redirectToRoute('welcome');
     }
 
-    #[Route(path: '/mail-list-planillas', name: 'mail-list-planillas', methods: ['GET'])]
-    public function listPlanillas(
-        StoreRepository $storeRepository
-    ): Response
-    {
-        return $this->render(
-            'admin/mail-list-planillas.twig',
-            [
-                'stores' => $storeRepository->getActive(),
-            ]
-        );
-    }
-
     #[Route(path: '/planillas-mail', name: 'planillas-mail', methods: ['GET'])]
     public function planillas(
         Pdf             $pdf,
@@ -216,7 +193,7 @@ class MailController extends AbstractController
         return $this->render('admin/tasks.html.twig');
     }
 
-    #[Route(path: '/planilla-mail', name: 'planilla-mail', methods: ['POST'])]
+    #[Route(path: '/planillas-clients', name: 'mail_planillas_clients', methods: ['GET', 'POST'])]
     public function planillasClients(
         StoreRepository $storeRepository,
         Request         $request,
@@ -225,77 +202,81 @@ class MailController extends AbstractController
         MailerInterface $mailer,
         EmailHelper     $emailHelper,
         PayrollHelper   $payrollHelper
-    ): RedirectResponse
+    ): Response
     {
         $recipients = $request->get('recipients');
-        if (!$recipients) {
-            $this->addFlash('warning', 'No recipients selected');
+        if ($recipients) {
+            $year = (int)date('Y');
+            $month = (int)date('m');
+            $fileName = "planilla-$year-$month.pdf";
+            $stores = $storeRepository->getActive();
+            $failures = [];
+            $successes = [];
 
-            return $this->redirectToRoute('mail-list-transactions');
-        }
-        $year = (int)date('Y');
-        $month = (int)date('m');
-        $fileName = "planilla-$year-$month.pdf";
-        $stores = $storeRepository->getActive();
-        $failures = [];
-        $successes = [];
+            foreach ($stores as $store) {
+                if (!array_key_exists((int)$store->getId(), $recipients)) {
+                    continue;
+                }
 
-        foreach ($stores as $store) {
-            if (!array_key_exists((int)$store->getId(), $recipients)) {
-                continue;
+                $user = $store->getUser();
+
+                if (!$user) {
+                    continue;
+                }
+
+                $document = $pdf->getOutputFromHtml(
+                    $PDFHelper->renderPayrollsHtml(
+                        $year,
+                        $month,
+                        $payrollHelper,
+                        (int)$store->getId()
+                    ),
+                    [
+                        'enable-local-file-access' => true,
+                    ]
+                );
+
+                $email = $emailHelper->createTemplatedEmail(
+                    to: new Address($user->getEmail(), $user->getName()),
+                    subject: "Su planilla del local {$store->getId()} ($month - $year)"
+                )
+                    ->htmlTemplate('email/client-planillas.twig')
+                    ->context([
+                        'user' => $store->getUser(),
+                        'store' => $store,
+                        'factDate' => "$year-$month-1",
+                        'fileName' => $fileName,
+                        'payroll' => $payrollHelper->getData($year, $month, $store->getId()),
+                    ])
+                    ->attach($document, $fileName);
+
+                try {
+                    $mailer->send($email);
+                    $successes[] = $store->getId();
+                } catch (TransportExceptionInterface $exception) {
+                    $failures[] = $exception->getMessage();
+                }
+            }
+            if ($failures) {
+                $this->addFlash('warning', implode('<br>', $failures));
+            }
+            if ($successes) {
+                $this->addFlash(
+                    'success',
+                    'Mails have been sent to stores: '
+                    . implode(', ', $successes)
+                );
             }
 
-            $user = $store->getUser();
-
-            if (!$user) {
-                continue;
-            }
-
-            $document = $pdf->getOutputFromHtml(
-                $PDFHelper->renderPayrollsHtml(
-                    $year,
-                    $month,
-                    $payrollHelper,
-                    (int)$store->getId()
-                ),
-                [
-                    'enable-local-file-access' => true,
-                ]
-            );
-
-            $email = $emailHelper->createTemplatedEmail(
-                to: new Address($user->getEmail(), $user->getName()),
-                subject: "Su planilla del local {$store->getId()} ($month - $year)"
-            )
-                ->htmlTemplate('email/client-planillas.twig')
-                ->context([
-                    'user' => $store->getUser(),
-                    'store' => $store,
-                    'factDate' => "$year-$month-1",
-                    'fileName' => $fileName,
-                    'payroll' => $payrollHelper->getData($year, $month, $store->getId()),
-                ])
-                ->attach($document, $fileName);
-
-            try {
-                $mailer->send($email);
-                $successes[] = $store->getId();
-            } catch (TransportExceptionInterface $exception) {
-                $failures[] = $exception->getMessage();
-            }
+            return $this->redirectToRoute('welcome');
         }
-        if ($failures) {
-            $this->addFlash('warning', implode('<br>', $failures));
-        }
-        if ($successes) {
-            $this->addFlash(
-                'success',
-                'Mails have been sent to stores: '
-                . implode(', ', $successes)
-            );
-        }
+        return $this->render(
+            'admin/mail-list-planillas.twig',
+            [
+                'stores' => $storeRepository->getActive(),
+            ]
+        );
 
-        return $this->redirectToRoute('welcome');
     }
 
     #[Route(path: '/backup', name: 'backup', methods: ['GET'])]
