@@ -1,5 +1,5 @@
 <div
-        {{ stimulus_target('payday2', 'modal') }}
+        {{ stimulus_target('payday', 'modal') }}
         {{ stimulus_controller('deposit-lookup', {
             urlSearch: path('deposito_search'),
             urlLookup: path('deposito_lookup'),
@@ -13,13 +13,13 @@
             </div>
             <div class="modal-body">
                 <input
-                        {{ stimulus_target('payday2', 'modalDate') }}
+                        {{ stimulus_target('payday', 'modalDate') }}
                         class="form-control" type="date"
                         data-deposit-lookup-target="date"
                         placeholder="Date"
                 >
                 <select
-                        {{ stimulus_target('payday2', 'modalStore') }}
+                        {{ stimulus_target('payday', 'modalStore') }}
                         class="form-control"
                 >
                     <option value="0">Local</option>
@@ -35,7 +35,7 @@
                         <div class="input-group mb-3">
                             <span class="input-group-text">$</span>
                             <input
-                                    {{ stimulus_target('payday2', 'modalAmount') }}
+                                    {{ stimulus_target('payday', 'modalAmount') }}
                                     {{ stimulus_target('deposit-lookup', 'amount') }}
                                     class="form-control form-control-lg"
                                     placeholder="Amount"
@@ -52,7 +52,7 @@
                     <div class="col-4">
                         <div class="form-floating mb-3">
                             <input
-                                    {{ stimulus_target('payday2', 'modalRecipe') }}
+                                    {{ stimulus_target('payday', 'modalRecipe') }}
                                     class="form-control form-control-sm" type="text">
                             <label>Factura</label>
                         </div>
@@ -64,7 +64,7 @@
                 <hr>
 
                 <select
-                        {{ stimulus_target('payday2', 'modalMethod') }}
+                        {{ stimulus_target('payday', 'modalMethod') }}
                         class="form-control"
                         data-deposit-lookup-target="method"
                 >
@@ -75,7 +75,7 @@
                 <div class="row">
                     <div class="col">
                         <input
-                                {{ stimulus_target('payday2', 'modalDocument') }}
+                                {{ stimulus_target('payday', 'modalDocument') }}
                                 data-action="deposit-lookup#onSearchInput keydown->deposit-lookup#onKeydown"
                                 data-deposit-lookup-target="document"
                                 class="form-control" type="text">
@@ -87,7 +87,7 @@
                     </div>
                     <div class="col">
                         <input
-                                {{ stimulus_target('payday2', 'modalDeposit') }}
+                                {{ stimulus_target('payday', 'modalDeposit') }}
                                 data-deposit-lookup-target="depid"
                                 class="form-control" type="text" readonly>
                     </div>
@@ -96,19 +96,19 @@
                 <hr>
 
                 <input
-                        {{ stimulus_target('payday2', 'modalComment') }}
+                        {{ stimulus_target('payday', 'modalComment') }}
                         class="form-control" type="text"
                         placeholder="Comment"
                 >
                 <input
-                        {{ stimulus_target('payday2', 'modalIsEdit') }}
+                        {{ stimulus_target('payday', 'modalIsEdit') }}
                         type="hidden"
                         value="0"
                 >
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary" data-action="payday2#saveModal">Guardar</button>
+                <button type="button" class="btn btn-primary" data-action="payday#saveModal">Guardar</button>
             </div>
         </div>
     </div>

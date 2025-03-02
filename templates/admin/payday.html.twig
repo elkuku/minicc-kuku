@@ -4,19 +4,19 @@
 
 {% block body %}
 
-    <h1>Pay Day 2</h1>
+    <h1>Pay Day</h1>
 
-    <div {{ stimulus_controller('payday2', { lastRecipeNo: lastRecipeNo, paymentMethods: paymentMethodsString }) }}>
+    <div {{ stimulus_controller('payday', { lastRecipeNo: lastRecipeNo, paymentMethods: paymentMethodsString }) }}>
 
-        <button data-action="payday2#addPayment" class="btn btn-primary">
+        <button data-action="payday#addPayment" class="btn btn-primary">
             Add Payment
         </button>
 
         {{ include('admin/payday/template.html.twig') }}
 
-        <form method="post" action="{{ path('pay-day2') }}">
+        <form method="post" action="{{ path('pay-day') }}">
 
-            <div data-payday2-target="body"></div>
+            <div data-payday-target="body"></div>
 
             <div class="text-end">
                 <button type="submit" class="btn btn-outline-success">A Cobrar</button>

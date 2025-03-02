@@ -97,75 +97,10 @@ class AdminController extends AbstractController
     {
         $payments = $request->request->all('payments');
         if (!$payments) {
-            return $this->render(
-                'admin/payday-html.twig',
-                [
-                    'stores' => $storeRepository->getActive(),
-                    'lastRecipeNo' => $transactionRepository->getLastRecipeNo() + 1,
-                    'paymentMethods' => $paymentMethodRepository->findAll(),
-                ]
-            );
-        }
-
-        foreach ($payments['date_cobro'] as $i => $dateCobro) {
-            if (!$dateCobro) {
-                continue;
-            }
-
-            $store = $storeRepository->find((int)$payments['store'][$i]);
-
-            if (!$store) {
-                continue;
-            }
-
-            $method = $paymentMethodRepository->find((int)$payments['method'][$i]);
-
-            if (!$method) {
-                throw new \UnexpectedValueException('Invalid payment method.');
-            }
-
-            $user = $store->getUser();
-
-            if (!$user) {
-                throw new \UnexpectedValueException('Store has no user.');
-            }
-
-            $transaction = (new Transaction())
-                ->setDate(new \DateTime($dateCobro))
-                ->setStore($store)
-                ->setUser($user)
-                ->setType(TransactionType::payment)
-                ->setMethod($method)
-                ->setRecipeNo((int)$payments['recipe'][$i])
-                ->setDocument((int)$payments['document'][$i])
-                ->setDepId((int)$payments['depId'][$i])
-                ->setAmount($payments['amount'][$i])
-                ->setComment($payments['comment'][$i]);
-
-            $entityManager->persist($transaction);
-        }
-        $entityManager->flush();
-        $this->addFlash('success', 'Sa ha pagado...');
-
-        return $this->redirectToRoute('welcome');
-    }
-
-    #[Route(path: '/pay-day2', name: 'pay-day2', methods: ['GET', 'POST'])]
-    #[IsGranted('ROLE_ADMIN')]
-    public function payDay2(
-        StoreRepository         $storeRepository,
-        PaymentMethodRepository $paymentMethodRepository,
-        TransactionRepository   $transactionRepository,
-        Request                 $request,
-        EntityManagerInterface  $entityManager,
-    ): Response
-    {
-        $payments = $request->request->all('payments');
-        if (!$payments) {
             $paymentMethods = $paymentMethodRepository->findAll();
             $serializer = new Serializer([new GetSetMethodNormalizer()], ['json' => new JsonEncoder()]);
             return $this->render(
-                'admin/payday2.html.twig',
+                'admin/payday.html.twig',
                 [
                     'stores' => $storeRepository->getActive(),
                     'lastRecipeNo' => $transactionRepository->getLastRecipeNo() + 1,

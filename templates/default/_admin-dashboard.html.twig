@@ -18,7 +18,7 @@
         <span class="oi oi-document"></span>
     </a>
     {% if is_granted('ROLE_ADMIN') %}
-        <a href="{{ path('planillas-mail') }}" class="btn btn-outline-primary" title="Mail Planillas">
+        <a href="{{ path('mail_planillas_clients') }}" class="btn btn-outline-primary" title="Mail Planillas">
             <span class="oi oi-envelope-closed"></span>
         </a>
     {% endif %}
