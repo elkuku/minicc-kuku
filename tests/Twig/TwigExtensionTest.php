@@ -4,6 +4,7 @@ namespace Twig;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
+use App\Service\TextFormatter;
 use App\Twig\Extension\AppExtension;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -14,7 +15,8 @@ class TwigExtensionTest extends WebTestCase
     public function setUp(): void
     {
         static::createClient();
-        $this->twigExtension = new AppExtension();
+        $formatter = new TextFormatter();
+        $this->twigExtension = new AppExtension($formatter);
     }
 
     public function testPriceFilter(): void

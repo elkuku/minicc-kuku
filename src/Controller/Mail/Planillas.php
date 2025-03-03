@@ -1,0 +1,56 @@
+<?php
+
+namespace App\Controller\Mail;
+
+use App\Controller\BaseController;
+use App\Service\EmailHelper;
+use App\Service\PayrollHelper;
+use App\Service\PdfHelper;
+use Knp\Snappy\Pdf;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Routing\Attribute\Route;
+
+class Planillas extends BaseController
+{
+    #[Route(path: '/mail/planillas', name: 'mail_planillas', methods: ['GET'])]
+    public function planillas(
+        Pdf             $pdf,
+        PdfHelper       $PDFHelper,
+        MailerInterface $mailer,
+        EmailHelper     $emailHelper,
+        PayrollHelper   $payrollHelper,
+    ): Response
+    {
+        $year = (int)date('Y');
+        $month = (int)date('m');
+        $fileName = "payrolls-$year-$month.pdf";
+        $html = 'Attachment: ' . $fileName;
+        $document = $pdf->getOutputFromHtml(
+            $PDFHelper->renderPayrollsHtml(
+                $year,
+                $month,
+                $payrollHelper
+            ),
+            [
+                'enable-local-file-access' => true,
+            ]
+        );
+        $email = $emailHelper->createEmail(
+            to: $emailHelper->getFrom(),
+            subject: "Planillas $year-$month"
+        )
+            ->subject("Planillas $year-$month")
+            ->html($html)
+            ->attach($document, $fileName);
+        try {
+            $mailer->send($email);
+            $this->addFlash('success', 'Mail has been sent.');
+        } catch (TransportExceptionInterface $e) {
+            $this->addFlash('danger', 'ERROR sending mail: ' . $e->getMessage());
+        }
+
+        return $this->render('admin/tasks.html.twig');
+    }
+}

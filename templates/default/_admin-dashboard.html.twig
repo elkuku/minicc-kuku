@@ -1,20 +1,20 @@
 {% if is_granted('ROLE_ADMIN') %}
     {% if chargementRequired %}
         <div class="alert alert-warning">
-            Hay que <a href="{{ path('cobrar') }}">cobrar los alquileres</a>...
+            Hay que <a href="{{ path('admin_collect_rent') }}">cobrar los alquileres</a>...
         </div>
     {% endif %}
 {% endif %}
 <div class="btn-group btn-group-lg">
     {% if is_granted('ROLE_ADMIN') %}
-        <a href="{{ path('cobrar') }}" class="btn btn-outline-success" title="Cobrar alquileres">
+        <a href="{{ path('admin_collect_rent') }}" class="btn btn-outline-success" title="Cobrar alquileres">
             <span class="oi oi-home"></span>
         </a>
-        <a href="{{ path('pay-day') }}" class="btn btn-outline-success" title="Ingresar Pagos">
+        <a href="{{ path('admin_pay_day') }}" class="btn btn-outline-success" title="Ingresar Pagos">
             <span class="oi oi-dollar"></span>
         </a>
     {% endif %}
-    <a href="{{ path('pagos-por-ano') }}" class="btn btn-outline-success" title="Pagos por año">
+    <a href="{{ path('admin_payments') }}" class="btn btn-outline-success" title="Pagos por año">
         <span class="oi oi-document"></span>
     </a>
     {% if is_granted('ROLE_ADMIN') %}

@@ -9,10 +9,10 @@ use App\Service\TaxService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
+#[Route(path: '/', name: 'welcome', methods: ['GET'])]
 class DefaultController extends BaseController
 {
-    #[Route(path: '/', name: 'welcome', methods: ['GET'])]
-    public function index(
+    public function __invoke(
         StoreRepository       $storeRepository,
         TransactionRepository $transactionRepository,
         TaxService            $taxService,
@@ -63,17 +63,5 @@ class DefaultController extends BaseController
                 'chargementRequired' => $transactionRepository->checkChargementRequired(),
             ]
         );
-    }
-
-    #[Route(path: '/about', name: 'about', methods: ['GET'])]
-    public function about(): Response
-    {
-        return $this->render('default/about.html.twig');
-    }
-
-    #[Route(path: '/contact', name: 'contact', methods: ['GET'])]
-    public function contact(): Response
-    {
-        return $this->render('default/contact.html.twig');
     }
 }

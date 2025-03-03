@@ -64,7 +64,7 @@
                                             {% for t in transactions[loc][mes][dia] %}
                                                 {% set totalDia = totalDia + t.amount %}
                                                 {% set totalLocal = totalLocal|merge({('local'~loc): totalLocal['local'~loc]+t.amount}) %}
-                                                <a href="{{ path('transaction-edit', {'id': t.id, 'view': path('pagos-por-ano') }) }}">{{ t.amount|price|raw }}</a>
+                                                <a href="{{ path('transaction-edit', {'id': t.id, 'view': path('admin_payments') }) }}">{{ t.amount|price|raw }}</a>
                                             {% endfor %}
                                         </td>
                                     {% else %}

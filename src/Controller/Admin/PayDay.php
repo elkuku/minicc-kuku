@@ -1,15 +1,14 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Admin;
 
+use App\Controller\BaseController;
 use App\Entity\Transaction;
 use App\Repository\PaymentMethodRepository;
 use App\Repository\StoreRepository;
 use App\Repository\TransactionRepository;
-use App\Repository\UserRepository;
 use App\Type\TransactionType;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -18,76 +17,11 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
-class AdminController extends AbstractController
+#[Route(path: '/admin/pay-day', name: 'admin_pay_day', methods: ['GET', 'POST'])]
+#[IsGranted('ROLE_ADMIN')]
+class PayDay extends BaseController
 {
-    #[Route(path: '/cobrar', name: 'cobrar', methods: ['GET', 'POST'])]
-    #[IsGranted('ROLE_ADMIN')]
-    public function cobrar(
-        StoreRepository         $storeRepository,
-        UserRepository          $userRepository,
-        PaymentMethodRepository $paymentMethodRepository,
-        Request                 $request,
-        EntityManagerInterface  $entityManager,
-    ): Response
-    {
-        $values = $request->request->all('values');
-        if (!$values) {
-            return $this->render(
-                'admin/cobrar.html.twig',
-                [
-                    'stores' => $storeRepository->getActive(),
-                ]
-            );
-        }
-
-        $users = $request->request->all('users');
-        $method = $paymentMethodRepository->find(1);
-
-        if (!$method) {
-            throw new \UnexpectedValueException('Invalid payment method.');
-        }
-
-        foreach ($values as $storeId => $value) {
-            if (!$value) {
-                continue;
-            }
-
-            $user = $userRepository->find((int)$users[$storeId]);
-
-            if (!$user) {
-                throw new \UnexpectedValueException('Store has no user.');
-            }
-
-            $store = $storeRepository->find((int)$storeId);
-
-            if (!$store) {
-                throw new \UnexpectedValueException('Store does not exist.');
-            }
-
-            $transaction = (new Transaction())
-                ->setDate(
-                    new \DateTime((string)$request->request->get('date_cobro'))
-                )
-                ->setStore($store)
-                ->setUser($user)
-                ->setType(TransactionType::rent)
-                ->setMethod($method)
-                // Set negative value (!)
-                ->setAmount((string)-$value);
-
-            $entityManager->persist($transaction);
-        }
-
-        $entityManager->flush();
-
-        $this->addFlash('success', 'A cobrar...');
-
-        return $this->redirectToRoute('welcome');
-    }
-
-    #[Route(path: '/pay-day', name: 'pay-day', methods: ['GET', 'POST'])]
-    #[IsGranted('ROLE_ADMIN')]
-    public function payDay(
+    public function __invoke(
         StoreRepository         $storeRepository,
         PaymentMethodRepository $paymentMethodRepository,
         TransactionRepository   $transactionRepository,
@@ -151,25 +85,5 @@ class AdminController extends AbstractController
         $this->addFlash('success', 'Sa ha pagado...');
 
         return $this->redirectToRoute('welcome');
-    }
-
-    #[Route(path: '/pagos-por-ano', name: 'pagos-por-ano', methods: ['GET'])]
-    #[IsGranted('ROLE_CASHIER')]
-    public function pagosPorAno(
-        Request               $request,
-        TransactionRepository $repository
-    ): Response
-    {
-        $year = $request->query->getInt('year', (int)date('Y'));
-        $month = $year === (int)date('Y') ? (int)date('m') : 1;
-
-        return $this->render(
-            'admin/pagos-por-ano.html.twig',
-            [
-                'year' => $year,
-                'month' => $month,
-                'transactions' => $repository->getPagosPorAno($year),
-            ]
-        );
     }
 }

@@ -82,28 +82,6 @@ class PdfController extends AbstractController
         );
     }
 
-    #[IsGranted('ROLE_ADMIN')]
-    #[Route(path: '/planillas', name: 'planillas', methods: ['GET'])]
-    public function planillas(
-        PdfHelper $PdfHelper,
-        PayrollHelper $payrollHelper,
-    ): PdfResponse {
-        $year = (int) date('Y');
-        $month = (int) date('m');
-        $filename = sprintf('payrolls-%d-%d.pdf', $year, $month);
-
-        $html = $PdfHelper->renderPayrollsHtml($year, $month, $payrollHelper);
-
-        return new PdfResponse(
-            $PdfHelper->getOutputFromHtml(
-                $html,
-                [
-                    'enable-local-file-access' => true,
-                ]
-            ),
-            $filename
-        );
-    }
 
     #[IsGranted('ROLE_ADMIN')]
     #[Route(path: '/pdf', name: 'pdf-users', methods: ['GET'])]

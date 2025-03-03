@@ -3,36 +3,48 @@
         {{ is_granted('IS_IMPERSONATOR') ? 'style="background-color: red !important"' }}
 >
     <div class="container-fluid">
-        <a class="navbar-brand" href="{{ path('welcome') }}">MiniCC KuKu</a>
+        <a class="navbar-brand" href="{{ path('welcome') }}"
+                {% if 'dev' == app.environment %} style="color: yellow"{% endif %}
+        >MiniCC KuKu</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav">
-                <li class="nav-item"><a class="nav-link" href="{{ path('about') }}">Sobre</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ path('contact') }}">Contacto</a></li>
                 {% if is_granted('ROLE_ADMIN') %}
                     <li class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button">Admin</a>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="{{ path('pay-day') }}">Pay Day</a>
-                            <a class="dropdown-item" href="{{ path('cobrar') }}">Cobrar Alquileres</a>
-                            <a class="dropdown-item" href="{{ path('pagos-por-ano') }}">Pagos por Año</a>
+                            <a class="dropdown-item" href="{{ path('admin_pay_day') }}">Pay Day</a>
+                            <a class="dropdown-item" href="{{ path('admin_collect_rent') }}">Cobrar Alquileres</a>
+                            <a class="dropdown-item" href="{{ path('admin_payments') }}">Pagos por Año</a>
                             <a class="dropdown-item" href="{{ path('admin-tasks') }}">Tasks</a>
-                            <div class="dropdown-divider"></div>
-                            <h6 class="dropdown-header">Mail</h6>
-                            <a class="dropdown-item" href="{{ path('mail_transactions_clients') }}">Transactions</a>
-                            <a class="dropdown-item" href="{{ path('mail_planillas_clients') }}">Planillas</a>
-                            <a class="dropdown-item" href="{{ path('mail_cobros_contador') }}">Cobros -> Contador</a>
                             <div class="dropdown-divider"></div>
                             <h6 class="dropdown-header">etc</h6>
                             <a class="dropdown-item" href="{{ path('transaction-rawlist') }}">Transactions RAW</a>
                             <a class="dropdown-item" href="{{ path('deposits') }}">Depositos</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button">Export</a>
+                        <div class="dropdown-menu">
+                            <h6 class="dropdown-header">Mail</h6>
+                            <a class="dropdown-item" href="{{ path('mail_planillas_clients') }}">Planillas ->
+                                Inquilinos</a>
+                            <a class="dropdown-item" href="{{ path('mail_planillas') }}">Planillas ->Admin</a>
+
+                            <a class="dropdown-item" href="{{ path('mail_transactions_clients') }}">Movimientos ->
+                                Inquilinos</a>
+                            <a class="dropdown-item" href="{{ path('mail_payments_accountant') }}">Cobros ->
+                                Contador</a>
                             <div class="dropdown-divider"></div>
-                            <h6 class="dropdown-header">System</h6>
-                            <a class="dropdown-item" href="{{ path('app_system_about') }}">About</a>
-                            <a class="dropdown-item" href="{{ path('app_system_logview') }}">Logview</a>
+                            <h6 class="dropdown-header">Download</h6>
+                            <a class="dropdown-item" href="{{ path('download_planillas') }}">Planillas</a>
+                            <a class="dropdown-item" href="{{ path('users-ruclist') }}">Users RUC list</a>
+                            <a class="dropdown-item" href="{{ path('pdf-users') }}">Users list (test)</a>
+                            <a class="dropdown-item" href="{{ path('app_export_users_to_excel') }}">Users to Excel</a>
+
                         </div>
                     </li>
                     <li class="nav-item dropdown">
@@ -46,36 +58,43 @@
                             <a class="dropdown-item" href="{{ path('payment-methods') }}">Metodos de Pago</a>
                         </div>
                     </li>
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button">System</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="{{ path('app_system_about') }}">About</a>
+                            <a class="dropdown-item" href="{{ path('app_system_logview') }}">Logview</a>
+                        </div>
+                    </li>
                 {% endif %}
             </ul>
             {% include '_user_switcher.html.twig' %}
-            <div class="ms-auto">
-                {% if app.user %}
-                    <a accesskey="l" href="{{ path('logout') }}" title="Logout">
-                        <span class="oi oi-account-logout"></span>
+        </div>
+        <div class="ms-auto">
+            {% if app.user %}
+                <a href="{{ path('logout') }}" title="Logout">
+                    <span class="oi oi-account-logout"></span>
+                </a>
+            {% else %}
+                {% if 'dev' == app.environment %}
+                    <a href="{{ path('login') }}" title="Login">
+                        <span class="oi oi-account-login"></span>
                     </a>
                 {% else %}
-                    {% if 'dev' == app.environment %}
-                        <a accesskey="l" href="{{ path('login') }}" title="Login">
-                            <span class="oi oi-account-login"></span>
-                        </a>
-                    {% else %}
-                        <div id="g_id_onload"
-                             data-client_id="{{ oauthGoogleId }}"
-                             data-login_uri="{{ url('connect_google_verify') }}"
-                             data-auto_prompt="false">
-                        </div>
-                        <div class="g_id_signin"
-                             data-type="standard"
-                             data-size="large"
-                             data-theme="outline"
-                             data-text="sign_in_with"
-                             data-shape="rectangular"
-                             data-logo_alignment="left">
-                        </div>
-                    {% endif %}
+                    <div id="g_id_onload"
+                         data-client_id="{{ oauthGoogleId }}"
+                         data-login_uri="{{ url('connect_google_verify') }}"
+                         data-auto_prompt="false">
+                    </div>
+                    <div class="g_id_signin"
+                         data-type="standard"
+                         data-size="large"
+                         data-theme="outline"
+                         data-text="sign_in_with"
+                         data-shape="rectangular"
+                         data-logo_alignment="left">
+                    </div>
                 {% endif %}
-            </div>
+            {% endif %}
         </div>
 
         {% include '_theme_selector.html.twig' %}

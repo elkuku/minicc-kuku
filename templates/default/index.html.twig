@@ -6,6 +6,31 @@
         <div class="col-12">
             <div class="h-100 p-5 bg-light bg-opacity-50 text-on-image">
                 <h1>Atacames - Ecuador</h1>
+                <p class="lead">This site is for the clients of the "MiniCC KuKu" - Atacames - Ecuador</p>
+                <p class="lead">Este sitio es para los clientes del "MiniCC KuKu" - Atacames - Ecuador</p>
+
+                <div class="row">
+                    <div class="col-lg-9">Si usted es cliente por favor <a href="{{ path('login') }}">ingrese.</a></div>
+                    <div class="col-lg-3">
+
+                        {% if 'dev'==app.environment %}
+                            <div id="g_id_onload"
+                                 data-client_id="{{ oauthGoogleId }}"
+                                 data-login_uri="{{ url('connect_google_verify') }}"
+                                 data-auto_prompt="false">
+                            </div>
+                        {% endif %}
+
+                        <div class="g_id_signin"
+                             data-type="standard"
+                             data-size="large"
+                             data-theme="outline"
+                             data-text="sign_in_with"
+                             data-shape="rectangular"
+                             data-logo_alignment="left">
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     {% else %}

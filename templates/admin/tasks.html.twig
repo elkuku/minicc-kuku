@@ -12,11 +12,9 @@
                 <h5 class="card-header">Documentos</h5>
 
                 <div class="list-group">
-                    <a class="list-group-item" href="{{ path('planillas') }}">Download Planillas</a>
-                    <a class="list-group-item" href="{{ path('planillas-mail') }}">Mail Planillas</a>
                     <a class="list-group-item" href="{{ path('stores-transactions-pdf') }}">Transactions PDF</a>
                 </div>
-                <form action="{{ path('mail-annual-transactions') }}" method="post">
+                <form action="{{ path('mail_transactions') }}" method="post">
                     Send all transactions for
                     <label> year
                         <select name="year">
@@ -29,55 +27,10 @@
 
                 </form>
                 <div class="list-group">
-                    <a class="list-group-item" href="{{ path('users-ruclist') }}">Users RUC list</a>
-                    <a class="list-group-item" href="{{ path('pdf-users') }}">Users list (test)</a>
-                    <a class="list-group-item" href="{{ path('app_export_users_to_excel') }}">Users to Excel</a>
                 </div>
 
-            </div>
-        </div>
-
-        <div class="col-4">
-            <div class="card">
-                <h5 class="card-header">Sync</h5>
-                <h6 class="card-header">Export</h6>
-                <div class="list-group">
-                    <a class="list-group-item" href="{{ path('backup') }}">Send Backup per e-mail</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-4">
-            <div class="card">
-                <h5 class="card-header">View</h5>
-                <div class="list-group">
-                    <a class="list-group-item" href="{{ path('console-view', {'item': 'routes'}) }}">Routes</a>
-                    <div class="list-group-item">
-                        <form enctype="multipart/form-data" method="post" class="form"
-                              action="{{ path('console-view', {'item': 'route-match'}) }}">
-                            <div class="form-group">
-                                <label>Route</label>
-                                <input name="route" type="text" class="form-control"/>
-                                <button type="submit" class="btn btn-outline-primary">Check</button>
-                            </div>
-                        </form>
-                    </div>
-                    <a class="list-group-item" href="{{ path('console-view', {'item': 'migrations'}) }}">Migrations</a>
-                    <a class="list-group-item" href="{{ path('console-view', {'item': 'info'}) }}">System Info</a>
-                </div>
             </div>
         </div>
     </div>
-
-
-    {% if consoleOutput is defined %}
-        <h2>Console output</h2>
-        <ul>
-            {% for name, value in consoleCommand %}
-                <li><b>{{ name }}</b> - <code>{{ value }}</code></li>
-            {% endfor %}
-        </ul>
-        <pre class="console">{{ consoleOutput }}</pre>
-    {% endif %}
 
 {% endblock %}
