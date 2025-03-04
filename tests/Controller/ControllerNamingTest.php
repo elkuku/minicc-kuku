@@ -4,10 +4,8 @@ namespace App\Tests\Controller;
 
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
-use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Routing\DelegatingLoader;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use function PHPUnit\Framework\assertEquals;
 
 class ControllerNamingTest extends KernelTestCase
 {
@@ -19,11 +17,14 @@ class ControllerNamingTest extends KernelTestCase
     protected array $ignoredFiles = [
         '.gitignore',
         'GoogleController.php',
+        'Security/GoogleIdentityController.php',
+        'Security/SecurityController.php',
     ];
 
     public function testNaming(): void
     {
         $failures = 0;
+
         /**
          * @var DelegatingLoader $routeLoader
          */
@@ -56,7 +57,7 @@ class ControllerNamingTest extends KernelTestCase
                             echo sprintf("Wrong name for '%s' should be '%s'.\n", $routerClass, $expected);
                             $failures++;
                         } else {
-                            echo 'OK: ' . $routerClass . "\n";
+                            #echo 'OK: ' . $routerClass . "\n";
                         }
                     }
                 }

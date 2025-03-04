@@ -12,12 +12,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[IsGranted('ROLE_ADMIN')]
 class TasksController extends AbstractController
 {
-    #[Route(path: '/admin-tasks', name: 'admin-tasks', methods: ['GET'])]
-    public function index(): Response
-    {
-        return $this->render('admin/tasks.html.twig');
-    }
+
 }

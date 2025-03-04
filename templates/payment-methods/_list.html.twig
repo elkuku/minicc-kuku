@@ -12,22 +12,20 @@
             <td>{{ method.id }}</td>
             <td>{{ method.name }}</td>
             <td>
-{#                <a href="{{ path('payment-methods-edit', {'id': method.id}) }}">Edit</a>#}
                 <span {{ stimulus_controller('modal-form', {
-                    formUrl: path('payment-methods-edit', { id: method.id, ajax: 1 })
+                    formUrl: path('payment_methods_edit', { id: method.id, ajax: 1 })
                 }) }}
-{#                        data-action="hidden.bs.modal->modal-form#modalHidden"#}
                 >
                     <button
                             class="btn btn-primary btn-sm"
                             data-action="modal-form#openModal"
-                    >Edit
+                    >
+                        Edit
                     </button>
-                    {{ include('_modal.html.twig', {
-                        modalTitle: 'Editar metodo de pago'
-                    }) }}
+                    {{ include('_modal.html.twig', { modalTitle: 'Editar metodo de pago' }) }}
                 </span>
-                <a class="btn btn-warning btn-sm" href="{{ path('payment-methods-delete', {'id': method.id}) }}">Delete</a>
+                <a class="btn btn-warning btn-sm"
+                   href="{{ path('payment_methods_delete', {'id': method.id}) }}">Delete</a>
             </td>
         </tr>
     {% else %}
