@@ -4,9 +4,9 @@
 
 {% block body %}
     <div class="float-end">
-        <a href="{{ path('register') }}" class="btn btn-outline-primary">Nuevo</a>
-        <a href="{{ path('pdf-users') }}" class="btn btn-outline-secondary">Lista PDF</a>
-        <a href="{{ path('users-ruclist') }}" class="btn btn-outline-secondary">Lista RUC</a>
+        <a href="{{ path('users_create') }}" class="btn btn-outline-primary">Nuevo</a>
+        <a href="{{ path('download_users_list') }}" class="btn btn-outline-secondary">Lista PDF</a>
+        <a href="{{ path('download_users_ruc_list') }}" class="btn btn-outline-secondary">Lista RUC</a>
     </div>
 
     <h1>Clientes</h1>
@@ -15,7 +15,7 @@
         <thead>
         <tr>
             <th>
-                <form method="post" action="{{ path('users-list') }}">
+                <form method="post">
                     <select class="form-control" name="user_active" onchange="form.submit()">
                         <option value="">Estado...</option>
                         <option value="0"{{ 0 == userActive ? ' selected="selected"' : '' }}>Inactivo</option>
@@ -32,7 +32,7 @@
             <tr>
                 <td><span class="oi oi-{{ user.isActive ? 'check' : 'x' }}"></span></td>
                 <td>{{ user.gender.title }}</td>
-                <td><a href="{{ path('user-edit', {'id': user.id}) }}">{{ user.name }}</a></td>
+                <td><a href="{{ path('users_edit', {'id': user.id}) }}">{{ user.name }}</a></td>
                 <td>
                     {% for store in user.stores %}
                         <a href="{{ path('store-transactions', {'id': store.id}) }}">

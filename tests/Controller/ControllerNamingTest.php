@@ -48,7 +48,7 @@ class ControllerNamingTest extends KernelTestCase
                 $routes = $routeLoader->load($routerClass)->all();
                 # var_dump($routes);
                 if (count($routes) > 1) {
-                    echo sprintf("Too many routes in %s.\n", $routerClass);
+                    echo sprintf("Too many routes in %s (%d).\n", $routerClass, count($routes));
                     $failures++;
                 } else {
                     foreach ($routes as $name => $route) {

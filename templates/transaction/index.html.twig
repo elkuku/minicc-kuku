@@ -101,8 +101,8 @@
                     <td>{{ transaction.recipeNo }}</td>
                     <td>{{ transaction.comment }}</td>
                     <td>
-                        <a href="{{ path('transaction-edit', {'id': transaction.id, 'view': app.request.requesturi }) }}">Edit</a>
-                        <a href="{{ path('transaction-delete', {'id': transaction.id, 'view': app.request.requesturi }) }}">Delete</a>
+                        <a href="{{ path('transactions_edit', {'id': transaction.id, 'view': app.request.requesturi }) }}">Edit</a>
+                        <a href="{{ path('transactions_delete', {'id': transaction.id, 'view': app.request.requesturi }) }}">Delete</a>
                     </td>
                 </tr>
                 {% else %}
