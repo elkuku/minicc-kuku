@@ -12,9 +12,9 @@ use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[Route('/system/about', name: 'app_system_about', methods: ['GET'])]
+#[Route('/system/about', name: 'system_about', methods: ['GET'])]
 #[IsGranted('ROLE_ADMIN')]
-class AboutController extends BaseController
+class About extends BaseController
 {
     public function __invoke(
         #[Autowire('%kernel.project_dir%')] string $projectDir,

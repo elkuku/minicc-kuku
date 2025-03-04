@@ -1,21 +1,20 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Download;
 
+use App\Controller\BaseController;
 use App\Repository\UserRepository;
 use App\Service\PhpXlsxGenerator;
 use App\Service\TextFormatter;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[Route(path: '/export')]
 #[IsGranted('ROLE_ADMIN')]
-class ExportController extends AbstractController
+#[Route(path: '/download/clients-to-excel', name: 'download_clients_to_excel', methods: ['GET'])]
+class ClientsToExcel extends BaseController
 {
-    #[Route(path: '/users-to-excel', name: 'app_export_users_to_excel', methods: ['GET'])]
-    public function usersToExcel(
+    public function __invoke(
         UserRepository $userRepository,
         TextFormatter  $textFormatter,
     ): RedirectResponse
@@ -34,5 +33,4 @@ class ExportController extends AbstractController
 
         return $this->redirectToRoute('admin-tasks');
     }
-
 }

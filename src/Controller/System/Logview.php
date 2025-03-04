@@ -14,9 +14,9 @@ use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[Route('/system/logview', name: 'app_system_logview', methods: ['GET'])]
+#[Route('/system/logview', name: 'system_logview', methods: ['GET'])]
 #[IsGranted('ROLE_ADMIN')]
-class LogviewController extends BaseController
+class Logview extends BaseController
 {
     public function __invoke(
         #[Autowire('%kernel.project_dir%')] string $projectDir,

@@ -34,16 +34,18 @@
                                 Inquilinos</a>
                             <a class="dropdown-item" href="{{ path('mail_planillas') }}">Planillas ->Admin</a>
 
-                            <a class="dropdown-item" href="{{ path('mail_transactions_clients') }}">Movimientos ->
-                                Inquilinos</a>
-                            <a class="dropdown-item" href="{{ path('mail_payments_accountant') }}">Cobros ->
-                                Contador</a>
+                            <a class="dropdown-item" href="{{ path('mail_transactions_clients') }}">
+                                Movimientos -> Inquilinos
+                            </a>
+                            <a class="dropdown-item" href="{{ path('mail_payments_accountant') }}">
+                                Cobros -> Contador
+                            </a>
                             <div class="dropdown-divider"></div>
                             <h6 class="dropdown-header">Download</h6>
                             <a class="dropdown-item" href="{{ path('download_planillas') }}">Planillas</a>
-                            <a class="dropdown-item" href="{{ path('users-ruclist') }}">Users RUC list</a>
-                            <a class="dropdown-item" href="{{ path('pdf-users') }}">Users list (test)</a>
-                            <a class="dropdown-item" href="{{ path('app_export_users_to_excel') }}">Users to Excel</a>
+                            <a class="dropdown-item" href="{{ path('download_users_ruc_list') }}">Users RUC list</a>
+                            <a class="dropdown-item" href="{{ path('download_users_list') }}">Users list</a>
+                            <a class="dropdown-item" href="{{ path('download_clients_to_excel') }}">Users to Excel</a>
 
                         </div>
                     </li>
@@ -61,8 +63,8 @@
                     <li class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button">System</a>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="{{ path('app_system_about') }}">About</a>
-                            <a class="dropdown-item" href="{{ path('app_system_logview') }}">Logview</a>
+                            <a class="dropdown-item" href="{{ path('system_about') }}">About</a>
+                            <a class="dropdown-item" href="{{ path('system_logview') }}">Logview</a>
                         </div>
                     </li>
                 {% endif %}

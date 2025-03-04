@@ -8,7 +8,7 @@
     {% endif %}
 
     <div class="float-end btn-group">
-        <a href="{{ path('store-transaction-pdf', {'id': store.id, 'year': year}) }}"
+        <a href="{{ path('download_store_transactions', {'id': store.id, 'year': year}) }}"
            class="btn btn-outline-success" title="Export">
             <span class="oi oi-file"></span>
         </a>

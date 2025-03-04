@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route(path: '/', name: 'welcome', methods: ['GET'])]
-class DefaultController extends BaseController
+class Welcome extends BaseController
 {
     public function __invoke(
         StoreRepository       $storeRepository,

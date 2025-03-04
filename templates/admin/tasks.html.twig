@@ -12,7 +12,7 @@
                 <h5 class="card-header">Documentos</h5>
 
                 <div class="list-group">
-                    <a class="list-group-item" href="{{ path('stores-transactions-pdf') }}">Transactions PDF</a>
+                    <a class="list-group-item" href="{{ path('download_transactions') }}">Download Transactions PDF</a>
                 </div>
                 <form action="{{ path('mail_transactions') }}" method="post">
                     Send all transactions for
