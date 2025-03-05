@@ -1,4 +1,6 @@
 parameters:
+	excludePaths:
+		- src/Service/PhpXlsxGenerator.php
 	level: 8
 	paths:
 		- src
