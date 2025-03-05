@@ -13,11 +13,11 @@
             <span class="oi oi-file"></span>
         </a>
         {% if is_granted('ROLE_ADMIN') %}
-            <a href="{{ path('stores-edit', {'id': store.id}) }}" class="btn btn-outline-warning" title="Edit Local">
+            <a href="{{ path('stores_edit', {'id': store.id}) }}" class="btn btn-outline-warning" title="Edit Local">
                 <span class="oi oi-pencil"></span>
             </a>
             {% if store.id > 1 %}
-                <a title="Local anterior" href="{{ path('store-transactions', {'id': store.id - 1}) }}"
+                <a title="Local anterior" href="{{ path('stores_transactions', {'id': store.id - 1}) }}"
                    class="btn btn-outline-primary">
                     <span class="oi oi-chevron-left"></span>
                 </a>
@@ -27,7 +27,7 @@
                 </div>
             {% endif %}
             {% if store.id < stores|length %}
-                <a title="Local siguiente" href="{{ path('store-transactions', {'id': store.id + 1}) }}"
+                <a title="Local siguiente" href="{{ path('stores_transactions', {'id': store.id + 1}) }}"
                    class="btn btn-outline-primary">
                     <span class="oi oi-chevron-right"></span>
                 </a>
@@ -99,7 +99,7 @@
                         <td class="text-end">{{ saldo|price|raw }}</td>
                         {% if is_granted('ROLE_ADMIN') %}
                             <td>
-                                <a href="{{ path('transaction-edit', {'id': transaction.id, 'view': path('store-transactions',{'id': store.id}) }) }}"
+                                <a href="{{ path('transactions_edit', {'id': transaction.id, 'view': path('stores_transactions',{'id': store.id}) }) }}"
                                    title="Edit transaction">
                                    Edit
                                 </a>

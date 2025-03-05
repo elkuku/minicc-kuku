@@ -5,7 +5,7 @@
 {% block body %}
     {% if is_granted('ROLE_ADMIN') %}
         <div class="float-end">
-            <a href="{{ path('stores-add') }}" class="btn btn-outline-primary">Nuevo Local</a>
+            <a href="{{ path('stores_create') }}" class="btn btn-outline-primary">Nuevo Local</a>
         </div>
     {% endif %}
 
@@ -31,7 +31,7 @@
                 <tr>
                     <td class="text-center">
                         {% if is_granted('ROLE_ADMIN') %}
-                            <a href="{{ path('stores-edit', {'id': store.id}) }}"
+                            <a href="{{ path('stores_edit', {'id': store.id}) }}"
                                title="Editar Local {{ store.id }}">
                                 {{ store.id }}
                             </a>
@@ -41,7 +41,7 @@
 
                     </td>
                     <td>
-                        <a href="{{ path('store-transactions', {'id': store.id}) }}"
+                        <a href="{{ path('stores_transactions', {'id': store.id}) }}"
                            title="Transaciones del local {{ store.id }}">
                             {{ store.destination }}
                         </a>
