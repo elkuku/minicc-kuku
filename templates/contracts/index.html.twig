@@ -8,10 +8,10 @@
     <div class="float-end">
 
         <a class="btn btn-outline-primary" data-bs-toggle="collapse" href="#collapseExample" role="button">Nuevo</a>
-        <a class="btn btn-outline-secondary" href="{{ path('contracts-template') }}">Plantilla</a>
+        <a class="btn btn-outline-secondary" href="{{ path('contracts_template') }}">Plantilla</a>
         <div class="collapse" id="collapseExample">
             <div class="card card-body">
-                <form action="{{ path('contracts-new') }}" method="post" class="form-inline">
+                <form action="{{ path('contracts_create') }}" method="post" class="form-inline">
                     <select required="required" class="form-control form-control-sm" name="store">
                         <option value="">Local ...</option>
                         {% for store in stores %}
@@ -63,18 +63,17 @@
                     <td>{{ intlDate(contract.date) }}</td>
                     <td>{{ contract.inqNombreapellido }}</td>
                     <td>
-                        <a href="{{ path('contracts-edit', {'id': contract.id}) }}">Edit</a>
-                        <a href="{{ path('contract-generate', {'id': contract.id}) }}">Generate</a>
-                        <a href="{{ path('contracts-delete', {'id': contract.id}) }}">Delete</a>
+                        <a href="{{ path('contracts_edit', {'id': contract.id}) }}">Edit</a>
+                        <a href="{{ path('contracts_generate', {'id': contract.id}) }}">Generate</a>
+                        <a href="{{ path('contracts_delete', {'id': contract.id}) }}">Delete</a>
                     </td>
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="4" class="alert-warning text-center">No hay contractos definidos!!</td>
+                    <td colspan="4" class="alert-warning text-center">No hay contratos definidos!!</td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
     </form>
-
 {% endblock %}

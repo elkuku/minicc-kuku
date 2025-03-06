@@ -4,7 +4,7 @@ import Component from './Component.js'
 export default {
     char: '[',
     items: async ({query}) => {
-        const response = await fetch('/contracts/get-template-strings')
+        const response = await fetch('/contracts/template-strings')
         const items = await response.json()
         return items.filter(item => item.toLowerCase().startsWith(query.toLowerCase()))
             .slice(0, 5)
