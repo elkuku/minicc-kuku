@@ -15,7 +15,8 @@ class GitLoader
     public function __construct(
         #[Autowire('%kernel.project_dir%')]
         private readonly string $rootDir
-    ) {
+    )
+    {
     }
 
     public function getBranchName(): string
@@ -58,7 +59,7 @@ class GitLoader
         $gitLogs = file_exists($gitLogFile)
             ? file($gitLogFile, FILE_USE_INCLUDE_PATH) : [];
         $sha = trim(
-            (string) $this->execCommand(
+            (string)$this->execCommand(
                 'cd ' . $this->rootDir . ' && git rev-parse --short HEAD'
             )
         );
@@ -66,7 +67,7 @@ class GitLoader
         if ($gitLogs) {
             preg_match(
                 "/([\w]+) ([\w]+) ([\w\s]+) (<[\w.@]+>) ([\d]+) ([\d-]+)\tcommit: ([\w\s]+)/",
-                (string) end($gitLogs),
+                (string)end($gitLogs),
                 $matches
             );
         }
@@ -74,7 +75,7 @@ class GitLoader
         $logs = [];
 
         $logs['author'] = $matches[3] ?? 'not defined';
-        $logs['date'] = isset($matches[5]) ? date('Y/m/d H:i', (int) $matches[5])
+        $logs['date'] = isset($matches[5]) ? date('Y/m/d H:i', (int)$matches[5])
             : 'not defined';
         $logs['sha'] = $sha;
 

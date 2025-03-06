@@ -34,7 +34,7 @@ trait BreadcrumbTrait
 
     private function initBreadcrumbs(): self
     {
-        if (! $this->breadcrumbs) {
+        if (!$this->breadcrumbs) {
             $this->breadcrumbs = [
                 'Home' => 'welcome',
             ];

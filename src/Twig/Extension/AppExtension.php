@@ -51,10 +51,11 @@ class AppExtension extends AbstractExtension
 
     public function priceFilter(
         float|null $number,
-        int $decimals = 2,
-        string $decPoint = '.',
-        string $thousandsSep = ','
-    ): string {
+        int        $decimals = 2,
+        string     $decPoint = '.',
+        string     $thousandsSep = ','
+    ): string
+    {
         $price = $number ? number_format(
             $number,
             $decimals,
@@ -81,7 +82,8 @@ class AppExtension extends AbstractExtension
         string|DateTime $date,
         string          $format = "d 'de' MMMM YYYY",
         string          $lang = 'es_ES'
-    ): string {
+    ): string
+    {
         $formatter = new IntlDateFormatter(
             'es_ES',
             IntlDateFormatter::LONG,
@@ -108,7 +110,7 @@ class AppExtension extends AbstractExtension
      */
     public function objectFilter(object $classObject): array
     {
-        $array = (array) $classObject;
+        $array = (array)$classObject;
         $response = [];
 
         $className = $classObject::class;
@@ -156,6 +158,6 @@ class AppExtension extends AbstractExtension
 
     public function getCurrentYear(): int
     {
-        return (int) date('Y');
+        return (int)date('Y');
     }
 }

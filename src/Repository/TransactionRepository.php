@@ -168,7 +168,7 @@ class TransactionRepository extends ServiceEntityRepository
     /**
      * @return Transaction[]
      */
-    public function findByDate(int $year, int $month):array
+    public function findByDate(int $year, int $month): array
     {
         return $this->createQueryBuilder('t')
             ->andWhere('YEAR(t.date) = :year')
@@ -189,8 +189,8 @@ class TransactionRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('t')
             //->andWhere('t.id IN (:ids)')
-            ->andWhere('t.id IN('.implode(',', $ids).')')
-         //   ->setParameter('ids', implode(',', $ids))
+            ->andWhere('t.id IN(' . implode(',', $ids) . ')')
+            //   ->setParameter('ids', implode(',', $ids))
             ->getQuery()
             ->getResult();
     }

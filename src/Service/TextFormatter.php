@@ -7,7 +7,7 @@ use App\Entity\User;
 class TextFormatter
 {
 
-    public function formatRUC(User $user):string
+    public function formatRUC(User $user): string
     {
         $ruc = '?';
 

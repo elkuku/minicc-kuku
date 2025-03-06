@@ -15,8 +15,9 @@ class UsersList extends BaseController
     #[Route(path: '/download/users-list', name: 'download_users_list', methods: ['GET'])]
     public function pdfList(
         UserRepository $userRepository,
-        PdfHelper $PdfHelper,
-    ): PdfResponse {
+        PdfHelper      $PdfHelper,
+    ): PdfResponse
+    {
         $html = $this->renderView(
             '_pdf/user-pdf-list.html.twig',
             [

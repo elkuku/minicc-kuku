@@ -15,11 +15,12 @@ class Transactions
 {
     public function __invoke(
         TransactionRepository $transactionRepository,
-        StoreRepository $storeRepository,
-        PdfHelper $pdfHelper
-    ): PdfResponse {
+        StoreRepository       $storeRepository,
+        PdfHelper             $pdfHelper
+    ): PdfResponse
+    {
         $htmlPages = [];
-        $year = (int) date('Y');
+        $year = (int)date('Y');
         $stores = $storeRepository->findAll();
         foreach ($stores as $store) {
             if ($store->getUserId()) {

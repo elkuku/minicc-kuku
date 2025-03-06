@@ -14,11 +14,12 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class Planillas extends BaseController
 {
     public function __invoke(
-        PdfHelper $PdfHelper,
+        PdfHelper     $PdfHelper,
         PayrollHelper $payrollHelper,
-    ): PdfResponse {
-        $year = (int) date('Y');
-        $month = (int) date('m');
+    ): PdfResponse
+    {
+        $year = (int)date('Y');
+        $month = (int)date('m');
         $filename = sprintf('payrolls-%d-%d.pdf', $year, $month);
 
         $html = $PdfHelper->renderPayrollsHtml($year, $month, $payrollHelper);

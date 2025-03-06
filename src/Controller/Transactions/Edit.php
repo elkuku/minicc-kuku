@@ -16,10 +16,11 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class Edit extends BaseController
 {
     public function __invoke(
-        Transaction $transaction,
-        Request $request,
+        Transaction            $transaction,
+        Request                $request,
         EntityManagerInterface $entityManager,
-    ): Response {
+    ): Response
+    {
         $view = $request->query->get('view');
         $form = $this->createForm(TransactionTypeType::class, $transaction);
         $form->handleRequest($request);
@@ -32,7 +33,7 @@ class Edit extends BaseController
             $this->addFlash('success', 'La Transaccion ha sido guardada.');
 
             if ($view) {
-                return $this->redirect((string) $view);
+                return $this->redirect((string)$view);
             }
 
             return $this->redirectToRoute(

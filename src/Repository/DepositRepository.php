@@ -41,7 +41,7 @@ class DepositRepository extends ServiceEntityRepository
 
     public function has(Deposit $deposit): bool
     {
-        return (bool) $this->findOneBy(
+        return (bool)$this->findOneBy(
             [
                 'date' => $deposit->getDate(),
                 'document' => $deposit->getDocument(),
@@ -61,7 +61,7 @@ class DepositRepository extends ServiceEntityRepository
             $query->andWhere('d.amount = :amount')
                 ->setParameter(
                     'amount',
-                    (float) $options->searchCriteria('amount')
+                    (float)$options->searchCriteria('amount')
                 );
         }
 
@@ -69,7 +69,7 @@ class DepositRepository extends ServiceEntityRepository
             $query->andWhere('d.document LIKE :document')
                 ->setParameter(
                     'document',
-                    '%' . (int) $options->searchCriteria('document')
+                    '%' . (int)$options->searchCriteria('document')
                     . '%'
                 );
         }

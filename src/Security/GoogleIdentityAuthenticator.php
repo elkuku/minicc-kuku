@@ -28,11 +28,12 @@ class GoogleIdentityAuthenticator extends AbstractAuthenticator
 
     public function __construct(
         #[Autowire('%env(OAUTH_GOOGLE_ID)%')]
-        private readonly string $oauthGoogleId,
-        private readonly UserRepository $userRepository,
+        private readonly string                 $oauthGoogleId,
+        private readonly UserRepository         $userRepository,
         private readonly EntityManagerInterface $entityManager,
-        private readonly UrlGeneratorInterface $urlGenerator,
-    ) {
+        private readonly UrlGeneratorInterface  $urlGenerator,
+    )
+    {
     }
 
     public function supports(Request $request): bool
@@ -42,9 +43,9 @@ class GoogleIdentityAuthenticator extends AbstractAuthenticator
 
     public function authenticate(Request $request): Passport
     {
-        $idToken = (string) $request->request->get('credential');
+        $idToken = (string)$request->request->get('credential');
 
-        if (! $idToken) {
+        if (!$idToken) {
             throw new AuthenticationException('Missing credentials :(');
         }
 
@@ -53,7 +54,7 @@ class GoogleIdentityAuthenticator extends AbstractAuthenticator
         ]))
             ->verifyIdToken($idToken);
 
-        if (! $payload) {
+        if (!$payload) {
             throw new AuthenticationException('Invalid ID token :(');
         }
 
@@ -66,10 +67,11 @@ class GoogleIdentityAuthenticator extends AbstractAuthenticator
     }
 
     public function onAuthenticationSuccess(
-        Request $request,
+        Request        $request,
         TokenInterface $token,
-        string $firewallName
-    ): RedirectResponse {
+        string         $firewallName
+    ): RedirectResponse
+    {
         if ($targetPath = $this->getTargetPath(
             $request->getSession(),
             $firewallName
@@ -82,9 +84,10 @@ class GoogleIdentityAuthenticator extends AbstractAuthenticator
     }
 
     public function onAuthenticationFailure(
-        Request $request,
+        Request                 $request,
         AuthenticationException $exception
-    ): RedirectResponse {
+    ): RedirectResponse
+    {
         /**
          * @var Session $session
          */

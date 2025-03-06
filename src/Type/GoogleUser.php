@@ -9,7 +9,8 @@ final class GoogleUser
      */
     public function __construct(
         protected array $response
-    ) {
+    )
+    {
     }
 
     public function getId(): string

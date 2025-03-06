@@ -15,11 +15,12 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class StoreTransactions extends BaseController
 {
     public function __invoke(
-        Store $store,
-        int $year,
+        Store                 $store,
+        int                   $year,
         TransactionRepository $transactionRepository,
-        PdfHelper $pdfHelper
-    ): PdfResponse {
+        PdfHelper             $pdfHelper
+    ): PdfResponse
+    {
         $this->denyAccessUnlessGranted('export', $store);
         $html = $pdfHelper->renderTransactionHtml(
             $transactionRepository,

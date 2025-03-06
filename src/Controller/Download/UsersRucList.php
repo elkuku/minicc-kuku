@@ -15,8 +15,9 @@ class UsersRucList extends BaseController
 {
     public function __invoke(
         UserRepository $userRepository,
-        PdfHelper $pdfHelper,
-    ): PdfResponse {
+        PdfHelper      $pdfHelper,
+    ): PdfResponse
+    {
         $html = $this->renderView(
             '_pdf/ruclist.html.twig',
             [

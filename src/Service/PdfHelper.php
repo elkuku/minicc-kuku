@@ -19,10 +19,11 @@ class PdfHelper
 {
     public function __construct(
         #[Autowire('%kernel.project_dir%')]
-        private readonly string $rootDir,
+        private readonly string      $rootDir,
         private readonly Environment $twig,
-        private readonly Pdf $pdfEngine,
-    ) {
+        private readonly Pdf         $pdfEngine,
+    )
+    {
     }
 
     public function getRoot(): string
@@ -32,16 +33,17 @@ class PdfHelper
 
     public function renderTransactionHtml(
         TransactionRepository $transactionRepository,
-        Store $store,
-        int $year,
-        int $transactionsPerPage = 42
-    ): string {
+        Store                 $store,
+        int                   $year,
+        int                   $transactionsPerPage = 42
+    ): string
+    {
         $transactions = $transactionRepository->findByStoreAndYear(
             $store,
             $year
         );
 
-        $pages = (int) (count($transactions) / $transactionsPerPage) + 1;
+        $pages = (int)(count($transactions) / $transactionsPerPage) + 1;
         $fillers = $transactionsPerPage - (count($transactions) - ($pages - 1)
                 * $transactionsPerPage);
 
@@ -65,11 +67,12 @@ class PdfHelper
     }
 
     public function renderPayrollsHtml(
-        int $year,
-        int $month,
+        int           $year,
+        int           $month,
         PayrollHelper $payrollHelper,
-        int $storeId = 0
-    ): string {
+        int           $storeId = 0
+    ): string
+    {
         return $this->twig->render(
             '_pdf/payrolls-pdf.html.twig',
             $payrollHelper->getData($year, $month, $storeId)
@@ -77,13 +80,14 @@ class PdfHelper
     }
 
     /**
-     * @param array<string>|string       $htmlPages
+     * @param array<string>|string $htmlPages
      * @param array<string, string|bool> $options
      */
     public function getOutputFromHtml(
         array|string $htmlPages,
-        array $options = []
-    ): string {
+        array        $options = []
+    ): string
+    {
         return $this->pdfEngine->getOutputFromHtml($htmlPages, $options);
     }
 

@@ -9,13 +9,13 @@ class CsvParser
      */
     public function parseCSV(array $contents): CsvObject
     {
-        if (! $contents) {
+        if (!$contents) {
             throw new \UnexpectedValueException('CSV file is empty');
         }
 
         $csvObject = new CsvObject();
 
-        $headVars = explode(',', trim(trim((string) $contents[0]), '"'));
+        $headVars = explode(',', trim(trim((string)$contents[0]), '"'));
 
         $csvObject->headVars = $headVars;
 
@@ -25,12 +25,12 @@ class CsvParser
         unset($contents[0]);
 
         foreach ($contents as $line) {
-            $fields = explode(',', trim(trim((string) $line), '"'));
+            $fields = explode(',', trim(trim((string)$line), '"'));
 
             $o = new \stdClass();
 
             foreach ($fields as $i => $field) {
-                if (! isset($headVars[$i])) {
+                if (!isset($headVars[$i])) {
                     throw new \RuntimeException('Malformed CSV file.');
                 }
 

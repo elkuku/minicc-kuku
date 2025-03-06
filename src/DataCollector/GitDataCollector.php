@@ -11,14 +11,16 @@ class GitDataCollector extends DataCollector
 {
     public function __construct(
         private readonly GitLoader $gitLoader
-    ) {
+    )
+    {
     }
 
     public function collect(
-        Request $request,
-        Response $response,
+        Request     $request,
+        Response    $response,
         ?\Throwable $exception = null
-    ): void {
+    ): void
+    {
         $this->data = [
             'git_branch' => $this->gitLoader->getBranchName(),
             'last_commit_message' => $this->gitLoader->getLastCommitMessage(),

@@ -15,8 +15,9 @@ class Index extends BaseController
 {
     public function __invoke(
         PaymentMethodRepository $repository,
-        Request $request
-    ): Response {
+        Request                 $request
+    ): Response
+    {
         $template = $request->query->get('ajax')
             ? '_list.html.twig'
             : 'list.html.twig';

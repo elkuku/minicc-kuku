@@ -10,7 +10,8 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 /**
  * @extends Voter<string, string>
- */ class StoreVoter extends Voter
+ */
+class StoreVoter extends Voter
 {
     final public const VIEW = 'view';
 
@@ -20,16 +21,17 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
     public function __construct(
         private readonly Security $security
-    ) {
+    )
+    {
     }
 
     protected function supports(string $attribute, mixed $subject): bool
     {
-        if (! in_array($attribute, [self::VIEW, self::EDIT, self::EXPORT])) {
+        if (!in_array($attribute, [self::VIEW, self::EDIT, self::EXPORT])) {
             return false;
         }
 
-        if (! $subject instanceof Store) {
+        if (!$subject instanceof Store) {
             return false;
         }
 
@@ -37,17 +39,18 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
     }
 
     protected function voteOnAttribute(
-        string $attribute,
-        mixed $subject,
+        string         $attribute,
+        mixed          $subject,
         TokenInterface $token
-    ): bool {
+    ): bool
+    {
         if ($this->security->isGranted('ROLE_ADMIN')) {
             return true;
         }
 
         $user = $token->getUser();
 
-        if (! $user instanceof User) {
+        if (!$user instanceof User) {
             // the user must be logged in; if not, deny access
             return false;
         }

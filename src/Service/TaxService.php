@@ -15,7 +15,8 @@ class TaxService
     public function __construct(
         #[Autowire('%env(VALUE_IVA)%')]
         private readonly int $taxValue
-    ) {
+    )
+    {
     }
 
     public function getTaxValue(): int

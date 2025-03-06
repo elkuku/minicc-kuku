@@ -12,9 +12,10 @@ class IntlConverter
 {
     public static function formatDate(
         string|\DateTime $date,
-        string $format = "d 'de' MMMM YYYY",
-        string $lang = 'es_ES'
-    ): string {
+        string           $format = "d 'de' MMMM YYYY",
+        string           $lang = 'es_ES'
+    ): string
+    {
         $formatter = new \IntlDateFormatter(
             'ES_es',
             \IntlDateFormatter::LONG,

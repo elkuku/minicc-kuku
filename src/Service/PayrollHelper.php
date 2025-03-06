@@ -8,9 +8,10 @@ use App\Repository\TransactionRepository;
 class PayrollHelper
 {
     public function __construct(
-        private readonly StoreRepository $storeRepository,
+        private readonly StoreRepository       $storeRepository,
         private readonly TransactionRepository $transactionRepository,
-    ) {
+    )
+    {
     }
 
     /**
@@ -20,7 +21,8 @@ class PayrollHelper
         int $year,
         int $month,
         int $storeId = 0
-    ): array {
+    ): array
+    {
         $stores = $this->storeRepository->findAll();
 
         $factDate = $year . '-' . $month . '-1';
@@ -45,16 +47,16 @@ class PayrollHelper
 
             $storeData[$store->getId()]['saldoIni']
                 = $this->transactionRepository->getSaldoALaFecha(
-                    $store,
-                    $prevYear . '-' . $prevMonth . '-01'
-                );
+                $store,
+                $prevYear . '-' . $prevMonth . '-01'
+            );
 
             $storeData[$store->getId()]['transactions']
                 = $this->transactionRepository->findMonthPayments(
-                    $store,
-                    $prevMonth,
-                    $prevYear
-                );
+                $store,
+                $prevMonth,
+                $prevYear
+            );
 
             $selectedStores[] = $store;
         }

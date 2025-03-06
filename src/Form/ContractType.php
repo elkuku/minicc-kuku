@@ -28,8 +28,9 @@ class ContractType extends AbstractType
 
     public function buildForm(
         FormBuilderInterface $builder,
-        array $options
-    ): void {
+        array                $options
+    ): void
+    {
         $builder
             ->add('date')
             // Store
