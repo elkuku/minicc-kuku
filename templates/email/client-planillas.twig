@@ -1,101 +1,86 @@
-{% apply inline_css(source('@styles/foundation-emails.css'), source('@styles/email.css')) %}
-    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-    <html xmlns="https://www.w3.org/1999/xhtml">
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-        <meta name="viewport" content="width=device-width"/>
+{% apply inky_to_html|inline_css(source('@styles/foundation-emails.css'), source('@styles/email.css')) %}
+    <container>
+        <row>
+            <columns>
 
-        <title>Planilla</title>
-    </head>
-    <body>
-    <table class="body">
-        <tr>
-            <!-- The class, align, and <center> tag center the container -->
-            <td class="float-center" align="center" valign="top">
-                <center>
-                    <!-- The content of your email goes here. -->
+                <img src="{{ email.image('@images/minicc-logo.gif') }}" alt="Logo"/>
+                <h2>Su planilla de {{ intlDate(factDate, "MMMM YYYY")|capitalize }}</h2>
+                <p>{{ user.gender.salutation }} {{ user.gender.titleLong }} {{ user.name|short_name }},<br>
+                    adjunto la planilla del mes de {{ intlDate(factDate, "MMMM YYYY")|capitalize }} de su local
+                    No {{ store.id }}
+                    - {{ store.destination }}.
+                </p>
+                <p>
+                    Por favor revísela y comuníquenos cualquier inquietud dentro de los próximos 14 dias.
+                </p>
+                <p>
+                    Atentamente,<br>
+                    MiniCC KuKu - Atacames<br>
+                    <br>
+                    Revise todos sus movimientos en <a href="https://minicc.elkuku.dev">minicc.elkuku.dev</a>
+                </p>
 
-                    <img src="{{ email.image('@images/minicc-logo.gif') }}" alt="Logo"/>
-                    <h2>Su planilla de {{ intlDate(factDate, "MMMM YYYY")|capitalize }}</h2>
-                    <p>{{ user.gender.salutation }} {{ user.gender.titleLong }} {{ user.name|short_name }},<br>
-                        adjunto la planilla del mes de {{ intlDate(factDate, "MMMM YYYY")|capitalize }} de su local
-                        No {{ store.id }}
-                        - {{ store.destination }}.
-                    </p>
-                    <p>
-                        Por favor revísela y comuníquenos cualquier inquietud dentro de los próximos 14 dias.
-                    </p>
-                    <p>
-                        Atentamente,<br>
-                        MiniCC KuKu - Atacames<br>
-                        <br>
-                        Revise todos sus movimientos en <a href="https://minicc.elkuku.dev">minicc.elkuku.dev</a>
-                    </p>
+                <hr>
 
-                    <hr>
+                {% set saldoIni = payroll.storeData[store.id].saldoIni - store.valAlq|conIva %}
 
-                    {% set saldoIni = payroll.storeData[store.id].saldoIni - store.valAlq|conIva %}
-
-                    <table>
+                <table>
+                    <tr>
+                        <th colspan="2">Movimientos de {{ intlDate(payroll.prevDate, 'MMMM')|capitalize }}</th>
+                    </tr>
+                    <tr>
+                        <td>Saldo al {{ intlDate(payroll.prevDate, "d 'de' MMMM") }}</td>
+                        <td class="text-right amount">{{ saldoIni|invert|price|raw }}</td>
+                    </tr>
+                    {% for transaction in payroll.storeData[store.id].transactions %}
+                        {% set saldoIni = saldoIni + transaction.amount %}
                         <tr>
-                            <th colspan="2">Movimientos de {{ intlDate(payroll.prevDate, 'MMMM')|capitalize }}</th>
+                            <td>
+                                {{ intlDate(transaction.date, "d 'de' MMMM") }} -
+                                {{ transaction.type.translationKey|trans }}
+                            </td>
+                            <td class="text-right amount text-red">{{ transaction.amount|invert|price|raw }}</td>
                         </tr>
+                    {% else %}
                         <tr>
-                            <td>Saldo al {{ intlDate(payroll.prevDate, "d 'de' MMMM") }}</td>
-                            <td class="text-right amount">{{ saldoIni|invert|price|raw }}</td>
+                            <td colspan="2" class="text-center">No hubo pagos!</td>
                         </tr>
-                        {% for transaction in payroll.storeData[store.id].transactions %}
-                            {% set saldoIni = saldoIni + transaction.amount %}
-                            <tr>
-                                <td>
-                                    {{ intlDate(transaction.date, "d 'de' MMMM") }} -
-                                    {{ transaction.type.translationKey|trans }}
-                                </td>
-                                <td class="text-right amount text-red">{{ transaction.amount|invert|price|raw }}</td>
-                            </tr>
-                        {% else %}
-                            <tr>
-                                <td colspan="2" class="text-center">No hubo pagos!</td>
-                            </tr>
-                        {% endfor %}
-                        <tr>
-                            <td>Saldo de {{ intlDate(payroll.prevDate, 'MMMM') }}</td>
-                            <td class="text-right amount"
-                                style="border-top: 1px solid silver">{{ saldoIni|invert|price|raw }}</td>
-                        </tr>
+                    {% endfor %}
+                    <tr>
+                        <td>Saldo de {{ intlDate(payroll.prevDate, 'MMMM') }}</td>
+                        <td class="text-right amount"
+                            style="border-top: 1px solid silver">{{ saldoIni|invert|price|raw }}</td>
+                    </tr>
 
 
-                        <tr>
-                            <td>Alquiler de {{ intlDate(payroll.factDate, 'MMMM') }}</td>
-                            <td class="text-right amount">+ {{ store.valAlq|conIva|price|raw }}</td>
-                        </tr>
-                        <tr>
-                            <td>Saldo a pagar</td>
-                            <td class="text-right gran-total result">
-                                $ {{ (saldoIni - store.valAlq|conIva)|invert|price|raw }}</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td class="text-right" style="font-size: 1.3em;">Meses de
-                                deuda: {{ (-(saldoIni - store.valAlq|conIva) / store.valAlq|conIva)|round(1) }}</td>
-                        </tr>
-                    </table>
+                    <tr>
+                        <td>Alquiler de {{ intlDate(payroll.factDate, 'MMMM') }}</td>
+                        <td class="text-right amount">+ {{ store.valAlq|conIva|price|raw }}</td>
+                    </tr>
+                    <tr>
+                        <td>Saldo a pagar</td>
+                        <td class="text-right gran-total result">
+                            $ {{ (saldoIni - store.valAlq|conIva)|invert|price|raw }}</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td class="text-right" style="font-size: 1.3em;">Meses de
+                            deuda: {{ (-(saldoIni - store.valAlq|conIva) / store.valAlq|conIva)|round(1) }}</td>
+                    </tr>
+                </table>
 
 
-                    <hr>
+                <hr>
 
-                    <p>
-                        Para depósitos, utilice la cuenta de ahorros del Banco del Pichincha No. <span
-                                class="amount">390 356 3900</span> a nombre de Nikolai Plath.
-                    </p>
+                <p>
+                    Para depósitos, utilice la cuenta de ahorros del Banco del Pichincha No. <span
+                            class="amount">390 356 3900</span> a nombre de Nikolai Plath.
+                </p>
 
-                    <hr>
+                <hr>
 
-                    <b>Archivo adjunto</b>: {{ fileName }}
-                </center>
-            </td>
-        </tr>
-    </table>
-    </body>
-    </html>
+                <b>Archivo adjunto</b>: {{ fileName }}
+            </columns>
+        </row>
+    </container>
 {% endapply %}

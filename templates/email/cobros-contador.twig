@@ -1,59 +1,45 @@
-{% apply inline_css(source('@styles/foundation-emails.css'), source('@styles/email.css')) %}
-    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-    <html xmlns="https://www.w3.org/1999/xhtml">
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-        <meta name="viewport" content="width=device-width"/>
+{% apply inky_to_html|inline_css(source('@styles/foundation-emails.css'), source('@styles/email.css')) %}
+    <container>
+        <row>
+            <columns>
 
-        <title>Pagos del {{ month }} / {{ year }}</title>
-    </head>
-    <body>
-    <table class="body">
-        <tr>
-            <!-- The class, align, and <center> tag center the container -->
-            <td class="float-center" align="center" valign="top">
-                <center>
-                    <!-- The content of your email goes here. -->
 
-                    <img src="{{ email.image('@images/minicc-logo.gif') }}" alt="Logo"/>
-                    <hr>
-                    <h2>Pagos del {{ month }} / {{ year }}</h2>
-                    <p>blablabla
-                    </p>
+                <img src="{{ email.image('@images/minicc-logo.gif') }}" alt="Logo"/>
+                <hr>
+                <h2>Pagos del {{ month }} / {{ year }}</h2>
+                <p>blablabla
+                </p>
 
-                    <p>
-                        Atentamente,<br>
-                        MiniCC KuKu - Atacames<br>
-                        <br>
-                        Revise todos sus movimientos en <a href="https://minicc.elkuku.dev">minicc.elkuku.dev</a>
-                    </p>
+                <p>
+                    Atentamente,<br>
+                    MiniCC KuKu - Atacames<br>
+                    <br>
+                    Revise todos sus movimientos en <a href="https://minicc.elkuku.dev">minicc.elkuku.dev</a>
+                </p>
 
-                    <hr>
+                <hr>
 
-                    <table class="body">
+                <table class="body">
+                    <tr>
+                        <th>Fecha</th>
+                        <th class="text-center">Local</th>
+                        <th>Inquilino</th>
+                        <th class="text-right">Monto</th>
+                    </tr>
+                    {% for payment in payments %}
                         <tr>
-                            <th>Fecha</th>
-                            <th class="text-center">Local</th>
-                            <th>Inquilino</th>
-                            <th class="text-right">Monto</th>
+                            <td>{{ payment.date|date('d-m Y') }}</td>
+                            <td class="text-center">{{ payment.store.id }}</td>
+                            <td>{{ payment.user.name }}</td>
+                            <td class="text-right amount">{{ payment.amount }}</td>
                         </tr>
-                        {% for payment in payments %}
-                            <tr>
-                                <td>{{ payment.date|date('d-m Y') }}</td>
-                                <td class="text-center">{{ payment.store.id }}</td>
-                                <td>{{ payment.user.name }}</td>
-                                <td class="text-right amount">{{ payment.amount }}</td>
-                            </tr>
-                        {% endfor %}
-                    </table>
+                    {% endfor %}
+                </table>
 
-                    <hr>
+                <hr>
 
-                    <b>Archivo adjunto</b>: {{ fileName }}
-                </center>
-            </td>
-        </tr>
-    </table>
-    </body>
-    </html>
+                <b>Archivo adjunto</b>: {{ fileName }}
+            </columns>
+        </row>
+    </container>
 {% endapply %}

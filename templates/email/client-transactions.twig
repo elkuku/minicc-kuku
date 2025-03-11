@@ -1,15 +1,24 @@
-<h2>Movimientos del año {{ year }}</h2>
-<p>{{ user.gender.salutation }} {{ user.gender.titleLong }} {{ user.name|short_name }},<br>
-    Adjunto los movimientos de su local No {{ store.id }} - {{ store.destination }}.
-</p>
-<p>
-    Por favor revíselos y comuníquenos cualquier inquietud.
-</p>
-<p>
-    Atentamente,<br>
-    MiniCC KuKu
-</p>
-<hr>
-<p>
-    <b>Archivo adjunto</b>: {{ fileName }}
-</p>
+{% apply inky_to_html|inline_css(source('@styles/foundation-emails.css'), source('@styles/email.css')) %}
+    <container>
+        <row>
+            <columns>
+
+                <h2>Movimientos del año {{ year }}</h2>
+                <p>{{ user.gender.salutation }} {{ user.gender.titleLong }} {{ user.name|short_name }},<br>
+                    Adjunto los movimientos de su local No {{ store.id }} - {{ store.destination }}.
+                </p>
+                <p>
+                    Por favor revíselos y comuníquenos cualquier inquietud.
+                </p>
+                <p>
+                    Atentamente,<br>
+                    MiniCC KuKu
+                </p>
+                <hr>
+                <p>
+                    <b>Archivo adjunto</b>: {{ fileName }}
+                </p>
+            </columns>
+        </row>
+    </container>
+{% endapply %}

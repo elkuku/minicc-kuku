@@ -15,13 +15,13 @@ use Knp\Snappy\Pdf;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Twig\Environment;
 
-class PdfHelper
+readonly class PdfHelper
 {
     public function __construct(
         #[Autowire('%kernel.project_dir%')]
-        private readonly string      $rootDir,
-        private readonly Environment $twig,
-        private readonly Pdf         $pdfEngine,
+        private string      $rootDir,
+        private Environment $twig,
+        private Pdf         $pdfEngine,
     )
     {
     }
