@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Controller;
 
 use Elkuku\SymfonyUtils\Test\ControllerBaseTest;
@@ -7,7 +9,7 @@ use Elkuku\SymfonyUtils\Test\ControllerBaseTest;
 /**
  * Controller "smoke" test.
  */
-class ControllerAccessTest extends ControllerBaseTest
+final class ControllerAccessTest extends ControllerBaseTest
 {
     protected string $controllerRoot = __DIR__ . '/../../src/Controller';
 

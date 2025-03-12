@@ -13,5 +13,5 @@ tests:
 tests2: export APP_ENV=test
 tests2:
 	vendor/bin/phpstan --memory-limit=2G
-	vendor/bin/rector process src --dry-run
+	vendor/bin/rector process --dry-run
 .PHONY: tests

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Controller;
 
 use RecursiveDirectoryIterator;
@@ -7,14 +9,14 @@ use RecursiveIteratorIterator;
 use Symfony\Bundle\FrameworkBundle\Routing\DelegatingLoader;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class ControllerNamingTest extends KernelTestCase
+final class ControllerNamingTest extends KernelTestCase
 {
-    protected string $controllerRoot = __DIR__ . '/../../src/Controller';
+    private string $controllerRoot = __DIR__ . '/../../src/Controller';
 
     /**
      * @var array<int, string>
      */
-    protected array $ignoredFiles = [
+    private array $ignoredFiles = [
         '.gitignore',
         'GoogleController.php',
         'Security/GoogleIdentityController.php',
@@ -49,13 +51,13 @@ class ControllerNamingTest extends KernelTestCase
                 # var_dump($routes);
                 if (count($routes) > 1) {
                     echo sprintf("Too many routes in %s (%d).\n", $routerClass, count($routes));
-                    $failures++;
+                    ++$failures;
                 } else {
                     foreach ($routes as $name => $route) {
                         $expected = strtolower((string) preg_replace('/(?<!^)[A-Z]/', '_$0', $it->getSubPath() . $className));
                         if ($name !== $expected) {
                             echo sprintf("Wrong name for '%s' should be '%s'.\n", $routerClass, $expected);
-                            $failures++;
+                            ++$failures;
                         } else {
                             #echo 'OK: ' . $routerClass . "\n";
                         }

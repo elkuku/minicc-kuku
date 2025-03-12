@@ -1,11 +1,13 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Created by PhpStorm.
  * User: test
  * Date: 25.05.18
  * Time: 14:52.
  */
-
 namespace App\Helper;
 
 trait BreadcrumbTrait

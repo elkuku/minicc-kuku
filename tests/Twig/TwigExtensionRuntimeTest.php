@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Twig;
 
 use App\Repository\UserRepository;
@@ -8,7 +10,7 @@ use App\Service\TaxService;
 use App\Twig\Runtime\AppExtensionRuntime;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class TwigExtensionRuntimeTest extends WebTestCase
+final class TwigExtensionRuntimeTest extends WebTestCase
 {
     private AppExtensionRuntime $twigExtensionRuntime;
 

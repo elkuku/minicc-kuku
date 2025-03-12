@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Twig;
 
 use App\Entity\User;
@@ -8,7 +10,7 @@ use App\Service\TextFormatter;
 use App\Twig\Extension\AppExtension;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class TwigExtensionTest extends WebTestCase
+final class TwigExtensionTest extends WebTestCase
 {
     private AppExtension $twigExtension;
 

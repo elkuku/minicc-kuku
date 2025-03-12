@@ -1,11 +1,13 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Created by PhpStorm.
  * User: elkuku
  * Date: 16/05/17
  * Time: 2:45.
  */
-
 namespace App\Service;
 
 use Symfony\Component\DependencyInjection\Attribute\Autowire;

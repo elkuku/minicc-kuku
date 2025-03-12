@@ -1,11 +1,13 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Created by PhpStorm.
  * User: test
  * Date: 25.05.18
  * Time: 15:08.
  */
-
 namespace App\Helper\Paginator;
 
 use Symfony\Component\DependencyInjection\Attribute\Autowire;

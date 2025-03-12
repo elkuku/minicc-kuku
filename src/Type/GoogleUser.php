@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Type;
 
 final class GoogleUser
@@ -8,7 +10,7 @@ final class GoogleUser
      * @param array<string> $response
      */
     public function __construct(
-        protected array $response
+        private array $response
     )
     {
     }

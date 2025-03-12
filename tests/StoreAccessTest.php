@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests;
 
 use App\Repository\UserRepository;
 use PHPUnit\Framework\ExpectationFailedException;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class StoreAccessTest extends WebTestCase
+final class StoreAccessTest extends WebTestCase
 {
     public function testAnonymousAccess(): void
     {
