@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Helper\Paginator;
 
+use UnexpectedValueException;
+
 class PaginatorOptions
 {
     private int $page = 0;
@@ -51,7 +53,7 @@ class PaginatorOptions
         $dir = strtoupper($orderDir);
 
         if (false === \in_array($dir, $dirs, true)) {
-            throw new \UnexpectedValueException(sprintf('Order dir must be %s', implode(', ', $dirs)));
+            throw new UnexpectedValueException(sprintf('Order dir must be %s', implode(', ', $dirs)));
         }
 
         $this->orderDir = $orderDir;

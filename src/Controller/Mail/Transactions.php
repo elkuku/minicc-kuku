@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Mail;
 
+use Exception;
 use App\Controller\BaseController;
 use App\Repository\StoreRepository;
 use App\Repository\TransactionRepository;
@@ -61,7 +62,7 @@ class Transactions extends BaseController
 
             $mailer->send($email);
             $this->addFlash('success', 'Mail has been sent successfully.');
-        } catch (\Exception|TransportExceptionInterface $exception) {
+        } catch (Exception|TransportExceptionInterface $exception) {
             $this->addFlash('danger', $exception->getMessage());
         }
 

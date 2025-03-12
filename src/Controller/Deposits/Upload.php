@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Controller\Deposits;
 
+use UnexpectedValueException;
+use DateTime;
+use RuntimeException;
 use App\Controller\BaseController;
 use App\Entity\Deposit;
 use App\Helper\CsvParser\CsvObject;
@@ -29,7 +32,7 @@ class Upload extends BaseController
     {
         $entity = $paymentMethodRepository->find(2);
         if (!$entity) {
-            throw new \UnexpectedValueException('Invalid entity');
+            throw new UnexpectedValueException('Invalid entity');
         }
 
         $csvData = $this->getCsvDataFromRequest($request);
@@ -54,7 +57,7 @@ class Upload extends BaseController
 
             $deposit = (new Deposit())
                 ->setEntity($entity)
-                ->setDate(new \DateTime(str_replace('/', '-', (string)$line->fecha)))
+                ->setDate(new DateTime(str_replace('/', '-', (string)$line->fecha)))
                 ->setDocument($line->{'numero de documento'})
                 ->setAmount($line->credito);
 
@@ -78,17 +81,17 @@ class Upload extends BaseController
     {
         $csvFile = $request->files->get('csv_file');
         if (!$csvFile) {
-            throw new \RuntimeException('No CSV file received.');
+            throw new RuntimeException('No CSV file received.');
         }
 
         $path = $csvFile->getRealPath();
         if (!$path) {
-            throw new \RuntimeException('Invalid CSV file.');
+            throw new RuntimeException('Invalid CSV file.');
         }
 
         $contents = file($path);
         if (!$contents) {
-            throw new \RuntimeException('Cannot read CSV file.');
+            throw new RuntimeException('Cannot read CSV file.');
         }
 
         return (new CsvParser())->parseCSV($contents);

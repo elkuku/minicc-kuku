@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Twig;
+namespace App\Tests\Twig;
 
 use App\Entity\User;
-use App\Repository\UserRepository;
 use App\Service\TextFormatter;
 use App\Twig\Extension\AppExtension;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;

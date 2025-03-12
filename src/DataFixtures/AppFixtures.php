@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\DataFixtures;
 
+use DateTime;
 use App\Entity\Contract;
 use App\Entity\Deposit;
 use App\Entity\PaymentMethod;
@@ -74,7 +75,7 @@ class AppFixtures extends Fixture
         $transaction = (new Transaction())
             ->setStore($store)
             ->setUser($user1)
-            ->setDate(new \DateTime())
+            ->setDate(new DateTime())
             ->setType(TransactionType::payment)
             ->setMethod($paymentMethod)
             ->setAmount('123.45');
@@ -100,7 +101,7 @@ class AppFixtures extends Fixture
          * Deposit
          */
         $deposit = (new Deposit())
-            ->setDate(new \DateTime())
+            ->setDate(new DateTime())
             ->setDocument('123')
             ->setAmount('123');
         $manager->persist($deposit);

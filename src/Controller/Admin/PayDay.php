@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
+use UnexpectedValueException;
+use DateTime;
 use App\Controller\BaseController;
 use App\Entity\Transaction;
 use App\Repository\PaymentMethodRepository;
@@ -60,17 +62,17 @@ class PayDay extends BaseController
             $method = $paymentMethodRepository->find((int)$payments['method'][$i]);
 
             if (!$method) {
-                throw new \UnexpectedValueException('Invalid payment method.');
+                throw new UnexpectedValueException('Invalid payment method.');
             }
 
             $user = $store->getUser();
 
             if (!$user) {
-                throw new \UnexpectedValueException('Store has no user.');
+                throw new UnexpectedValueException('Store has no user.');
             }
 
             $transaction = (new Transaction())
-                ->setDate(new \DateTime($dateCobro))
+                ->setDate(new DateTime($dateCobro))
                 ->setStore($store)
                 ->setUser($user)
                 ->setType(TransactionType::payment)

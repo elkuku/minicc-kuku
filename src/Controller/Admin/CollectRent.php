@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
+use UnexpectedValueException;
+use DateTime;
 use App\Controller\BaseController;
 use App\Entity\Transaction;
 use App\Repository\PaymentMethodRepository;
@@ -42,7 +44,7 @@ class CollectRent extends BaseController
         $method = $paymentMethodRepository->find(1);
 
         if (!$method) {
-            throw new \UnexpectedValueException('Invalid payment method.');
+            throw new UnexpectedValueException('Invalid payment method.');
         }
 
         foreach ($values as $storeId => $value) {
@@ -53,18 +55,18 @@ class CollectRent extends BaseController
             $user = $userRepository->find((int)$users[$storeId]);
 
             if (!$user) {
-                throw new \UnexpectedValueException('Store has no user.');
+                throw new UnexpectedValueException('Store has no user.');
             }
 
             $store = $storeRepository->find((int)$storeId);
 
             if (!$store) {
-                throw new \UnexpectedValueException('Store does not exist.');
+                throw new UnexpectedValueException('Store does not exist.');
             }
 
             $transaction = (new Transaction())
                 ->setDate(
-                    new \DateTime((string)$request->request->get('date_cobro'))
+                    new DateTime((string)$request->request->get('date_cobro'))
                 )
                 ->setStore($store)
                 ->setUser($user)

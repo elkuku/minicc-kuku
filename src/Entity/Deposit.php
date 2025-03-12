@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use JsonSerializable;
+use DateTime;
+use UnexpectedValueException;
 use App\Repository\DepositRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping\Column;
@@ -14,7 +17,7 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToOne;
 
 #[Entity(repositoryClass: DepositRepository::class)]
-class Deposit implements \JsonSerializable
+class Deposit implements JsonSerializable
 {
     #[Column, Id, GeneratedValue]
     private ?int $id = null;
@@ -23,7 +26,7 @@ class Deposit implements \JsonSerializable
     private PaymentMethod $entity;
 
     #[Column(type: Types::DATE_MUTABLE, nullable: false)]
-    private \DateTime $date;
+    private DateTime $date;
 
     #[Column(length: 150, nullable: false)]
     private string $document;
@@ -45,7 +48,7 @@ class Deposit implements \JsonSerializable
     public function setEntity(PaymentMethod $entity): static
     {
         if (1 === $entity->getId()) {
-            throw new \UnexpectedValueException('The entity with ID "1" is supposed to be the BAR payment method!');
+            throw new UnexpectedValueException('The entity with ID "1" is supposed to be the BAR payment method!');
         }
 
         $this->entity = $entity;
@@ -58,14 +61,14 @@ class Deposit implements \JsonSerializable
         return $this->entity;
     }
 
-    public function setDate(\DateTime $date): static
+    public function setDate(DateTime $date): static
     {
         $this->date = $date;
 
         return $this;
     }
 
-    public function getDate(): \DateTime
+    public function getDate(): DateTime
     {
         return $this->date;
     }

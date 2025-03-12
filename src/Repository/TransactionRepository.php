@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
+use Exception;
+use DateTime;
 use App\Entity\Store;
 use App\Entity\Transaction;
 use App\Entity\User;
@@ -287,14 +289,14 @@ class TransactionRepository extends ServiceEntityRepository
                 ->select('MAX(t.recipeNo)')
                 ->getQuery()
                 ->getSingleScalarResult();
-        } catch (\Exception) {
+        } catch (Exception) {
             $number = 0;
         }
 
         return $number;
     }
 
-    public function getLastChargementDate(): \DateTime
+    public function getLastChargementDate(): DateTime
     {
         $date = $this->createQueryBuilder('t')
             ->select('MAX(t.date)')
@@ -303,12 +305,12 @@ class TransactionRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
 
-        return new \DateTime((string)$date);
+        return new DateTime((string)$date);
     }
 
     public function checkChargementRequired(): bool
     {
-        $currentMonth = (int)(new \DateTime())->format('m');
+        $currentMonth = (int)(new DateTime())->format('m');
         $lastChargedMonth = (int)$this->getLastChargementDate()->format('m');
 
         if (12 === $currentMonth && 1 === $lastChargedMonth) {

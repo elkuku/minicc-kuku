@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests;
 
+use UnexpectedValueException;
 use App\Repository\UserRepository;
 use PHPUnit\Framework\ExpectationFailedException;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -39,7 +40,7 @@ final class StoreAccessTest extends WebTestCase
                 'email' => 'user2@example.com',
             ]);
         if (! $testUser) {
-            throw new \UnexpectedValueException('User not found.');
+            throw new UnexpectedValueException('User not found.');
         }
 
         $client->loginUser($testUser);
@@ -66,7 +67,7 @@ final class StoreAccessTest extends WebTestCase
                 'email' => 'user1@example.com',
             ]);
         if (! $testUser) {
-            throw new \UnexpectedValueException('User not found.');
+            throw new UnexpectedValueException('User not found.');
         }
 
         $client->loginUser($testUser);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use App\Entity\Store;
 use App\Repository\StoreRepository;
 use App\Repository\TransactionRepository;
 
@@ -17,7 +18,7 @@ class PayrollHelper
     }
 
     /**
-     * @return array{factDate: string, prevDate: string, stores: \App\Entity\Store[], storeData: array<string|int, array{saldoIni: mixed, transactions: float[]}>}
+     * @return array{factDate: string, prevDate: string, stores: Store[], storeData: array<string|int, array{saldoIni: mixed, transactions: float[]}>}
      */
     public function getData(
         int $year,

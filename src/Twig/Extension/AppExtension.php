@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Twig\Extension;
 
+use Override;
 use App\Entity\User;
 use App\Service\TextFormatter;
 use App\Twig\Runtime\AppExtensionRuntime;
@@ -14,7 +15,6 @@ use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 use function count;
-use function strlen;
 
 class AppExtension extends AbstractExtension
 {
@@ -25,7 +25,7 @@ class AppExtension extends AbstractExtension
     /**
      * @return TwigFilter[]
      */
-    #[\Override]
+    #[Override]
     public function getFilters(): array
     {
         return [
@@ -41,7 +41,7 @@ class AppExtension extends AbstractExtension
     /**
      * @return TwigFunction[]
      */
-    #[\Override]
+    #[Override]
     public function getFunctions(): array
     {
         return [

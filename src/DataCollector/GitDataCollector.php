@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\DataCollector;
 
+use Throwable;
+use Override;
 use App\Helper\GitLoader;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,7 +22,7 @@ class GitDataCollector extends DataCollector
     public function collect(
         Request     $request,
         Response    $response,
-        ?\Throwable $exception = null
+        ?Throwable $exception = null
     ): void
     {
         $this->data = [
@@ -35,7 +37,7 @@ class GitDataCollector extends DataCollector
         return 'app.git_data_collector';
     }
 
-    #[\Override]
+    #[Override]
     public function reset(): void
     {
         $this->data = [];

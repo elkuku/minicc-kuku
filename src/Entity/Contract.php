@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use DateTime;
 use App\Repository\ContractRepository;
 use App\Type\Gender;
 use Doctrine\DBAL\Types\Types;
@@ -40,7 +41,7 @@ class Contract
     private ?float $valGarantia = null;
 
     #[Column(type: Types::DATE_MUTABLE)]
-    private \DateTime $date;
+    private DateTime $date;
 
     #[Column]
     private ?int $cntLanfort = 0;
@@ -77,7 +78,7 @@ class Contract
 
     public function __construct()
     {
-        $this->date = new \DateTime();
+        $this->date = new DateTime();
     }
 
     public function getId(): ?int
@@ -145,14 +146,14 @@ class Contract
         return $this->valGarantia;
     }
 
-    public function setDate(\DateTime $date): static
+    public function setDate(DateTime $date): static
     {
         $this->date = $date;
 
         return $this;
     }
 
-    public function getDate(): \DateTime
+    public function getDate(): DateTime
     {
         return $this->date;
     }

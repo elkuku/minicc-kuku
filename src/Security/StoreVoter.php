@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Security;
 
+use LogicException;
 use App\Entity\Store;
 use App\Entity\User;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -63,7 +64,7 @@ class StoreVoter extends Voter
         return match ($attribute) {
             self::VIEW, self::EXPORT => $this->canView($store, $user),
             self::EDIT => $this->canEdit(),
-            default => throw new \LogicException('This code should not be reached!'),
+            default => throw new LogicException('This code should not be reached!'),
         };
     }
 

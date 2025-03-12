@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use JsonSerializable;
+use DateTime;
 use App\Repository\TransactionRepository;
 use App\Type\TransactionType;
 use Doctrine\DBAL\Types\Types;
@@ -16,7 +18,7 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToOne;
 
 #[Entity(repositoryClass: TransactionRepository::class)]
-class Transaction implements \JsonSerializable
+class Transaction implements JsonSerializable
 {
     #[Column, Id, GeneratedValue]
     protected ?int $id = null;
@@ -41,7 +43,7 @@ class Transaction implements \JsonSerializable
     private PaymentMethod $method;
 
     #[Column(type: Types::DATE_MUTABLE, nullable: false)]
-    private \DateTime $date;
+    private DateTime $date;
 
     #[Column(type: Types::DECIMAL, precision: 13, scale: 2, nullable: false)]
     private string $amount = '0';
@@ -72,12 +74,12 @@ class Transaction implements \JsonSerializable
         return $this->id;
     }
 
-    public function getDate(): \DateTime
+    public function getDate(): DateTime
     {
         return $this->date;
     }
 
-    public function setDate(\DateTime $date): self
+    public function setDate(DateTime $date): self
     {
         $this->date = $date;
 

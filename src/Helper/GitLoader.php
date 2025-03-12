@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Helper;
 
+use RuntimeException;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 class GitLoader
@@ -86,10 +87,10 @@ class GitLoader
         if ($status) {
             // Command exited with a status != 0
             if ($lastLine) {
-                throw new \RuntimeException($lastLine);
+                throw new RuntimeException($lastLine);
             }
 
-            throw new \RuntimeException('An unknown error occurred');
+            throw new RuntimeException('An unknown error occurred');
         }
 
         ob_end_clean();

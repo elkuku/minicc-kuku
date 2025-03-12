@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Helper\CsvParser;
 
+use stdClass;
+
 class CsvObject
 {
     /**
@@ -12,7 +14,7 @@ class CsvObject
     public array $headVars = [];
 
     /**
-     * @var array<int, \stdClass>
+     * @var array<int, stdClass>
      */
     public array $lines = [];
 }

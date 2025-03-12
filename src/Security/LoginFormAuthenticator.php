@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Security;
 
+use UnexpectedValueException;
+use Override;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,7 +32,7 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
     {
     }
 
-    #[\Override]
+    #[Override]
     public function supports(Request $request): bool
     {
         if ('/login' !== $request->getPathInfo()) {
@@ -48,7 +50,7 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
     public function authenticate(Request $request): Passport
     {
         if (false === in_array($this->appEnv, ['dev', 'test'])) {
-            throw new \UnexpectedValueException('GTFO!');
+            throw new UnexpectedValueException('GTFO!');
         }
 
         $credentials = $this->getCredentials($request);

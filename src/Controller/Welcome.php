@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use stdClass;
 use App\Repository\StoreRepository;
 use App\Repository\TransactionRepository;
 use App\Service\ChartBuilderService;
@@ -39,7 +40,7 @@ class Welcome extends BaseController
                     : 0;
                 $chartData['balances'][] = -$balance;
 
-                $s = new \stdClass();
+                $s = new stdClass();
                 $s->amount = $balance;
                 $s->store = $store;
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use Stringable;
 use App\Repository\UserRepository;
 use App\Type\Gender;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -21,7 +22,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 #[UniqueEntity(fields: 'email', message: 'This email address is already in use')]
 #[Entity(repositoryClass: UserRepository::class)]
-class User implements UserInterface, \Stringable
+class User implements UserInterface, Stringable
 {
     final public const array ROLES
         = [

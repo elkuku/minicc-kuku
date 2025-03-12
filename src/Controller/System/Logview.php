@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\System;
 
+use LogicException;
 use App\Controller\BaseController;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -47,7 +48,7 @@ class Logview extends BaseController
                         if (is_null($entry)) {
                             $entry = '';
                         } else {
-                            throw new \LogicException('Entry finished string not found');
+                            throw new LogicException('Entry finished string not found');
                         }
 
                         continue;
@@ -55,7 +56,7 @@ class Logview extends BaseController
 
                     if (str_starts_with($line, '<<<===========')) {
                         if (is_null($entry)) {
-                            throw new \LogicException('Entry not started.');
+                            throw new LogicException('Entry not started.');
                         }
 
                         $entries[$dateTime] = $entry;

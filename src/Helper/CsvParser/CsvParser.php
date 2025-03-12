@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace App\Helper\CsvParser;
 
+use UnexpectedValueException;
+use stdClass;
+use RuntimeException;
+
 class CsvParser
 {
     /**
@@ -12,7 +16,7 @@ class CsvParser
     public function parseCSV(array $contents): CsvObject
     {
         if (!$contents) {
-            throw new \UnexpectedValueException('CSV file is empty');
+            throw new UnexpectedValueException('CSV file is empty');
         }
 
         $csvObject = new CsvObject();
@@ -29,11 +33,11 @@ class CsvParser
         foreach ($contents as $line) {
             $fields = explode(',', trim(trim((string)$line), '"'));
 
-            $o = new \stdClass();
+            $o = new stdClass();
 
             foreach ($fields as $i => $field) {
                 if (!isset($headVars[$i])) {
-                    throw new \RuntimeException('Malformed CSV file.');
+                    throw new RuntimeException('Malformed CSV file.');
                 }
 
                 $o->{strtolower($headVars[$i])} = trim($field);

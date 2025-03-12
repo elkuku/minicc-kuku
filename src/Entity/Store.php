@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use Stringable;
 use App\Repository\StoreRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping\Column;
@@ -14,7 +15,7 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 
 #[Entity(repositoryClass: StoreRepository::class)]
-class Store implements \Stringable
+class Store implements Stringable
 {
     #[Column, Id, GeneratedValue]
     private ?int $id = null;
