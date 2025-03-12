@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/**
- * Created by PhpStorm.
- * User: elkuku
- * Date: 13.01.19
- * Time: 13:18.
- */
 namespace App\Service;
 
 use App\Entity\Store;

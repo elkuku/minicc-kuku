@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/**
- * Created by PhpStorm.
- * User: test
- * Date: 08/07/18
- * Time: 18:00.
- */
 namespace App\Helper;
 
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
