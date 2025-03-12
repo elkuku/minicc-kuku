@@ -18,7 +18,7 @@ enum TransactionType: string
         return 'TRANSACTION_TYPE_' . strtoupper($this->name);
     }
 
-    public function translatedName(): string
+    public function translatedName(): TranslatableMessage
     {
         return new TranslatableMessage($this->translationKey());
     }
