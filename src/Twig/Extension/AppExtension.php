@@ -23,6 +23,7 @@ class AppExtension extends AbstractExtension
     /**
      * @return TwigFilter[]
      */
+    #[\Override]
     public function getFilters(): array
     {
         return [
@@ -38,6 +39,7 @@ class AppExtension extends AbstractExtension
     /**
      * @return TwigFunction[]
      */
+    #[\Override]
     public function getFunctions(): array
     {
         return [

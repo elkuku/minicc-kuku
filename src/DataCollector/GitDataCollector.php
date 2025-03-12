@@ -33,6 +33,7 @@ class GitDataCollector extends DataCollector
         return 'app.git_data_collector';
     }
 
+    #[\Override]
     public function reset(): void
     {
         $this->data = [];

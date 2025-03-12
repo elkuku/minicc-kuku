@@ -28,6 +28,7 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
     {
     }
 
+    #[\Override]
     public function supports(Request $request): bool
     {
         if ('/login' !== $request->getPathInfo()) {
