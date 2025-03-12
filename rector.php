@@ -14,7 +14,16 @@ use Rector\Symfony\Set\SymfonySetList;
 return RectorConfig::configure()
     ->withPaths([__DIR__ . '/src', __DIR__ . '/tests'])
     ->withSkip([__DIR__ . '/src/Service/PhpXlsxGenerator.php',])
-    ->withPhpSets();
+    ->withPhpSets()
+    ->withPreparedSets(
+        deadCode: true,
+#        codeQuality: true,
+#        codingStyle: true,
+        typeDeclarations: true,
+#        privatization: true,
+#        naming: true
+)
+    ;
 
 
 

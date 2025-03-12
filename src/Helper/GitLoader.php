@@ -67,7 +67,7 @@ class GitLoader
         if ($gitLogs) {
             preg_match(
                 "/([\w]+) ([\w]+) ([\w\s]+) (<[\w.@]+>) ([\d]+) ([\d-]+)\tcommit: ([\w\s]+)/",
-                (string)end($gitLogs),
+                end($gitLogs),
                 $matches
             );
         }
