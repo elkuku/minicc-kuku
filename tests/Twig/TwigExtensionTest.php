@@ -12,7 +12,7 @@ class TwigExtensionTest extends WebTestCase
 {
     private AppExtension $twigExtension;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         static::createClient();
         $formatter = new TextFormatter();

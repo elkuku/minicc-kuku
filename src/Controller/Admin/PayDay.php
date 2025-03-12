@@ -81,6 +81,7 @@ class PayDay extends BaseController
 
             $entityManager->persist($transaction);
         }
+
         $entityManager->flush();
         $this->addFlash('success', 'Sa ha pagado...');
 

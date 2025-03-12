@@ -44,6 +44,7 @@ class Transactions extends BaseController
             $monthPayments[$i] = 0;
             $rentalValues[$i] = $rentalValue;
         }
+
         foreach ($transactions as $transaction) {
             if (TransactionType::payment === $transaction->getType()) {
                 $monthPayments[$transaction->getDate()->format('n')]

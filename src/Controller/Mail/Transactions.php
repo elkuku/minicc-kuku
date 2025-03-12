@@ -40,7 +40,8 @@ class Transactions extends BaseController
                 );
             }
         }
-        $fileName = "movimientos-$year.pdf";
+
+        $fileName = sprintf('movimientos-%d.pdf', $year);
         try {
             $attachment = new DataPart(
                 $pdf->getOutputFromHtml($htmlPages),
@@ -50,7 +51,7 @@ class Transactions extends BaseController
 
             $email = $emailHelper->createEmail(
                 to: $emailHelper->getFrom(),
-                subject: "Movimientos de los locales ano $year"
+                subject: 'Movimientos de los locales ano ' . $year
             )
                 ->text('Backup - Date: ' . date('Y-m-d'))
                 ->html('<h3>Backup</h3>Date: ' . date('Y-m-d'))

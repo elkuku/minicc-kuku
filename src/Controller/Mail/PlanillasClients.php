@@ -43,7 +43,7 @@ class PlanillasClients extends BaseController
 
         $year = (int)date('Y');
         $month = (int)date('m');
-        $fileName = "planilla-$year-$month.pdf";
+        $fileName = sprintf('planilla-%d-%s.pdf', $year, $month);
         $stores = $storeRepository->getActive();
         $failures = [];
         $successes = [];
@@ -73,13 +73,13 @@ class PlanillasClients extends BaseController
 
             $email = $emailHelper->createTemplatedEmail(
                 to: new Address($user->getEmail(), $user->getName()),
-                subject: "Su planilla del local {$store->getId()} ($month - $year)"
+                subject: sprintf('Su planilla del local %s (%s - %d)', $store->getId(), $month, $year)
             )
                 ->htmlTemplate('email/client-planillas.twig')
                 ->context([
                     'user' => $store->getUser(),
                     'store' => $store,
-                    'factDate' => "$year-$month-1",
+                    'factDate' => sprintf('%d-%s-1', $year, $month),
                     'fileName' => $fileName,
                     'payroll' => $payrollHelper->getData($year, $month, $store->getId()),
                 ])

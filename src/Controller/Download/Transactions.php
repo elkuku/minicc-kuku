@@ -31,6 +31,7 @@ class Transactions
                 );
             }
         }
+
         $filename = sprintf('movimientos-%d-%s.pdf', $year, date('Y-m-d'));
 
         return new PdfResponse(

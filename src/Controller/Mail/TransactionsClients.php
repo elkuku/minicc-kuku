@@ -52,7 +52,7 @@ class TransactionsClients extends BaseController
                 continue;
             }
 
-            $fileName = "movimientos-{$store->getId()}-$year.pdf";
+            $fileName = sprintf('movimientos-%s-%d.pdf', $store->getId(), $year);
 
             $document = $pdf->getOutputFromHtml(
                 $PDFHelper->renderTransactionHtml(
@@ -65,7 +65,7 @@ class TransactionsClients extends BaseController
             $email = $emailHelper
                 ->createTemplatedEmail(
                     to: new Address((string)$store->getUser()?->getEmail(), (string)$store->getUser()?->getName()),
-                    subject: "Movimientos del local {$store->getId()} ano $year"
+                    subject: sprintf('Movimientos del local %s ano %d', $store->getId(), $year)
                 )
                 ->htmlTemplate('email/client-transactions.twig')
                 ->context([
@@ -83,9 +83,11 @@ class TransactionsClients extends BaseController
                 $failures[] = $exception->getMessage();
             }
         }
+
         if ($failures) {
             $this->addFlash('warning', implode('<br>', $failures));
         }
+
         if ($successes) {
             $this->addFlash(
                 'success',

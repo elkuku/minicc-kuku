@@ -34,7 +34,7 @@ class PaymentsAccountant extends BaseController
         if ($ids) {
             $email = $emailHelper->createTemplatedEmail(
                 to: Address::create($emailAccountant),
-                subject: "Pagos del MiniCC KuKu - $month / $year"
+                subject: sprintf('Pagos del MiniCC KuKu - %d / %d', $month, $year)
             )
                 ->htmlTemplate('email/cobros-contador.twig')
                 ->context([

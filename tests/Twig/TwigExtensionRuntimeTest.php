@@ -12,7 +12,7 @@ class TwigExtensionRuntimeTest extends WebTestCase
 {
     private AppExtensionRuntime $twigExtensionRuntime;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         static::createClient();
         $this->twigExtensionRuntime = new AppExtensionRuntime(

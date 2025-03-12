@@ -25,7 +25,7 @@ class Planillas extends BaseController
     {
         $year = (int)date('Y');
         $month = (int)date('m');
-        $fileName = "payrolls-$year-$month.pdf";
+        $fileName = sprintf('payrolls-%d-%s.pdf', $year, $month);
         $html = 'Attachment: ' . $fileName;
         $document = $pdf->getOutputFromHtml(
             $PDFHelper->renderPayrollsHtml(
@@ -39,16 +39,16 @@ class Planillas extends BaseController
         );
         $email = $emailHelper->createEmail(
             to: $emailHelper->getFrom(),
-            subject: "Planillas $year-$month"
+            subject: sprintf('Planillas %d-%s', $year, $month)
         )
-            ->subject("Planillas $year-$month")
+            ->subject(sprintf('Planillas %d-%s', $year, $month))
             ->html($html)
             ->attach($document, $fileName);
         try {
             $mailer->send($email);
             $this->addFlash('success', 'Mail has been sent.');
-        } catch (TransportExceptionInterface $e) {
-            $this->addFlash('danger', 'ERROR sending mail: ' . $e->getMessage());
+        } catch (TransportExceptionInterface $transportException) {
+            $this->addFlash('danger', 'ERROR sending mail: ' . $transportException->getMessage());
         }
 
         return $this->render('admin/tasks.html.twig');

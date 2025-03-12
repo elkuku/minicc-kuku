@@ -18,10 +18,10 @@ class StoreAccessTest extends WebTestCase
 
         try {
             self::assertSelectorTextContains('h2', 'Login');
-        } catch (ExpectationFailedException $exception) {
+        } catch (ExpectationFailedException $expectationFailedException) {
             file_put_contents('gugu.html', $crawler->html());
 
-            throw $exception;
+            throw $expectationFailedException;
         }
     }
 
@@ -39,15 +39,16 @@ class StoreAccessTest extends WebTestCase
         if (! $testUser) {
             throw new \UnexpectedValueException('User not found.');
         }
+
         $client->loginUser($testUser);
 
         $crawler = $client->request('GET', '/stores/1');
         try {
             self::assertSelectorTextContains('small', 'Forbidden');
-        } catch (ExpectationFailedException $exception) {
+        } catch (ExpectationFailedException $expectationFailedException) {
             file_put_contents('guguxx.html', $crawler->html());
 
-            throw $exception;
+            throw $expectationFailedException;
         }
     }
 
@@ -65,15 +66,16 @@ class StoreAccessTest extends WebTestCase
         if (! $testUser) {
             throw new \UnexpectedValueException('User not found.');
         }
+
         $client->loginUser($testUser);
 
         $crawler = $client->request('GET', '/stores/1');
         try {
             self::assertSelectorTextContains('h2', 'Transacciones');
-        } catch (ExpectationFailedException $exception) {
+        } catch (ExpectationFailedException $expectationFailedException) {
             file_put_contents('guguyy.html', $crawler->html());
 
-            throw $exception;
+            throw $expectationFailedException;
         }
     }
 }

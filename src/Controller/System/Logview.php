@@ -72,13 +72,14 @@ class Logview extends BaseController
 
                     $entry .= $line . "\n";
                 }
+
                 //  dd($contents,$entries);
             } else {
                 $error = 'No log file found!';
             }
 
-        } catch (IOException $exception) {
-            $this->addFlash('danger', $exception->getMessage());
+        } catch (IOException $ioException) {
+            $this->addFlash('danger', $ioException->getMessage());
         }
 
 

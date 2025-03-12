@@ -42,7 +42,7 @@ class ControllerNamingTest extends KernelTestCase
             ) {
                 $sub = $it->getSubPath() ? $it->getSubPath() . '\\' : '';
 
-                $className = basename($it->key(), '.php');
+                $className = basename((string) $it->key(), '.php');
 
                 $routerClass = 'App\Controller\\' . $sub . $className;
                 $routes = $routeLoader->load($routerClass)->all();
@@ -52,7 +52,7 @@ class ControllerNamingTest extends KernelTestCase
                     $failures++;
                 } else {
                     foreach ($routes as $name => $route) {
-                        $expected = strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $it->getSubPath() . $className));
+                        $expected = strtolower((string) preg_replace('/(?<!^)[A-Z]/', '_$0', $it->getSubPath() . $className));
                         if ($name !== $expected) {
                             echo sprintf("Wrong name for '%s' should be '%s'.\n", $routerClass, $expected);
                             $failures++;

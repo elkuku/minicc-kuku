@@ -24,7 +24,7 @@ class RegenerateAppSecretCommand extends Command
 
         $secret = bin2hex(random_bytes(16));
 
-        $msg = "Your secret key $secret \nplease replace this key with your APP_SECRET in .env file";
+        $msg = "Your secret key {$secret} \nplease replace this key with your APP_SECRET in .env file";
 
         $io->success($msg);
 

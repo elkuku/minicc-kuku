@@ -61,6 +61,7 @@ class Upload extends BaseController
                 ++$insertCount;
             }
         }
+
         $entityManager->flush();
         $this->addFlash(
             $insertCount ? 'success' : 'warning',

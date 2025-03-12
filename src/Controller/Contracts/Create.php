@@ -36,11 +36,13 @@ class Create extends BaseController
         if ($store) {
             $contract->setValuesFromStore($store);
         }
+
         if ($user) {
             $contract
                 ->setInqNombreapellido((string)$user->getName())
                 ->setInqCi($user->getInqCi());
         }
+
         $form = $this->createForm(ContractType::class, $contract);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
