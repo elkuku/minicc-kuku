@@ -25,7 +25,7 @@ class ContractTemplateHelper
         $replacements = $this->getReplacements($contract);
         $start = '[';
         $end = ']';
-        $search = array_map(fn($item): string => $start . $item . $end, array_keys($replacements));
+        $search = array_map(static fn(string $item): string => $start . $item . $end, array_keys($replacements));
         return str_replace(
             $search,
             $replacements,

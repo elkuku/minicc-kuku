@@ -6,7 +6,7 @@ tests:
 	symfony console doctrine:database:create
 #	symfony console doctrine:s:c
 	symfony console doctrine:migrations:migrate -n
-	symfony console doctrine:fixtures:load -n -vv
+	symfony console doctrine:fixtures:load -n
 	symfony php bin/phpunit $@
 	vendor/bin/phpstan --memory-limit=2G
 	vendor/bin/rector process src --dry-run
