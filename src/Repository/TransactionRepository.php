@@ -28,7 +28,6 @@ use Doctrine\Persistence\ManagerRegistry;
  *
  * @extends ServiceEntityRepository<TransactionRepository>
  */
-#[Entity]
 class TransactionRepository extends ServiceEntityRepository
 {
     use PaginatorRepoTrait;
