@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Download;
 
+use App\Controller\BaseController;
 use App\Repository\StoreRepository;
 use App\Repository\TransactionRepository;
 use App\Service\PdfHelper;
@@ -13,7 +14,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[IsGranted('ROLE_ADMIN')]
 #[Route(path: '/download/transactions', name: 'download_transactions', methods: ['GET'])]
-class Transactions
+class Transactions extends BaseController
 {
     public function __invoke(
         TransactionRepository $transactionRepository,
