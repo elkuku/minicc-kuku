@@ -33,6 +33,6 @@ class ClientsToExcel extends BaseController
         $xlsx = PhpXlsxGenerator::fromArray($rows);
         $xlsx->downloadAs('clientes-' . gmdate('Y-m-d') . '.xlsx');
 
-        return $this->redirectToRoute('admin-tasks');
+        return $this->redirectToRoute('admin_tasks');
     }
 }
