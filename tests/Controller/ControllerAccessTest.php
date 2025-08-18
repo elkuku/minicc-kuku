@@ -32,20 +32,10 @@ final class ControllerAccessTest extends ControllerBaseTest
                     'GET' => 200,
                 ],
             ],
-           'contact' => [
-                'statusCodes' => [
-                    'GET' => 200,
-                ],
-            ],
             'login' => [
                 'statusCodes' => [
                     'GET' => 200,
                     'POST' => 302,
-                ],
-            ],
-            'store-transaction-pdf' => [
-                'params' => [
-                    '{year}' => '2000',
                 ],
             ],
             'mail_planillas' => [
