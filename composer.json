@@ -61,6 +61,7 @@
     },
     "require-dev": {
         "elkuku/symfony-utils": "dev-master",
+        "jawira/doctrine-diagram-bundle": "dev-main",
         "phpstan/extension-installer": "^1.2",
         "phpstan/phpstan": "^2",
         "phpunit/phpunit": "^12",

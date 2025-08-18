@@ -116,6 +116,9 @@
     "h4cc/wkhtmltopdf-amd64": {
         "version": "0.12.4"
     },
+    "jawira/doctrine-diagram-bundle": {
+        "version": "dev-main"
+    },
     "knplabs/knp-snappy-bundle": {
         "version": "1.10",
         "recipe": {
