@@ -35,17 +35,16 @@ jobs:
         tools: composer:v2
 
     - uses: actions/checkout@v4
-    - name: Copy .env.test.local
-      run: php -r "file_exists('.env.test.local') || copy('.env.test', '.env.test.local');"
 
     - name: Install Dependencies
       run: composer install --no-ansi --no-interaction --prefer-dist
     - name: Execute tests (Unit and Feature tests) via PHPUnit
       env:
-        DATABASE_URL: mysql://root:@127.0.0.1:3306/symfony_test
+        DATABASE_URL: mysql://root:@127.0.0.1:3306/symfony
       run: |
-        bin/console doctrine:migrations:migrate -n
-        bin/console doctrine:fixtures:load -n
+        bin/console doctrine:database:create --env=test
+        bin/console doctrine:migrations:migrate -n --env=test
+        bin/console doctrine:fixtures:load -n --env=test
         vendor/bin/phpunit
 
 
