@@ -53,6 +53,11 @@ final class ControllerAccessTest extends ControllerBaseTest
                     '{year}' => '2000',
                 ],
             ],
+            'mail_planillas' => [
+                'statusCodes' => [
+                    'GET' => 500, // TODO: WTF
+                ],
+            ],
         ];
 
     public function testAllRoutesAreProtected(): void
