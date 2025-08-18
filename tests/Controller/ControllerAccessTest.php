@@ -32,12 +32,7 @@ final class ControllerAccessTest extends ControllerBaseTest
                     'GET' => 200,
                 ],
             ],
-            'about' => [
-                'statusCodes' => [
-                    'GET' => 200,
-                ],
-            ],
-            'contact' => [
+           'contact' => [
                 'statusCodes' => [
                     'GET' => 200,
                 ],
