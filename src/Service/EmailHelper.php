@@ -36,6 +36,14 @@ readonly class EmailHelper
             ->subject($subject);
     }
 
+    public function createAdminEmail(string $subject): Email
+    {
+        return (new Email())
+            ->from($this->from)
+            ->to($this->from)
+            ->subject($subject);
+    }
+
     public function getFrom(): Address
     {
         return $this->from;
