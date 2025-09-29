@@ -12,7 +12,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Mailer\MailerInterface;
 
-#[AsCommand(name: 'app:backup:db', description: 'Hello PhpStorm')]
+#[AsCommand(name: 'app:backup:db', description: 'Backup the database')]
 class BackupDbCommand
 {
     public function __construct(
