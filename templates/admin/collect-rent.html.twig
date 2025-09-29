@@ -8,7 +8,7 @@
         <div class="alert alert-danger">No stores defined</div>
     {% else %}
         <form method="post">
-            <table class="table table-bordered table-sm table-hover">
+            <table class="table table-bordered table-sm table-hover" {{ stimulus_controller('collect-rent') }}>
                 <thead>
                 <tr>
                     <th class="text-center">Local</th>
@@ -27,11 +27,15 @@
                         <td>{{ store.user ? store.user.name|short_name : 'desocupado' }}</td>
                         <td>
                             {% if store.user %}
-                                <input type="hidden" name="users[{{ store.id }}]"
-                                       value="{{ store.user ? store.user.id : 0 }}"/>
-                                <input class="form-control" type="text" name="values[{{ store.id }}]"
-                                       value="{{ store.valAlq|conIva|round(2) }}" size="7"
-                                       maxlength="7">
+                                <input
+                                    type="hidden" name="users[{{ store.id }}]"
+                                    value="{{ store.user ? store.user.id : 0 }}"/>
+                                <input
+                                    {{ stimulus_target('collect-rent', 'value') }}
+                                    {{ stimulus_action('collect-rent', 'recalc') }}
+                                    class="form-control" type="text" name="values[{{ store.id }}]"
+                                    value="{{ store.valAlq|conIva|round(2) }}" size="7"
+                                    maxlength="7">
                             {% else %}
                                 :(
                             {% endif %}
@@ -51,7 +55,7 @@
                     </td>
                     <td colspan="2" class="text-center">
                         <button type="submit" class="btn btn-outline-success">
-                            <h3>Total: {{ total|format_currency('USD') }}</h3>
+                            <h3>Total: <span {{ stimulus_target('collect-rent', 'total') }}></span></h3>
                             A Cobrar...!
                         </button>
                     </td>
