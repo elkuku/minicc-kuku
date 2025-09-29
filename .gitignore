@@ -1,3 +1,6 @@
+.idea/workspace.xml
+.phpactor.json
+
 ###> symfony/framework-bundle ###
 /.env.local
 /.env.local.php
@@ -12,19 +15,11 @@
 .phpunit.result.cache
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
-/fakewebpack.config.js
-/tests_local
-
-.idea/workspace.xml
-
-/drivers/*
 
 ###> phpunit/phpunit ###
 /phpunit.xml
 /.phpunit.cache/
 ###< phpunit/phpunit ###
-
-pws.txt
 
 ###> symfony/asset-mapper ###
 /public/assets/
