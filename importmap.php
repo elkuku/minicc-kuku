@@ -217,7 +217,7 @@ return [
         'version' => '6.1.0',
     ],
     '@kurkle/color' => [
-        'version' => '0.3.4',
+        'version' => '0.4.0',
     ],
     '@tiptap/extension-link' => [
         'version' => '3.11.0',
