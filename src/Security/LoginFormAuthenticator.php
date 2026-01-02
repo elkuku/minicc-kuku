@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Security;
 
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use UnexpectedValueException;
 use Override;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -54,6 +55,12 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
         }
 
         $credentials = $this->getCredentials($request);
+
+        $identifier = $credentials['identifier'];
+
+        if ('' === $identifier) {
+            throw new AuthenticationException('User identifier cannot be empty.');
+        }
 
         return new SelfValidatingPassport(
             new UserBadge($credentials['identifier']),

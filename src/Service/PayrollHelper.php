@@ -48,13 +48,13 @@ class PayrollHelper
                 continue;
             }
 
-            $storeData[$store->getId()]['saldoIni']
+            $storeData[(int)$store->getId()]['saldoIni']
                 = $this->transactionRepository->getSaldoALaFecha(
                 $store,
                 $prevYear . '-' . $prevMonth . '-01'
             );
 
-            $storeData[$store->getId()]['transactions']
+            $storeData[(int)$store->getId()]['transactions']
                 = $this->transactionRepository->findMonthPayments(
                 $store,
                 $prevMonth,

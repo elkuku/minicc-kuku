@@ -47,9 +47,11 @@ final class StoreAccessTest extends WebTestCase
 
         $crawler = $client->request('GET', '/stores/1');
         try {
-            self::assertSelectorTextContains('small', 'Forbidden');
+            //  self::assertSelectorTextContains('small', 'Forbidden');
+            $this->assertStringContainsString('The user doesn\'t have ROLE_ADMIN', (string)$client->getResponse()->getContent());
         } catch (ExpectationFailedException $expectationFailedException) {
-            file_put_contents('guguxx.html', $crawler->html());
+            file_put_contents('guguxx1a.html', $crawler->html());
+            file_put_contents('guguxx1a.html', $client->getResponse()->getContent());
 
             throw $expectationFailedException;
         }

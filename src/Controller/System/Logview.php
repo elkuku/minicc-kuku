@@ -59,7 +59,7 @@ class Logview extends BaseController
                             throw new LogicException('Entry not started.');
                         }
 
-                        $entries[$dateTime] = $entry;
+                        $entries[(string)$dateTime] = $entry;
                         $entry = null;
 
                         continue;

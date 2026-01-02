@@ -5,12 +5,7 @@ declare(strict_types=1);
 namespace App\Twig\Extension;
 
 use Override;
-use App\Entity\User;
-use App\Service\TextFormatter;
 use App\Twig\Runtime\AppExtensionRuntime;
-use DateTime;
-use Exception;
-use IntlDateFormatter;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
@@ -18,10 +13,6 @@ use function count;
 
 class AppExtension extends AbstractExtension
 {
-    public function __construct(private readonly TextFormatter $textFormatter)
-    {
-    }
-
     /**
      * @return TwigFilter[]
      */
@@ -29,7 +20,7 @@ class AppExtension extends AbstractExtension
     public function getFilters(): array
     {
         return [
-            new TwigFilter('price', $this->priceFilter(...)),
+        //    new TwigFilter('price', $this->priceFilter(...)),
             new TwigFilter('conIva', [AppExtensionRuntime::class, 'getValueWithTax']),
             new TwigFilter('taxFromTotal', [AppExtensionRuntime::class, 'getTaxFromTotal']),
             new TwigFilter('invert', $this->invertFilter(...)),
@@ -45,33 +36,10 @@ class AppExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('intlDate', $this->intlDate(...)),
-            new TwigFunction('formatRUC', $this->formatRUC(...)),
             new TwigFunction('getSHA', [AppExtensionRuntime::class, 'getSHA']),
             new TwigFunction('findSystemUsers', [AppExtensionRuntime::class, 'getSystemUsers']),
             new TwigFunction('getCurrentYear', $this->getCurrentYear(...)),
         ];
-    }
-
-    public function priceFilter(
-        float|null $number,
-        int        $decimals = 2,
-        string     $decPoint = '.',
-        string     $thousandsSep = ','
-    ): string
-    {
-        $price = $number ? number_format(
-            $number,
-            $decimals,
-            $decPoint,
-            $thousandsSep
-        ) : 0;
-
-        return sprintf(
-            '<span class="%s">%s</span>',
-            $price < 0 ? 'amount amount-red' : 'amount',
-            $price
-        );
     }
 
     /**
@@ -82,30 +50,7 @@ class AppExtension extends AbstractExtension
         return $value ? -$value : 0;
     }
 
-    public function intlDate(
-        string|DateTime $date,
-        string          $format = "d 'de' MMMM YYYY",
-        string          $lang = 'es_ES'
-    ): string
-    {
-        $formatter = new IntlDateFormatter(
-            'es_ES',
-            IntlDateFormatter::LONG,
-            IntlDateFormatter::NONE
-        );
 
-        if ($date instanceof DateTime) {
-            $dateTime = $date;
-        } else {
-            try {
-                $dateTime = new DateTime($date);
-            } catch (Exception) {
-                return $date;
-            }
-        }
-
-        return $formatter->formatObject($dateTime, $format, $lang);
-    }
 
     /**
      * Convert object to array for Twig usage...
@@ -152,13 +97,7 @@ class AppExtension extends AbstractExtension
         return $longName;
     }
 
-    /**
-     * Cleanup a long number and make it readable.
-     */
-    public function formatRUC(User $user): string
-    {
-        return $this->textFormatter->formatRUC($user);
-    }
+
 
     public function getCurrentYear(): int
     {

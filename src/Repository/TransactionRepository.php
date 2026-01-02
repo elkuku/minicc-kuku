@@ -213,7 +213,7 @@ class TransactionRepository extends ServiceEntityRepository
             $mes = (int)$transaction->getDate()->format('m');
             $day = (int)$transaction->getDate()->format('d');
 
-            $payments[$transaction->getStore()->getId()][$mes][$day][]
+            $payments[(int)$transaction->getStore()->getId()][$mes][$day][]
                 = $transaction;
         }
 
