@@ -89,9 +89,6 @@
     "elkuku/symfony-utils": {
         "version": "dev-master"
     },
-    "friendsofphp/proxy-manager-lts": {
-        "version": "v1.0.5"
-    },
     "google/apiclient": {
         "version": "2.13",
         "recipe": {
@@ -130,9 +127,6 @@
         "files": [
             "config/packages/knp_snappy.yaml"
         ]
-    },
-    "laminas/laminas-code": {
-        "version": "4.5.1"
     },
     "monolog/monolog": {
         "version": "2.3.5"
@@ -437,15 +431,6 @@
             "config/packages/mailer.yaml"
         ]
     },
-    "symfony/mailgun-mailer": {
-        "version": "4.4",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "4.4",
-            "ref": "addcb559b32d9dbb4843826b063565e1b15a2a57"
-        }
-    },
     "symfony/maker-bundle": {
         "version": "1.0",
         "recipe": {
@@ -517,9 +502,6 @@
         "version": "v5.4.2"
     },
     "symfony/property-info": {
-        "version": "v5.4.2"
-    },
-    "symfony/proxy-manager-bridge": {
         "version": "v5.4.2"
     },
     "symfony/routing": {
