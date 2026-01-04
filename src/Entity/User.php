@@ -125,6 +125,7 @@ class User implements UserInterface, Stringable
         return $this;
     }
 
+    #[\Deprecated]
     public function eraseCredentials(): void
     {
     }
