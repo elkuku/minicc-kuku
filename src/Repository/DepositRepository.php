@@ -84,7 +84,7 @@ class DepositRepository extends ServiceEntityRepository
         }
 
         $query->addSelect(
-            '(SELECT t.id FROM App:Transaction t WHERE t.depId = d.id) AS tr_id'
+            '(SELECT t.id FROM App\Entity\Transaction t WHERE t.depId = d.id) AS tr_id'
         );
 
         $query = $query->getQuery();
