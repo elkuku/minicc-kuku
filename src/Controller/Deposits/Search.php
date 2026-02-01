@@ -20,7 +20,7 @@ class Search extends BaseController
         Request           $request
     ): Response
     {
-        $documentId = (int)$request->get('q');
+        $documentId = $request->query->getInt('q');
         $ids = $depositRepository->search($documentId);
 
         return $this->render(

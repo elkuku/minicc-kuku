@@ -25,7 +25,7 @@ class Delete extends BaseController
         $entityManager->remove($transaction);
         $entityManager->flush();
         $this->addFlash('success', 'Transaction has been deleted');
-        $redirect = $request->get('view');
+        $redirect = $request->query->get('view');
 
         if ($redirect) {
             return $this->redirect($redirect);

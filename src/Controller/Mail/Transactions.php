@@ -31,7 +31,7 @@ class Transactions extends BaseController
         EmailHelper           $emailHelper,
     ): RedirectResponse
     {
-        $year = (int)$request->get('year', date('Y'));
+        $year = $request->request->getInt('year', (int)date('Y'));
         $htmlPages = [];
         $stores = $storeRepository->findAll();
         foreach ($stores as $store) {

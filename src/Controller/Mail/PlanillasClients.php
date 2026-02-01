@@ -32,7 +32,7 @@ class PlanillasClients extends BaseController
         PayrollHelper   $payrollHelper
     ): Response
     {
-        $recipients = $request->get('recipients');
+        $recipients = $request->request->all('recipients');
 
         if (!$recipients) {
             return $this->render(

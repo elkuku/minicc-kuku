@@ -18,7 +18,7 @@ trait PaginatorTrait
         int     $listLimit
     ): PaginatorOptions
     {
-        $options = $request->get('paginatorOptions');
+        $options = $request->query->all('paginatorOptions');
 
         return new PaginatorOptions()
             ->setPage(

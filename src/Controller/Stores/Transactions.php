@@ -32,7 +32,7 @@ class Transactions extends BaseController
     ): Response
     {
         $this->denyAccessUnlessGranted('view', $store);
-        $year = (int)$request->get('year', date('Y'));
+        $year = $request->query->getInt('year', (int)date('Y'));
         $this->addBreadcrumb('Stores', 'stores_index')
             ->addBreadcrumb('Store ' . $store->getId());
         $transactions = $transactionRepository->findByStoreAndYear($store, $year);

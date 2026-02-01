@@ -20,7 +20,7 @@ class Index extends BaseController
         Request        $request
     ): Response
     {
-        $userActive = $request->get('user_active', '1');
+        $userActive = $request->query->get('user_active', '1');
         $criteria = [];
         if ('0' === $userActive || '1' === $userActive) {
             $criteria['isActive'] = $userActive;

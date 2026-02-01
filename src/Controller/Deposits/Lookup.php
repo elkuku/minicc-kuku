@@ -20,7 +20,7 @@ class Lookup extends BaseController
         Request           $request
     ): JsonResponse
     {
-        $id = $request->get('id');
+        $id = $request->query->get('id');
 
         $deposit = $depositRepository->find($id);
 

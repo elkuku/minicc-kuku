@@ -32,7 +32,7 @@ class TransactionsClients extends BaseController
         EmailHelper           $emailHelper,
     ): Response
     {
-        $recipients = $request->get('recipients');
+        $recipients = $request->request->all('recipients');
 
         if (!$recipients) {
             return $this->render(
@@ -44,7 +44,7 @@ class TransactionsClients extends BaseController
             );
         }
 
-        $year = (int)$request->get('year', date('Y'));
+        $year = $request->request->getInt('year', (int)date('Y'));
         $stores = $storeRepository->getActive();
         $failures = [];
         $successes = [];
