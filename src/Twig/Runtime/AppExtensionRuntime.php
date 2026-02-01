@@ -30,7 +30,7 @@ class AppExtensionRuntime implements RuntimeExtensionInterface
 
     public function getValueWithTax(float $value): float
     {
-        return $this->taxService->getValueConTax($value);
+        return $this->taxService->addTax($value);
     }
 
     public function getTaxFromTotal(float $value): float

@@ -33,7 +33,7 @@ class Welcome extends BaseController
             foreach ($storeRepository->getActive() as $store) {
                 $balance = $transactionRepository->getSaldo($store);
                 $chartData['headers'][] = 'Local ' . $store->getId();
-                $valAlq = $taxService->getValueConTax($store->getValAlq());
+                $valAlq = $taxService->addTax($store->getValAlq());
 
                 $chartData['monthsDebt'][] = $valAlq
                     ? round(-$balance / $valAlq, 1)

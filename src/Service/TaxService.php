@@ -8,33 +8,44 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 class TaxService
 {
+    private readonly float $taxMultiplier;
+
     public function __construct(
-        #[Autowire('%env(VALUE_IVA)%')]
-        private readonly int $taxValue
-    )
-    {
+        #[Autowire('%env(float:VALUE_IVA)%')]
+        private readonly float $taxRate,
+    ) {
+        $this->taxMultiplier = 1 + $this->taxRate / 100;
     }
 
-    public function getTaxValue(): int
+    public function getTaxValue(): float
     {
-        return $this->taxValue;
+        return $this->taxRate;
     }
 
     /**
-     * Add the tax value to a given amount.
+     * Calculate total with tax from base value.
+     * Example: 100 with 12% tax = 112
      */
-    public function getValueConTax(float $value): float
+    public function addTax(float $baseValue): float
     {
-        return round($value * (1 + $this->taxValue / 100), 2);
+        return round($baseValue * $this->taxMultiplier, 2);
     }
 
     /**
-     * Get the tax amount from total value.
+     * Extract tax amount from total value.
+     * Example: 112 total with 12% tax = 12 tax
      */
     public function getTaxFromTotal(float $total): float
     {
-        $base = $total / (1 + $this->taxValue / 100);
+        return round($total - $this->getBaseFromTotal($total), 2);
+    }
 
-        return round($total - $base, 2);
+    /**
+     * Extract base value from total with tax.
+     * Example: 112 total with 12% tax = 100 base
+     */
+    public function getBaseFromTotal(float $total): float
+    {
+        return round($total / $this->taxMultiplier, 2);
     }
 }

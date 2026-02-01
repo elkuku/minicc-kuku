@@ -40,7 +40,7 @@ class Transactions extends BaseController
         /** @var array<int, float> $monthPayments */
         $monthPayments = [];
         $rentalValues = [];
-        $rentalValue = $taxService->getValueConTax($store->getValAlq());
+        $rentalValue = $taxService->addTax($store->getValAlq());
         for ($i = 1; $i < 13; ++$i) {
             $headers[] = IntlConverter::formatDate('1966-' . $i . '-1', 'MMMM');
             $monthPayments[$i] = 0;
