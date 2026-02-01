@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use Deprecated;
 use Stringable;
 use App\Repository\UserRepository;
 use App\Type\Gender;
@@ -125,7 +126,7 @@ class User implements UserInterface, Stringable
         return $this;
     }
 
-    #[\Deprecated]
+    #[Deprecated]
     public function eraseCredentials(): void
     {
     }

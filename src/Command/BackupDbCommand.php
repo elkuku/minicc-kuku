@@ -25,7 +25,7 @@ class BackupDbCommand
 
     public function __invoke(OutputInterface $output): int
     {
-        $date = (new DateTime())->format('Y-m-d_H-i-s');
+        $date = new DateTime()->format('Y-m-d_H-i-s');
         $backupFile = sys_get_temp_dir() . sprintf('/backup_%s.sql', $date);
 
         $command = $this->backupManager->getBackupCommand() . ' > ' . escapeshellarg($backupFile);

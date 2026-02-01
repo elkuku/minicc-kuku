@@ -71,7 +71,7 @@ class PayDay extends BaseController
                 throw new UnexpectedValueException('Store has no user.');
             }
 
-            $transaction = (new Transaction())
+            $transaction = new Transaction()
                 ->setDate(new DateTime($dateCobro))
                 ->setStore($store)
                 ->setUser($user)

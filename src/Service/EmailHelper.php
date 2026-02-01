@@ -22,7 +22,7 @@ readonly class EmailHelper
 
     public function createEmail(Address $to, string $subject): Email
     {
-        return (new Email())
+        return new Email()
             ->from($this->from)
             ->to($to)
             ->subject($subject);
@@ -30,7 +30,7 @@ readonly class EmailHelper
 
     public function createTemplatedEmail(Address $to, string $subject): TemplatedEmail
     {
-        return (new TemplatedEmail())
+        return new TemplatedEmail()
             ->from($this->from)
             ->to($to)
             ->subject($subject);
@@ -38,7 +38,7 @@ readonly class EmailHelper
 
     public function createAdminEmail(string $subject): Email
     {
-        return (new Email())
+        return new Email()
             ->from($this->from)
             ->to($this->from)
             ->subject($subject);

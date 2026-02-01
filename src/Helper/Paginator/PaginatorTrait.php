@@ -20,7 +20,7 @@ trait PaginatorTrait
     {
         $options = $request->get('paginatorOptions');
 
-        return (new PaginatorOptions())
+        return new PaginatorOptions()
             ->setPage(
                 isset($options['page']) && $options['page']
                     ? (int)$options['page'] : 1

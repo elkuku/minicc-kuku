@@ -16,7 +16,7 @@ class ContractTemplateHelper
      */
     public function getReplacementStrings(): array
     {
-        $replacements = $this->getReplacements((new Contract())->setGender(Gender::other));
+        $replacements = $this->getReplacements(new Contract()->setGender(Gender::other));
         return array_keys($replacements);
     }
 

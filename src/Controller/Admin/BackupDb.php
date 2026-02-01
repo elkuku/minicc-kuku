@@ -23,7 +23,7 @@ class BackupDb extends AbstractController
         MailerInterface $mailer
     ): Response
     {
-        $date = (new DateTime())->format('Y-m-d_H-i-s');
+        $date = new DateTime()->format('Y-m-d_H-i-s');
         $backupFile = sys_get_temp_dir() . sprintf('/backup_%s.sql', $date);
 
         $command = $backupManager->getBackupCommand() . ' > ' . escapeshellarg($backupFile);

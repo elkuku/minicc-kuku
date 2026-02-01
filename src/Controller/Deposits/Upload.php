@@ -55,7 +55,7 @@ class Upload extends BaseController
                 continue;
             }
 
-            $deposit = (new Deposit())
+            $deposit = new Deposit()
                 ->setEntity($entity)
                 ->setDate(new DateTime(str_replace('/', '-', (string)$line->fecha)))
                 ->setDocument($line->{'numero de documento'})
@@ -94,6 +94,6 @@ class Upload extends BaseController
             throw new RuntimeException('Cannot read CSV file.');
         }
 
-        return (new CsvParser())->parseCSV($contents);
+        return new CsvParser()->parseCSV($contents);
     }
 }

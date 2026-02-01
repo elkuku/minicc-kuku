@@ -64,7 +64,7 @@ class CollectRent extends BaseController
                 throw new UnexpectedValueException('Store does not exist.');
             }
 
-            $transaction = (new Transaction())
+            $transaction = new Transaction()
                 ->setDate(
                     new DateTime((string)$request->request->get('date_cobro'))
                 )

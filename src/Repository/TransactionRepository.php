@@ -308,14 +308,14 @@ class TransactionRepository extends ServiceEntityRepository
 
     public function checkChargementRequired(): bool
     {
-        $currentYear = (int)(new DateTime())->format('Y');
+        $currentYear = (int)new DateTime()->format('Y');
         $lastChargedYear = (int)$this->getLastChargementDate()->format('Y');
 
         if ($lastChargedYear < $currentYear) {
             return true;
         }
 
-        $currentMonth = (int)(new DateTime())->format('m');
+        $currentMonth = (int)new DateTime()->format('m');
         $lastChargedMonth = (int)$this->getLastChargementDate()->format('m');
 
         if (12 === $currentMonth && 1 === $lastChargedMonth) {
