@@ -64,7 +64,7 @@ class Transaction implements JsonSerializable
     private ?Deposit $deposit = null;
 
     #[Column(type: Types::INTEGER, nullable: true)]
-    private ?int $recipeNo = 0;
+    private int $recipeNo = 0;
 
     #[Column(length: 255, nullable: true)]
     private ?string $comment = null;
@@ -122,7 +122,7 @@ class Transaction implements JsonSerializable
         return $this;
     }
 
-    public function getRecipeNo(): ?int
+    public function getRecipeNo(): int
     {
         return $this->recipeNo;
     }
@@ -195,7 +195,7 @@ class Transaction implements JsonSerializable
     }
 
     /**
-     * @return array{id: int|null, store: int|null, user: int|null, type: string, method: int|null, date: string, amount: string, document: int, depId: int|null, recipeNo: int|null}
+     * @return array{id: int|null, store: int|null, user: int|null, type: string, method: int|null, date: string, amount: string, document: int, depId: int|null, recipeNo: int}
      */
     public function jsonSerialize(): array
     {

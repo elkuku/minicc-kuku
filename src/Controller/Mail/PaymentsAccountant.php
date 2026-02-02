@@ -30,7 +30,7 @@ class PaymentsAccountant extends BaseController
     {
         $year = $request->request->getInt('year', (int)date('Y'));
         $month = $request->request->getInt('month', (int)date('m'));
-        $ids = array_filter($request->request->all('ids'), is_numeric(...));
+        $ids = array_map(intval(...), array_filter($request->request->all('ids'), is_numeric(...)));
 
         if ($ids) {
             $email = $emailHelper->createTemplatedEmail(

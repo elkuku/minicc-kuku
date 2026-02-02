@@ -11,21 +11,17 @@ use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method Contract|null find($id, $lockMode = null, $lockVersion = null)
- * @method Contract|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Contract|null findOneBy(array<string, mixed> $criteria, ?array<string, string> $orderBy = null)
  * @method Contract[]    findAll()
- * @method Contract[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Contract[]    findBy(array<string, mixed> $criteria, ?array<string, string> $orderBy = null, $limit = null, $offset = null)
  *
- * @extends ServiceEntityRepository<ContractRepository>
+ * @extends ServiceEntityRepository<Contract>
  */
 class ContractRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        /**
-         * @var class-string<ContractRepository>
-         */
-        $className = Contract::class;
-        parent::__construct($registry, $className);
+        parent::__construct($registry, Contract::class);
     }
 
     /**

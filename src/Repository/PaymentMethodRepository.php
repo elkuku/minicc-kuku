@@ -10,20 +10,16 @@ use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method PaymentMethod|null find($id, $lockMode = null, $lockVersion = null)
- * @method PaymentMethod|null findOneBy(array $criteria, array $orderBy = null)
+ * @method PaymentMethod|null findOneBy(array<string, mixed> $criteria, ?array<string, string> $orderBy = null)
  * @method PaymentMethod[]    findAll()
- * @method PaymentMethod[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method PaymentMethod[]    findBy(array<string, mixed> $criteria, ?array<string, string> $orderBy = null, $limit = null, $offset = null)
  *
- * @extends ServiceEntityRepository<PaymentMethodRepository>
+ * @extends ServiceEntityRepository<PaymentMethod>
  */
 class PaymentMethodRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        /**
-         * @var class-string<PaymentMethodRepository>
-         */
-        $className = PaymentMethod::class;
-        parent::__construct($registry, $className);
+        parent::__construct($registry, PaymentMethod::class);
     }
 }

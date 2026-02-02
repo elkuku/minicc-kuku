@@ -10,21 +10,17 @@ use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method Store|null find($id, $lockMode = null, $lockVersion = null)
- * @method Store|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Store|null findOneBy(array<string, mixed> $criteria, ?array<string, string> $orderBy = null)
  * @method Store[]    findAll()
- * @method Store[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Store[]    findBy(array<string, mixed> $criteria, ?array<string, string> $orderBy = null, $limit = null, $offset = null)
  *
- * @extends ServiceEntityRepository<StoreRepository>
+ * @extends ServiceEntityRepository<Store>
  */
 class StoreRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        /**
-         * @var class-string<StoreRepository>
-         */
-        $className = Store::class;
-        parent::__construct($registry, $className);
+        parent::__construct($registry, Store::class);
     }
 
     /**

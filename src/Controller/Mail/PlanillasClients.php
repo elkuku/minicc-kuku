@@ -74,7 +74,7 @@ class PlanillasClients extends BaseController
             );
 
             $email = $emailHelper->createTemplatedEmail(
-                to: new Address($user->getEmail(), $user->getName()),
+                to: new Address($user->getEmail(), $user->getName() ?? ''),
                 subject: sprintf('Su planilla del local %s (%s - %d)', $store->getId(), $month, $year)
             )
                 ->htmlTemplate('email/client-planillas.twig')
@@ -83,7 +83,7 @@ class PlanillasClients extends BaseController
                     'store' => $store,
                     'factDate' => sprintf('%d-%s-1', $year, $month),
                     'fileName' => $fileName,
-                    'payroll' => $payrollHelper->getData($year, $month, $store->getId()),
+                    'payroll' => $payrollHelper->getData($year, $month, (int) $store->getId()),
                 ])
                 ->attach($document, $fileName);
 

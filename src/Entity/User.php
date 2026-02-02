@@ -9,13 +9,13 @@ use Stringable;
 use App\Repository\UserRepository;
 use App\Type\Gender;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\OneToMany;
-use Doctrine\ORM\PersistentCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints\Email;
@@ -36,10 +36,10 @@ class User implements UserInterface, Stringable
     private ?int $id = 0;
 
     /**
-     * @var PersistentCollection<int, Store>|ArrayCollection<int, Store> $stores
+     * @var Collection<int, Store> $stores
      */
     #[OneToMany(mappedBy: 'user', targetEntity: Store::class)]
-    private PersistentCollection|ArrayCollection $stores;
+    private Collection $stores;
 
     #[NotBlank]
     #[Email(message: "The email '{{ value }}' is not a valid email.")]
@@ -73,7 +73,7 @@ class User implements UserInterface, Stringable
     private ?string $direccion = '';
 
     #[Column(type: Types::STRING, length: 100, nullable: true)]
-    private ?string $googleId = '';
+    private string $googleId = '';
 
     #[Column(nullable: true)]
     private ?bool $isActive = null;
@@ -116,6 +116,8 @@ class User implements UserInterface, Stringable
 
     public function getUserIdentifier(): string
     {
+        assert($this->email !== '');
+
         return $this->email;
     }
 
@@ -275,9 +277,9 @@ class User implements UserInterface, Stringable
     }
 
     /**
-     * @return PersistentCollection<int, Store>|ArrayCollection<int, Store>
+     * @return Collection<int, Store>
      */
-    public function getStores(): PersistentCollection|ArrayCollection
+    public function getStores(): Collection
     {
         return $this->stores;
     }
@@ -294,7 +296,7 @@ class User implements UserInterface, Stringable
         return $this->gender;
     }
 
-    public function getGoogleId(): ?string
+    public function getGoogleId(): string
     {
         return $this->googleId;
     }

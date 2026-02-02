@@ -44,10 +44,10 @@ class Contract
     private DateTime $date;
 
     #[Column]
-    private ?int $cntLanfort = 0;
+    private int $cntLanfort = 0;
 
     #[Column]
-    private ?int $cntNeon = 0;
+    private int $cntNeon = 0;
 
     #[Column]
     private int $cntSwitch = 0;
@@ -68,10 +68,10 @@ class Contract
     private int $cntMedElec = 0;
 
     #[Column(length: 50)]
-    private ?string $medElectrico = '';
+    private string $medElectrico = '';
 
     #[Column(length: 50)]
-    private ?string $medAgua = '';
+    private string $medAgua = '';
 
     #[Column(type: Types::TEXT, length: 65535, nullable: false)]
     private string $text = '';
@@ -165,7 +165,7 @@ class Contract
         return $this;
     }
 
-    public function getCntLanfort(): ?int
+    public function getCntLanfort(): int
     {
         return $this->cntLanfort;
     }
@@ -177,7 +177,7 @@ class Contract
         return $this;
     }
 
-    public function getCntNeon(): ?int
+    public function getCntNeon(): int
     {
         return $this->cntNeon;
     }
@@ -261,7 +261,7 @@ class Contract
         return $this;
     }
 
-    public function getMedElectrico(): ?string
+    public function getMedElectrico(): string
     {
         return $this->medElectrico;
     }
@@ -273,7 +273,7 @@ class Contract
         return $this;
     }
 
-    public function getMedAgua(): ?string
+    public function getMedAgua(): string
     {
         return $this->medAgua;
     }

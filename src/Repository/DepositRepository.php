@@ -16,11 +16,11 @@ use Doctrine\Persistence\ManagerRegistry;
  * DepositRepository.
  *
  * @method Deposit|null find($id, $lockMode = null, $lockVersion = null)
- * @method Deposit|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Deposit|null findOneBy(array<string, mixed> $criteria, ?array<string, string> $orderBy = null)
  * @method Deposit[]    findAll()
- * @method Deposit[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Deposit[]    findBy(array<string, mixed> $criteria, ?array<string, string> $orderBy = null, $limit = null, $offset = null)
  *
- * @extends ServiceEntityRepository<DepositRepository>
+ * @extends ServiceEntityRepository<Deposit>
  */
 class DepositRepository extends ServiceEntityRepository
 {
@@ -28,11 +28,7 @@ class DepositRepository extends ServiceEntityRepository
 
     public function __construct(ManagerRegistry $registry)
     {
-        /**
-         * @var class-string<DepositRepository>
-         */
-        $className = Deposit::class;
-        parent::__construct($registry, $className);
+        parent::__construct($registry, Deposit::class);
     }
 
     public function has(Deposit $deposit): bool
