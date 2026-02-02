@@ -190,12 +190,14 @@ class User implements UserInterface, Stringable
         return $this;
     }
 
-    public function getPassword(): void
+    public function getPassword(): ?string
     {
+        return null;
     }
 
-    public function getSalt(): void
+    public function getSalt(): ?string
     {
+        return null;
     }
 
     public function setInqCi(string $inqCi): static

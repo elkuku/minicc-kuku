@@ -18,8 +18,8 @@ final class TwigExtensionRuntimeTest extends WebTestCase
     {
         static::createClient();
         $this->twigExtensionRuntime = new AppExtensionRuntime(
-            $this->createMock(UserRepository::class),
-            $this->createMock(ShaFinder::class),
+            $this->createStub(UserRepository::class),
+            $this->createStub(ShaFinder::class),
             new TaxService(12),
         );
     }

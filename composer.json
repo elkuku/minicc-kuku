@@ -1,5 +1,28 @@
 {
     "name": "elkuku/minicc-kuku",
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "knplabs/knp-snappy",
+                "version": "1.5.99",
+                "dist": {
+                    "url": "https://api.github.com/repos/KnpLabs/snappy/zipball/3dd138e9e47de91cd2e056c5e6e1a0dd72547ee7",
+                    "type": "zip"
+                },
+                "autoload": {
+                    "psr-4": {
+                        "Knp\\Snappy\\": "src/Knp/Snappy"
+                    }
+                },
+                "require": {
+                    "php": ">=8.1",
+                    "symfony/process": "^5.0||^6.0||^7.0||^8.0",
+                    "psr/log": "^2.0||^3.0"
+                }
+            }
+        }
+    ],
     "description": "Mini CC Manager",
     "type": "project",
     "license": "proprietary",
@@ -19,12 +42,13 @@
         "elkuku/kuku-sf-system-tools-bundle": "^1.0",
         "google/apiclient": "^2.13",
         "h4cc/wkhtmltopdf-amd64": "^0.12.3",
-        "knplabs/knp-snappy-bundle": "^1.10",
+        "knplabs/knp-snappy": "^1.5",
+        "knplabs/knp-snappy-bundle": "dev-master",
         "oro/doctrine-extensions": "^3.0-beta1",
         "phpdocumentor/reflection-docblock": "^5.2",
         "symfony/apache-pack": "*",
         "symfony/asset": "*",
-        "symfony/asset-mapper": "7.*",
+        "symfony/asset-mapper": "8.*",
         "symfony/console": "*",
         "symfony/dotenv": "*",
         "symfony/expression-language": "*",
@@ -32,7 +56,7 @@
         "symfony/form": "*",
         "symfony/framework-bundle": "*",
         "symfony/google-mailer": "*",
-        "symfony/mailer": "7.*",
+        "symfony/mailer": "8.*",
         "symfony/monolog-bundle": "^4.0",
         "symfony/process": "*",
         "symfony/property-access": "*",
@@ -140,7 +164,7 @@
     "extra": {
         "symfony": {
             "allow-contrib": true,
-            "require": "7.*",
+            "require": "8.*",
             "docker": true
         }
     }

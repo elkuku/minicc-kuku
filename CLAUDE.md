@@ -8,7 +8,7 @@ MiniCC KuKu is a Symfony 8.x financial management application for handling credi
 
 ## Tech Stack
 
-- **PHP 8.3+** with Symfony 8.x
+- **PHP 8.4+** with Symfony 8.x
 - **Doctrine ORM 3.3+** with PostgreSQL (configurable)
 - **Twig 3.x** templating with Bootstrap 5.3
 - **Stimulus.js** for frontend interactivity
