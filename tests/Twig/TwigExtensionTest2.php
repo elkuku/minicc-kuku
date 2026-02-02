@@ -6,7 +6,6 @@ namespace App\Tests\Twig;
 
 use App\Entity\User;
 use App\Service\TextFormatter;
-use App\Twig\Extension\AppExtension;
 use App\Twig\Extension\TwigExtension;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -35,7 +34,7 @@ final class TwigExtensionTest2 extends WebTestCase
 
     public function testFormatRuc(): void
     {
-        $user = (new User())
+        $user = new User()
             ->setInqCi('123456789-6');
 
         self::assertSame(
@@ -43,7 +42,7 @@ final class TwigExtensionTest2 extends WebTestCase
             $this->twigExtension->formatRUC($user)
         );
 
-        $user = (new User())
+        $user = new User()
             ->setInqRuc('1234567896001');
 
         self::assertSame(
@@ -51,7 +50,7 @@ final class TwigExtensionTest2 extends WebTestCase
             $this->twigExtension->formatRUC($user)
         );
 
-        $user = (new User())
+        $user = new User()
             ->setInqRuc('12345678961');
 
         self::assertSame(

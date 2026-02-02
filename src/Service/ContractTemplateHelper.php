@@ -75,8 +75,8 @@ class ContractTemplateHelper
             'cnt_med_agua' => (string)$contract->getCntMedAgua(),
             'cnt_med_elec' => (string)$contract->getCntMedElec(),
 
-            'med_electrico' => (string)$contract->getMedElectrico(),
-            'med_agua' => (string)$contract->getMedAgua(),
+            'med_electrico' => $contract->getMedElectrico(),
+            'med_agua' => $contract->getMedAgua(),
         ];
     }
 }
