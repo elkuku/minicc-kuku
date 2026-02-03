@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Entity;
 
+use App\Entity\Store;
 use App\Entity\User;
 use App\Type\Gender;
 use PHPUnit\Framework\TestCase;
@@ -254,5 +255,69 @@ final class UserTest extends TestCase
         $result = $user->setInqRuc('1234567890001');
         self::assertSame($user, $result);
         self::assertSame('1234567890001', $user->getInqRuc());
+    }
+
+    public function testStoresCollection(): void
+    {
+        $user = new User();
+        $user->setEmail('test@example.com');
+        $user->setGender(Gender::male);
+
+        $stores = $user->getStores();
+
+        self::assertCount(0, $stores);
+    }
+
+    public function testAddStore(): void
+    {
+        $user = new User();
+        $user->setEmail('test@example.com');
+        $user->setGender(Gender::male);
+
+        $store = new Store();
+        $store->setDestination('Test Store');
+
+        $result = $user->addStore($store);
+
+        self::assertSame($user, $result);
+        self::assertCount(1, $user->getStores());
+        self::assertTrue($user->getStores()->contains($store));
+    }
+
+    public function testRemoveStore(): void
+    {
+        $user = new User();
+        $user->setEmail('test@example.com');
+        $user->setGender(Gender::male);
+
+        $store = new Store();
+        $store->setDestination('Test Store');
+
+        $user->addStore($store);
+        self::assertCount(1, $user->getStores());
+
+        $result = $user->removeStore($store);
+
+        self::assertSame($user, $result);
+        self::assertCount(0, $user->getStores());
+        self::assertFalse($user->getStores()->contains($store));
+    }
+
+    public function testAddMultipleStores(): void
+    {
+        $user = new User();
+        $user->setEmail('test@example.com');
+        $user->setGender(Gender::male);
+
+        $store1 = new Store();
+        $store1->setDestination('Store 1');
+
+        $store2 = new Store();
+        $store2->setDestination('Store 2');
+
+        $user->addStore($store1);
+        $user->addStore($store2);
+
+        self::assertCount(2, $user->getStores());
     }
 }
