@@ -14,7 +14,7 @@ final class GitDataCollectorTest extends TestCase
 {
     public function testGetName(): void
     {
-        $gitLoader = $this->createMock(GitLoader::class);
+        $gitLoader = $this->createStub(GitLoader::class);
         $collector = new GitDataCollector($gitLoader);
 
         self::assertSame('app.git_data_collector', $collector->getName());
@@ -22,7 +22,7 @@ final class GitDataCollectorTest extends TestCase
 
     public function testCollectStoresGitData(): void
     {
-        $gitLoader = $this->createMock(GitLoader::class);
+        $gitLoader = $this->createStub(GitLoader::class);
         $gitLoader->method('getBranchName')->willReturn('main');
         $gitLoader->method('getLastCommitMessage')->willReturn('Test commit');
         $gitLoader->method('getLastCommitDetail')->willReturn([
@@ -43,7 +43,7 @@ final class GitDataCollectorTest extends TestCase
 
     public function testReset(): void
     {
-        $gitLoader = $this->createMock(GitLoader::class);
+        $gitLoader = $this->createStub(GitLoader::class);
         $gitLoader->method('getBranchName')->willReturn('main');
         $gitLoader->method('getLastCommitMessage')->willReturn('Test');
         $gitLoader->method('getLastCommitDetail')->willReturn([
@@ -66,7 +66,7 @@ final class GitDataCollectorTest extends TestCase
 
     public function testCollectWithException(): void
     {
-        $gitLoader = $this->createMock(GitLoader::class);
+        $gitLoader = $this->createStub(GitLoader::class);
         $gitLoader->method('getBranchName')->willReturn('feature/test');
         $gitLoader->method('getLastCommitMessage')->willReturn('WIP');
         $gitLoader->method('getLastCommitDetail')->willReturn([
@@ -84,7 +84,7 @@ final class GitDataCollectorTest extends TestCase
 
     public function testGetGitBranch(): void
     {
-        $gitLoader = $this->createMock(GitLoader::class);
+        $gitLoader = $this->createStub(GitLoader::class);
         $gitLoader->method('getBranchName')->willReturn('develop');
         $gitLoader->method('getLastCommitMessage')->willReturn('');
         $gitLoader->method('getLastCommitDetail')->willReturn([
@@ -101,7 +101,7 @@ final class GitDataCollectorTest extends TestCase
 
     public function testGetLastCommitMessage(): void
     {
-        $gitLoader = $this->createMock(GitLoader::class);
+        $gitLoader = $this->createStub(GitLoader::class);
         $gitLoader->method('getBranchName')->willReturn('main');
         $gitLoader->method('getLastCommitMessage')->willReturn('Add new feature');
         $gitLoader->method('getLastCommitDetail')->willReturn([
@@ -118,7 +118,7 @@ final class GitDataCollectorTest extends TestCase
 
     public function testGetLastCommitAuthor(): void
     {
-        $gitLoader = $this->createMock(GitLoader::class);
+        $gitLoader = $this->createStub(GitLoader::class);
         $gitLoader->method('getBranchName')->willReturn('main');
         $gitLoader->method('getLastCommitMessage')->willReturn('');
         $gitLoader->method('getLastCommitDetail')->willReturn([
@@ -135,7 +135,7 @@ final class GitDataCollectorTest extends TestCase
 
     public function testGetLastCommitDate(): void
     {
-        $gitLoader = $this->createMock(GitLoader::class);
+        $gitLoader = $this->createStub(GitLoader::class);
         $gitLoader->method('getBranchName')->willReturn('main');
         $gitLoader->method('getLastCommitMessage')->willReturn('');
         $gitLoader->method('getLastCommitDetail')->willReturn([
@@ -152,7 +152,7 @@ final class GitDataCollectorTest extends TestCase
 
     public function testGetSha(): void
     {
-        $gitLoader = $this->createMock(GitLoader::class);
+        $gitLoader = $this->createStub(GitLoader::class);
         $gitLoader->method('getBranchName')->willReturn('main');
         $gitLoader->method('getLastCommitMessage')->willReturn('');
         $gitLoader->method('getLastCommitDetail')->willReturn([
