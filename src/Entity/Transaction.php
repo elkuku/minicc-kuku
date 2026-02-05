@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use Override;
 use JsonSerializable;
 use DateTime;
 use App\Repository\TransactionRepository;
@@ -197,6 +198,7 @@ class Transaction implements JsonSerializable
     /**
      * @return array{id: int|null, store: int|null, user: int|null, type: string, method: int|null, date: string, amount: string, document: int, depId: int|null, recipeNo: int}
      */
+    #[Override]
     public function jsonSerialize(): array
     {
         return [

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Security;
 
+use Override;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use App\Type\GoogleUser;
@@ -38,11 +39,13 @@ class GoogleIdentityAuthenticator extends AbstractAuthenticator
     {
     }
 
+    #[Override]
     public function supports(Request $request): bool
     {
         return '/connect/google/verify' === $request->getPathInfo();
     }
 
+    #[Override]
     public function authenticate(Request $request): Passport
     {
         $idToken = (string)$request->request->get('credential');
@@ -68,6 +71,7 @@ class GoogleIdentityAuthenticator extends AbstractAuthenticator
         );
     }
 
+    #[Override]
     public function onAuthenticationSuccess(
         Request        $request,
         TokenInterface $token,
@@ -85,6 +89,7 @@ class GoogleIdentityAuthenticator extends AbstractAuthenticator
         return new RedirectResponse($this->urlGenerator->generate('welcome'));
     }
 
+    #[Override]
     public function onAuthenticationFailure(
         Request                 $request,
         AuthenticationException $exception

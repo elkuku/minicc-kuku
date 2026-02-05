@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use Override;
 use Stringable;
 use App\Repository\StoreRepository;
 use Doctrine\DBAL\Types\Types;
@@ -63,6 +64,7 @@ class Store implements Stringable
     #[JoinColumn(name: 'user_id', referencedColumnName: 'id')]
     private ?User $user = null;
 
+    #[Override]
     public function __toString(): string
     {
         return sprintf('%d - %s', $this->id, $this->destination);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Form;
 
+use Override;
 use App\Entity\PaymentMethod;
 use App\Entity\Store;
 use App\Entity\User;
@@ -17,6 +18,7 @@ use Symfony\Component\Translation\TranslatableMessage;
 
 class TransactionTypeType extends AbstractType
 {
+    #[Override]
     public function buildForm(
         FormBuilderInterface $builder,
         array                $options

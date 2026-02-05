@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Security;
 
+use Override;
 use LogicException;
 use App\Entity\Store;
 use App\Entity\User;
@@ -29,6 +30,7 @@ class StoreVoter extends Voter
     {
     }
 
+    #[Override]
     protected function supports(string $attribute, mixed $subject): bool
     {
         if (!in_array($attribute, [self::VIEW, self::EDIT, self::EXPORT])) {
@@ -42,6 +44,7 @@ class StoreVoter extends Voter
         return true;
     }
 
+    #[Override]
     protected function voteOnAttribute(
         string         $attribute,
         mixed          $subject,

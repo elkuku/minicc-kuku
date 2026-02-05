@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use Override;
 use Deprecated;
 use Stringable;
 use App\Repository\UserRepository;
@@ -109,11 +110,13 @@ class User implements UserInterface, Stringable
         $this->email = $data['email'] ?? '';
     }
 
+    #[Override]
     public function __toString(): string
     {
         return (string)$this->name;
     }
 
+    #[Override]
     public function getUserIdentifier(): string
     {
         assert($this->email !== '');
@@ -136,6 +139,7 @@ class User implements UserInterface, Stringable
     /**
      * @return string[]
      */
+    #[Override]
     public function getRoles(): array
     {
         return [$this->getRole()];

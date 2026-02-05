@@ -19,6 +19,7 @@ class GitDataCollector extends DataCollector
     {
     }
 
+    #[Override]
     public function collect(
         Request     $request,
         Response    $response,
@@ -32,6 +33,7 @@ class GitDataCollector extends DataCollector
         ];
     }
 
+    #[Override]
     public function getName(): string
     {
         return 'app.git_data_collector';

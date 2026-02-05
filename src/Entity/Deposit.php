@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use Override;
 use JsonSerializable;
 use DateTime;
 use UnexpectedValueException;
@@ -129,6 +130,7 @@ class Deposit implements JsonSerializable
      *
      * @since 5.4.0
      */
+    #[Override]
     public function jsonSerialize(): array
     {
         return [
