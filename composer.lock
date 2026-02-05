@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "732a2f58e32cfd1dc10d304d99223c83",
+    "content-hash": "a6cba539bb57c7225edfaa2ffe77e3f3",
     "packages": [
         {
             "name": "composer/package-versions-deprecated",
@@ -1507,20 +1507,20 @@
         },
         {
             "name": "elkuku/intl-numbers-to-words",
-            "version": "1.1",
+            "version": "1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/elkuku/IntlNumbersToWords.git",
-                "reference": "5d1398d453fef4a45a0636911ee6eb68297ddfbf"
+                "reference": "f4e53c66f061050a4f0e25d361d0d8b6dc6a75d3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/elkuku/IntlNumbersToWords/zipball/5d1398d453fef4a45a0636911ee6eb68297ddfbf",
-                "reference": "5d1398d453fef4a45a0636911ee6eb68297ddfbf",
+                "url": "https://api.github.com/repos/elkuku/IntlNumbersToWords/zipball/f4e53c66f061050a4f0e25d361d0d8b6dc6a75d3",
+                "reference": "f4e53c66f061050a4f0e25d361d0d8b6dc6a75d3",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.4"
+                "php": ">=8.0"
             },
             "require-dev": {
                 "phpunit/phpunit": "^9.5.4"
@@ -1541,9 +1541,9 @@
             "description": "Convert numbers to words in many languages",
             "support": {
                 "issues": "https://github.com/elkuku/IntlNumbersToWords/issues",
-                "source": "https://github.com/elkuku/IntlNumbersToWords/tree/1.1"
+                "source": "https://github.com/elkuku/IntlNumbersToWords/tree/1.3"
             },
-            "time": "2021-05-31T23:35:10+00:00"
+            "time": "2026-02-05T14:59:28+00:00"
         },
         {
             "name": "elkuku/kuku-sf-system-tools-bundle",
