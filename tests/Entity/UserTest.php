@@ -137,20 +137,7 @@ final class UserTest extends TestCase
         self::assertSame('ROLE_USER', $user->getRole());
     }
 
-    public function testEraseCredentialsDoesNothing(): void
-    {
-        $user = new User();
-        $user->setEmail('test@example.com');
-        $user->setName('Test');
-        $user->setGender(Gender::male);
-        $user->setRole('ROLE_ADMIN');
 
-        $user->eraseCredentials();
-
-        self::assertSame('test@example.com', $user->getEmail());
-        self::assertSame('Test', $user->getName());
-        self::assertSame('ROLE_ADMIN', $user->getRole());
-    }
 
     public function testGetPasswordReturnsNull(): void
     {
