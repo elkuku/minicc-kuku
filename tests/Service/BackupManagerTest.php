@@ -117,4 +117,98 @@ final class BackupManagerTest extends TestCase
 
         self::assertStringContainsString('15432', $command);
     }
+
+    public function testGetBackupCommandThrowsOnMalformedUrl(): void
+    {
+        $manager = new BackupManager('https://host:99999999');
+
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Invalid DATABASE_URL format');
+
+        $manager->getBackupCommand();
+    }
+
+    public function testPostgresqlPasswordInPgpasswordEnv(): void
+    {
+        $manager = new BackupManager('postgresql://user:s3cret@localhost:5432/db');
+
+        $command = $manager->getBackupCommand();
+
+        self::assertStringContainsString("PGPASSWORD='s3cret'", $command);
+    }
+
+    public function testMysqlPasswordInFlag(): void
+    {
+        $manager = new BackupManager('mysql://user:s3cret@localhost:3306/db');
+
+        $command = $manager->getBackupCommand();
+
+        self::assertStringContainsString("-p's3cret'", $command);
+        self::assertStringNotContainsString('PGPASSWORD', $command);
+    }
+
+    public function testMariadbPasswordInFlag(): void
+    {
+        $manager = new BackupManager('mariadb://user:s3cret@localhost:3306/db');
+
+        $command = $manager->getBackupCommand();
+
+        self::assertStringContainsString("-p's3cret'", $command);
+        self::assertStringContainsString('mariadb-dump', $command);
+    }
+
+    public function testGetBackupCommandWithNoPassword(): void
+    {
+        $manager = new BackupManager('postgresql://user@localhost:5432/db');
+
+        $command = $manager->getBackupCommand();
+
+        self::assertStringContainsString("PGPASSWORD=''", $command);
+        self::assertStringContainsString("'user'", $command);
+    }
+
+    public function testGetBackupCommandExtractsDatabaseName(): void
+    {
+        $manager = new BackupManager('postgresql://u:p@h:5432/my_database');
+
+        $command = $manager->getBackupCommand();
+
+        self::assertStringContainsString("'my_database'", $command);
+    }
+
+    public function testPostgresqlCommandFormat(): void
+    {
+        $manager = new BackupManager('postgresql://myuser:mypass@dbhost:5432/mydb');
+
+        $command = $manager->getBackupCommand();
+
+        self::assertSame(
+            "PGPASSWORD='mypass' pg_dump -h 'dbhost' -p '5432' -U 'myuser' 'mydb'",
+            $command,
+        );
+    }
+
+    public function testMysqlCommandFormat(): void
+    {
+        $manager = new BackupManager('mysql://myuser:mypass@dbhost:3306/mydb');
+
+        $command = $manager->getBackupCommand();
+
+        self::assertSame(
+            "mysqldump -h'dbhost' -P'3306' -u'myuser' -p'mypass' 'mydb'",
+            $command,
+        );
+    }
+
+    public function testMariadbCommandFormat(): void
+    {
+        $manager = new BackupManager('mariadb://myuser:mypass@dbhost:3306/mydb');
+
+        $command = $manager->getBackupCommand();
+
+        self::assertSame(
+            "mariadb-dump -h'dbhost' -P'3306' -u'myuser' -p'mypass' 'mydb'",
+            $command,
+        );
+    }
 }
