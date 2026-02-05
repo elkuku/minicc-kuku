@@ -28,6 +28,9 @@
         <include>
             <directory>src</directory>
         </include>
+        <exclude>
+            <file>src/Service/PhpXlsxGenerator.php</file>
+        </exclude>
     </source>
 
     <extensions>
