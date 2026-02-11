@@ -6,6 +6,7 @@ namespace App\Tests\Entity;
 
 use App\Entity\Deposit;
 use App\Entity\PaymentMethod;
+use App\Entity\Transaction;
 use DateTime;
 use PHPUnit\Framework\TestCase;
 use ReflectionProperty;
@@ -121,6 +122,39 @@ final class DepositTest extends TestCase
         $deposit = new Deposit();
 
         self::assertNull($deposit->getId());
+    }
+
+    public function testGetTransactionReturnsNullByDefault(): void
+    {
+        $deposit = new Deposit();
+
+        self::assertNull($deposit->getTransaction());
+    }
+
+    public function testSetTransactionSetsOwningSide(): void
+    {
+        $deposit = new Deposit();
+        $transaction = new Transaction();
+
+        $result = $deposit->setTransaction($transaction);
+
+        self::assertSame($deposit, $result);
+        self::assertSame($transaction, $deposit->getTransaction());
+        self::assertSame($deposit, $transaction->getDeposit());
+    }
+
+    public function testSetTransactionToNullUnsetsOwningSide(): void
+    {
+        $deposit = new Deposit();
+        $transaction = new Transaction();
+
+        $deposit->setTransaction($transaction);
+        self::assertSame($transaction, $deposit->getTransaction());
+
+        $deposit->setTransaction(null);
+
+        self::assertNull($deposit->getTransaction());
+        self::assertNull($transaction->getDeposit());
     }
 
     private function createPaymentMethodWithId(int $id): PaymentMethod
