@@ -43,6 +43,22 @@ final class ControllerAccessTest extends ControllerBaseTest
                     'GET' => 500, // TODO: WTF
                 ],
             ],
+            'contracts_edit' => [
+                'statusCodes' => [
+                    'GET' => 404,
+                    'POST' => 404,
+                ],
+            ],
+            'contracts_delete' => [
+                'statusCodes' => [
+                    'GET' => 404,
+                ],
+            ],
+            'contracts_generate' => [
+                'statusCodes' => [
+                    'GET' => 404,
+                ],
+            ],
         ];
 
     public function testAllRoutesAreProtected(): void
