@@ -57,7 +57,7 @@ readonly class BackupManager
                 escapeshellarg($dbName)
             ),
             DbDrivers::MySQL => sprintf(
-                'mysqldump -h%s -P%s -u%s -p%s %s',
+                'mysqldump --no-tablespaces -h%s -P%s -u%s -p%s %s',
                 escapeshellarg($dbHost),
                 escapeshellarg((string)$dbPort),
                 escapeshellarg($dbUser),
@@ -65,7 +65,7 @@ readonly class BackupManager
                 escapeshellarg($dbName)
             ),
             DbDrivers::MariaDB => sprintf(
-                'mariadb-dump -h%s -P%s -u%s -p%s %s',
+                'mariadb-dump --no-tablespaces -h%s -P%s -u%s -p%s %s',
                 escapeshellarg($dbHost),
                 escapeshellarg((string)$dbPort),
                 escapeshellarg($dbUser),

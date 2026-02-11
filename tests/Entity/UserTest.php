@@ -7,6 +7,7 @@ namespace App\Tests\Entity;
 use App\Entity\Store;
 use App\Entity\User;
 use App\Type\Gender;
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\TestCase;
 
 final class UserTest extends TestCase
@@ -308,6 +309,7 @@ final class UserTest extends TestCase
         self::assertCount(2, $user->getStores());
     }
 
+    #[IgnoreDeprecations]
     public function testEraseCredentials(): void
     {
         $user = new User();

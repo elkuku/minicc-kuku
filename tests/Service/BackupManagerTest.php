@@ -195,7 +195,7 @@ final class BackupManagerTest extends TestCase
         $command = $manager->getBackupCommand();
 
         self::assertSame(
-            "mysqldump -h'dbhost' -P'3306' -u'myuser' -p'mypass' 'mydb'",
+            "mysqldump --no-tablespaces -h'dbhost' -P'3306' -u'myuser' -p'mypass' 'mydb'",
             $command,
         );
     }
@@ -207,7 +207,7 @@ final class BackupManagerTest extends TestCase
         $command = $manager->getBackupCommand();
 
         self::assertSame(
-            "mariadb-dump -h'dbhost' -P'3306' -u'myuser' -p'mypass' 'mydb'",
+            "mariadb-dump --no-tablespaces -h'dbhost' -P'3306' -u'myuser' -p'mypass' 'mydb'",
             $command,
         );
     }
