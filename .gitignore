@@ -1,6 +1,7 @@
 .idea/workspace.xml
 .phpactor.json
 /coverage/
+/coverage*
 
 ###> symfony/framework-bundle ###
 /.env.local
