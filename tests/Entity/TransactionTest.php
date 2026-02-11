@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Entity;
 
+use App\Entity\Deposit;
 use App\Entity\PaymentMethod;
 use App\Entity\Store;
 use App\Entity\Transaction;
@@ -163,8 +164,23 @@ final class TransactionTest extends TestCase
 
         self::assertNull($transaction->getDeposit());
 
-        // Note: We can't easily test setDeposit with a real Deposit
-        // due to the bidirectional relationship setup
+        $deposit = new Deposit();
+        $result = $transaction->setDeposit($deposit);
+
+        self::assertSame($transaction, $result);
+        self::assertSame($deposit, $transaction->getDeposit());
+    }
+
+    public function testSetDepositToNull(): void
+    {
+        $transaction = new Transaction();
+        $deposit = new Deposit();
+
+        $transaction->setDeposit($deposit);
+        self::assertSame($deposit, $transaction->getDeposit());
+
+        $transaction->setDeposit(null);
+        self::assertNull($transaction->getDeposit());
     }
 
     public function testJsonSerialize(): void
@@ -226,6 +242,27 @@ final class TransactionTest extends TestCase
         $json = $transaction->jsonSerialize();
 
         self::assertNull($json['depId']);
+    }
+
+    public function testJsonSerializeWithNullMethodId(): void
+    {
+        $transaction = new Transaction();
+
+        $user = $this->createUser();
+        $store = new Store();
+        $paymentMethod = new PaymentMethod();
+        $paymentMethod->setName('New Method');
+
+        $transaction->setUser($user);
+        $transaction->setStore($store);
+        $transaction->setType(TransactionType::rent);
+        $transaction->setMethod($paymentMethod);
+        $transaction->setDate(new DateTime('2024-01-01'));
+        $transaction->setDocument(1);
+
+        $json = $transaction->jsonSerialize();
+
+        self::assertNull($json['method']);
     }
 
     public function testAllTransactionTypes(): void

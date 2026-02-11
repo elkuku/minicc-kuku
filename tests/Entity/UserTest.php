@@ -307,4 +307,90 @@ final class UserTest extends TestCase
 
         self::assertCount(2, $user->getStores());
     }
+
+    public function testEraseCredentials(): void
+    {
+        $user = new User();
+        $user->setEmail('test@example.com');
+        $user->setGender(Gender::male);
+
+        // Should not throw - deprecated no-op method
+        $user->eraseCredentials();
+
+        self::assertSame('test@example.com', $user->getEmail());
+    }
+
+    public function testToStringWithNullName(): void
+    {
+        $user = new User();
+        $user->setEmail('test@example.com');
+        $user->setGender(Gender::male);
+
+        self::assertSame('', (string) $user);
+    }
+
+    public function testSetInqRucToNull(): void
+    {
+        $user = new User();
+        $user->setEmail('test@example.com');
+        $user->setGender(Gender::male);
+
+        $user->setInqRuc('1234567890001');
+        self::assertSame('1234567890001', $user->getInqRuc());
+
+        $result = $user->setInqRuc(null);
+        self::assertSame($user, $result);
+        self::assertNull($user->getInqRuc());
+    }
+
+    public function testNullablePhoneNumbers(): void
+    {
+        $user = new User();
+        $user->setEmail('test@example.com');
+        $user->setGender(Gender::male);
+
+        $user->setTelefono('123');
+        $user->setTelefono(null);
+        self::assertNull($user->getTelefono());
+
+        $user->setTelefono2('456');
+        $user->setTelefono2(null);
+        self::assertNull($user->getTelefono2());
+    }
+
+    public function testNullableDireccion(): void
+    {
+        $user = new User();
+        $user->setEmail('test@example.com');
+        $user->setGender(Gender::male);
+
+        $user->setDireccion('Some address');
+        $user->setDireccion(null);
+        self::assertNull($user->getDireccion());
+    }
+
+    public function testSetRoleAndGetRole(): void
+    {
+        $user = new User();
+        $user->setEmail('test@example.com');
+        $user->setGender(Gender::male);
+
+        $result = $user->setRole('ROLE_CASHIER');
+
+        self::assertSame($user, $result);
+        self::assertSame('ROLE_CASHIER', $user->getRole());
+        self::assertSame(['ROLE_CASHIER'], $user->getRoles());
+    }
+
+    public function testGenderGetterSetter(): void
+    {
+        $user = new User();
+        $user->setEmail('test@example.com');
+
+        foreach (Gender::cases() as $gender) {
+            $result = $user->setGender($gender);
+            self::assertSame($user, $result);
+            self::assertSame($gender, $user->getGender());
+        }
+    }
 }

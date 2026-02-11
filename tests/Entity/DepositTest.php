@@ -157,6 +157,46 @@ final class DepositTest extends TestCase
         self::assertNull($transaction->getDeposit());
     }
 
+    public function testSetTransactionReplacesExistingTransaction(): void
+    {
+        $deposit = new Deposit();
+        $transaction1 = new Transaction();
+        $transaction2 = new Transaction();
+
+        $deposit->setTransaction($transaction1);
+        self::assertSame($transaction1, $deposit->getTransaction());
+        self::assertSame($deposit, $transaction1->getDeposit());
+
+        $deposit->setTransaction($transaction2);
+        self::assertSame($transaction2, $deposit->getTransaction());
+        self::assertSame($deposit, $transaction2->getDeposit());
+    }
+
+    public function testSetTransactionToNullWhenAlreadyNull(): void
+    {
+        $deposit = new Deposit();
+
+        $result = $deposit->setTransaction(null);
+
+        self::assertSame($deposit, $result);
+        self::assertNull($deposit->getTransaction());
+    }
+
+    public function testSetTransactionSkipsSetDepositWhenAlreadySet(): void
+    {
+        $deposit = new Deposit();
+        $transaction = new Transaction();
+
+        // Manually set the owning side first
+        $transaction->setDeposit($deposit);
+
+        // Now set via the inverse side - should skip setDeposit since it's already set
+        $deposit->setTransaction($transaction);
+
+        self::assertSame($transaction, $deposit->getTransaction());
+        self::assertSame($deposit, $transaction->getDeposit());
+    }
+
     private function createPaymentMethodWithId(int $id): PaymentMethod
     {
         $paymentMethod = new PaymentMethod();

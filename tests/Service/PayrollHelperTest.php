@@ -80,6 +80,60 @@ final class PayrollHelperTest extends TestCase
         self::assertSame([100.0, 200.0], $result['storeData'][10]['transactions']);
     }
 
+    public function testGetDataDecemberPrevDateIsNovember(): void
+    {
+        $helper = $this->createHelper([]);
+
+        $result = $helper->getData(2024, 12);
+
+        self::assertSame('2024-12-1', $result['factDate']);
+        self::assertSame('2024-11-01', $result['prevDate']);
+    }
+
+    public function testGetDataWithEmptyStores(): void
+    {
+        $helper = $this->createHelper([]);
+
+        $result = $helper->getData(2024, 6);
+
+        self::assertCount(0, $result['stores']);
+        self::assertEmpty($result['storeData']);
+    }
+
+    public function testGetDataWithStoreIdZeroReturnsAllStores(): void
+    {
+        $store1 = (new Store())->setId(1);
+        $store2 = (new Store())->setId(2);
+
+        $helper = $this->createHelper([$store1, $store2]);
+
+        $result = $helper->getData(2024, 6, 0);
+
+        self::assertCount(2, $result['stores']);
+    }
+
+    public function testGetDataFebruaryPrevDateIsJanuary(): void
+    {
+        $helper = $this->createHelper([]);
+
+        $result = $helper->getData(2024, 2);
+
+        self::assertSame('2024-2-1', $result['factDate']);
+        self::assertSame('2024-1-01', $result['prevDate']);
+    }
+
+    public function testGetDataFilterWithNonExistentStoreIdReturnsEmpty(): void
+    {
+        $store1 = (new Store())->setId(1);
+
+        $helper = $this->createHelper([$store1]);
+
+        $result = $helper->getData(2024, 6, 999);
+
+        self::assertCount(0, $result['stores']);
+        self::assertEmpty($result['storeData']);
+    }
+
     /**
      * @param Store[] $stores
      */
