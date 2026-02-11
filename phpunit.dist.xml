@@ -30,6 +30,8 @@
         </include>
         <exclude>
             <file>src/Service/PhpXlsxGenerator.php</file>
+            <file>src/.bootstrap.php</file>
+            <file>src/Kernel.php</file>
         </exclude>
     </source>
 
