@@ -25,7 +25,3 @@ services:
                 template: 'data_collector/git_data.html.twig'
                 id: 'app.git_data_collector'
         public: false
-
-    App\DataFixtures\:
-        resource: '../src/DataFixtures'
-        tags: [ 'doctrine.fixture.orm' ]

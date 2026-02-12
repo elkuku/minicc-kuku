@@ -72,7 +72,7 @@ final class AppFixtureStory extends Story
         ]);
 
         $text = file_get_contents(
-            dirname(__DIR__, 2) . '/src/DataFixtures/contract-template.html'
+            dirname(__DIR__, 2).'/src/Story/contract-template.html'
         );
 
         if ($text) {
