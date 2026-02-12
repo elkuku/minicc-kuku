@@ -33,6 +33,7 @@ class CollectRent extends BaseController
         EntityManagerInterface $entityManager,
     ): Response
     {
+        /** @var array<string, string> $values */
         $values = $request->request->all('values');
         if ($values === []) {
             return $this->render(
@@ -43,6 +44,7 @@ class CollectRent extends BaseController
             );
         }
 
+        /** @var array<string, string> $users */
         $users = $request->request->all('users');
         $method = $this->paymentMethodRepository->find(1);
 
@@ -76,7 +78,7 @@ class CollectRent extends BaseController
                 ->setType(TransactionType::rent)
                 ->setMethod($method)
                 // Set negative value (!)
-                ->setAmount((string)-$value);
+                ->setAmount((string) (-(float) $value));
 
             $entityManager->persist($transaction);
         }

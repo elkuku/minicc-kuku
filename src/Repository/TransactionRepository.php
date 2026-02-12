@@ -41,7 +41,8 @@ class TransactionRepository extends ServiceEntityRepository
      */
     public function findByStoreAndYear(Store $store, int $year): array
     {
-        return $this->createQueryBuilder('p')
+        /** @var Transaction[] $result */
+        $result = $this->createQueryBuilder('p')
             ->where('p.store = :store')
             ->andWhere('YEAR(p.date) = :year')
             ->setParameter('store', $store->getId())
@@ -49,6 +50,8 @@ class TransactionRepository extends ServiceEntityRepository
             ->orderBy('p.date, p.type', 'ASC')
             ->getQuery()
             ->getResult();
+
+        return $result;
     }
 
     /**
@@ -60,7 +63,8 @@ class TransactionRepository extends ServiceEntityRepository
         User $user
     ): array
     {
-        return $this->createQueryBuilder('p')
+        /** @var Transaction[] $result */
+        $result = $this->createQueryBuilder('p')
             ->where('p.store = :store')
             ->andWhere('YEAR(p.date) = :year')
             ->andWhere('p.user = :user')
@@ -70,6 +74,8 @@ class TransactionRepository extends ServiceEntityRepository
             ->orderBy('p.date, p.type', 'ASC')
             ->getQuery()
             ->getResult();
+
+        return $result;
     }
 
     /**
@@ -77,11 +83,14 @@ class TransactionRepository extends ServiceEntityRepository
      */
     public function getSaldos(): array
     {
-        return $this->createQueryBuilder('t')
+        /** @var array<float> $result */
+        $result = $this->createQueryBuilder('t')
             ->select('t as data, SUM(t.amount) AS amount')
             ->groupBy('t.store')
             ->getQuery()
             ->getResult();
+
+        return $result;
     }
 
     /**
@@ -142,7 +151,8 @@ class TransactionRepository extends ServiceEntityRepository
         int $year
     ): array
     {
-        return $this->createQueryBuilder('p')
+        /** @var array<float> $result */
+        $result = $this->createQueryBuilder('p')
             ->where('p.store = :store')
             ->andWhere('MONTH(p.date) = :month')
             ->andWhere('YEAR(p.date) = :year')
@@ -155,6 +165,8 @@ class TransactionRepository extends ServiceEntityRepository
             ->orderBy('p.date', 'ASC')
             ->getQuery()
             ->getResult();
+
+        return $result;
     }
 
     /**
@@ -162,7 +174,8 @@ class TransactionRepository extends ServiceEntityRepository
      */
     public function findByDate(int $year, int $month): array
     {
-        return $this->createQueryBuilder('t')
+        /** @var Transaction[] $result */
+        $result = $this->createQueryBuilder('t')
             ->andWhere('YEAR(t.date) = :year')
             ->andWhere('MONTH(t.date) = :month')
             ->andWhere('t.type = :type')
@@ -171,6 +184,8 @@ class TransactionRepository extends ServiceEntityRepository
             ->setParameter('type', TransactionType::payment)
             ->getQuery()
             ->getResult();
+
+        return $result;
     }
 
     /**
@@ -179,12 +194,15 @@ class TransactionRepository extends ServiceEntityRepository
      */
     public function findByIds(array $ids): array
     {
-        return $this->createQueryBuilder('t')
+        /** @var Transaction[] $result */
+        $result = $this->createQueryBuilder('t')
             //->andWhere('t.id IN (:ids)')
             ->andWhere('t.id IN('.implode(',', $ids).')')
             //   ->setParameter('ids', implode(',', $ids))
             ->getQuery()
             ->getResult();
+
+        return $result;
     }
 
     /**

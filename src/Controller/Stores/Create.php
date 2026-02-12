@@ -29,8 +29,6 @@ class Create extends BaseController
         $form = $this->createForm(StoreType::class, $store);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $store = $form->getData();
-
             $entityManager->persist($store);
             $entityManager->flush();
 

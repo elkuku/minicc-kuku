@@ -27,8 +27,6 @@ class Edit extends BaseController
         $form = $this->createForm(TransactionTypeType::class, $transaction);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $transaction = $form->getData();
-
             $entityManager->persist($transaction);
             $entityManager->flush();
 

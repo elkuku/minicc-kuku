@@ -12,8 +12,9 @@ use App\Repository\PaymentMethodRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use RuntimeException;
-use UnexpectedValueException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
+use UnexpectedValueException;
 
 readonly class DepositImporter
 {
@@ -68,7 +69,7 @@ readonly class DepositImporter
     private function getCsvDataFromRequest(Request $request): CsvObject
     {
         $csvFile = $request->files->get('csv_file');
-        if (!$csvFile) {
+        if (!$csvFile instanceof UploadedFile) {
             throw new RuntimeException('No CSV file received.');
         }
 

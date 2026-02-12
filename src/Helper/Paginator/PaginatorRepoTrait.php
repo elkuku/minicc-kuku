@@ -18,6 +18,7 @@ trait PaginatorRepoTrait
         int $limit = 5
     ): Paginator
     {
+        /** @var Paginator<Query> $paginator */
         $paginator = new Paginator($dql);
 
         $paginator->getQuery()

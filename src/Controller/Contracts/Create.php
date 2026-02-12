@@ -53,8 +53,6 @@ class Create extends BaseController
         $form = $this->createForm(ContractType::class, $contract);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $contract = $form->getData();
-
             $entityManager->persist($contract);
             $entityManager->flush();
 

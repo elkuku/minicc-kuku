@@ -31,8 +31,8 @@ class Template extends BaseController
         $form = $this->createForm(ContractType::class, $data);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var \App\Entity\Contract $data */
             $data = $form->getData();
-
             $entityManager->persist($data);
             $entityManager->flush();
 

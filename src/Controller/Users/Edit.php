@@ -26,8 +26,6 @@ class Edit extends BaseController
         $form = $this->createForm(UserFullType::class, $client);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $client = $form->getData();
-
             $entityManager->persist($client);
             $entityManager->flush();
 

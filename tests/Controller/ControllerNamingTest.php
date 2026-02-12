@@ -44,7 +44,9 @@ final class ControllerNamingTest extends KernelTestCase
             ) {
                 $sub = $it->getSubPath() !== '' && $it->getSubPath() !== '0' ? $it->getSubPath() . '\\' : '';
 
-                $className = basename((string) $it->key(), '.php');
+                $key = $it->key();
+                assert(is_string($key));
+                $className = basename($key, '.php');
 
                 $routerClass = 'App\Controller\\' . $sub . $className;
                 $routes = $routeLoader->load($routerClass)->all();

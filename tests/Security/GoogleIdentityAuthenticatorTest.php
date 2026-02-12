@@ -231,8 +231,10 @@ final class GoogleIdentityAuthenticatorTest extends TestCase
         GoogleUser $googleUser,
     ): User {
         $method = new ReflectionMethod($authenticator, 'getUser');
+        $result = $method->invoke($authenticator, $googleUser);
+        assert($result instanceof User);
 
-        return $method->invoke($authenticator, $googleUser);
+        return $result;
     }
 
     private function createTestUser(): User

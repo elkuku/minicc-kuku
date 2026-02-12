@@ -28,10 +28,13 @@ class StoreRepository extends ServiceEntityRepository
      */
     public function getActive(): array
     {
-        return $this->createQueryBuilder('s')
+        /** @var Store[] $result */
+        $result = $this->createQueryBuilder('s')
             ->where('s.user IS NOT NULL')
             ->orderBy('s.id', 'ASC')
             ->getQuery()
             ->getResult();
+
+        return $result;
     }
 }

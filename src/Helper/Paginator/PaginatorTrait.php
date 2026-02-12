@@ -18,6 +18,7 @@ trait PaginatorTrait
         int $listLimit
     ): PaginatorOptions
     {
+        /** @var array{page?: string, limit?: string, order?: string, orderDir?: string, criteria?: array<string, string>} $options */
         $options = $request->query->all('paginatorOptions');
 
         return new PaginatorOptions()

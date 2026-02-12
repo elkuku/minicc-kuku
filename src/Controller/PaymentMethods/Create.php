@@ -26,8 +26,6 @@ class Create extends BaseController
         $form = $this->createForm(PaymentMethodType::class, $paymentMethod);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $paymentMethod = $form->getData();
-
             $entityManager->persist($paymentMethod);
             $entityManager->flush();
 

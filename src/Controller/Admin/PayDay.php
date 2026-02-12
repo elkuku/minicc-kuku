@@ -36,8 +36,8 @@ class PayDay extends BaseController
         EntityManagerInterface $entityManager,
     ): Response
     {
-        $payments = $request->request->all('payments');
-        if ($payments === []) {
+        $rawPayments = $request->request->all('payments');
+        if ($rawPayments === []) {
             $paymentMethods = $this->paymentMethodRepository->findAll();
             $serializer = new Serializer([new GetSetMethodNormalizer()], ['json' => new JsonEncoder()]);
             return $this->render(
@@ -51,6 +51,8 @@ class PayDay extends BaseController
             );
         }
 
+        /** @var array{date: list<string>, store: list<string>, method: list<string>, recipe: list<string>, document: list<string>, deposit: list<string>, amount: list<string>, comment: list<string>} $payments */
+        $payments = $rawPayments;
         foreach ($payments['date'] as $i => $dateCobro) {
             if (!$dateCobro) {
                 continue;

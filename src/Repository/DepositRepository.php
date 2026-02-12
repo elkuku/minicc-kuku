@@ -97,7 +97,8 @@ class DepositRepository extends ServiceEntityRepository
      */
     public function lookup(int $documentId): array
     {
-        return $this->createQueryBuilder('d')
+        /** @var Deposit[] $result */
+        $result = $this->createQueryBuilder('d')
             ->where('d.document LIKE :document')
             ->setParameter('document', '%'.$documentId.'%')
             ->addSelect(
@@ -106,6 +107,8 @@ class DepositRepository extends ServiceEntityRepository
             ->setMaxResults(5)
             ->getQuery()
             ->getResult();
+
+        return $result;
     }
 
     /**
@@ -113,7 +116,8 @@ class DepositRepository extends ServiceEntityRepository
      */
     public function search(int $documentId): array
     {
-        return $this->createQueryBuilder('d')
+        /** @var array<float> $result */
+        $result = $this->createQueryBuilder('d')
             ->leftJoin('d.transaction', 'tr')
             ->andWhere('d.document LIKE :document')
             ->andWhere('tr.id IS NULL')
@@ -121,5 +125,7 @@ class DepositRepository extends ServiceEntityRepository
             ->setMaxResults(10)
             ->getQuery()
             ->getResult();
+
+        return $result;
     }
 }

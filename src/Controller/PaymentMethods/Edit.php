@@ -26,8 +26,6 @@ class Edit extends BaseController
         $form = $this->createForm(PaymentMethodType::class, $data);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-
             $entityManager->persist($data);
             $entityManager->flush();
 

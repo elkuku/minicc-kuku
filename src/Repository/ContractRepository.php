@@ -45,9 +45,12 @@ class ContractRepository extends ServiceEntityRepository
         $query->addOrderBy('c.date', 'DESC');
         $query->addOrderBy('c.storeNumber', 'ASC');
 
-        return $query
+        /** @var Contract[] $result */
+        $result = $query
             ->getQuery()
             ->getResult();
+
+        return $result;
     }
 
     public function findTemplate(): ?Contract
