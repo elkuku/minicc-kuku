@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller;
 
+use Knp\Snappy\Pdf;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\User;
 use App\Repository\UserRepository;
@@ -101,6 +102,36 @@ final class MailControllerTest extends WebTestCase
         $client->loginUser($user);
 
         $client->request(Request::METHOD_GET, '/mail/payments-accountant');
+
+        self::assertResponseStatusCodeSame(403);
+    }
+
+    public function testPlanillasSendsEmail(): void
+    {
+        $pdfMock = $this->createStub(Pdf::class);
+        $pdfMock->method('getOutputFromHtml')
+            ->willReturn('%PDF-fake-content');
+
+        self::getContainer()->set('knp_snappy.pdf', $pdfMock);
+
+        $this->client->request(Request::METHOD_GET, '/mail/planillas');
+
+        self::assertResponseIsSuccessful();
+        self::assertRouteSame('mail_planillas');
+        $this->assertSelectorExists('.alert-success');
+    }
+
+    public function testPlanillasDeniedForRegularUser(): void
+    {
+        self::ensureKernelShutdown();
+        $client = self::createClient();
+        /** @var UserRepository $userRepository */
+        $userRepository = self::getContainer()->get(UserRepository::class);
+        $user = $userRepository->findOneBy(['email' => 'user1@example.com']);
+        $this->assertInstanceOf(User::class, $user);
+        $client->loginUser($user);
+
+        $client->request(Request::METHOD_GET, '/mail/planillas');
 
         self::assertResponseStatusCodeSame(403);
     }
