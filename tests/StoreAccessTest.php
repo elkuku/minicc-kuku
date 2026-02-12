@@ -14,7 +14,7 @@ final class StoreAccessTest extends WebTestCase
 {
     public function testAnonymousAccess(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         $client->request(Request::METHOD_GET, '/stores/1');
         self::assertResponseRedirects();
@@ -31,7 +31,7 @@ final class StoreAccessTest extends WebTestCase
 
     public function testAccessWrongUser(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
         /**
          * @var UserRepository $userRepository
          */
@@ -60,7 +60,7 @@ final class StoreAccessTest extends WebTestCase
 
     public function testAccess(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
         /**
          * @var UserRepository $userRepository
          */

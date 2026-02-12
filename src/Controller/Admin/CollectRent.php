@@ -34,7 +34,7 @@ class CollectRent extends BaseController
     ): Response
     {
         $values = $request->request->all('values');
-        if (!$values) {
+        if ($values === []) {
             return $this->render(
                 'admin/collect-rent.html.twig',
                 [

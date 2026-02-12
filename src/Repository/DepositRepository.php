@@ -49,7 +49,7 @@ class DepositRepository extends ServiceEntityRepository
         $query = $this->createQueryBuilder('d')
             ->orderBy('d.'.$options->getOrder(), $options->getOrderDir());
 
-        if ($options->searchCriteria('amount')) {
+        if ($options->searchCriteria('amount') !== '' && $options->searchCriteria('amount') !== '0') {
             $query->andWhere('d.amount = :amount')
                 ->setParameter(
                     'amount',
@@ -57,7 +57,7 @@ class DepositRepository extends ServiceEntityRepository
                 );
         }
 
-        if ($options->searchCriteria('document')) {
+        if ($options->searchCriteria('document') !== '' && $options->searchCriteria('document') !== '0') {
             $query->andWhere('d.document LIKE :document')
                 ->setParameter(
                     'document',
@@ -66,7 +66,7 @@ class DepositRepository extends ServiceEntityRepository
                 );
         }
 
-        if ($options->searchCriteria('date_from')) {
+        if ($options->searchCriteria('date_from') !== '' && $options->searchCriteria('date_from') !== '0') {
             $query->andWhere('d.date >= :date_from')
                 ->setParameter(
                     'date_from',
@@ -74,7 +74,7 @@ class DepositRepository extends ServiceEntityRepository
                 );
         }
 
-        if ($options->searchCriteria('date_to')) {
+        if ($options->searchCriteria('date_to') !== '' && $options->searchCriteria('date_to') !== '0') {
             $query->andWhere('d.date <= :date_to')
                 ->setParameter('date_to', $options->searchCriteria('date_to'));
         }

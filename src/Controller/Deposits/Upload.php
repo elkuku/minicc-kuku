@@ -69,7 +69,7 @@ class Upload extends BaseController
 
         $entityManager->flush();
         $this->addFlash(
-            $insertCount ? 'success' : 'warning',
+            $insertCount !== 0 ? 'success' : 'warning',
             'Depositos insertados: '
             .$insertCount
         );

@@ -16,9 +16,9 @@ final class SystemControllerTest extends WebTestCase
 
     protected function setUp(): void
     {
-        $this->client = static::createClient();
+        $this->client = self::createClient();
         /** @var UserRepository $userRepository */
-        $userRepository = static::getContainer()->get(UserRepository::class);
+        $userRepository = self::getContainer()->get(UserRepository::class);
         $admin = $userRepository->findOneBy(['email' => 'admin@example.com']);
         $this->assertInstanceOf(User::class, $admin);
         $this->client->loginUser($admin);
@@ -35,9 +35,9 @@ final class SystemControllerTest extends WebTestCase
     public function testAboutPageDeniedForRegularUser(): void
     {
         self::ensureKernelShutdown();
-        $client = static::createClient();
+        $client = self::createClient();
         /** @var UserRepository $userRepository */
-        $userRepository = static::getContainer()->get(UserRepository::class);
+        $userRepository = self::getContainer()->get(UserRepository::class);
         $user = $userRepository->findOneBy(['email' => 'user1@example.com']);
         $this->assertInstanceOf(User::class, $user);
         $client->loginUser($user);
@@ -58,7 +58,7 @@ final class SystemControllerTest extends WebTestCase
     public function testLogviewPageWithLogFile(): void
     {
         /** @var string $projectDir */
-        $projectDir = static::getContainer()->getParameter('kernel.project_dir');
+        $projectDir = self::getContainer()->getParameter('kernel.project_dir');
         $logDir = $projectDir . '/var/log';
         $logFile = $logDir . '/deploy.log';
 
@@ -93,9 +93,9 @@ LOG;
     public function testLogviewPageDeniedForRegularUser(): void
     {
         self::ensureKernelShutdown();
-        $client = static::createClient();
+        $client = self::createClient();
         /** @var UserRepository $userRepository */
-        $userRepository = static::getContainer()->get(UserRepository::class);
+        $userRepository = self::getContainer()->get(UserRepository::class);
         $user = $userRepository->findOneBy(['email' => 'user1@example.com']);
         $this->assertInstanceOf(User::class, $user);
         $client->loginUser($user);

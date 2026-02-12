@@ -15,7 +15,7 @@ class CsvParser
      */
     public function parseCSV(array $contents): CsvObject
     {
-        if (!$contents) {
+        if ($contents === []) {
             throw new UnexpectedValueException('CSV file is empty');
         }
 

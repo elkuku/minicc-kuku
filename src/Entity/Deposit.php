@@ -35,7 +35,7 @@ class Deposit implements JsonSerializable
     #[Column(type: Types::DECIMAL, precision: 13, scale: 2, nullable: false)]
     private string $amount;
 
-    #[OneToOne(mappedBy: 'deposit', targetEntity: Transaction::class, cascade: [
+    #[OneToOne(targetEntity: Transaction::class, mappedBy: 'deposit', cascade: [
         'persist',
         'remove',
     ])]
@@ -106,12 +106,12 @@ class Deposit implements JsonSerializable
     public function setTransaction(?Transaction $transaction): self
     {
         // unset the owning side of the relation if necessary
-        if (null === $transaction && null !== $this->transaction) {
+        if (!$transaction instanceof Transaction && $this->transaction instanceof Transaction) {
             $this->transaction->setDeposit(null);
         }
 
         // set the owning side of the relation if necessary
-        if (null !== $transaction && $transaction->getDeposit() !== $this) {
+        if ($transaction instanceof Transaction && $transaction->getDeposit() !== $this) {
             $transaction->setDeposit($this);
         }
 

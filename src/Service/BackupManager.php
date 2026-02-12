@@ -22,7 +22,7 @@ readonly class BackupManager
 
     public function getBackupCommand(): string
     {
-        if (!$this->databaseUrl) {
+        if ($this->databaseUrl === '' || $this->databaseUrl === '0') {
             throw new RuntimeException('No DATABASE_URL found in environment');
         }
 

@@ -18,8 +18,10 @@ class Contract
 {
     #[Column]
     protected ?int $storeNumber = null;
+
     #[Column, Id, GeneratedValue]
     private ?int $id = null;
+
     #[Column(length: 150)]
     private ?string $inqNombreapellido = null;
 

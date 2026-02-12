@@ -19,9 +19,9 @@ final class PaymentMethodControllerTest extends WebTestCase
 
     protected function setUp(): void
     {
-        $this->client = static::createClient();
+        $this->client = self::createClient();
         /** @var UserRepository $userRepository */
-        $userRepository = static::getContainer()->get(UserRepository::class);
+        $userRepository = self::getContainer()->get(UserRepository::class);
         $admin = $userRepository->findOneBy(['email' => 'admin@example.com']);
         $this->assertInstanceOf(User::class, $admin);
         $this->client->loginUser($admin);
@@ -54,7 +54,7 @@ final class PaymentMethodControllerTest extends WebTestCase
     public function testPaymentMethodEditGetForm(): void
     {
         /** @var PaymentMethodRepository $paymentMethodRepository */
-        $paymentMethodRepository = static::getContainer()->get(PaymentMethodRepository::class);
+        $paymentMethodRepository = self::getContainer()->get(PaymentMethodRepository::class);
         $method = $paymentMethodRepository->findOneBy(['name' => 'Bar']);
         $this->assertInstanceOf(PaymentMethod::class, $method);
         $methodId = $method->getId();
@@ -80,7 +80,7 @@ final class PaymentMethodControllerTest extends WebTestCase
     public function testPaymentMethodEditPostValidForm(): void
     {
         /** @var PaymentMethodRepository $paymentMethodRepository */
-        $paymentMethodRepository = static::getContainer()->get(PaymentMethodRepository::class);
+        $paymentMethodRepository = self::getContainer()->get(PaymentMethodRepository::class);
         $method = $paymentMethodRepository->findOneBy(['name' => 'gye-1005345']);
         $this->assertInstanceOf(PaymentMethod::class, $method);
         $methodId = $method->getId();
@@ -98,9 +98,9 @@ final class PaymentMethodControllerTest extends WebTestCase
     public function testPaymentMethodDeniedForRegularUser(): void
     {
         self::ensureKernelShutdown();
-        $client = static::createClient();
+        $client = self::createClient();
         /** @var UserRepository $userRepository */
-        $userRepository = static::getContainer()->get(UserRepository::class);
+        $userRepository = self::getContainer()->get(UserRepository::class);
         $user = $userRepository->findOneBy(['email' => 'user1@example.com']);
         $this->assertInstanceOf(User::class, $user);
         $client->loginUser($user);
@@ -126,7 +126,7 @@ final class PaymentMethodControllerTest extends WebTestCase
     private function ensurePaymentMethodForDelete(): PaymentMethod
     {
         /** @var PaymentMethodRepository $paymentMethodRepository */
-        $paymentMethodRepository = static::getContainer()->get(PaymentMethodRepository::class);
+        $paymentMethodRepository = self::getContainer()->get(PaymentMethodRepository::class);
         $method = $paymentMethodRepository->findOneBy(['name' => 'pch-765']);
 
         if ($method) {
@@ -137,7 +137,7 @@ final class PaymentMethodControllerTest extends WebTestCase
         $method->setName('test-delete-me');
 
         /** @var EntityManagerInterface $em */
-        $em = static::getContainer()->get(EntityManagerInterface::class);
+        $em = self::getContainer()->get(EntityManagerInterface::class);
         $em->persist($method);
         $em->flush();
 

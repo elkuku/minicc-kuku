@@ -18,9 +18,9 @@ final class StoreControllerTest extends WebTestCase
 
     protected function setUp(): void
     {
-        $this->client = static::createClient();
+        $this->client = self::createClient();
         /** @var UserRepository $userRepository */
-        $userRepository = static::getContainer()->get(UserRepository::class);
+        $userRepository = self::getContainer()->get(UserRepository::class);
         $admin = $userRepository->findOneBy(['email' => 'admin@example.com']);
         $this->assertInstanceOf(User::class, $admin);
         $this->client->loginUser($admin);
@@ -45,7 +45,7 @@ final class StoreControllerTest extends WebTestCase
     public function testStoreEditGetForm(): void
     {
         /** @var StoreRepository $storeRepository */
-        $storeRepository = static::getContainer()->get(StoreRepository::class);
+        $storeRepository = self::getContainer()->get(StoreRepository::class);
         $store = $storeRepository->findOneBy(['destination' => 'TEST']);
         $this->assertInstanceOf(Store::class, $store);
         $storeId = $store->getId();
@@ -74,7 +74,7 @@ final class StoreControllerTest extends WebTestCase
     public function testStoreEditPostValidForm(): void
     {
         /** @var StoreRepository $storeRepository */
-        $storeRepository = static::getContainer()->get(StoreRepository::class);
+        $storeRepository = self::getContainer()->get(StoreRepository::class);
         $store = $storeRepository->findOneBy(['destination' => 'TEST']);
         $this->assertInstanceOf(Store::class, $store);
         $storeId = $store->getId();
@@ -95,14 +95,14 @@ final class StoreControllerTest extends WebTestCase
     public function testStoreTransactionsForOwner(): void
     {
         self::ensureKernelShutdown();
-        $client = static::createClient();
+        $client = self::createClient();
         /** @var UserRepository $userRepository */
-        $userRepository = static::getContainer()->get(UserRepository::class);
+        $userRepository = self::getContainer()->get(UserRepository::class);
         $user = $userRepository->findOneBy(['email' => 'user1@example.com']);
         $this->assertInstanceOf(User::class, $user);
         $client->loginUser($user);
         /** @var StoreRepository $storeRepository */
-        $storeRepository = static::getContainer()->get(StoreRepository::class);
+        $storeRepository = self::getContainer()->get(StoreRepository::class);
         $store = $storeRepository->findOneBy(['destination' => 'TEST']);
         $this->assertInstanceOf(Store::class, $store);
         $storeId = $store->getId();
@@ -116,7 +116,7 @@ final class StoreControllerTest extends WebTestCase
     public function testStoreTransactionsForAdmin(): void
     {
         /** @var StoreRepository $storeRepository */
-        $storeRepository = static::getContainer()->get(StoreRepository::class);
+        $storeRepository = self::getContainer()->get(StoreRepository::class);
         $store = $storeRepository->findOneBy(['destination' => 'TEST']);
         $this->assertInstanceOf(Store::class, $store);
         $storeId = $store->getId();
@@ -130,14 +130,14 @@ final class StoreControllerTest extends WebTestCase
     public function testStoreTransactionsForWrongUser(): void
     {
         self::ensureKernelShutdown();
-        $client = static::createClient();
+        $client = self::createClient();
         /** @var UserRepository $userRepository */
-        $userRepository = static::getContainer()->get(UserRepository::class);
+        $userRepository = self::getContainer()->get(UserRepository::class);
         $user = $userRepository->findOneBy(['email' => 'user2@example.com']);
         $this->assertInstanceOf(User::class, $user);
         $client->loginUser($user);
         /** @var StoreRepository $storeRepository */
-        $storeRepository = static::getContainer()->get(StoreRepository::class);
+        $storeRepository = self::getContainer()->get(StoreRepository::class);
         $store = $storeRepository->findOneBy(['destination' => 'TEST']);
         $this->assertInstanceOf(Store::class, $store);
         $storeId = $store->getId();
@@ -150,7 +150,7 @@ final class StoreControllerTest extends WebTestCase
     public function testStoreTransactionsWithYearFilter(): void
     {
         /** @var StoreRepository $storeRepository */
-        $storeRepository = static::getContainer()->get(StoreRepository::class);
+        $storeRepository = self::getContainer()->get(StoreRepository::class);
         $store = $storeRepository->findOneBy(['destination' => 'TEST']);
         $this->assertInstanceOf(Store::class, $store);
         $storeId = $store->getId();
@@ -164,9 +164,9 @@ final class StoreControllerTest extends WebTestCase
     public function testStoreIndexDeniedForRegularUser(): void
     {
         self::ensureKernelShutdown();
-        $client = static::createClient();
+        $client = self::createClient();
         /** @var UserRepository $userRepository */
-        $userRepository = static::getContainer()->get(UserRepository::class);
+        $userRepository = self::getContainer()->get(UserRepository::class);
         $user = $userRepository->findOneBy(['email' => 'user1@example.com']);
         $this->assertInstanceOf(User::class, $user);
         $client->loginUser($user);

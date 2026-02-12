@@ -83,7 +83,7 @@ class GitLoader
         ob_start();
         $lastLine = system($command, $status);
 
-        if ($status) {
+        if ($status !== 0) {
             // Command exited with a status != 0
             if ($lastLine) {
                 throw new RuntimeException($lastLine);

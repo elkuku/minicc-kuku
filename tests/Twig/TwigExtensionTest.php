@@ -13,7 +13,7 @@ final class TwigExtensionTest extends WebTestCase
 
     protected function setUp(): void
     {
-        static::createClient();
+        self::createClient();
         $this->twigExtension = new AppExtension();
     }
 

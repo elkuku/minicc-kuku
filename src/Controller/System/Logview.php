@@ -41,7 +41,7 @@ class Logview extends BaseController
                 $lines = explode("\n", $contents);
                 foreach ($lines as $line) {
                     $line = trim($line);
-                    if (empty($line)) {
+                    if ($line === '' || $line === '0') {
                         continue;
                     }
 

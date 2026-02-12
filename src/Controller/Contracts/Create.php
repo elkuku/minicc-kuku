@@ -36,7 +36,7 @@ class Create extends BaseController
         $user = $this->userRepo->find($request->request->getInt('user'));
         $contract = new Contract();
         $template = $this->contractRepo->findTemplate();
-        if ($template !== null) {
+        if ($template instanceof Contract) {
             $contract->setText($template->getText());
         }
 

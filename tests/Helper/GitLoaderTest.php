@@ -201,7 +201,7 @@ class FailingGitLoader extends GitLoader
     #[Override]
     protected function execCommand(string $command): bool|string
     {
-        if ($this->lastLine) {
+        if ($this->lastLine !== '' && $this->lastLine !== '0') {
             throw new RuntimeException($this->lastLine);
         }
 

@@ -12,7 +12,7 @@ final class LoginFormTest extends WebTestCase
 {
     public function testLoginPageIsAccessible(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
         $client->request(Request::METHOD_GET, '/login');
 
         self::assertResponseIsSuccessful();
@@ -25,7 +25,7 @@ final class LoginFormTest extends WebTestCase
 
     public function testSuccessfulLoginRedirectsToWelcome(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
         $crawler = $client->request(Request::METHOD_GET, '/login');
 
         $form = $crawler->selectButton('Login')->form([
@@ -43,7 +43,7 @@ final class LoginFormTest extends WebTestCase
 
     public function testSuccessfulLoginSetsRememberMeCookie(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
         $crawler = $client->request(Request::METHOD_GET, '/login');
 
         $form = $crawler->selectButton('Login')->form([
@@ -59,7 +59,7 @@ final class LoginFormTest extends WebTestCase
 
     public function testLoginWithInvalidUserShowsError(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
         $crawler = $client->request(Request::METHOD_GET, '/login');
 
         $form = $crawler->selectButton('Login')->form([
@@ -76,7 +76,7 @@ final class LoginFormTest extends WebTestCase
 
     public function testLoginWithEmptyIdentifierShowsError(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
         $crawler = $client->request(Request::METHOD_GET, '/login');
 
         $form = $crawler->selectButton('Login')->form([
@@ -93,7 +93,7 @@ final class LoginFormTest extends WebTestCase
 
     public function testLoginWithInvalidCsrfTokenFails(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
         $client->request(Request::METHOD_GET, '/login');
 
         // Submit form with invalid CSRF token
@@ -110,7 +110,7 @@ final class LoginFormTest extends WebTestCase
 
     public function testLoggedInUserCanAccessProtectedRoute(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
         $crawler = $client->request(Request::METHOD_GET, '/login');
 
         $form = $crawler->selectButton('Login')->form([
@@ -128,7 +128,7 @@ final class LoginFormTest extends WebTestCase
 
     public function testNonAdminCannotAccessAdminRoute(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
         $crawler = $client->request(Request::METHOD_GET, '/login');
 
         $form = $crawler->selectButton('Login')->form([
@@ -146,7 +146,7 @@ final class LoginFormTest extends WebTestCase
 
     public function testLogoutWorks(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
         $crawler = $client->request(Request::METHOD_GET, '/login');
 
         $form = $crawler->selectButton('Login')->form([
@@ -174,7 +174,7 @@ final class LoginFormTest extends WebTestCase
 
     public function testLoginRedirectsToOriginallyRequestedPage(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         // Try to access a protected page first
         $client->request(Request::METHOD_GET, '/admin/payments');

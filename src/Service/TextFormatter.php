@@ -23,7 +23,7 @@ class TextFormatter
             } else {
                 $ruc = chunk_split($ruc, 3, ' ');
             }
-        } elseif ($user->getInqCi()) {
+        } elseif ($user->getInqCi() !== '' && $user->getInqCi() !== '0') {
             $ruc = str_replace('-', '', $user->getInqCi());
             $ruc = chunk_split($ruc, 3, ' ');
         }

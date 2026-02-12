@@ -31,7 +31,7 @@ class PaymentsAccountant extends BaseController
         $month = $request->request->getInt('month', (int)date('m'));
         $ids = array_map(intval(...), array_filter($request->request->all('ids'), is_numeric(...)));
 
-        if ($ids) {
+        if ($ids !== []) {
             $email = $this->emailHelper->createTemplatedEmail(
                 to: Address::create($emailAccountant),
                 subject: sprintf('Pagos del MiniCC KuKu - %d / %d', $month, $year)

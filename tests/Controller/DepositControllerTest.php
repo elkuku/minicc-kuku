@@ -22,9 +22,9 @@ final class DepositControllerTest extends WebTestCase
 
     protected function setUp(): void
     {
-        $this->client = static::createClient();
+        $this->client = self::createClient();
         /** @var UserRepository $userRepository */
-        $userRepository = static::getContainer()->get(UserRepository::class);
+        $userRepository = self::getContainer()->get(UserRepository::class);
         $admin = $userRepository->findOneBy(['email' => 'admin@example.com']);
         $this->assertInstanceOf(User::class, $admin);
         $this->client->loginUser($admin);
@@ -72,9 +72,9 @@ final class DepositControllerTest extends WebTestCase
     public function testDepositDeniedForRegularUser(): void
     {
         self::ensureKernelShutdown();
-        $client = static::createClient();
+        $client = self::createClient();
         /** @var UserRepository $userRepository */
-        $userRepository = static::getContainer()->get(UserRepository::class);
+        $userRepository = self::getContainer()->get(UserRepository::class);
         $user = $userRepository->findOneBy(['email' => 'user1@example.com']);
         $this->assertInstanceOf(User::class, $user);
         $client->loginUser($user);
@@ -100,7 +100,7 @@ final class DepositControllerTest extends WebTestCase
     private function ensureDepositExists(): Deposit
     {
         /** @var DepositRepository $depositRepository */
-        $depositRepository = static::getContainer()->get(DepositRepository::class);
+        $depositRepository = self::getContainer()->get(DepositRepository::class);
         $deposit = $depositRepository->findOneBy([]);
 
         if ($deposit) {
@@ -108,7 +108,7 @@ final class DepositControllerTest extends WebTestCase
         }
 
         /** @var PaymentMethodRepository $pmRepository */
-        $pmRepository = static::getContainer()->get(PaymentMethodRepository::class);
+        $pmRepository = self::getContainer()->get(PaymentMethodRepository::class);
         $paymentMethod = $pmRepository->findOneBy([]);
         $this->assertInstanceOf(PaymentMethod::class, $paymentMethod);
 
@@ -119,7 +119,7 @@ final class DepositControllerTest extends WebTestCase
         $deposit->setEntity($paymentMethod);
 
         /** @var EntityManagerInterface $em */
-        $em = static::getContainer()->get(EntityManagerInterface::class);
+        $em = self::getContainer()->get(EntityManagerInterface::class);
         $em->persist($deposit);
         $em->flush();
 

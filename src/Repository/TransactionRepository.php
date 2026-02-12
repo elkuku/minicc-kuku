@@ -231,7 +231,7 @@ class TransactionRepository extends ServiceEntityRepository
                 ->setParameter('type', (int)$criteria['type']);
         }
 
-        if ($options->searchCriteria('amount')) {
+        if ($options->searchCriteria('amount') !== '' && $options->searchCriteria('amount') !== '0') {
             $query->andWhere('t.amount = :amount')
                 ->setParameter(
                     'amount',
@@ -239,12 +239,12 @@ class TransactionRepository extends ServiceEntityRepository
                 );
         }
 
-        if ($options->searchCriteria('store')) {
+        if ($options->searchCriteria('store') !== '' && $options->searchCriteria('store') !== '0') {
             $query->andWhere('t.store = :store')
                 ->setParameter('store', (int)$options->searchCriteria('store'));
         }
 
-        if ($options->searchCriteria('date_from')) {
+        if ($options->searchCriteria('date_from') !== '' && $options->searchCriteria('date_from') !== '0') {
             $query->andWhere('t.date >= :date_from')
                 ->setParameter(
                     'date_from',
@@ -252,17 +252,17 @@ class TransactionRepository extends ServiceEntityRepository
                 );
         }
 
-        if ($options->searchCriteria('date_to')) {
+        if ($options->searchCriteria('date_to') !== '' && $options->searchCriteria('date_to') !== '0') {
             $query->andWhere('t.date <= :date_to')
                 ->setParameter('date_to', $options->searchCriteria('date_to'));
         }
 
-        if ($options->searchCriteria('recipe')) {
+        if ($options->searchCriteria('recipe') !== '' && $options->searchCriteria('recipe') !== '0') {
             $query->andWhere('t.recipeNo = :recipe')
                 ->setParameter('recipe', (int)$options->searchCriteria('recipe'));
         }
 
-        if ($options->searchCriteria('comment')) {
+        if ($options->searchCriteria('comment') !== '' && $options->searchCriteria('comment') !== '0') {
             $query->andWhere('t.comment LIKE :searchTerm')
                 ->setParameter('searchTerm', '%'.$options->searchCriteria('comment').'%');
         }

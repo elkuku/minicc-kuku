@@ -16,9 +16,9 @@ final class UserControllerTest extends WebTestCase
 
     protected function setUp(): void
     {
-        $this->client = static::createClient();
+        $this->client = self::createClient();
         /** @var UserRepository $userRepository */
-        $userRepository = static::getContainer()->get(UserRepository::class);
+        $userRepository = self::getContainer()->get(UserRepository::class);
         $admin = $userRepository->findOneBy(['email' => 'admin@example.com']);
         $this->assertInstanceOf(User::class, $admin);
         $this->client->loginUser($admin);
@@ -67,7 +67,7 @@ final class UserControllerTest extends WebTestCase
     public function testUserEditGetForm(): void
     {
         /** @var UserRepository $userRepository */
-        $userRepository = static::getContainer()->get(UserRepository::class);
+        $userRepository = self::getContainer()->get(UserRepository::class);
         $user = $userRepository->findOneBy(['email' => 'user1@example.com']);
         $this->assertInstanceOf(User::class, $user);
 
@@ -96,7 +96,7 @@ final class UserControllerTest extends WebTestCase
     public function testUserEditPostValidForm(): void
     {
         /** @var UserRepository $userRepository */
-        $userRepository = static::getContainer()->get(UserRepository::class);
+        $userRepository = self::getContainer()->get(UserRepository::class);
         $user = $userRepository->findOneBy(['email' => 'user2@example.com']);
         $this->assertInstanceOf(User::class, $user);
 
@@ -117,9 +117,9 @@ final class UserControllerTest extends WebTestCase
     public function testUserIndexDeniedForRegularUser(): void
     {
         self::ensureKernelShutdown();
-        $client = static::createClient();
+        $client = self::createClient();
         /** @var UserRepository $userRepository */
-        $userRepository = static::getContainer()->get(UserRepository::class);
+        $userRepository = self::getContainer()->get(UserRepository::class);
         $user = $userRepository->findOneBy(['email' => 'user1@example.com']);
         $this->assertInstanceOf(User::class, $user);
         $client->loginUser($user);

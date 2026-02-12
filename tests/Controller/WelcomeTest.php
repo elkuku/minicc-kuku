@@ -13,9 +13,9 @@ final class WelcomeTest extends WebTestCase
 {
     public function testWelcomePageIsAccessibleForAdmin(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
         /** @var UserRepository $userRepository */
-        $userRepository = static::getContainer()->get(UserRepository::class);
+        $userRepository = self::getContainer()->get(UserRepository::class);
         $admin = $userRepository->findOneBy(['email' => 'admin@example.com']);
         $this->assertInstanceOf(User::class, $admin);
         $client->loginUser($admin);
@@ -28,7 +28,7 @@ final class WelcomeTest extends WebTestCase
 
     public function testWelcomeAnonymousRedirectsToLogin(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         $client->request(Request::METHOD_GET, '/');
 
@@ -38,9 +38,9 @@ final class WelcomeTest extends WebTestCase
 
     public function testWelcomeForRegularUser(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
         /** @var UserRepository $userRepository */
-        $userRepository = static::getContainer()->get(UserRepository::class);
+        $userRepository = self::getContainer()->get(UserRepository::class);
         $user = $userRepository->findOneBy(['email' => 'user1@example.com']);
         $this->assertInstanceOf(User::class, $user);
         $client->loginUser($user);

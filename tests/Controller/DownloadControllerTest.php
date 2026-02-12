@@ -15,9 +15,9 @@ final class DownloadControllerTest extends WebTestCase
 {
     protected function setUp(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
         /** @var UserRepository $userRepository */
-        $userRepository = static::getContainer()->get(UserRepository::class);
+        $userRepository = self::getContainer()->get(UserRepository::class);
         $admin = $userRepository->findOneBy(['email' => 'admin@example.com']);
         $this->assertInstanceOf(User::class, $admin);
         $client->loginUser($admin);
@@ -26,9 +26,9 @@ final class DownloadControllerTest extends WebTestCase
     public function testDownloadUsersListRequiresAdmin(): void
     {
         self::ensureKernelShutdown();
-        $client = static::createClient();
+        $client = self::createClient();
         /** @var UserRepository $userRepository */
-        $userRepository = static::getContainer()->get(UserRepository::class);
+        $userRepository = self::getContainer()->get(UserRepository::class);
         $user = $userRepository->findOneBy(['email' => 'user1@example.com']);
         $this->assertInstanceOf(User::class, $user);
         $client->loginUser($user);
@@ -41,9 +41,9 @@ final class DownloadControllerTest extends WebTestCase
     public function testDownloadUsersRucListRequiresAdmin(): void
     {
         self::ensureKernelShutdown();
-        $client = static::createClient();
+        $client = self::createClient();
         /** @var UserRepository $userRepository */
-        $userRepository = static::getContainer()->get(UserRepository::class);
+        $userRepository = self::getContainer()->get(UserRepository::class);
         $user = $userRepository->findOneBy(['email' => 'user1@example.com']);
         $this->assertInstanceOf(User::class, $user);
         $client->loginUser($user);
@@ -56,14 +56,14 @@ final class DownloadControllerTest extends WebTestCase
     public function testStoreTransactionsRequiresStoreAccess(): void
     {
         self::ensureKernelShutdown();
-        $client = static::createClient();
+        $client = self::createClient();
         /** @var UserRepository $userRepository */
-        $userRepository = static::getContainer()->get(UserRepository::class);
+        $userRepository = self::getContainer()->get(UserRepository::class);
         $user = $userRepository->findOneBy(['email' => 'user1@example.com']);
         $this->assertInstanceOf(User::class, $user);
         $client->loginUser($user);
         /** @var StoreRepository $storeRepository */
-        $storeRepository = static::getContainer()->get(StoreRepository::class);
+        $storeRepository = self::getContainer()->get(StoreRepository::class);
         $store = $storeRepository->findOneBy(['destination' => 'TEST']);
         $this->assertInstanceOf(Store::class, $store);
         $storeId = $store->getId();
@@ -78,14 +78,14 @@ final class DownloadControllerTest extends WebTestCase
     public function testStoreTransactionsDeniedForWrongUser(): void
     {
         self::ensureKernelShutdown();
-        $client = static::createClient();
+        $client = self::createClient();
         /** @var UserRepository $userRepository */
-        $userRepository = static::getContainer()->get(UserRepository::class);
+        $userRepository = self::getContainer()->get(UserRepository::class);
         $user = $userRepository->findOneBy(['email' => 'user2@example.com']);
         $this->assertInstanceOf(User::class, $user);
         $client->loginUser($user);
         /** @var StoreRepository $storeRepository */
-        $storeRepository = static::getContainer()->get(StoreRepository::class);
+        $storeRepository = self::getContainer()->get(StoreRepository::class);
         $store = $storeRepository->findOneBy(['destination' => 'TEST']);
         $this->assertInstanceOf(Store::class, $store);
         $storeId = $store->getId();
@@ -98,9 +98,9 @@ final class DownloadControllerTest extends WebTestCase
     public function testDownloadPlanillasRequiresAdmin(): void
     {
         self::ensureKernelShutdown();
-        $client = static::createClient();
+        $client = self::createClient();
         /** @var UserRepository $userRepository */
-        $userRepository = static::getContainer()->get(UserRepository::class);
+        $userRepository = self::getContainer()->get(UserRepository::class);
         $user = $userRepository->findOneBy(['email' => 'user1@example.com']);
         $this->assertInstanceOf(User::class, $user);
         $client->loginUser($user);
@@ -113,9 +113,9 @@ final class DownloadControllerTest extends WebTestCase
     public function testDownloadTransactionsRequiresAdmin(): void
     {
         self::ensureKernelShutdown();
-        $client = static::createClient();
+        $client = self::createClient();
         /** @var UserRepository $userRepository */
-        $userRepository = static::getContainer()->get(UserRepository::class);
+        $userRepository = self::getContainer()->get(UserRepository::class);
         $user = $userRepository->findOneBy(['email' => 'user1@example.com']);
         $this->assertInstanceOf(User::class, $user);
         $client->loginUser($user);

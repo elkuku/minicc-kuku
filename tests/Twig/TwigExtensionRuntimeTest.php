@@ -16,7 +16,7 @@ final class TwigExtensionRuntimeTest extends WebTestCase
 
     protected function setUp(): void
     {
-        static::createClient();
+        self::createClient();
         $this->twigExtensionRuntime = new AppExtensionRuntime(
             $this->createStub(UserRepository::class),
             $this->createStub(ShaFinder::class),

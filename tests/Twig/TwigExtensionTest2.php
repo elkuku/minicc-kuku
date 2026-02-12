@@ -15,7 +15,7 @@ final class TwigExtensionTest2 extends WebTestCase
 
     protected function setUp(): void
     {
-        static::createClient();
+        self::createClient();
 
         $this->twigExtension = new TwigExtension(new TextFormatter());
     }

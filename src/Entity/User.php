@@ -39,7 +39,7 @@ class User implements UserInterface, Stringable
     /**
      * @var Collection<int, Store> $stores
      */
-    #[OneToMany(mappedBy: 'user', targetEntity: Store::class)]
+    #[OneToMany(targetEntity: Store::class, mappedBy: 'user')]
     private Collection $stores;
 
     #[NotBlank]

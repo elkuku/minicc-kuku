@@ -25,9 +25,9 @@ final class TransactionControllerTest extends WebTestCase
 
     protected function setUp(): void
     {
-        $this->client = static::createClient();
+        $this->client = self::createClient();
         /** @var UserRepository $userRepository */
-        $userRepository = static::getContainer()->get(UserRepository::class);
+        $userRepository = self::getContainer()->get(UserRepository::class);
         $admin = $userRepository->findOneBy(['email' => 'admin@example.com']);
         $this->assertInstanceOf(User::class, $admin);
         $this->client->loginUser($admin);
@@ -55,9 +55,9 @@ final class TransactionControllerTest extends WebTestCase
     public function testTransactionDeniedForRegularUser(): void
     {
         self::ensureKernelShutdown();
-        $client = static::createClient();
+        $client = self::createClient();
         /** @var UserRepository $userRepository */
-        $userRepository = static::getContainer()->get(UserRepository::class);
+        $userRepository = self::getContainer()->get(UserRepository::class);
         $user = $userRepository->findOneBy(['email' => 'user1@example.com']);
         $this->assertInstanceOf(User::class, $user);
         $client->loginUser($user);
@@ -123,7 +123,7 @@ final class TransactionControllerTest extends WebTestCase
     private function ensureTransactionExists(): Transaction
     {
         /** @var TransactionRepository $transactionRepository */
-        $transactionRepository = static::getContainer()->get(TransactionRepository::class);
+        $transactionRepository = self::getContainer()->get(TransactionRepository::class);
         $transaction = $transactionRepository->findOneBy([]);
 
         if ($transaction) {
@@ -131,17 +131,17 @@ final class TransactionControllerTest extends WebTestCase
         }
 
         /** @var StoreRepository $storeRepository */
-        $storeRepository = static::getContainer()->get(StoreRepository::class);
+        $storeRepository = self::getContainer()->get(StoreRepository::class);
         $store = $storeRepository->findOneBy([]);
         $this->assertInstanceOf(Store::class, $store);
 
         /** @var UserRepository $userRepository */
-        $userRepository = static::getContainer()->get(UserRepository::class);
+        $userRepository = self::getContainer()->get(UserRepository::class);
         $user = $userRepository->findOneBy(['email' => 'admin@example.com']);
         $this->assertInstanceOf(User::class, $user);
 
         /** @var PaymentMethodRepository $pmRepository */
-        $pmRepository = static::getContainer()->get(PaymentMethodRepository::class);
+        $pmRepository = self::getContainer()->get(PaymentMethodRepository::class);
         $paymentMethod = $pmRepository->findOneBy([]);
         $this->assertInstanceOf(PaymentMethod::class, $paymentMethod);
 
@@ -154,7 +154,7 @@ final class TransactionControllerTest extends WebTestCase
         $transaction->setAmount('50.00');
 
         /** @var EntityManagerInterface $em */
-        $em = static::getContainer()->get(EntityManagerInterface::class);
+        $em = self::getContainer()->get(EntityManagerInterface::class);
         $em->persist($transaction);
         $em->flush();
 

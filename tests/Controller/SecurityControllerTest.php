@@ -13,7 +13,7 @@ final class SecurityControllerTest extends WebTestCase
 {
     public function testGoogleVerifyEndpointExists(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         // POST to the Google verify endpoint - it throws UnexpectedValueException
         // which results in a 500, but the route exists and is handled
@@ -26,7 +26,7 @@ final class SecurityControllerTest extends WebTestCase
 
     public function testLoginPageIsAccessible(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
         $client->request(Request::METHOD_GET, '/login');
 
         self::assertResponseIsSuccessful();
@@ -35,9 +35,9 @@ final class SecurityControllerTest extends WebTestCase
 
     public function testLogoutRedirects(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
         /** @var UserRepository $userRepository */
-        $userRepository = static::getContainer()->get(UserRepository::class);
+        $userRepository = self::getContainer()->get(UserRepository::class);
         $user = $userRepository->findOneBy(['email' => 'user1@example.com']);
         $this->assertInstanceOf(User::class, $user);
         $client->loginUser($user);

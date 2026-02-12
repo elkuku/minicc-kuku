@@ -32,12 +32,12 @@ class ContractRepository extends ServiceEntityRepository
 
         $query->where('c.id > 1');
 
-        if ($storeId) {
+        if ($storeId !== 0) {
             $query->andWhere('c.storeNumber = :storeId')
                 ->setParameter('storeId', $storeId);
         }
 
-        if ($year) {
+        if ($year !== 0) {
             $query->andWhere('YEAR(c.date) = :year')
                 ->setParameter('year', $year);
         }

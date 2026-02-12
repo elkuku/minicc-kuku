@@ -30,7 +30,7 @@ class PlanillasClients extends BaseController
     {
         $recipients = $request->request->all('recipients');
 
-        if (!$recipients) {
+        if ($recipients === []) {
             return $this->render(
                 'mail/planillas-clients.html.twig',
                 [
@@ -91,11 +91,11 @@ class PlanillasClients extends BaseController
             }
         }
 
-        if ($failures) {
+        if ($failures !== []) {
             $this->addFlash('warning', implode('<br>', $failures));
         }
 
-        if ($successes) {
+        if ($successes !== []) {
             $this->addFlash(
                 'success',
                 'Mails have been sent to stores: '

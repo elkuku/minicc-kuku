@@ -20,9 +20,9 @@ final class AdminControllerTest extends WebTestCase
 
     protected function setUp(): void
     {
-        $this->client = static::createClient();
+        $this->client = self::createClient();
         /** @var UserRepository $userRepository */
-        $userRepository = static::getContainer()->get(UserRepository::class);
+        $userRepository = self::getContainer()->get(UserRepository::class);
         $admin = $userRepository->findOneBy(['email' => 'admin@example.com']);
         $this->assertInstanceOf(User::class, $admin);
         $this->client->loginUser($admin);
@@ -39,9 +39,9 @@ final class AdminControllerTest extends WebTestCase
     public function testTasksDeniedForRegularUser(): void
     {
         self::ensureKernelShutdown();
-        $client = static::createClient();
+        $client = self::createClient();
         /** @var UserRepository $userRepository */
-        $userRepository = static::getContainer()->get(UserRepository::class);
+        $userRepository = self::getContainer()->get(UserRepository::class);
         $user = $userRepository->findOneBy(['email' => 'user1@example.com']);
         $this->assertInstanceOf(User::class, $user);
         $client->loginUser($user);
@@ -87,13 +87,13 @@ final class AdminControllerTest extends WebTestCase
     public function testCollectRentPostProcessesRequest(): void
     {
         /** @var StoreRepository $storeRepository */
-        $storeRepository = static::getContainer()->get(StoreRepository::class);
+        $storeRepository = self::getContainer()->get(StoreRepository::class);
         $store = $storeRepository->findOneBy(['destination' => 'TEST']);
         $this->assertInstanceOf(Store::class, $store);
         $storeId = $store->getId();
         $this->assertNotNull($storeId);
         /** @var UserRepository $userRepository */
-        $userRepository = static::getContainer()->get(UserRepository::class);
+        $userRepository = self::getContainer()->get(UserRepository::class);
         $user = $userRepository->findOneBy(['email' => 'user1@example.com']);
         $this->assertInstanceOf(User::class, $user);
 
@@ -111,13 +111,13 @@ final class AdminControllerTest extends WebTestCase
     public function testCollectRentPostSkipsEmptyValues(): void
     {
         /** @var StoreRepository $storeRepository */
-        $storeRepository = static::getContainer()->get(StoreRepository::class);
+        $storeRepository = self::getContainer()->get(StoreRepository::class);
         $store = $storeRepository->findOneBy(['destination' => 'TEST']);
         $this->assertInstanceOf(Store::class, $store);
         $storeId = $store->getId();
         $this->assertNotNull($storeId);
         /** @var UserRepository $userRepository */
-        $userRepository = static::getContainer()->get(UserRepository::class);
+        $userRepository = self::getContainer()->get(UserRepository::class);
         $user = $userRepository->findOneBy(['email' => 'user1@example.com']);
         $this->assertInstanceOf(User::class, $user);
 
@@ -142,11 +142,11 @@ final class AdminControllerTest extends WebTestCase
     public function testPayDayPostCreatesTransactions(): void
     {
         /** @var StoreRepository $storeRepository */
-        $storeRepository = static::getContainer()->get(StoreRepository::class);
+        $storeRepository = self::getContainer()->get(StoreRepository::class);
         $store = $storeRepository->findOneBy(['destination' => 'TEST']);
         $this->assertInstanceOf(Store::class, $store);
         /** @var PaymentMethodRepository $paymentMethodRepository */
-        $paymentMethodRepository = static::getContainer()->get(PaymentMethodRepository::class);
+        $paymentMethodRepository = self::getContainer()->get(PaymentMethodRepository::class);
         $paymentMethod = $paymentMethodRepository->findOneBy(['name' => 'Bar']);
         $this->assertInstanceOf(PaymentMethod::class, $paymentMethod);
         $paymentMethodId = $paymentMethod->getId();

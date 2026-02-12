@@ -35,11 +35,7 @@ class StoreVoter extends Voter
             return false;
         }
 
-        if (!$subject instanceof Store) {
-            return false;
-        }
-
-        return true;
+        return $subject instanceof Store;
     }
 
     #[Override]

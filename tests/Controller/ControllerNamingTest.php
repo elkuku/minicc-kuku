@@ -30,7 +30,7 @@ final class ControllerNamingTest extends KernelTestCase
         /**
          * @var DelegatingLoader $routeLoader
          */
-        $routeLoader = static::bootKernel()->getContainer()
+        $routeLoader = self::bootKernel()->getContainer()
             ->get('routing.loader');
 
         $it = new RecursiveIteratorIterator(
@@ -42,7 +42,7 @@ final class ControllerNamingTest extends KernelTestCase
             if (!$it->isDot()
                 && !in_array($it->getSubPathName(), $this->ignoredFiles, true)
             ) {
-                $sub = $it->getSubPath() ? $it->getSubPath() . '\\' : '';
+                $sub = $it->getSubPath() !== '' && $it->getSubPath() !== '0' ? $it->getSubPath() . '\\' : '';
 
                 $className = basename((string) $it->key(), '.php');
 

@@ -37,7 +37,7 @@ class PayDay extends BaseController
     ): Response
     {
         $payments = $request->request->all('payments');
-        if (!$payments) {
+        if ($payments === []) {
             $paymentMethods = $this->paymentMethodRepository->findAll();
             $serializer = new Serializer([new GetSetMethodNormalizer()], ['json' => new JsonEncoder()]);
             return $this->render(

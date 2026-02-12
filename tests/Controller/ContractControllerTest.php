@@ -20,9 +20,9 @@ final class ContractControllerTest extends WebTestCase
 
     protected function setUp(): void
     {
-        $this->client = static::createClient();
+        $this->client = self::createClient();
         /** @var UserRepository $userRepository */
-        $userRepository = static::getContainer()->get(UserRepository::class);
+        $userRepository = self::getContainer()->get(UserRepository::class);
         $admin = $userRepository->findOneBy(['email' => 'admin@example.com']);
         $this->assertInstanceOf(User::class, $admin);
         $this->client->loginUser($admin);
@@ -86,9 +86,9 @@ final class ContractControllerTest extends WebTestCase
     public function testContractDeniedForRegularUser(): void
     {
         self::ensureKernelShutdown();
-        $client = static::createClient();
+        $client = self::createClient();
         /** @var UserRepository $userRepository */
-        $userRepository = static::getContainer()->get(UserRepository::class);
+        $userRepository = self::getContainer()->get(UserRepository::class);
         $user = $userRepository->findOneBy(['email' => 'user1@example.com']);
         $this->assertInstanceOf(User::class, $user);
         $client->loginUser($user);
@@ -114,7 +114,7 @@ final class ContractControllerTest extends WebTestCase
     private function ensureContractExists(): Contract
     {
         /** @var ContractRepository $contractRepository */
-        $contractRepository = static::getContainer()->get(ContractRepository::class);
+        $contractRepository = self::getContainer()->get(ContractRepository::class);
         $contract = $contractRepository->findOneBy([]);
 
         if ($contract) {
@@ -127,7 +127,7 @@ final class ContractControllerTest extends WebTestCase
         $contract->setInqNombreapellido('Test Contract');
 
         /** @var EntityManagerInterface $em */
-        $em = static::getContainer()->get(EntityManagerInterface::class);
+        $em = self::getContainer()->get(EntityManagerInterface::class);
         $em->persist($contract);
         $em->flush();
 

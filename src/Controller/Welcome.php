@@ -32,7 +32,7 @@ class Welcome extends BaseController
                 $chartData['headers'][] = 'Local '.$store->getId();
                 $valAlq = $this->taxService->addTax($store->getValAlq());
 
-                $chartData['monthsDebt'][] = $valAlq
+                $chartData['monthsDebt'][] = $valAlq !== 0.0
                     ? round(-$balance / $valAlq, 1)
                     : 0;
                 $chartData['balances'][] = -$balance;
