@@ -18,7 +18,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class Create extends BaseController
 {
     public function __invoke(
-        Request                $request,
+        Request $request,
         EntityManagerInterface $entityManager,
     ): Response
     {

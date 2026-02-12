@@ -13,7 +13,8 @@ class TaxService
     public function __construct(
         #[Autowire('%env(float:VALUE_IVA)%')]
         private readonly float $taxRate,
-    ) {
+    )
+    {
         $this->taxMultiplier = 1 + $this->taxRate / 100;
     }
 

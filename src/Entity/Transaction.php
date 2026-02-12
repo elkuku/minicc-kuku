@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use Override;
-use JsonSerializable;
-use DateTime;
 use App\Repository\TransactionRepository;
 use App\Type\TransactionType;
+use DateTime;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -17,6 +15,8 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToOne;
+use JsonSerializable;
+use Override;
 
 #[Entity(repositoryClass: TransactionRepository::class)]
 class Transaction implements JsonSerializable
@@ -69,11 +69,6 @@ class Transaction implements JsonSerializable
 
     #[Column(length: 255, nullable: true)]
     private ?string $comment = null;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     public function getDate(): DateTime
     {
@@ -135,28 +130,14 @@ class Transaction implements JsonSerializable
         return $this;
     }
 
-    public function setUser(User $user): static
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
     public function getUser(): User
     {
         return $this->user;
     }
 
-    public function setStore(Store $store): static
+    public function setUser(User $user): static
     {
-        $this->store = $store;
-
-        return $this;
-    }
-
-    public function setType(TransactionType $type): static
-    {
-        $this->type = $type;
+        $this->user = $user;
 
         return $this;
     }
@@ -166,9 +147,9 @@ class Transaction implements JsonSerializable
         return $this->type;
     }
 
-    public function setMethod(PaymentMethod $paymentMethod): static
+    public function setType(TransactionType $type): static
     {
-        $this->method = $paymentMethod;
+        $this->type = $type;
 
         return $this;
     }
@@ -178,9 +159,23 @@ class Transaction implements JsonSerializable
         return $this->method;
     }
 
+    public function setMethod(PaymentMethod $paymentMethod): static
+    {
+        $this->method = $paymentMethod;
+
+        return $this;
+    }
+
     public function getStore(): Store
     {
         return $this->store;
+    }
+
+    public function setStore(Store $store): static
+    {
+        $this->store = $store;
+
+        return $this;
     }
 
     public function getDeposit(): ?Deposit
@@ -213,6 +208,11 @@ class Transaction implements JsonSerializable
             'depId' => $this->depId,
             'recipeNo' => $this->recipeNo,
         ];
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
     }
 
     public function setId(int $id): static

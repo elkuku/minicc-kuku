@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace App\Security;
 
-use Symfony\Component\Security\Core\Exception\AuthenticationException;
-use UnexpectedValueException;
 use Override;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Http\Authenticator\AbstractLoginFormAuthenticator;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\CsrfTokenBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\RememberMeBadge;
@@ -20,6 +19,7 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 use Symfony\Component\Security\Http\SecurityRequestAttributes;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
+use UnexpectedValueException;
 
 class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
 {
@@ -28,10 +28,8 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
     public function __construct(
         private readonly RouterInterface $router,
         #[Autowire('%env(APP_ENV)%')]
-        private readonly string          $appEnv
-    )
-    {
-    }
+        private readonly string $appEnv
+    ) {}
 
     #[Override]
     public function supports(Request $request): bool
@@ -73,24 +71,6 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
         );
     }
 
-    #[Override]
-    public function onAuthenticationSuccess(
-        Request        $request,
-        TokenInterface $token,
-        string         $firewallName
-    ): RedirectResponse
-    {
-        if ($targetPath = $this->getTargetPath(
-            $request->getSession(),
-            $firewallName
-        )
-        ) {
-            return new RedirectResponse($targetPath);
-        }
-
-        return new RedirectResponse($this->router->generate('welcome'));
-    }
-
     /**
      * @return array{identifier: string, csrf_token: string}
      */
@@ -109,5 +89,23 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
         );
 
         return $credentials;
+    }
+
+    #[Override]
+    public function onAuthenticationSuccess(
+        Request $request,
+        TokenInterface $token,
+        string $firewallName
+    ): RedirectResponse
+    {
+        if ($targetPath = $this->getTargetPath(
+            $request->getSession(),
+            $firewallName
+        )
+        ) {
+            return new RedirectResponse($targetPath);
+        }
+
+        return new RedirectResponse($this->router->generate('welcome'));
     }
 }

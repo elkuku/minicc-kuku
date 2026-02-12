@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use Override;
-use Deprecated;
-use Stringable;
 use App\Repository\UserRepository;
 use App\Type\Gender;
+use Deprecated;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -17,6 +15,8 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\OneToMany;
+use Override;
+use Stringable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints\Email;
@@ -124,18 +124,6 @@ class User implements UserInterface, Stringable
         return $this->email;
     }
 
-    public function setIdentifier(string $identifier): self
-    {
-        $this->email = $identifier;
-
-        return $this;
-    }
-
-    #[Deprecated]
-    public function eraseCredentials(): void
-    {
-    }
-
     /**
      * @return string[]
      */
@@ -143,16 +131,6 @@ class User implements UserInterface, Stringable
     public function getRoles(): array
     {
         return [$this->getRole()];
-    }
-
-    /**
-     * @param string[] $roles
-     */
-    public function setRoles(array $roles): self
-    {
-        $this->role = $roles[0];
-
-        return $this;
     }
 
     public function getRole(): string
@@ -167,9 +145,34 @@ class User implements UserInterface, Stringable
         return $this;
     }
 
+    public function setIdentifier(string $identifier): self
+    {
+        $this->email = $identifier;
+
+        return $this;
+    }
+
+    #[Deprecated]
+    public function eraseCredentials(): void {}
+
+    /**
+     * @param string[] $roles
+     */
+    public function setRoles(array $roles): self
+    {
+        $this->role = $roles[0];
+
+        return $this;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
     }
 
     public function setName(string $name): self
@@ -177,11 +180,6 @@ class User implements UserInterface, Stringable
         $this->name = $name;
 
         return $this;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
     }
 
     public function getEmail(): string
@@ -206,21 +204,14 @@ class User implements UserInterface, Stringable
         return null;
     }
 
-    public function setInqCi(string $inqCi): static
-    {
-        $this->inqCi = $inqCi;
-
-        return $this;
-    }
-
     public function getInqCi(): string
     {
         return $this->inqCi;
     }
 
-    public function setInqRuc(?string $inqRuc): static
+    public function setInqCi(string $inqCi): static
     {
-        $this->inqRuc = $inqRuc;
+        $this->inqCi = $inqCi;
 
         return $this;
     }
@@ -230,9 +221,9 @@ class User implements UserInterface, Stringable
         return $this->inqRuc;
     }
 
-    public function setTelefono(?string $telefono): static
+    public function setInqRuc(?string $inqRuc): static
     {
-        $this->telefono = $telefono;
+        $this->inqRuc = $inqRuc;
 
         return $this;
     }
@@ -242,9 +233,9 @@ class User implements UserInterface, Stringable
         return $this->telefono;
     }
 
-    public function setTelefono2(?string $telefono2): static
+    public function setTelefono(?string $telefono): static
     {
-        $this->telefono2 = $telefono2;
+        $this->telefono = $telefono;
 
         return $this;
     }
@@ -254,9 +245,9 @@ class User implements UserInterface, Stringable
         return $this->telefono2;
     }
 
-    public function setDireccion(?string $direccion): static
+    public function setTelefono2(?string $telefono2): static
     {
-        $this->direccion = $direccion;
+        $this->telefono2 = $telefono2;
 
         return $this;
     }
@@ -264,6 +255,13 @@ class User implements UserInterface, Stringable
     public function getDireccion(): ?string
     {
         return $this->direccion;
+    }
+
+    public function setDireccion(?string $direccion): static
+    {
+        $this->direccion = $direccion;
+
+        return $this;
     }
 
     public function addStore(Store $store): static
@@ -288,16 +286,16 @@ class User implements UserInterface, Stringable
         return $this->stores;
     }
 
+    public function getGender(): Gender
+    {
+        return $this->gender;
+    }
+
     public function setGender(Gender $gender): static
     {
         $this->gender = $gender;
 
         return $this;
-    }
-
-    public function getGender(): Gender
-    {
-        return $this->gender;
     }
 
     public function getGoogleId(): string

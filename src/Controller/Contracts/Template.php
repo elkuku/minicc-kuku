@@ -17,12 +17,13 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route(path: '/contracts/template', name: 'contracts_template', methods: ['GET', 'POST',])]
 class Template extends BaseController
 {
-    public function __construct(private readonly ContractRepository $contractRepository, private readonly TaxService $taxService)
-    {
-    }
+    public function __construct(
+        private readonly ContractRepository $contractRepository,
+        private readonly TaxService $taxService
+    ) {}
 
     public function __invoke(
-        Request                $request,
+        Request $request,
         EntityManagerInterface $entityManager,
     ): Response
     {

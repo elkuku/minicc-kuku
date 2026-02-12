@@ -18,8 +18,8 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class Edit extends BaseController
 {
     public function __invoke(
-        User                   $client,
-        Request                $request,
+        User $client,
+        Request $request,
         EntityManagerInterface $entityManager,
     ): Response
     {

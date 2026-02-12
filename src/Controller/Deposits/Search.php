@@ -15,12 +15,10 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route(path: '//deposits/search', name: 'deposits_search', methods: ['GET'])]
 class Search extends BaseController
 {
-    public function __construct(private readonly DepositRepository $depositRepository)
-    {
-    }
+    public function __construct(private readonly DepositRepository $depositRepository) {}
 
     public function __invoke(
-        Request           $request
+        Request $request
     ): Response
     {
         $documentId = $request->query->getInt('q');

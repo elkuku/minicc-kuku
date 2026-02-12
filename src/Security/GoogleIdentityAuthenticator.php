@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Security;
 
-use Override;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use App\Type\GoogleUser;
 use Doctrine\ORM\EntityManagerInterface;
 use Google\Client;
+use Override;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,13 +31,11 @@ class GoogleIdentityAuthenticator extends AbstractAuthenticator
 
     public function __construct(
         #[Autowire('%env(OAUTH_GOOGLE_ID)%')]
-        private readonly string                 $oauthGoogleId,
-        private readonly UserRepository         $userRepository,
+        private readonly string $oauthGoogleId,
+        private readonly UserRepository $userRepository,
         private readonly EntityManagerInterface $entityManager,
-        private readonly UrlGeneratorInterface  $urlGenerator,
-    )
-    {
-    }
+        private readonly UrlGeneratorInterface $urlGenerator,
+    ) {}
 
     #[Override]
     public function supports(Request $request): bool
@@ -71,39 +69,6 @@ class GoogleIdentityAuthenticator extends AbstractAuthenticator
         );
     }
 
-    #[Override]
-    public function onAuthenticationSuccess(
-        Request        $request,
-        TokenInterface $token,
-        string         $firewallName
-    ): RedirectResponse
-    {
-        if ($targetPath = $this->getTargetPath(
-            $request->getSession(),
-            $firewallName
-        )
-        ) {
-            return new RedirectResponse($targetPath);
-        }
-
-        return new RedirectResponse($this->urlGenerator->generate('welcome'));
-    }
-
-    #[Override]
-    public function onAuthenticationFailure(
-        Request                 $request,
-        AuthenticationException $exception
-    ): RedirectResponse
-    {
-        /**
-         * @var Session $session
-         */
-        $session = $request->getSession();
-        $session->getFlashBag()->add('danger', $exception->getMessage());
-
-        return new RedirectResponse($this->urlGenerator->generate('login'));
-    }
-
     private function getUser(GoogleUser $googleUser): User
     {
         $user = $this->userRepository->findOneBy(
@@ -132,6 +97,39 @@ class GoogleIdentityAuthenticator extends AbstractAuthenticator
             return $user;
         }
 
-        throw new UserNotFoundException('You are not allowed to login. Please contact an administrator. - ' . $googleUser->getEmail());
+        throw new UserNotFoundException('You are not allowed to login. Please contact an administrator. - '.$googleUser->getEmail());
+    }
+
+    #[Override]
+    public function onAuthenticationSuccess(
+        Request $request,
+        TokenInterface $token,
+        string $firewallName
+    ): RedirectResponse
+    {
+        if ($targetPath = $this->getTargetPath(
+            $request->getSession(),
+            $firewallName
+        )
+        ) {
+            return new RedirectResponse($targetPath);
+        }
+
+        return new RedirectResponse($this->urlGenerator->generate('welcome'));
+    }
+
+    #[Override]
+    public function onAuthenticationFailure(
+        Request $request,
+        AuthenticationException $exception
+    ): RedirectResponse
+    {
+        /**
+         * @var Session $session
+         */
+        $session = $request->getSession();
+        $session->getFlashBag()->add('danger', $exception->getMessage());
+
+        return new RedirectResponse($this->urlGenerator->generate('login'));
     }
 }

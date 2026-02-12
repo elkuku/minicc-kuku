@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
-use Exception;
-use DateTime;
 use App\Entity\Store;
 use App\Entity\Transaction;
 use App\Entity\User;
 use App\Helper\Paginator\PaginatorOptions;
 use App\Helper\Paginator\PaginatorRepoTrait;
 use App\Type\TransactionType;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
+use Exception;
 
 /**
  * @method Transaction|null find($id, $lockMode = null, $lockVersion = null)
@@ -56,8 +56,8 @@ class TransactionRepository extends ServiceEntityRepository
      */
     public function findByStoreYearAndUser(
         Store $store,
-        int   $year,
-        User  $user
+        int $year,
+        User $user
     ): array
     {
         return $this->createQueryBuilder('p')
@@ -138,8 +138,8 @@ class TransactionRepository extends ServiceEntityRepository
      */
     public function findMonthPayments(
         Store $store,
-        int   $month,
-        int   $year
+        int $month,
+        int $year
     ): array
     {
         return $this->createQueryBuilder('p')
@@ -181,7 +181,7 @@ class TransactionRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('t')
             //->andWhere('t.id IN (:ids)')
-            ->andWhere('t.id IN(' . implode(',', $ids) . ')')
+            ->andWhere('t.id IN('.implode(',', $ids).')')
             //   ->setParameter('ids', implode(',', $ids))
             ->getQuery()
             ->getResult();
@@ -224,7 +224,7 @@ class TransactionRepository extends ServiceEntityRepository
         $criteria = $options->getCriteria();
 
         $query = $this->createQueryBuilder('t')
-            ->orderBy('t.' . $options->getOrder(), $options->getOrderDir());
+            ->orderBy('t.'.$options->getOrder(), $options->getOrderDir());
 
         if (isset($criteria['type']) && $criteria['type']) {
             $query->where('t.type = :type')
@@ -264,7 +264,7 @@ class TransactionRepository extends ServiceEntityRepository
 
         if ($options->searchCriteria('comment')) {
             $query->andWhere('t.comment LIKE :searchTerm')
-                ->setParameter('searchTerm', '%' . $options->searchCriteria('comment') . '%');
+                ->setParameter('searchTerm', '%'.$options->searchCriteria('comment').'%');
         }
 
         $query = $query->getQuery();
@@ -290,18 +290,6 @@ class TransactionRepository extends ServiceEntityRepository
         return $number;
     }
 
-    public function getLastChargementDate(): DateTime
-    {
-        $date = $this->createQueryBuilder('t')
-            ->select('MAX(t.date)')
-            ->andWhere('t.type = :type')
-            ->setParameter('type', TransactionType::rent)
-            ->getQuery()
-            ->getSingleScalarResult();
-
-        return new DateTime((string)$date);
-    }
-
     public function checkChargementRequired(): bool
     {
         $currentYear = (int)new DateTime()->format('Y');
@@ -319,5 +307,17 @@ class TransactionRepository extends ServiceEntityRepository
         }
 
         return $lastChargedMonth < $currentMonth;
+    }
+
+    public function getLastChargementDate(): DateTime
+    {
+        $date = $this->createQueryBuilder('t')
+            ->select('MAX(t.date)')
+            ->andWhere('t.type = :type')
+            ->setParameter('type', TransactionType::rent)
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return new DateTime((string)$date);
     }
 }

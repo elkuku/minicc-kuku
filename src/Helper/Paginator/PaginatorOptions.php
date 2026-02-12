@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Helper\Paginator;
 
 use UnexpectedValueException;
+use function in_array;
 
 class PaginatorOptions
 {
@@ -23,21 +24,14 @@ class PaginatorOptions
      */
     private array $criteria = [];
 
-    public function setPage(int $page): static
-    {
-        $this->page = $page;
-
-        return $this;
-    }
-
     public function getPage(): int
     {
         return $this->page;
     }
 
-    public function setOrder(string $order): static
+    public function setPage(int $page): static
     {
-        $this->order = $order;
+        $this->page = $page;
 
         return $this;
     }
@@ -47,16 +41,9 @@ class PaginatorOptions
         return $this->order;
     }
 
-    public function setOrderDir(string $orderDir): static
+    public function setOrder(string $order): static
     {
-        $dirs = ['ASC', 'DESC'];
-        $dir = strtoupper($orderDir);
-
-        if (false === \in_array($dir, $dirs, true)) {
-            throw new UnexpectedValueException(sprintf('Order dir must be %s', implode(', ', $dirs)));
-        }
-
-        $this->orderDir = $orderDir;
+        $this->order = $order;
 
         return $this;
     }
@@ -66,12 +53,16 @@ class PaginatorOptions
         return $this->orderDir;
     }
 
-    /**
-     * @param array<string> $criteria
-     */
-    public function setCriteria(array $criteria): static
+    public function setOrderDir(string $orderDir): static
     {
-        $this->criteria = $criteria;
+        $dirs = ['ASC', 'DESC'];
+        $dir = strtoupper($orderDir);
+
+        if (false === in_array($dir, $dirs, true)) {
+            throw new UnexpectedValueException(sprintf('Order dir must be %s', implode(', ', $dirs)));
+        }
+
+        $this->orderDir = $orderDir;
 
         return $this;
     }
@@ -84,9 +75,12 @@ class PaginatorOptions
         return $this->criteria;
     }
 
-    public function setMaxPages(int $maxPages): static
+    /**
+     * @param array<string> $criteria
+     */
+    public function setCriteria(array $criteria): static
     {
-        $this->maxPages = $maxPages;
+        $this->criteria = $criteria;
 
         return $this;
     }
@@ -96,9 +90,9 @@ class PaginatorOptions
         return $this->maxPages;
     }
 
-    public function setLimit(int $limit): static
+    public function setMaxPages(int $maxPages): static
     {
-        $this->limit = $limit;
+        $this->maxPages = $maxPages;
 
         return $this;
     }
@@ -106,6 +100,13 @@ class PaginatorOptions
     public function getLimit(): int
     {
         return $this->limit;
+    }
+
+    public function setLimit(int $limit): static
+    {
+        $this->limit = $limit;
+
+        return $this;
     }
 
     public function searchCriteria(string $name): string

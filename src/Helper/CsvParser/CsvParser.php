@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Helper\CsvParser;
 
-use UnexpectedValueException;
-use stdClass;
 use RuntimeException;
+use stdClass;
+use UnexpectedValueException;
 
 class CsvParser
 {

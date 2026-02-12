@@ -15,9 +15,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route(path: '/download/planillas', name: 'download_planillas', methods: ['GET'])]
 class Planillas extends BaseController
 {
-    public function __construct(private readonly PdfHelper $PdfHelper, private readonly PayrollHelper $payrollHelper)
-    {
-    }
+    public function __construct(private readonly PdfHelper $PdfHelper, private readonly PayrollHelper $payrollHelper) {}
 
     public function __invoke(): PdfResponse
     {

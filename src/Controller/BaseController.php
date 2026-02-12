@@ -10,6 +10,4 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 /**
  * @method User|null getUser()
  */
-class BaseController extends AbstractController
-{
-}
+class BaseController extends AbstractController {}

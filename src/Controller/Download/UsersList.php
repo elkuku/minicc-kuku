@@ -13,9 +13,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class UsersList extends BaseController
 {
-    public function __construct(private readonly UserRepository $userRepository, private readonly PdfHelper $PdfHelper)
-    {
-    }
+    public function __construct(private readonly UserRepository $userRepository, private readonly PdfHelper $PdfHelper) {}
 
     #[IsGranted('ROLE_ADMIN')]
     #[Route(path: '/download/users-list', name: 'download_users_list', methods: ['GET'])]

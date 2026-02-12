@@ -22,12 +22,10 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_ADMIN')]
 class PlanillasClients extends BaseController
 {
-    public function __construct(private readonly StoreRepository $storeRepository, private readonly Pdf $pdf, private readonly PdfHelper $PDFHelper, private readonly MailerInterface $mailer, private readonly EmailHelper $emailHelper, private readonly PayrollHelper $payrollHelper)
-    {
-    }
+    public function __construct(private readonly StoreRepository $storeRepository, private readonly Pdf $pdf, private readonly PdfHelper $PDFHelper, private readonly MailerInterface $mailer, private readonly EmailHelper $emailHelper, private readonly PayrollHelper $payrollHelper) {}
 
     public function __invoke(
-        Request         $request
+        Request $request
     ): Response
     {
         $recipients = $request->request->all('recipients');
@@ -81,7 +79,7 @@ class PlanillasClients extends BaseController
                     'store' => $store,
                     'factDate' => sprintf('%d-%s-1', $year, $month),
                     'fileName' => $fileName,
-                    'payroll' => $this->payrollHelper->getData($year, $month, (int) $store->getId()),
+                    'payroll' => $this->payrollHelper->getData($year, $month, (int)$store->getId()),
                 ])
                 ->attach($document, $fileName);
 
@@ -101,7 +99,7 @@ class PlanillasClients extends BaseController
             $this->addFlash(
                 'success',
                 'Mails have been sent to stores: '
-                . implode(', ', $successes)
+                .implode(', ', $successes)
             );
         }
 

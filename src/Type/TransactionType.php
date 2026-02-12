@@ -13,14 +13,14 @@ enum TransactionType: string
     case initial = '3';
     case adjustment = '4';
 
-    public function translationKey(): string
-    {
-        return 'TRANSACTION_TYPE_' . strtoupper($this->name);
-    }
-
     public function translatedName(): TranslatableMessage
     {
         return new TranslatableMessage($this->translationKey());
+    }
+
+    public function translationKey(): string
+    {
+        return 'TRANSACTION_TYPE_'.strtoupper($this->name);
     }
 
     public function cssClass(): string

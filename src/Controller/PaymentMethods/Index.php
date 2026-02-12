@@ -15,12 +15,10 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route(path: '/payment-methods', name: 'payment_methods_index', methods: ['GET'])]
 class Index extends BaseController
 {
-    public function __construct(private readonly PaymentMethodRepository $repository)
-    {
-    }
+    public function __construct(private readonly PaymentMethodRepository $repository) {}
 
     public function __invoke(
-        Request                 $request
+        Request $request
     ): Response
     {
         $template = $request->query->get('ajax')
@@ -28,7 +26,7 @@ class Index extends BaseController
             : 'list.html.twig';
 
         return $this->render(
-            'payment-methods/' . $template,
+            'payment-methods/'.$template,
             [
                 'paymentMethods' => $this->repository->findAll(),
             ]

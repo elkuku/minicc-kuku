@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use Override;
-use JsonSerializable;
-use DateTime;
-use UnexpectedValueException;
 use App\Repository\DepositRepository;
+use DateTime;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -16,6 +13,9 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToOne;
+use JsonSerializable;
+use Override;
+use UnexpectedValueException;
 
 #[Entity(repositoryClass: DepositRepository::class)]
 class Deposit implements JsonSerializable
@@ -41,9 +41,9 @@ class Deposit implements JsonSerializable
     ])]
     private ?Transaction $transaction = null;
 
-    public function getId(): ?int
+    public function getEntity(): PaymentMethod
     {
-        return $this->id;
+        return $this->entity;
     }
 
     public function setEntity(PaymentMethod $entity): static
@@ -57,9 +57,14 @@ class Deposit implements JsonSerializable
         return $this;
     }
 
-    public function getEntity(): PaymentMethod
+    public function getId(): ?int
     {
-        return $this->entity;
+        return $this->id;
+    }
+
+    public function getDate(): DateTime
+    {
+        return $this->date;
     }
 
     public function setDate(DateTime $date): static
@@ -69,9 +74,9 @@ class Deposit implements JsonSerializable
         return $this;
     }
 
-    public function getDate(): DateTime
+    public function getDocument(): string
     {
-        return $this->date;
+        return $this->document;
     }
 
     public function setDocument(string $document): static
@@ -81,9 +86,9 @@ class Deposit implements JsonSerializable
         return $this;
     }
 
-    public function getDocument(): string
+    public function getAmount(): string
     {
-        return $this->document;
+        return $this->amount;
     }
 
     public function setAmount(string $amount): static
@@ -91,11 +96,6 @@ class Deposit implements JsonSerializable
         $this->amount = $amount;
 
         return $this;
-    }
-
-    public function getAmount(): string
-    {
-        return $this->amount;
     }
 
     public function getTransaction(): ?Transaction

@@ -18,13 +18,11 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route(path: '/stores/edit/{id}', name: 'stores_edit', methods: ['GET', 'POST'])]
 class Edit extends BaseController
 {
-    public function __construct(private readonly TaxService $taxService)
-    {
-    }
+    public function __construct(private readonly TaxService $taxService) {}
 
     public function __invoke(
-        Store                  $store,
-        Request                $request,
+        Store $store,
+        Request $request,
         EntityManagerInterface $entityManager,
     ): Response
     {

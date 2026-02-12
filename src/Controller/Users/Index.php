@@ -15,12 +15,10 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route(path: '/users', name: 'users_index', methods: ['GET', 'POST'])]
 class Index extends BaseController
 {
-    public function __construct(private readonly UserRepository $userRepo)
-    {
-    }
+    public function __construct(private readonly UserRepository $userRepo) {}
 
     public function __invoke(
-        Request        $request
+        Request $request
     ): Response
     {
         $userActive = $request->query->get('user_active', '1');

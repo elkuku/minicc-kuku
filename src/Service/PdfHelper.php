@@ -15,12 +15,10 @@ readonly class PdfHelper
 {
     public function __construct(
         #[Autowire('%kernel.project_dir%')]
-        private string      $rootDir,
+        private string $rootDir,
         private Environment $twig,
-        private Pdf         $pdfEngine,
-    )
-    {
-    }
+        private Pdf $pdfEngine,
+    ) {}
 
     public function getRoot(): string
     {
@@ -29,9 +27,9 @@ readonly class PdfHelper
 
     public function renderTransactionHtml(
         TransactionRepository $transactionRepository,
-        Store                 $store,
-        int                   $year,
-        int                   $transactionsPerPage = 42
+        Store $store,
+        int $year,
+        int $transactionsPerPage = 42
     ): string
     {
         $transactions = $transactionRepository->findByStoreAndYear(
@@ -63,10 +61,10 @@ readonly class PdfHelper
     }
 
     public function renderPayrollsHtml(
-        int           $year,
-        int           $month,
+        int $year,
+        int $month,
         PayrollHelper $payrollHelper,
-        int           $storeId = 0
+        int $storeId = 0
     ): string
     {
         return $this->twig->render(
@@ -81,7 +79,7 @@ readonly class PdfHelper
      */
     public function getOutputFromHtml(
         array|string $htmlPages,
-        array        $options = []
+        array $options = []
     ): string
     {
         return $this->pdfEngine->getOutputFromHtml($htmlPages, $options);
@@ -92,7 +90,7 @@ readonly class PdfHelper
         return $this->twig->render(
             '_header-pdf.html.twig',
             [
-                'rootPath' => $this->rootDir . '/public',
+                'rootPath' => $this->rootDir.'/public',
             ]
         );
     }

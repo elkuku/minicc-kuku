@@ -11,9 +11,7 @@ final class GoogleUser
      */
     public function __construct(
         private array $response
-    )
-    {
-    }
+    ) {}
 
     public function getId(): string
     {
@@ -28,6 +26,11 @@ final class GoogleUser
     public function getFirstName(): ?string
     {
         return $this->getResponseValue('given_name');
+    }
+
+    private function getResponseValue(string $key): string|null
+    {
+        return $this->response[$key] ?? null;
     }
 
     public function getLastName(): ?string
@@ -63,10 +66,5 @@ final class GoogleUser
     public function toArray(): array
     {
         return $this->response;
-    }
-
-    private function getResponseValue(string $key): string|null
-    {
-        return $this->response[$key] ?? null;
     }
 }

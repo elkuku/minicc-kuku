@@ -4,31 +4,33 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
-use UnexpectedValueException;
-use DateTime;
 use App\Controller\BaseController;
 use App\Entity\Transaction;
 use App\Repository\PaymentMethodRepository;
 use App\Repository\StoreRepository;
 use App\Repository\UserRepository;
 use App\Type\TransactionType;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use UnexpectedValueException;
 
 #[Route(path: '/admin/collect-rent', name: 'admin_collect_rent', methods: ['GET', 'POST'])]
 #[IsGranted('ROLE_ADMIN')]
 class CollectRent extends BaseController
 {
-    public function __construct(private readonly StoreRepository $storeRepository, private readonly UserRepository $userRepository, private readonly PaymentMethodRepository $paymentMethodRepository)
-    {
-    }
+    public function __construct(
+        private readonly StoreRepository $storeRepository,
+        private readonly UserRepository $userRepository,
+        private readonly PaymentMethodRepository $paymentMethodRepository
+    ) {}
 
     public function __invoke(
-        Request                 $request,
-        EntityManagerInterface  $entityManager,
+        Request $request,
+        EntityManagerInterface $entityManager,
     ): Response
     {
         $values = $request->request->all('values');

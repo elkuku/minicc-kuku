@@ -16,7 +16,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class Delete extends BaseController
 {
     public function __invoke(
-        Deposit                $deposit,
+        Deposit $deposit,
         EntityManagerInterface $entityManager,
     ): RedirectResponse
     {

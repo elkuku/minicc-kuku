@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\System;
 
-use LogicException;
 use App\Controller\BaseController;
+use LogicException;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
@@ -21,16 +21,14 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_ADMIN')]
 class Logview extends BaseController
 {
-    public function __construct(private readonly KernelInterface $kernel)
-    {
-    }
+    public function __construct(private readonly KernelInterface $kernel) {}
 
     public function __invoke(
         #[Autowire('%kernel.project_dir%')] string $projectDir
     ): Response
     {
         $filesystem = new Filesystem();
-        $filename = $projectDir . '/var/log/deploy.log';
+        $filename = $projectDir.'/var/log/deploy.log';
 
         $entries = [];
         $entry = null;
@@ -71,12 +69,12 @@ class Logview extends BaseController
                     if ('' === $entry) {
                         //The first line contains the dateTime string
                         $dateTime = $line;
-                        $entry = $line . "\n";
+                        $entry = $line."\n";
 
                         continue;
                     }
 
-                    $entry .= $line . "\n";
+                    $entry .= $line."\n";
                 }
 
                 //  dd($contents,$entries);

@@ -6,25 +6,24 @@ namespace App\Helper;
 
 use RuntimeException;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use function is_array;
 
 class GitLoader
 {
     public function __construct(
         #[Autowire('%kernel.project_dir%')]
         private readonly string $rootDir
-    )
-    {
-    }
+    ) {}
 
     public function getBranchName(): string
     {
-        $gitHeadFile = $this->rootDir . '/.git/HEAD';
+        $gitHeadFile = $this->rootDir.'/.git/HEAD';
         $branchName = 'no branch name';
 
         $stringFromFile = file_exists($gitHeadFile)
             ? file($gitHeadFile, FILE_USE_INCLUDE_PATH) : '';
 
-        if (\is_array($stringFromFile)) {
+        if (is_array($stringFromFile)) {
             // Get the string from the array
             $firstLine = $stringFromFile[0];
 
@@ -39,11 +38,11 @@ class GitLoader
 
     public function getLastCommitMessage(): string
     {
-        $gitCommitMessageFile = $this->rootDir . '/.git/COMMIT_EDITMSG';
+        $gitCommitMessageFile = $this->rootDir.'/.git/COMMIT_EDITMSG';
         $commitMessage = file_exists($gitCommitMessageFile)
             ? file($gitCommitMessageFile, FILE_USE_INCLUDE_PATH) : '';
 
-        return \is_array($commitMessage) ? trim($commitMessage[0]) : '';
+        return is_array($commitMessage) ? trim($commitMessage[0]) : '';
     }
 
     /**
@@ -52,12 +51,12 @@ class GitLoader
     public function getLastCommitDetail(): array
     {
         $matches = [];
-        $gitLogFile = $this->rootDir . '/.git/logs/HEAD';
+        $gitLogFile = $this->rootDir.'/.git/logs/HEAD';
         $gitLogs = file_exists($gitLogFile)
             ? file($gitLogFile, FILE_USE_INCLUDE_PATH) : [];
         $sha = trim(
             (string)$this->execCommand(
-                'cd ' . $this->rootDir . ' && git rev-parse --short HEAD'
+                'cd '.$this->rootDir.' && git rev-parse --short HEAD'
             )
         );
 

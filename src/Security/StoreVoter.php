@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Security;
 
-use Override;
-use LogicException;
 use App\Entity\Store;
 use App\Entity\User;
+use LogicException;
+use Override;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Vote;
@@ -26,9 +26,7 @@ class StoreVoter extends Voter
 
     public function __construct(
         private readonly Security $security
-    )
-    {
-    }
+    ) {}
 
     #[Override]
     protected function supports(string $attribute, mixed $subject): bool
@@ -46,8 +44,8 @@ class StoreVoter extends Voter
 
     #[Override]
     protected function voteOnAttribute(
-        string         $attribute,
-        mixed          $subject,
+        string $attribute,
+        mixed $subject,
         TokenInterface $token,
         ?Vote $vote = null
     ): bool

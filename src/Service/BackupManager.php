@@ -13,9 +13,7 @@ readonly class BackupManager
 {
     public function __construct(
         #[Autowire(env: 'DATABASE_URL')] private string $databaseUrl,
-    )
-    {
-    }
+    ) {}
 
     public function getDbUrl(): string
     {

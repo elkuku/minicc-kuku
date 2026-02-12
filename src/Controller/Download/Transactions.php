@@ -16,9 +16,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route(path: '/download/transactions', name: 'download_transactions', methods: ['GET'])]
 class Transactions extends BaseController
 {
-    public function __construct(private readonly TransactionRepository $transactionRepository, private readonly StoreRepository $storeRepository, private readonly PdfHelper $pdfHelper)
-    {
-    }
+    public function __construct(private readonly TransactionRepository $transactionRepository, private readonly StoreRepository $storeRepository, private readonly PdfHelper $pdfHelper) {}
 
     public function __invoke(): PdfResponse
     {

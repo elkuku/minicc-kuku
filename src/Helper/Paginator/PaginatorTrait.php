@@ -15,7 +15,7 @@ trait PaginatorTrait
     protected function getPaginatorOptions(
         Request $request,
         #[Autowire('%env(LIST_LIMIT)%')]
-        int     $listLimit
+        int $listLimit
     ): PaginatorOptions
     {
         $options = $request->query->all('paginatorOptions');

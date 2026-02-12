@@ -18,7 +18,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class Create extends BaseController
 {
     public function __invoke(
-        Request                $request,
+        Request $request,
         EntityManagerInterface $entityManager,
     ): Response
     {
@@ -41,7 +41,7 @@ class Create extends BaseController
             : 'form.html.twig';
 
         return $this->render(
-            'payment-methods/' . $template,
+            'payment-methods/'.$template,
             [
                 'form' => $form,
                 'data' => $paymentMethod,

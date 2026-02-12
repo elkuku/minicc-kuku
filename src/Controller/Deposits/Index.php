@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use function count;
 
 #[IsGranted('ROLE_ADMIN')]
 #[Route(path: '/deposits', name: 'deposits_index', methods: ['GET', 'POST'])]
@@ -19,21 +20,18 @@ class Index extends BaseController
 {
     use PaginatorTrait;
 
-    public function __construct(private readonly DepositRepository $depositRepository)
-    {
-    }
+    public function __construct(private readonly DepositRepository $depositRepository) {}
 
     public function __invoke(
-        Request           $request,
-        #[Autowire('%env(LIST_LIMIT)%')]
-        int               $listLimit
+        Request $request,
+        #[Autowire('%env(LIST_LIMIT)%')] int $listLimit,
     ): Response
     {
         $paginatorOptions = $this->getPaginatorOptions($request, $listLimit);
         $deposits = $this->depositRepository->getPaginatedList($paginatorOptions);
         $paginatorOptions->setMaxPages(
             (int)ceil(
-                \count($deposits) / $paginatorOptions->getLimit()
+                count($deposits) / $paginatorOptions->getLimit()
             )
         );
 

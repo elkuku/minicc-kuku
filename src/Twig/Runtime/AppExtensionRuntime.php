@@ -14,11 +14,9 @@ class AppExtensionRuntime implements RuntimeExtensionInterface
 {
     public function __construct(
         private readonly UserRepository $userRepository,
-        private readonly ShaFinder      $shaFinder,
-        private readonly TaxService     $taxService,
-    )
-    {
-    }
+        private readonly ShaFinder $shaFinder,
+        private readonly TaxService $taxService,
+    ) {}
 
     /**
      * @return User[]

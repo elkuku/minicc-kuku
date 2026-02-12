@@ -16,19 +16,17 @@ use Symfony\Component\Mailer\MailerInterface;
 class BackupDbCommand
 {
     public function __construct(
-        private readonly BackupManager   $backupManager,
-        private readonly EmailHelper     $emailHelper,
+        private readonly BackupManager $backupManager,
+        private readonly EmailHelper $emailHelper,
         private readonly MailerInterface $mailer,
-    )
-    {
-    }
+    ) {}
 
     public function __invoke(OutputInterface $output): int
     {
         $date = new DateTime()->format('Y-m-d_H-i-s');
-        $backupFile = sys_get_temp_dir() . sprintf('/backup_%s.sql', $date);
+        $backupFile = sys_get_temp_dir().sprintf('/backup_%s.sql', $date);
 
-        $command = $this->backupManager->getBackupCommand() . ' > ' . escapeshellarg($backupFile);
+        $command = $this->backupManager->getBackupCommand().' > '.escapeshellarg($backupFile);
 
         system($command, $result);
 
@@ -38,8 +36,8 @@ class BackupDbCommand
         }
 
         $email = $this->emailHelper
-            ->createAdminEmail('Backup: ' . $date)
-            ->text('Backup: ' . $date)
+            ->createAdminEmail('Backup: '.$date)
+            ->text('Backup: '.$date)
             ->attachFromPath($backupFile);
 
         $this->mailer->send($email);

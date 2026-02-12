@@ -20,12 +20,10 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_ADMIN')]
 class PaymentsAccountant extends BaseController
 {
-    public function __construct(private readonly TransactionRepository $repository, private readonly EmailHelper $emailHelper, private readonly MailerInterface $mailer)
-    {
-    }
+    public function __construct(private readonly TransactionRepository $repository, private readonly EmailHelper $emailHelper, private readonly MailerInterface $mailer) {}
 
     public function __invoke(
-        Request                                       $request,
+        Request $request,
         #[Autowire('%env(EMAIL_ACCOUNTANT)%')] string $emailAccountant,
     ): Response
     {
@@ -50,7 +48,7 @@ class PaymentsAccountant extends BaseController
                 $this->mailer->send($email);
                 $this->addFlash('success', 'Payments have been mailed.');
             } catch (TransportExceptionInterface $exception) {
-                $this->addFlash('danger', 'Payments have NOT been mailed! - ' . $exception->getMessage());
+                $this->addFlash('danger', 'Payments have NOT been mailed! - '.$exception->getMessage());
             }
 
             //@todo redirect elsewhere

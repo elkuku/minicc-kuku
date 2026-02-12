@@ -19,9 +19,12 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_ADMIN')]
 class Create extends BaseController
 {
-    public function __construct(private readonly StoreRepository $storeRepo, private readonly UserRepository $userRepo, private readonly ContractRepository $contractRepo, private readonly TaxService $taxService)
-    {
-    }
+    public function __construct(
+        private readonly StoreRepository $storeRepo,
+        private readonly UserRepository $userRepo,
+        private readonly ContractRepository $contractRepo,
+        private readonly TaxService $taxService
+    ) {}
 
     #[Route(path: '/contracts/create', name: 'contracts_create', methods: ['POST'])]
     public function new(

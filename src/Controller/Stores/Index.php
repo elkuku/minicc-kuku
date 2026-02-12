@@ -14,9 +14,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route(path: '/stores', name: 'stores_index', methods: ['GET'])]
 class Index extends BaseController
 {
-    public function __construct(private readonly StoreRepository $storeRepository)
-    {
-    }
+    public function __construct(private readonly StoreRepository $storeRepository) {}
 
     public function __invoke(): Response
     {

@@ -11,9 +11,7 @@ class ChartBuilderService
 {
     public function __construct(
         private readonly ChartBuilderInterface $chartBuilder
-    )
-    {
-    }
+    ) {}
 
     /**
      * @param array<int, string> $labels
@@ -21,8 +19,8 @@ class ChartBuilderService
      */
     public function getDashboardChart(
         string $title,
-        array  $labels,
-        array  $data
+        array $labels,
+        array $data
     ): Chart
     {
         $bgColors = [

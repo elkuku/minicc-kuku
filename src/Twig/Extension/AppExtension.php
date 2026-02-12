@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Twig\Extension;
 
-use Override;
 use App\Twig\Runtime\AppExtensionRuntime;
+use Override;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
@@ -20,7 +20,7 @@ class AppExtension extends AbstractExtension
     public function getFilters(): array
     {
         return [
-        //    new TwigFilter('price', $this->priceFilter(...)),
+            //    new TwigFilter('price', $this->priceFilter(...)),
             new TwigFilter('conIva', [AppExtensionRuntime::class, 'getValueWithTax']),
             new TwigFilter('taxFromTotal', [AppExtensionRuntime::class, 'getTaxFromTotal']),
             new TwigFilter('invert', $this->invertFilter(...)),
@@ -49,7 +49,6 @@ class AppExtension extends AbstractExtension
     {
         return $value ? -$value : 0;
     }
-
 
 
     /**
@@ -86,17 +85,16 @@ class AppExtension extends AbstractExtension
 
         if (3 === count($parts)) {
             // Juan José Perez => Juan Perez
-            return $parts[0] . ' ' . $parts[2];
+            return $parts[0].' '.$parts[2];
         }
 
         if (4 === count($parts)) {
             // Juan José Perez Pillo => Juan Perez
-            return $parts[0] . ' ' . $parts[2];
+            return $parts[0].' '.$parts[2];
         }
 
         return $longName;
     }
-
 
 
     public function getCurrentYear(): int

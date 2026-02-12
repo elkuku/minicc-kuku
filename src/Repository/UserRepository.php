@@ -24,24 +24,6 @@ class UserRepository extends ServiceEntityRepository
     }
 
     /**
-     * Find all active users.
-     *
-     * @return User[]
-     */
-    public function findActiveUsers(): array
-    {
-        return $this->findBy(
-            [
-                'role' => 'ROLE_USER',
-                'isActive' => 1,
-            ],
-            [
-                'name' => 'ASC',
-            ]
-        );
-    }
-
-    /**
      * @return User[]
      */
     public function getSortedByStore(): array
@@ -67,5 +49,23 @@ class UserRepository extends ServiceEntityRepository
         );
 
         return $users;
+    }
+
+    /**
+     * Find all active users.
+     *
+     * @return User[]
+     */
+    public function findActiveUsers(): array
+    {
+        return $this->findBy(
+            [
+                'role' => 'ROLE_USER',
+                'isActive' => 1,
+            ],
+            [
+                'name' => 'ASC',
+            ]
+        );
     }
 }

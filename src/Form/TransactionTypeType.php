@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Form;
 
-use Override;
 use App\Entity\PaymentMethod;
 use App\Entity\Store;
 use App\Entity\User;
 use App\Type\TransactionType;
+use Override;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
@@ -21,7 +21,7 @@ class TransactionTypeType extends AbstractType
     #[Override]
     public function buildForm(
         FormBuilderInterface $builder,
-        array                $options
+        array $options
     ): void
     {
         $builder
@@ -50,7 +50,7 @@ class TransactionTypeType extends AbstractType
                 EntityType::class,
                 [
                     'class' => Store::class,
-                    'choice_label' => fn(Store $store): string => $store->getId() . ' - ' . $store->getDestination(),
+                    'choice_label' => fn(Store $store): string => $store->getId().' - '.$store->getDestination(),
                 ]
             )
             ->add(

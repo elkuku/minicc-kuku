@@ -21,20 +21,18 @@ class Transactions extends BaseController
 {
     use BreadcrumbTrait;
 
-    public function __construct(private readonly TransactionRepository $transactionRepository, private readonly StoreRepository $storeRepository, private readonly TaxService $taxService, private readonly ChartBuilderService $chartBuilder)
-    {
-    }
+    public function __construct(private readonly TransactionRepository $transactionRepository, private readonly StoreRepository $storeRepository, private readonly TaxService $taxService, private readonly ChartBuilderService $chartBuilder) {}
 
     #[Route(path: '/stores/{id}', name: 'stores_transactions', requirements: ['id' => '\d+',], methods: ['GET', 'POST',])]
     public function show(
-        Store                 $store,
-        Request               $request
+        Store $store,
+        Request $request
     ): Response
     {
         $this->denyAccessUnlessGranted('view', $store);
         $year = $request->query->getInt('year', (int)date('Y'));
         $this->addBreadcrumb('Stores', 'stores_index')
-            ->addBreadcrumb('Store ' . $store->getId());
+            ->addBreadcrumb('Store '.$store->getId());
         $transactions = $this->transactionRepository->findByStoreAndYear($store, $year);
         $headers = [];
         /** @var array<int, float> $monthPayments */
@@ -42,7 +40,7 @@ class Transactions extends BaseController
         $rentalValues = [];
         $rentalValue = $this->taxService->addTax($store->getValAlq());
         for ($i = 1; $i < 13; ++$i) {
-            $headers[] = IntlConverter::formatDate('1966-' . $i . '-1', 'MMMM');
+            $headers[] = IntlConverter::formatDate('1966-'.$i.'-1', 'MMMM');
             $monthPayments[$i] = 0;
             $rentalValues[$i] = $rentalValue;
         }

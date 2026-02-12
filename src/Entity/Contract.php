@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use DateTime;
 use App\Repository\ContractRepository;
 use App\Type\Gender;
+use DateTime;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -16,12 +16,10 @@ use Doctrine\ORM\Mapping\Id;
 #[Entity(repositoryClass: ContractRepository::class)]
 class Contract
 {
-    #[Column, Id, GeneratedValue]
-    private ?int $id = null;
-
     #[Column]
     protected ?int $storeNumber = null;
-
+    #[Column, Id, GeneratedValue]
+    private ?int $id = null;
     #[Column(length: 150)]
     private ?string $inqNombreapellido = null;
 
@@ -81,9 +79,9 @@ class Contract
         $this->date = new DateTime();
     }
 
-    public function getId(): ?int
+    public function getInqNombreapellido(): ?string
     {
-        return $this->id;
+        return $this->inqNombreapellido;
     }
 
     public function setInqNombreapellido(string $inqNombreapellido): static
@@ -93,9 +91,9 @@ class Contract
         return $this;
     }
 
-    public function getInqNombreapellido(): ?string
+    public function getInqCi(): string
     {
-        return $this->inqNombreapellido;
+        return $this->inqCi;
     }
 
     public function setInqCi(string $inqCi): static
@@ -105,33 +103,9 @@ class Contract
         return $this;
     }
 
-    public function getInqCi(): string
+    public function getValGarantia(): ?float
     {
-        return $this->inqCi;
-    }
-
-    public function setDestination(string $destination): static
-    {
-        $this->destination = $destination;
-
-        return $this;
-    }
-
-    public function getDestination(): ?string
-    {
-        return $this->destination;
-    }
-
-    public function setValAlq(float $valAlq): static
-    {
-        $this->valAlq = $valAlq;
-
-        return $this;
-    }
-
-    public function getValAlq(): ?float
-    {
-        return $this->valAlq;
+        return $this->valGarantia;
     }
 
     public function setValGarantia(float $valGarantia): static
@@ -141,9 +115,9 @@ class Contract
         return $this;
     }
 
-    public function getValGarantia(): ?float
+    public function getDate(): DateTime
     {
-        return $this->valGarantia;
+        return $this->date;
     }
 
     public function setDate(DateTime $date): static
@@ -153,129 +127,9 @@ class Contract
         return $this;
     }
 
-    public function getDate(): DateTime
+    public function getText(): string
     {
-        return $this->date;
-    }
-
-    public function setCntLanfort(int $cntLanfort): static
-    {
-        $this->cntLanfort = $cntLanfort;
-
-        return $this;
-    }
-
-    public function getCntLanfort(): int
-    {
-        return $this->cntLanfort;
-    }
-
-    public function setCntNeon(int $cntNeon): static
-    {
-        $this->cntNeon = $cntNeon;
-
-        return $this;
-    }
-
-    public function getCntNeon(): int
-    {
-        return $this->cntNeon;
-    }
-
-    public function setCntSwitch(int $cntSwitch): static
-    {
-        $this->cntSwitch = $cntSwitch;
-
-        return $this;
-    }
-
-    public function getCntSwitch(): int
-    {
-        return $this->cntSwitch;
-    }
-
-    public function setCntToma(int $cntToma): static
-    {
-        $this->cntToma = $cntToma;
-
-        return $this;
-    }
-
-    public function getCntToma(): int
-    {
-        return $this->cntToma;
-    }
-
-    public function setCntVentana(int $cntVentana): static
-    {
-        $this->cntVentana = $cntVentana;
-
-        return $this;
-    }
-
-    public function getCntVentana(): int
-    {
-        return $this->cntVentana;
-    }
-
-    public function setCntLlaves(int $cntLlaves): static
-    {
-        $this->cntLlaves = $cntLlaves;
-
-        return $this;
-    }
-
-    public function getCntLlaves(): int
-    {
-        return $this->cntLlaves;
-    }
-
-    public function setCntMedAgua(int $cntMedAgua): static
-    {
-        $this->cntMedAgua = $cntMedAgua;
-
-        return $this;
-    }
-
-    public function getCntMedAgua(): int
-    {
-        return $this->cntMedAgua;
-    }
-
-    public function setCntMedElec(int $cntMedElec): static
-    {
-        $this->cntMedElec = $cntMedElec;
-
-        return $this;
-    }
-
-    public function getCntMedElec(): int
-    {
-        return $this->cntMedElec;
-    }
-
-    public function setMedElectrico(string $medElectrico): static
-    {
-        $this->medElectrico = $medElectrico;
-
-        return $this;
-    }
-
-    public function getMedElectrico(): string
-    {
-        return $this->medElectrico;
-    }
-
-    public function setMedAgua(string $medAgua): static
-    {
-        $this->medAgua = $medAgua;
-
-        return $this;
-    }
-
-    public function getMedAgua(): string
-    {
-        return $this->medAgua;
+        return $this->text;
     }
 
     public function setText(string $text): static
@@ -285,9 +139,9 @@ class Contract
         return $this;
     }
 
-    public function getText(): string
+    public function getGender(): Gender
     {
-        return $this->text;
+        return $this->gender;
     }
 
     public function setGender(Gender $gender): static
@@ -297,9 +151,9 @@ class Contract
         return $this;
     }
 
-    public function getGender(): Gender
+    public function getStoreNumber(): ?int
     {
-        return $this->gender;
+        return $this->storeNumber;
     }
 
     public function setStoreNumber(int $storeNumber): static
@@ -307,11 +161,6 @@ class Contract
         $this->storeNumber = $storeNumber;
 
         return $this;
-    }
-
-    public function getStoreNumber(): ?int
-    {
-        return $this->storeNumber;
     }
 
     public function setValuesFromStore(Store $store): self
@@ -329,6 +178,155 @@ class Contract
             ->setCntVentana($store->getCntVentana())
             ->setMedElectrico($store->getMedElectrico())
             ->setMedAgua($store->getMedAgua());
+
+        return $this;
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getDestination(): ?string
+    {
+        return $this->destination;
+    }
+
+    public function setDestination(string $destination): static
+    {
+        $this->destination = $destination;
+
+        return $this;
+    }
+
+    public function getValAlq(): ?float
+    {
+        return $this->valAlq;
+    }
+
+    public function setValAlq(float $valAlq): static
+    {
+        $this->valAlq = $valAlq;
+
+        return $this;
+    }
+
+    public function getCntLanfort(): int
+    {
+        return $this->cntLanfort;
+    }
+
+    public function setCntLanfort(int $cntLanfort): static
+    {
+        $this->cntLanfort = $cntLanfort;
+
+        return $this;
+    }
+
+    public function getCntLlaves(): int
+    {
+        return $this->cntLlaves;
+    }
+
+    public function setCntLlaves(int $cntLlaves): static
+    {
+        $this->cntLlaves = $cntLlaves;
+
+        return $this;
+    }
+
+    public function getCntMedAgua(): int
+    {
+        return $this->cntMedAgua;
+    }
+
+    public function setCntMedAgua(int $cntMedAgua): static
+    {
+        $this->cntMedAgua = $cntMedAgua;
+
+        return $this;
+    }
+
+    public function getCntMedElec(): int
+    {
+        return $this->cntMedElec;
+    }
+
+    public function setCntMedElec(int $cntMedElec): static
+    {
+        $this->cntMedElec = $cntMedElec;
+
+        return $this;
+    }
+
+    public function getCntNeon(): int
+    {
+        return $this->cntNeon;
+    }
+
+    public function setCntNeon(int $cntNeon): static
+    {
+        $this->cntNeon = $cntNeon;
+
+        return $this;
+    }
+
+    public function getCntSwitch(): int
+    {
+        return $this->cntSwitch;
+    }
+
+    public function setCntSwitch(int $cntSwitch): static
+    {
+        $this->cntSwitch = $cntSwitch;
+
+        return $this;
+    }
+
+    public function getCntToma(): int
+    {
+        return $this->cntToma;
+    }
+
+    public function setCntToma(int $cntToma): static
+    {
+        $this->cntToma = $cntToma;
+
+        return $this;
+    }
+
+    public function getCntVentana(): int
+    {
+        return $this->cntVentana;
+    }
+
+    public function setCntVentana(int $cntVentana): static
+    {
+        $this->cntVentana = $cntVentana;
+
+        return $this;
+    }
+
+    public function getMedElectrico(): string
+    {
+        return $this->medElectrico;
+    }
+
+    public function setMedElectrico(string $medElectrico): static
+    {
+        $this->medElectrico = $medElectrico;
+
+        return $this;
+    }
+
+    public function getMedAgua(): string
+    {
+        return $this->medAgua;
+    }
+
+    public function setMedAgua(string $medAgua): static
+    {
+        $this->medAgua = $medAgua;
 
         return $this;
     }

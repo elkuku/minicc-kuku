@@ -4,20 +4,18 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use stdClass;
 use App\Repository\StoreRepository;
 use App\Repository\TransactionRepository;
 use App\Service\ChartBuilderService;
 use App\Service\TaxService;
+use stdClass;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route(path: '/', name: 'welcome', methods: ['GET'])]
 class Welcome extends BaseController
 {
-    public function __construct(private readonly StoreRepository $storeRepository, private readonly TransactionRepository $transactionRepository, private readonly TaxService $taxService, private readonly ChartBuilderService $chartBuilderService)
-    {
-    }
+    public function __construct(private readonly StoreRepository $storeRepository, private readonly TransactionRepository $transactionRepository, private readonly TaxService $taxService, private readonly ChartBuilderService $chartBuilderService) {}
 
     public function __invoke(): Response
     {
@@ -31,7 +29,7 @@ class Welcome extends BaseController
         if ($user) {
             foreach ($this->storeRepository->getActive() as $store) {
                 $balance = $this->transactionRepository->getSaldo($store);
-                $chartData['headers'][] = 'Local ' . $store->getId();
+                $chartData['headers'][] = 'Local '.$store->getId();
                 $valAlq = $this->taxService->addTax($store->getValAlq());
 
                 $chartData['monthsDebt'][] = $valAlq

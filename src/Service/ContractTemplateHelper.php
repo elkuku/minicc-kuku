@@ -20,19 +20,6 @@ class ContractTemplateHelper
         return array_keys($replacements);
     }
 
-    public function replaceContent(Contract $contract): string
-    {
-        $replacements = $this->getReplacements($contract);
-        $start = '[';
-        $end = ']';
-        $search = array_map(static fn(string $item): string => $start . $item . $end, array_keys($replacements));
-        return str_replace(
-            $search,
-            $replacements,
-            $contract->getText()
-        );
-    }
-
     /**
      * @return array<string, string>
      */
@@ -78,5 +65,18 @@ class ContractTemplateHelper
             'med_electrico' => $contract->getMedElectrico(),
             'med_agua' => $contract->getMedAgua(),
         ];
+    }
+
+    public function replaceContent(Contract $contract): string
+    {
+        $replacements = $this->getReplacements($contract);
+        $start = '[';
+        $end = ']';
+        $search = array_map(static fn(string $item): string => $start.$item.$end, array_keys($replacements));
+        return str_replace(
+            $search,
+            $replacements,
+            $contract->getText()
+        );
     }
 }

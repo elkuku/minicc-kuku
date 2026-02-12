@@ -15,13 +15,9 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route(path: '/deposits/lookup', name: 'deposits_lookup', methods: ['GET'])]
 class Lookup extends BaseController
 {
-    public function __construct(private readonly DepositRepository $depositRepository)
-    {
-    }
+    public function __construct(private readonly DepositRepository $depositRepository) {}
 
-    public function __invoke(
-        Request           $request
-    ): JsonResponse
+    public function __invoke(Request $request): JsonResponse
     {
         $id = $request->query->get('id');
 

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Controller\Security;
 
-use UnexpectedValueException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Attribute\Route;
+use UnexpectedValueException;
 
 class GoogleIdentityController extends AbstractController
 {

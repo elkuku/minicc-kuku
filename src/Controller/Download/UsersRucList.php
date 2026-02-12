@@ -15,9 +15,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route(path: '/download/users-ruc-list', name: 'download_users_ruc_list', methods: ['GET'])]
 class UsersRucList extends BaseController
 {
-    public function __construct(private readonly UserRepository $userRepository, private readonly PdfHelper $pdfHelper)
-    {
-    }
+    public function __construct(private readonly UserRepository $userRepository, private readonly PdfHelper $pdfHelper) {}
 
     public function __invoke(): PdfResponse
     {

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Form;
 
-use Override;
 use App\Entity\User;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use Override;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -17,7 +17,7 @@ class StoreType extends AbstractType
     #[Override]
     public function buildForm(
         FormBuilderInterface $builder,
-        array                $options
+        array $options
     ): void
     {
         $builder

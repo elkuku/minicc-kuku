@@ -18,8 +18,8 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class Edit extends BaseController
 {
     public function __invoke(
-        Transaction            $transaction,
-        Request                $request,
+        Transaction $transaction,
+        Request $request,
         EntityManagerInterface $entityManager,
     ): Response
     {

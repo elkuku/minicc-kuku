@@ -16,13 +16,13 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route(path: '/contracts', name: 'contracts_index', methods: ['GET', 'POST'])]
 class Index extends BaseController
 {
-    public function __construct(private readonly StoreRepository $storeRepository, private readonly UserRepository $userRepository, private readonly ContractRepository $contractRepository)
-    {
-    }
+    public function __construct(
+        private readonly StoreRepository $storeRepository,
+        private readonly UserRepository $userRepository,
+        private readonly ContractRepository $contractRepository
+    ) {}
 
-    public function __invoke(
-        Request            $request
-    ): Response
+    public function __invoke(Request $request): Response
     {
         $storeId = $request->request->getInt('store_id');
         $year = $request->request->getInt('year');

@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
-use UnexpectedValueException;
-use DateTime;
 use App\Controller\BaseController;
 use App\Entity\Transaction;
 use App\Repository\PaymentMethodRepository;
 use App\Repository\StoreRepository;
 use App\Repository\TransactionRepository;
 use App\Type\TransactionType;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,18 +19,21 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
 use Symfony\Component\Serializer\Serializer;
+use UnexpectedValueException;
 
 #[Route(path: '/admin/pay-day', name: 'admin_pay_day', methods: ['GET', 'POST'])]
 #[IsGranted('ROLE_ADMIN')]
 class PayDay extends BaseController
 {
-    public function __construct(private readonly StoreRepository $storeRepository, private readonly PaymentMethodRepository $paymentMethodRepository, private readonly TransactionRepository $transactionRepository)
-    {
-    }
+    public function __construct(
+        private readonly StoreRepository $storeRepository,
+        private readonly PaymentMethodRepository $paymentMethodRepository,
+        private readonly TransactionRepository $transactionRepository
+    ) {}
 
     public function __invoke(
-        Request                 $request,
-        EntityManagerInterface  $entityManager,
+        Request $request,
+        EntityManagerInterface $entityManager,
     ): Response
     {
         $payments = $request->request->all('payments');

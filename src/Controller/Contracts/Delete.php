@@ -15,7 +15,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class Delete extends BaseController
 {
     public function __invoke(
-        Contract               $contract,
+        Contract $contract,
         EntityManagerInterface $entityManager,
     ): RedirectResponse
     {

@@ -4,32 +4,30 @@ declare(strict_types=1);
 
 namespace App\Controller\Deposits;
 
-use UnexpectedValueException;
-use DateTime;
-use RuntimeException;
 use App\Controller\BaseController;
 use App\Entity\Deposit;
 use App\Helper\CsvParser\CsvObject;
 use App\Helper\CsvParser\CsvParser;
 use App\Repository\DepositRepository;
 use App\Repository\PaymentMethodRepository;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use RuntimeException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use UnexpectedValueException;
 
 #[IsGranted('ROLE_ADMIN')]
 #[Route(path: '/deposits/upload', name: 'deposits_upload', methods: ['GET', 'POST'])]
 class Upload extends BaseController
 {
-    public function __construct(private readonly PaymentMethodRepository $paymentMethodRepository, private readonly DepositRepository $depositRepository)
-    {
-    }
+    public function __construct(private readonly PaymentMethodRepository $paymentMethodRepository, private readonly DepositRepository $depositRepository) {}
 
     public function __invoke(
-        Request                 $request,
-        EntityManagerInterface  $entityManager,
+        Request $request,
+        EntityManagerInterface $entityManager,
     ): RedirectResponse
     {
         $entity = $this->paymentMethodRepository->find(2);
@@ -73,7 +71,7 @@ class Upload extends BaseController
         $this->addFlash(
             $insertCount ? 'success' : 'warning',
             'Depositos insertados: '
-            . $insertCount
+            .$insertCount
         );
 
         return $this->redirectToRoute('deposits_index');

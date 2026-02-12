@@ -16,13 +16,11 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route(path: '/download/store-transactions/{id}/{year}', name: 'download_store_transactions', methods: ['GET'])]
 class StoreTransactions extends BaseController
 {
-    public function __construct(private readonly TransactionRepository $transactionRepository, private readonly PdfHelper $pdfHelper)
-    {
-    }
+    public function __construct(private readonly TransactionRepository $transactionRepository, private readonly PdfHelper $pdfHelper) {}
 
     public function __invoke(
-        Store                 $store,
-        int                   $year
+        Store $store,
+        int $year
     ): PdfResponse
     {
         $this->denyAccessUnlessGranted('export', $store);

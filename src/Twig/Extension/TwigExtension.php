@@ -12,17 +12,16 @@ use IntlDateFormatter;
 use Twig\Attribute\AsTwigFilter;
 use Twig\Attribute\AsTwigFunction;
 
-class TwigExtension {
-    public function __construct(private readonly TextFormatter $textFormatter)
-    {
-    }
+class TwigExtension
+{
+    public function __construct(private readonly TextFormatter $textFormatter) {}
 
     #[AsTwigFilter('price')]
     public function priceFilter(
         float|null $number,
-        int        $decimals = 2,
-        string     $decPoint = '.',
-        string     $thousandsSep = ','
+        int $decimals = 2,
+        string $decPoint = '.',
+        string $thousandsSep = ','
     ): string
     {
         $price = $number ? number_format(
@@ -51,8 +50,8 @@ class TwigExtension {
     #[AsTwigFunction('intlDate')]
     public function intlDate(
         string|DateTime $date,
-        string          $format = "d 'de' MMMM YYYY",
-        string          $lang = 'es_ES'
+        string $format = "d 'de' MMMM YYYY",
+        string $lang = 'es_ES'
     ): string
     {
         $formatter = new IntlDateFormatter(

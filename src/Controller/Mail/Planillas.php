@@ -18,9 +18,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_ADMIN')]
 class Planillas extends BaseController
 {
-    public function __construct(private readonly Pdf $pdf, private readonly PdfHelper $PDFHelper, private readonly MailerInterface $mailer, private readonly EmailHelper $emailHelper, private readonly PayrollHelper $payrollHelper)
-    {
-    }
+    public function __construct(private readonly Pdf $pdf, private readonly PdfHelper $PDFHelper, private readonly MailerInterface $mailer, private readonly EmailHelper $emailHelper, private readonly PayrollHelper $payrollHelper) {}
 
     #[Route(path: '/mail/planillas', name: 'mail_planillas', methods: ['GET'])]
     public function planillas(): Response
@@ -28,7 +26,7 @@ class Planillas extends BaseController
         $year = (int)date('Y');
         $month = (int)date('m');
         $fileName = sprintf('payrolls-%d-%s.pdf', $year, $month);
-        $html = 'Attachment: ' . $fileName;
+        $html = 'Attachment: '.$fileName;
         $document = $this->pdf->getOutputFromHtml(
             $this->PDFHelper->renderPayrollsHtml(
                 $year,
@@ -50,7 +48,7 @@ class Planillas extends BaseController
             $this->mailer->send($email);
             $this->addFlash('success', 'Mail has been sent.');
         } catch (TransportExceptionInterface $transportException) {
-            $this->addFlash('danger', 'ERROR sending mail: ' . $transportException->getMessage());
+            $this->addFlash('danger', 'ERROR sending mail: '.$transportException->getMessage());
         }
 
         return $this->render('admin/tasks.html.twig');

@@ -18,7 +18,7 @@ class UserAdminCommand extends UserAdminBaseCommand
 {
     public function __construct(
         EntityManagerInterface $entityManager,
-        UserRepository         $userRepository,
+        UserRepository $userRepository,
     )
     {
         parent::__construct($entityManager, $userRepository);

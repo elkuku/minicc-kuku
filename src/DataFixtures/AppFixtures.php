@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\DataFixtures;
 
-use DateTime;
 use App\Entity\Contract;
 use App\Entity\Deposit;
 use App\Entity\PaymentMethod;
@@ -13,6 +12,7 @@ use App\Entity\Transaction;
 use App\Entity\User;
 use App\Type\Gender;
 use App\Type\TransactionType;
+use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -84,7 +84,7 @@ class AppFixtures extends Fixture
         /*
          * Contract
          */
-        $text = file_get_contents(__DIR__ . '/contract-template.html');
+        $text = file_get_contents(__DIR__.'/contract-template.html');
         if ($text) {
             $contract = new Contract()
                 ->setStoreNumber(1)

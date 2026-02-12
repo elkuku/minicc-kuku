@@ -19,7 +19,7 @@ class TextFormatter
             if (13 === strlen($ruc)) {
                 $rucs = str_split($ruc, 10);
 
-                $ruc = trim(chunk_split($rucs[0], 3, ' ')) . ' ' . $rucs[1];
+                $ruc = trim(chunk_split($rucs[0], 3, ' ')).' '.$rucs[1];
             } else {
                 $ruc = chunk_split($ruc, 3, ' ');
             }

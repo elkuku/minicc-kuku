@@ -21,14 +21,12 @@ class Index extends BaseController
 {
     use PaginatorTrait;
 
-    public function __construct(private readonly StoreRepository $storeRepo, private readonly TransactionRepository $transactionRepo)
-    {
-    }
+    public function __construct(private readonly StoreRepository $storeRepo, private readonly TransactionRepository $transactionRepo) {}
 
     public function __invoke(
-        Request               $request,
+        Request $request,
         #[Autowire('%env(LIST_LIMIT)%')]
-        int                   $listLimit,
+        int $listLimit,
     ): Response
     {
         $paginatorOptions = $this->getPaginatorOptions($request, $listLimit);

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Controller\Mail;
 
-use Exception;
 use App\Controller\BaseController;
 use App\Repository\StoreRepository;
 use App\Repository\TransactionRepository;
 use App\Service\EmailHelper;
 use App\Service\PdfHelper;
+use Exception;
 use Knp\Snappy\Pdf;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,12 +21,10 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route(path: '/mail/transactions', name: 'mail_transactions', methods: ['POST'])]
 class Transactions extends BaseController
 {
-    public function __construct(private readonly TransactionRepository $transactionRepository, private readonly StoreRepository $storeRepository, private readonly Pdf $pdf, private readonly PdfHelper $PDFHelper, private readonly MailerInterface $mailer, private readonly EmailHelper $emailHelper)
-    {
-    }
+    public function __construct(private readonly TransactionRepository $transactionRepository, private readonly StoreRepository $storeRepository, private readonly Pdf $pdf, private readonly PdfHelper $PDFHelper, private readonly MailerInterface $mailer, private readonly EmailHelper $emailHelper) {}
 
     public function __invoke(
-        Request               $request,
+        Request $request,
     ): RedirectResponse
     {
         $year = $request->request->getInt('year', (int)date('Y'));
@@ -52,10 +50,10 @@ class Transactions extends BaseController
 
             $email = $this->emailHelper->createEmail(
                 to: $this->emailHelper->getFrom(),
-                subject: 'Movimientos de los locales ano ' . $year
+                subject: 'Movimientos de los locales ano '.$year
             )
-                ->text('Backup - Date: ' . date('Y-m-d'))
-                ->html('<h3>Backup</h3>Date: ' . date('Y-m-d'))
+                ->text('Backup - Date: '.date('Y-m-d'))
+                ->html('<h3>Backup</h3>Date: '.date('Y-m-d'))
                 ->addPart($attachment);
 
             $this->mailer->send($email);

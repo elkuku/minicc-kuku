@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use Override;
-use Stringable;
 use App\Repository\StoreRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping\Column;
@@ -14,6 +12,8 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
+use Override;
+use Stringable;
 
 #[Entity(repositoryClass: StoreRepository::class)]
 class Store implements Stringable
@@ -75,9 +75,9 @@ class Store implements Stringable
         return $this->id;
     }
 
-    public function setUserId(int $idUser): static
+    public function setId(?int $id): Store
     {
-        $this->userId = $idUser;
+        $this->id = $id;
 
         return $this;
     }
@@ -87,9 +87,9 @@ class Store implements Stringable
         return $this->userId;
     }
 
-    public function setDestination(string $destination): static
+    public function setUserId(int $idUser): static
     {
-        $this->destination = $destination;
+        $this->userId = $idUser;
 
         return $this;
     }
@@ -99,9 +99,9 @@ class Store implements Stringable
         return $this->destination;
     }
 
-    public function setValAlq(float $valAlq): static
+    public function setDestination(string $destination): static
     {
-        $this->valAlq = $valAlq;
+        $this->destination = $destination;
 
         return $this;
     }
@@ -111,9 +111,9 @@ class Store implements Stringable
         return $this->valAlq;
     }
 
-    public function setCntLanfort(int $cntLanfort): static
+    public function setValAlq(float $valAlq): static
     {
-        $this->cntLanfort = $cntLanfort;
+        $this->valAlq = $valAlq;
 
         return $this;
     }
@@ -123,9 +123,9 @@ class Store implements Stringable
         return $this->cntLanfort;
     }
 
-    public function setCntNeon(int $cntNeon): static
+    public function setCntLanfort(int $cntLanfort): static
     {
-        $this->cntNeon = $cntNeon;
+        $this->cntLanfort = $cntLanfort;
 
         return $this;
     }
@@ -135,9 +135,9 @@ class Store implements Stringable
         return $this->cntNeon;
     }
 
-    public function setCntSwitch(int $cntSwitch): static
+    public function setCntNeon(int $cntNeon): static
     {
-        $this->cntSwitch = $cntSwitch;
+        $this->cntNeon = $cntNeon;
 
         return $this;
     }
@@ -147,9 +147,9 @@ class Store implements Stringable
         return $this->cntSwitch;
     }
 
-    public function setCntToma(int $cntToma): static
+    public function setCntSwitch(int $cntSwitch): static
     {
-        $this->cntToma = $cntToma;
+        $this->cntSwitch = $cntSwitch;
 
         return $this;
     }
@@ -159,9 +159,9 @@ class Store implements Stringable
         return $this->cntToma;
     }
 
-    public function setCntVentana(int $cntVentana): static
+    public function setCntToma(int $cntToma): static
     {
-        $this->cntVentana = $cntVentana;
+        $this->cntToma = $cntToma;
 
         return $this;
     }
@@ -171,9 +171,9 @@ class Store implements Stringable
         return $this->cntVentana;
     }
 
-    public function setCntLlaves(int $cntLlaves): static
+    public function setCntVentana(int $cntVentana): static
     {
-        $this->cntLlaves = $cntLlaves;
+        $this->cntVentana = $cntVentana;
 
         return $this;
     }
@@ -183,9 +183,9 @@ class Store implements Stringable
         return $this->cntLlaves;
     }
 
-    public function setCntMedAgua(int $cntMedAgua): static
+    public function setCntLlaves(int $cntLlaves): static
     {
-        $this->cntMedAgua = $cntMedAgua;
+        $this->cntLlaves = $cntLlaves;
 
         return $this;
     }
@@ -195,9 +195,9 @@ class Store implements Stringable
         return $this->cntMedAgua;
     }
 
-    public function setCntMedElec(int $cntMedElec): static
+    public function setCntMedAgua(int $cntMedAgua): static
     {
-        $this->cntMedElec = $cntMedElec;
+        $this->cntMedAgua = $cntMedAgua;
 
         return $this;
     }
@@ -207,9 +207,9 @@ class Store implements Stringable
         return $this->cntMedElec;
     }
 
-    public function setMedElectrico(string $medElectrico): static
+    public function setCntMedElec(int $cntMedElec): static
     {
-        $this->medElectrico = $medElectrico;
+        $this->cntMedElec = $cntMedElec;
 
         return $this;
     }
@@ -219,9 +219,9 @@ class Store implements Stringable
         return $this->medElectrico;
     }
 
-    public function setMedAgua(string $medAgua): static
+    public function setMedElectrico(string $medElectrico): static
     {
-        $this->medAgua = $medAgua;
+        $this->medElectrico = $medElectrico;
 
         return $this;
     }
@@ -231,9 +231,9 @@ class Store implements Stringable
         return $this->medAgua;
     }
 
-    public function setUser(?User $user): static
+    public function setMedAgua(string $medAgua): static
     {
-        $this->user = $user;
+        $this->medAgua = $medAgua;
 
         return $this;
     }
@@ -243,9 +243,9 @@ class Store implements Stringable
         return $this->user;
     }
 
-    public function setId(?int $id): Store
+    public function setUser(?User $user): static
     {
-        $this->id = $id;
+        $this->user = $user;
 
         return $this;
     }
