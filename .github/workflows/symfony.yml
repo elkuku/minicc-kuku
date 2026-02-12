@@ -43,9 +43,7 @@ jobs:
         DATABASE_URL: mysql://root:@127.0.0.1:3306/symfony
       run: |
         bin/console doctrine:database:create --env=test --if-not-exists
-        bin/console doctrine:migrations:migrate -n --env=test
-        bin/console doctrine:fixtures:load -n --env=test
-        vendor/bin/phpunit
+        vendor/bin/phpunit --display-deprecations
 
 
 
