@@ -37,11 +37,6 @@ final class ControllerAccessTest extends ControllerBaseTest
                     'GET' => 200,
                 ],
             ],
-            'mail_planillas' => [
-                'statusCodes' => [
-                    'GET' => 500, // TODO: WTF
-                ],
-            ],
         ];
 
     public function testAllRoutesAreProtected(): void
