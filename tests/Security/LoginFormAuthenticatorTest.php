@@ -133,7 +133,6 @@ final class LoginFormAuthenticatorTest extends TestCase
         $authenticator = new LoginFormAuthenticator($this->createRouter(), 'test');
         $session = $this->createStub(SessionInterface::class);
         $session->method('get')
-            ->with('_security.main.target_path')
             ->willReturn('/stores');
 
         $request = Request::create('/login');

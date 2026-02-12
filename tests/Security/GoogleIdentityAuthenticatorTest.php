@@ -87,7 +87,6 @@ final class GoogleIdentityAuthenticatorTest extends TestCase
         $authenticator = $this->createAuthenticator();
         $session = $this->createStub(Session::class);
         $session->method('get')
-            ->with('_security.main.target_path')
             ->willReturn('/stores');
 
         $request = Request::create('/connect/google/verify');
