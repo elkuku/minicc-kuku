@@ -101,7 +101,7 @@ class DepositRepository extends ServiceEntityRepository
             ->where('d.document LIKE :document')
             ->setParameter('document', '%' . $documentId . '%')
             ->addSelect(
-                '(SELECT t.id FROM App:Transaction t WHERE t.depId = d.id) AS tr_id'
+                '(SELECT t.id FROM App\Entity\Transaction t WHERE t.depId = d.id) AS tr_id'
             )
             ->setMaxResults(5)
             ->getQuery()

@@ -106,6 +106,55 @@ final class GitLoaderTest extends TestCase
         self::assertSame('not defined', $result['date']);
     }
 
+    public function testGetLastCommitDetailParsesLogData(): void
+    {
+        mkdir($this->tempDir . '/.git/logs', 0777, true);
+        $logLine = "0000000 abc1234 John Doe <john@example.com> 1700000000 -0100\tcommit: Initial commit\n";
+        file_put_contents($this->tempDir . '/.git/logs/HEAD', $logLine);
+
+        $gitLoader = new TestableGitLoader($this->tempDir);
+
+        $result = $gitLoader->getLastCommitDetail();
+
+        self::assertSame('John Doe', $result['author']);
+        self::assertSame(date('Y/m/d H:i', 1700000000), $result['date']);
+        self::assertSame('abc123', $result['sha']);
+    }
+
+    public function testGetLastCommitDetailWithNoMatchingLogFormat(): void
+    {
+        mkdir($this->tempDir . '/.git/logs', 0777, true);
+        file_put_contents($this->tempDir . '/.git/logs/HEAD', "some random text\n");
+
+        $gitLoader = new TestableGitLoader($this->tempDir);
+
+        $result = $gitLoader->getLastCommitDetail();
+
+        self::assertSame('not defined', $result['author']);
+        self::assertSame('not defined', $result['date']);
+        self::assertSame('abc123', $result['sha']);
+    }
+
+    public function testExecCommandThrowsOnFailureWithLastLine(): void
+    {
+        $gitLoader = new FailingGitLoader($this->tempDir, 'Something went wrong');
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Something went wrong');
+
+        $gitLoader->getLastCommitDetail();
+    }
+
+    public function testExecCommandThrowsUnknownErrorOnFailureWithoutLastLine(): void
+    {
+        $gitLoader = new FailingGitLoader($this->tempDir, '');
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('An unknown error occurred');
+
+        $gitLoader->getLastCommitDetail();
+    }
+
     private function removeDirectory(string $dir): void
     {
         if (!is_dir($dir)) {
@@ -131,5 +180,27 @@ class TestableGitLoader extends GitLoader
     protected function execCommand(string $command): bool|string
     {
         return 'abc123';
+    }
+}
+
+/**
+ * GitLoader that simulates command failure.
+ */
+class FailingGitLoader extends GitLoader
+{
+    public function __construct(
+        string $rootDir,
+        private readonly string $lastLine,
+    ) {
+        parent::__construct($rootDir);
+    }
+
+    protected function execCommand(string $command): bool|string
+    {
+        if ($this->lastLine) {
+            throw new \RuntimeException($this->lastLine);
+        }
+
+        throw new \RuntimeException('An unknown error occurred');
     }
 }

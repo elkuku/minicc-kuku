@@ -46,6 +46,14 @@ final class UserControllerTest extends WebTestCase
         self::assertRouteSame('users_index');
     }
 
+    public function testUserIndexFilterAll(): void
+    {
+        $this->client->request('GET', '/users?user_active=all');
+
+        self::assertResponseIsSuccessful();
+        self::assertRouteSame('users_index');
+    }
+
     public function testUserCreateGetForm(): void
     {
         $this->client->request('GET', '/users/create');
@@ -65,6 +73,43 @@ final class UserControllerTest extends WebTestCase
 
         self::assertResponseIsSuccessful();
         self::assertRouteSame('users_edit');
+    }
+
+    public function testUserCreatePostValidForm(): void
+    {
+        $crawler = $this->client->request('GET', '/users/create');
+        $form = $crawler->filter('button[type="submit"]')->form([
+            'user_full[name]' => 'New Test User',
+            'user_full[email]' => 'newuser@example.com',
+            'user_full[gender]' => '1',
+            'user_full[inqCi]' => '1234567890',
+        ]);
+        $this->client->submit($form);
+
+        self::assertResponseRedirects();
+        $this->client->followRedirect();
+        self::assertRouteSame('users_index');
+    }
+
+    public function testUserEditPostValidForm(): void
+    {
+        /** @var UserRepository $userRepository */
+        $userRepository = static::getContainer()->get(UserRepository::class);
+        $user = $userRepository->findOneBy(['email' => 'user2@example.com']);
+        self::assertNotNull($user);
+
+        $crawler = $this->client->request('GET', '/users/edit/' . $user->getId());
+        $form = $crawler->filter('button[type="submit"]')->form([
+            'user_full[name]' => 'Updated User',
+            'user_full[email]' => 'user2@example.com',
+            'user_full[gender]' => '2',
+            'user_full[inqCi]' => '0987654321',
+        ]);
+        $this->client->submit($form);
+
+        self::assertResponseRedirects();
+        $this->client->followRedirect();
+        self::assertRouteSame('users_index');
     }
 
     public function testUserIndexDeniedForRegularUser(): void

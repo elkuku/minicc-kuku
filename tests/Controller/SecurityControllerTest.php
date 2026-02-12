@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller;
 
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 final class SecurityControllerTest extends WebTestCase
@@ -28,5 +29,19 @@ final class SecurityControllerTest extends WebTestCase
 
         self::assertResponseIsSuccessful();
         self::assertRouteSame('login');
+    }
+
+    public function testLogoutRedirects(): void
+    {
+        $client = static::createClient();
+        /** @var UserRepository $userRepository */
+        $userRepository = static::getContainer()->get(UserRepository::class);
+        $user = $userRepository->findOneBy(['email' => 'user1@example.com']);
+        self::assertNotNull($user);
+        $client->loginUser($user);
+
+        $client->request('GET', '/logout');
+
+        self::assertResponseRedirects();
     }
 }

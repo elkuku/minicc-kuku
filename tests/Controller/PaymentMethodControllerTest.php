@@ -63,6 +63,36 @@ final class PaymentMethodControllerTest extends WebTestCase
         self::assertRouteSame('payment_methods_edit');
     }
 
+    public function testPaymentMethodCreatePostValidForm(): void
+    {
+        $this->client->request('GET', '/payment-methods/create');
+        $this->client->submitForm('Guardar', [
+            'payment_method[name]' => 'test-new-method',
+        ]);
+
+        self::assertResponseRedirects();
+        $this->client->followRedirect();
+        self::assertRouteSame('payment_methods_index');
+    }
+
+    public function testPaymentMethodEditPostValidForm(): void
+    {
+        /** @var PaymentMethodRepository $paymentMethodRepository */
+        $paymentMethodRepository = static::getContainer()->get(PaymentMethodRepository::class);
+        $method = $paymentMethodRepository->findOneBy(['name' => 'gye-1005345']);
+        self::assertNotNull($method);
+        $methodId = $method->getId();
+
+        $this->client->request('GET', '/payment-methods/edit/' . $methodId);
+        $this->client->submitForm('Guardar', [
+            'payment_method[name]' => 'gye-1005345-updated',
+        ]);
+
+        self::assertResponseRedirects();
+        $this->client->followRedirect();
+        self::assertRouteSame('payment_methods_index');
+    }
+
     public function testPaymentMethodDeniedForRegularUser(): void
     {
         self::ensureKernelShutdown();

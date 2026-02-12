@@ -53,6 +53,41 @@ final class SystemControllerTest extends WebTestCase
         self::assertRouteSame('system_logview');
     }
 
+    public function testLogviewPageWithLogFile(): void
+    {
+        /** @var string $projectDir */
+        $projectDir = static::getContainer()->getParameter('kernel.project_dir');
+        $logDir = $projectDir . '/var/log';
+        $logFile = $logDir . '/deploy.log';
+
+        if (!is_dir($logDir)) {
+            mkdir($logDir, 0777, true);
+        }
+
+        $logContent = <<<'LOG'
+>>>==============
+2024-01-15 10:30:00 Deploy started
+Updated files
+<<<===========
+
+>>>==============
+2024-02-20 14:45:00 Deploy v2
+Fixed bugs
+<<<===========
+LOG;
+
+        file_put_contents($logFile, $logContent);
+
+        try {
+            $this->client->request('GET', '/system/logview');
+
+            self::assertResponseIsSuccessful();
+            self::assertRouteSame('system_logview');
+        } finally {
+            unlink($logFile);
+        }
+    }
+
     public function testLogviewPageDeniedForRegularUser(): void
     {
         self::ensureKernelShutdown();

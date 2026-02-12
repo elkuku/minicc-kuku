@@ -53,6 +53,42 @@ final class StoreControllerTest extends WebTestCase
         self::assertRouteSame('stores_edit');
     }
 
+    public function testStoreCreatePostValidForm(): void
+    {
+        $this->client->request('GET', '/stores/create');
+        $this->client->submitForm('Guardar', [
+            'store[destination]' => 'NEW-STORE',
+            'store[valAlq]' => '500',
+            'store[medElectrico]' => '12345',
+            'store[medAgua]' => '67890',
+        ]);
+
+        self::assertResponseRedirects();
+        $this->client->followRedirect();
+        self::assertRouteSame('stores_index');
+    }
+
+    public function testStoreEditPostValidForm(): void
+    {
+        /** @var StoreRepository $storeRepository */
+        $storeRepository = static::getContainer()->get(StoreRepository::class);
+        $store = $storeRepository->findOneBy(['destination' => 'TEST']);
+        self::assertNotNull($store);
+        $storeId = $store->getId();
+
+        $this->client->request('GET', '/stores/edit/' . $storeId);
+        $this->client->submitForm('Guardar', [
+            'store[destination]' => 'TEST',
+            'store[valAlq]' => '200',
+            'store[medElectrico]' => '12345',
+            'store[medAgua]' => '67890',
+        ]);
+
+        self::assertResponseRedirects();
+        $this->client->followRedirect();
+        self::assertRouteSame('stores_index');
+    }
+
     public function testStoreTransactionsForOwner(): void
     {
         self::ensureKernelShutdown();
