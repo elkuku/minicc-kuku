@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Service;
 
+use Iterator;
 use App\Service\BackupManager;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -15,7 +16,7 @@ final class BackupManagerTest extends TestCase
     {
         $manager = new BackupManager('postgresql://user:pass@localhost:5432/dbname');
 
-        self::assertSame('postgresql://user:pass@localhost:5432/dbname', $manager->getDbUrl());
+        $this->assertSame('postgresql://user:pass@localhost:5432/dbname', $manager->getDbUrl());
     }
 
     public function testGetBackupCommandPostgresql(): void
@@ -24,12 +25,12 @@ final class BackupManagerTest extends TestCase
 
         $command = $manager->getBackupCommand();
 
-        self::assertStringContainsString('pg_dump', $command);
-        self::assertStringContainsString('PGPASSWORD=', $command);
-        self::assertStringContainsString('localhost', $command);
-        self::assertStringContainsString('5432', $command);
-        self::assertStringContainsString('myuser', $command);
-        self::assertStringContainsString('mydb', $command);
+        $this->assertStringContainsString('pg_dump', $command);
+        $this->assertStringContainsString('PGPASSWORD=', $command);
+        $this->assertStringContainsString('localhost', $command);
+        $this->assertStringContainsString('5432', $command);
+        $this->assertStringContainsString('myuser', $command);
+        $this->assertStringContainsString('mydb', $command);
     }
 
     public function testGetBackupCommandMysql(): void
@@ -38,11 +39,11 @@ final class BackupManagerTest extends TestCase
 
         $command = $manager->getBackupCommand();
 
-        self::assertStringContainsString('mysqldump', $command);
-        self::assertStringContainsString('localhost', $command);
-        self::assertStringContainsString('3306', $command);
-        self::assertStringContainsString('myuser', $command);
-        self::assertStringContainsString('mydb', $command);
+        $this->assertStringContainsString('mysqldump', $command);
+        $this->assertStringContainsString('localhost', $command);
+        $this->assertStringContainsString('3306', $command);
+        $this->assertStringContainsString('myuser', $command);
+        $this->assertStringContainsString('mydb', $command);
     }
 
     public function testGetBackupCommandMariadb(): void
@@ -51,11 +52,11 @@ final class BackupManagerTest extends TestCase
 
         $command = $manager->getBackupCommand();
 
-        self::assertStringContainsString('mariadb-dump', $command);
-        self::assertStringContainsString('localhost', $command);
-        self::assertStringContainsString('3306', $command);
-        self::assertStringContainsString('myuser', $command);
-        self::assertStringContainsString('mydb', $command);
+        $this->assertStringContainsString('mariadb-dump', $command);
+        $this->assertStringContainsString('localhost', $command);
+        $this->assertStringContainsString('3306', $command);
+        $this->assertStringContainsString('myuser', $command);
+        $this->assertStringContainsString('mydb', $command);
     }
 
     public function testGetBackupCommandThrowsOnEmptyUrl(): void
@@ -85,19 +86,17 @@ final class BackupManagerTest extends TestCase
 
         $command = $manager->getBackupCommand();
 
-        self::assertStringContainsString($expectedTool, $command);
+        $this->assertStringContainsString($expectedTool, $command);
     }
 
     /**
-     * @return array<string, array{string, string}>
+     * @return Iterator<string, array{string, string}>
      */
-    public static function databaseUrlProvider(): array
+    public static function databaseUrlProvider(): Iterator
     {
-        return [
-            'postgresql standard' => ['postgresql://u:p@h:5432/db', 'pg_dump'],
-            'mysql standard' => ['mysql://u:p@h:3306/db', 'mysqldump'],
-            'mariadb standard' => ['mariadb://u:p@h:3306/db', 'mariadb-dump'],
-        ];
+        yield 'postgresql standard' => ['postgresql://u:p@h:5432/db', 'pg_dump'];
+        yield 'mysql standard' => ['mysql://u:p@h:3306/db', 'mysqldump'];
+        yield 'mariadb standard' => ['mariadb://u:p@h:3306/db', 'mariadb-dump'];
     }
 
     public function testGetBackupCommandHandlesSpecialCharactersInPassword(): void
@@ -106,7 +105,7 @@ final class BackupManagerTest extends TestCase
 
         $command = $manager->getBackupCommand();
 
-        self::assertStringContainsString('pg_dump', $command);
+        $this->assertStringContainsString('pg_dump', $command);
     }
 
     public function testGetBackupCommandWithDifferentPorts(): void
@@ -115,7 +114,7 @@ final class BackupManagerTest extends TestCase
 
         $command = $manager->getBackupCommand();
 
-        self::assertStringContainsString('15432', $command);
+        $this->assertStringContainsString('15432', $command);
     }
 
     public function testGetBackupCommandThrowsOnMalformedUrl(): void
@@ -134,7 +133,7 @@ final class BackupManagerTest extends TestCase
 
         $command = $manager->getBackupCommand();
 
-        self::assertStringContainsString("PGPASSWORD='s3cret'", $command);
+        $this->assertStringContainsString("PGPASSWORD='s3cret'", $command);
     }
 
     public function testMysqlPasswordInFlag(): void
@@ -143,8 +142,8 @@ final class BackupManagerTest extends TestCase
 
         $command = $manager->getBackupCommand();
 
-        self::assertStringContainsString("-p's3cret'", $command);
-        self::assertStringNotContainsString('PGPASSWORD', $command);
+        $this->assertStringContainsString("-p's3cret'", $command);
+        $this->assertStringNotContainsString('PGPASSWORD', $command);
     }
 
     public function testMariadbPasswordInFlag(): void
@@ -153,8 +152,8 @@ final class BackupManagerTest extends TestCase
 
         $command = $manager->getBackupCommand();
 
-        self::assertStringContainsString("-p's3cret'", $command);
-        self::assertStringContainsString('mariadb-dump', $command);
+        $this->assertStringContainsString("-p's3cret'", $command);
+        $this->assertStringContainsString('mariadb-dump', $command);
     }
 
     public function testGetBackupCommandWithNoPassword(): void
@@ -163,8 +162,8 @@ final class BackupManagerTest extends TestCase
 
         $command = $manager->getBackupCommand();
 
-        self::assertStringContainsString("PGPASSWORD=''", $command);
-        self::assertStringContainsString("'user'", $command);
+        $this->assertStringContainsString("PGPASSWORD=''", $command);
+        $this->assertStringContainsString("'user'", $command);
     }
 
     public function testGetBackupCommandExtractsDatabaseName(): void
@@ -173,7 +172,7 @@ final class BackupManagerTest extends TestCase
 
         $command = $manager->getBackupCommand();
 
-        self::assertStringContainsString("'my_database'", $command);
+        $this->assertStringContainsString("'my_database'", $command);
     }
 
     public function testPostgresqlCommandFormat(): void
@@ -182,10 +181,7 @@ final class BackupManagerTest extends TestCase
 
         $command = $manager->getBackupCommand();
 
-        self::assertSame(
-            "PGPASSWORD='mypass' pg_dump -h 'dbhost' -p '5432' -U 'myuser' 'mydb'",
-            $command,
-        );
+        $this->assertSame("PGPASSWORD='mypass' pg_dump -h 'dbhost' -p '5432' -U 'myuser' 'mydb'", $command);
     }
 
     public function testMysqlCommandFormat(): void
@@ -194,10 +190,7 @@ final class BackupManagerTest extends TestCase
 
         $command = $manager->getBackupCommand();
 
-        self::assertSame(
-            "mysqldump --no-tablespaces -h'dbhost' -P'3306' -u'myuser' -p'mypass' 'mydb'",
-            $command,
-        );
+        $this->assertSame("mysqldump --no-tablespaces -h'dbhost' -P'3306' -u'myuser' -p'mypass' 'mydb'", $command);
     }
 
     public function testMariadbCommandFormat(): void
@@ -206,9 +199,6 @@ final class BackupManagerTest extends TestCase
 
         $command = $manager->getBackupCommand();
 
-        self::assertSame(
-            "mariadb-dump --no-tablespaces -h'dbhost' -P'3306' -u'myuser' -p'mypass' 'mydb'",
-            $command,
-        );
+        $this->assertSame("mariadb-dump --no-tablespaces -h'dbhost' -P'3306' -u'myuser' -p'mypass' 'mydb'", $command);
     }
 }

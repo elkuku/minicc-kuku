@@ -24,15 +24,15 @@ final class BackupDbCommandTest extends TestCase
         $emailHelper = $this->createStub(EmailHelper::class);
 
         $mailer = $this->createMock(MailerInterface::class);
-        $mailer->expects(self::never())->method('send');
+        $mailer->expects($this->never())->method('send');
 
         $command = new BackupDbCommand($backupManager, $emailHelper, $mailer);
         $output = new BufferedOutput();
 
         $result = $command($output);
 
-        self::assertSame(Command::FAILURE, $result);
-        self::assertStringContainsString('Database backup failed', $output->fetch());
+        $this->assertSame(Command::FAILURE, $result);
+        $this->assertStringContainsString('Database backup failed', $output->fetch());
     }
 
     public function testSuccessWhenBackupCommandSucceeds(): void
@@ -49,13 +49,13 @@ final class BackupDbCommandTest extends TestCase
             ->willReturn($email);
 
         $mailer = $this->createMock(MailerInterface::class);
-        $mailer->expects(self::once())->method('send');
+        $mailer->expects($this->once())->method('send');
 
         $command = new BackupDbCommand($backupManager, $emailHelper, $mailer);
         $output = new BufferedOutput();
 
         $result = $command($output);
 
-        self::assertSame(Command::SUCCESS, $result);
+        $this->assertSame(Command::SUCCESS, $result);
     }
 }

@@ -14,14 +14,14 @@ final class CsvObjectTest extends TestCase
     {
         $csvObject = new CsvObject();
 
-        self::assertSame([], $csvObject->headVars);
+        $this->assertSame([], $csvObject->headVars);
     }
 
     public function testLinesDefaultsToEmptyArray(): void
     {
         $csvObject = new CsvObject();
 
-        self::assertSame([], $csvObject->lines);
+        $this->assertSame([], $csvObject->lines);
     }
 
     public function testHeadVarsCanBeSet(): void
@@ -29,7 +29,7 @@ final class CsvObjectTest extends TestCase
         $csvObject = new CsvObject();
         $csvObject->headVars = ['name', 'amount', 'date'];
 
-        self::assertSame(['name', 'amount', 'date'], $csvObject->headVars);
+        $this->assertSame(['name', 'amount', 'date'], $csvObject->headVars);
     }
 
     public function testLinesCanBeSet(): void
@@ -41,7 +41,7 @@ final class CsvObjectTest extends TestCase
 
         $csvObject->lines = [$line];
 
-        self::assertCount(1, $csvObject->lines);
-        self::assertSame('Test', $csvObject->lines[0]->name);
+        $this->assertCount(1, $csvObject->lines);
+        $this->assertSame('Test', $csvObject->lines[0]->name);
     }
 }

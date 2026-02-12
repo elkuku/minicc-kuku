@@ -29,9 +29,9 @@ final class CsvParserTest extends TestCase
 
         $result = $this->parser->parseCSV($contents);
 
-        self::assertInstanceOf(CsvObject::class, $result);
-        self::assertSame(['Name', 'Email', 'Age'], $result->headVars);
-        self::assertCount(2, $result->lines);
+        $this->assertInstanceOf(CsvObject::class, $result);
+        $this->assertSame(['Name', 'Email', 'Age'], $result->headVars);
+        $this->assertCount(2, $result->lines);
     }
 
     public function testParseCSVLineData(): void
@@ -43,8 +43,8 @@ final class CsvParserTest extends TestCase
 
         $result = $this->parser->parseCSV($contents);
 
-        self::assertSame('John', $result->lines[0]->name);
-        self::assertSame('john@example.com', $result->lines[0]->email);
+        $this->assertSame('John', $result->lines[0]->name);
+        $this->assertSame('john@example.com', $result->lines[0]->email);
     }
 
     public function testParseCSVHeadersAreLowercased(): void
@@ -56,9 +56,9 @@ final class CsvParserTest extends TestCase
 
         $result = $this->parser->parseCSV($contents);
 
-        self::assertTrue(property_exists($result->lines[0], 'name'));
-        self::assertTrue(property_exists($result->lines[0], 'email'));
-        self::assertTrue(property_exists($result->lines[0], 'age'));
+        $this->assertTrue(property_exists($result->lines[0], 'name'));
+        $this->assertTrue(property_exists($result->lines[0], 'email'));
+        $this->assertTrue(property_exists($result->lines[0], 'age'));
     }
 
     public function testParseCSVTrimsWhitespace(): void
@@ -70,8 +70,8 @@ final class CsvParserTest extends TestCase
 
         $result = $this->parser->parseCSV($contents);
 
-        self::assertSame('John', $result->lines[0]->name);
-        self::assertSame('john@example.com', $result->lines[0]->email);
+        $this->assertSame('John', $result->lines[0]->name);
+        $this->assertSame('john@example.com', $result->lines[0]->email);
     }
 
     public function testParseCSVWithOuterQuotes(): void
@@ -84,8 +84,8 @@ final class CsvParserTest extends TestCase
 
         $result = $this->parser->parseCSV($contents);
 
-        self::assertSame(['Name', 'Email'], $result->headVars);
-        self::assertSame('John', $result->lines[0]->name);
+        $this->assertSame(['Name', 'Email'], $result->headVars);
+        $this->assertSame('John', $result->lines[0]->name);
     }
 
     public function testParseCSVThrowsOnEmptyContents(): void
@@ -118,7 +118,7 @@ final class CsvParserTest extends TestCase
 
         $result = $this->parser->parseCSV($contents);
 
-        self::assertCount(1, $result->lines);
+        $this->assertCount(1, $result->lines);
     }
 
     public function testParseCSVHeaderOnly(): void
@@ -129,8 +129,8 @@ final class CsvParserTest extends TestCase
 
         $result = $this->parser->parseCSV($contents);
 
-        self::assertSame(['Name', 'Email', 'Age'], $result->headVars);
-        self::assertCount(0, $result->lines);
+        $this->assertSame(['Name', 'Email', 'Age'], $result->headVars);
+        $this->assertCount(0, $result->lines);
     }
 
     public function testParseCSVMultipleLines(): void
@@ -145,19 +145,19 @@ final class CsvParserTest extends TestCase
 
         $result = $this->parser->parseCSV($contents);
 
-        self::assertCount(4, $result->lines);
-        self::assertSame('1', $result->lines[0]->id);
-        self::assertSame('Alice', $result->lines[0]->name);
-        self::assertSame('4', $result->lines[3]->id);
-        self::assertSame('Diana', $result->lines[3]->name);
+        $this->assertCount(4, $result->lines);
+        $this->assertSame('1', $result->lines[0]->id);
+        $this->assertSame('Alice', $result->lines[0]->name);
+        $this->assertSame('4', $result->lines[3]->id);
+        $this->assertSame('Diana', $result->lines[3]->name);
     }
 
     public function testCsvObjectStructure(): void
     {
         $csvObject = new CsvObject();
 
-        self::assertSame([], $csvObject->headVars);
-        self::assertSame([], $csvObject->lines);
+        $this->assertSame([], $csvObject->headVars);
+        $this->assertSame([], $csvObject->lines);
     }
 
     public function testCsvObjectCanBeModified(): void
@@ -165,6 +165,6 @@ final class CsvParserTest extends TestCase
         $csvObject = new CsvObject();
         $csvObject->headVars = ['A', 'B'];
 
-        self::assertSame(['A', 'B'], $csvObject->headVars);
+        $this->assertSame(['A', 'B'], $csvObject->headVars);
     }
 }

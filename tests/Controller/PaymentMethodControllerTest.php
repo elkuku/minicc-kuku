@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller;
 
+use App\Entity\User;
 use App\Entity\PaymentMethod;
 use App\Repository\PaymentMethodRepository;
 use App\Repository\UserRepository;
@@ -21,7 +22,7 @@ final class PaymentMethodControllerTest extends WebTestCase
         /** @var UserRepository $userRepository */
         $userRepository = static::getContainer()->get(UserRepository::class);
         $admin = $userRepository->findOneBy(['email' => 'admin@example.com']);
-        self::assertNotNull($admin);
+        $this->assertInstanceOf(User::class, $admin);
         $this->client->loginUser($admin);
     }
 
@@ -54,7 +55,7 @@ final class PaymentMethodControllerTest extends WebTestCase
         /** @var PaymentMethodRepository $paymentMethodRepository */
         $paymentMethodRepository = static::getContainer()->get(PaymentMethodRepository::class);
         $method = $paymentMethodRepository->findOneBy(['name' => 'Bar']);
-        self::assertNotNull($method);
+        $this->assertInstanceOf(PaymentMethod::class, $method);
         $methodId = $method->getId();
 
         $this->client->request('GET', '/payment-methods/edit/' . $methodId);
@@ -80,7 +81,7 @@ final class PaymentMethodControllerTest extends WebTestCase
         /** @var PaymentMethodRepository $paymentMethodRepository */
         $paymentMethodRepository = static::getContainer()->get(PaymentMethodRepository::class);
         $method = $paymentMethodRepository->findOneBy(['name' => 'gye-1005345']);
-        self::assertNotNull($method);
+        $this->assertInstanceOf(PaymentMethod::class, $method);
         $methodId = $method->getId();
 
         $this->client->request('GET', '/payment-methods/edit/' . $methodId);
@@ -100,7 +101,7 @@ final class PaymentMethodControllerTest extends WebTestCase
         /** @var UserRepository $userRepository */
         $userRepository = static::getContainer()->get(UserRepository::class);
         $user = $userRepository->findOneBy(['email' => 'user1@example.com']);
-        self::assertNotNull($user);
+        $this->assertInstanceOf(User::class, $user);
         $client->loginUser($user);
 
         $client->request('GET', '/payment-methods');

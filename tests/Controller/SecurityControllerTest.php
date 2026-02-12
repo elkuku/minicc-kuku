@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller;
 
+use App\Entity\User;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -19,7 +20,7 @@ final class SecurityControllerTest extends WebTestCase
 
         $statusCode = $client->getResponse()->getStatusCode();
         // Should not be 404 - route exists. May be 500 (exception) or redirect
-        self::assertNotSame(404, $statusCode);
+        $this->assertNotSame(404, $statusCode);
     }
 
     public function testLoginPageIsAccessible(): void
@@ -37,7 +38,7 @@ final class SecurityControllerTest extends WebTestCase
         /** @var UserRepository $userRepository */
         $userRepository = static::getContainer()->get(UserRepository::class);
         $user = $userRepository->findOneBy(['email' => 'user1@example.com']);
-        self::assertNotNull($user);
+        $this->assertInstanceOf(User::class, $user);
         $client->loginUser($user);
 
         $client->request('GET', '/logout');

@@ -20,24 +20,12 @@ final class TwigExtensionTest extends WebTestCase
 
     public function testShortName(): void
     {
-        self::assertSame(
-            'Juan Perez',
-            $this->twigExtension->shortName('Juan Perez')
-        );
+        $this->assertSame('Juan Perez', $this->twigExtension->shortName('Juan Perez'));
 
-        self::assertSame(
-            'Juan Perez',
-            $this->twigExtension->shortName('Juan José Perez')
-        );
+        $this->assertSame('Juan Perez', $this->twigExtension->shortName('Juan José Perez'));
 
-        self::assertSame(
-            'Juan Perez',
-            $this->twigExtension->shortName('Juan José Perez Pillo')
-        );
+        $this->assertSame('Juan Perez', $this->twigExtension->shortName('Juan José Perez Pillo'));
 
-        self::assertSame(
-            'Juan',
-            $this->twigExtension->shortName('Juan')
-        );
+        $this->assertSame('Juan', $this->twigExtension->shortName('Juan'));
     }
 }

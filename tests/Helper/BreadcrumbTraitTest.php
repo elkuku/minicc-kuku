@@ -25,8 +25,8 @@ final class BreadcrumbTraitTest extends TestCase
 
         $breadcrumbs = $object->exposeBreadcrumbs();
 
-        self::assertArrayHasKey('Home', $breadcrumbs);
-        self::assertSame('welcome', $breadcrumbs['Home']);
+        $this->assertArrayHasKey('Home', $breadcrumbs);
+        $this->assertSame('welcome', $breadcrumbs['Home']);
     }
 
     public function testAddBreadcrumbAppendsToBreadcrumbs(): void
@@ -50,13 +50,13 @@ final class BreadcrumbTraitTest extends TestCase
 
         $result = $object->addCrumb('Stores', '/stores');
 
-        self::assertSame($object, $result);
+        $this->assertSame($object, $result);
 
         $breadcrumbs = $object->exposeBreadcrumbs();
 
-        self::assertArrayHasKey('Home', $breadcrumbs);
-        self::assertArrayHasKey('Stores', $breadcrumbs);
-        self::assertSame('/stores', $breadcrumbs['Stores']);
+        $this->assertArrayHasKey('Home', $breadcrumbs);
+        $this->assertArrayHasKey('Stores', $breadcrumbs);
+        $this->assertSame('/stores', $breadcrumbs['Stores']);
     }
 
     public function testAddBreadcrumbWithEmptyLink(): void
@@ -82,7 +82,7 @@ final class BreadcrumbTraitTest extends TestCase
 
         $breadcrumbs = $object->exposeBreadcrumbs();
 
-        self::assertSame('', $breadcrumbs['Current Page']);
+        $this->assertSame('', $breadcrumbs['Current Page']);
     }
 
     public function testMultipleBreadcrumbs(): void
@@ -110,7 +110,7 @@ final class BreadcrumbTraitTest extends TestCase
 
         $breadcrumbs = $object->exposeBreadcrumbs();
 
-        self::assertCount(4, $breadcrumbs);
-        self::assertSame(['Home', 'Stores', 'Store 1', 'Edit'], array_keys($breadcrumbs));
+        $this->assertCount(4, $breadcrumbs);
+        $this->assertSame(['Home', 'Stores', 'Store 1', 'Edit'], array_keys($breadcrumbs));
     }
 }

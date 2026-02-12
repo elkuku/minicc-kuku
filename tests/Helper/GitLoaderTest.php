@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Tests\Helper;
 
+use RuntimeException;
+use Override;
 use App\Helper\GitLoader;
 use PHPUnit\Framework\TestCase;
 
@@ -28,7 +30,7 @@ final class GitLoaderTest extends TestCase
 
         $result = $gitLoader->getBranchName();
 
-        self::assertSame('no branch name', $result);
+        $this->assertSame('no branch name', $result);
     }
 
     public function testGetBranchNameReadsBranchFromHead(): void
@@ -40,7 +42,7 @@ final class GitLoaderTest extends TestCase
 
         $result = $gitLoader->getBranchName();
 
-        self::assertSame('main', $result);
+        $this->assertSame('main', $result);
     }
 
     public function testGetBranchNameHandlesFeatureBranch(): void
@@ -52,7 +54,7 @@ final class GitLoaderTest extends TestCase
 
         $result = $gitLoader->getBranchName();
 
-        self::assertSame('feature/my-feature', $result);
+        $this->assertSame('feature/my-feature', $result);
     }
 
     public function testGetLastCommitMessageReturnsEmptyWhenNoFile(): void
@@ -61,7 +63,7 @@ final class GitLoaderTest extends TestCase
 
         $result = $gitLoader->getLastCommitMessage();
 
-        self::assertSame('', $result);
+        $this->assertSame('', $result);
     }
 
     public function testGetLastCommitMessageReadsFirstLine(): void
@@ -76,7 +78,7 @@ final class GitLoaderTest extends TestCase
 
         $result = $gitLoader->getLastCommitMessage();
 
-        self::assertSame('Initial commit', $result);
+        $this->assertSame('Initial commit', $result);
     }
 
     public function testGetLastCommitMessageTrimsWhitespace(): void
@@ -88,7 +90,7 @@ final class GitLoaderTest extends TestCase
 
         $result = $gitLoader->getLastCommitMessage();
 
-        self::assertSame('Fix bug', $result);
+        $this->assertSame('Fix bug', $result);
     }
 
     public function testGetLastCommitDetailReturnsDefaultsWhenNoLogs(): void
@@ -99,11 +101,11 @@ final class GitLoaderTest extends TestCase
 
         $result = $gitLoader->getLastCommitDetail();
 
-        self::assertArrayHasKey('author', $result);
-        self::assertArrayHasKey('date', $result);
-        self::assertArrayHasKey('sha', $result);
-        self::assertSame('not defined', $result['author']);
-        self::assertSame('not defined', $result['date']);
+        $this->assertArrayHasKey('author', $result);
+        $this->assertArrayHasKey('date', $result);
+        $this->assertArrayHasKey('sha', $result);
+        $this->assertSame('not defined', $result['author']);
+        $this->assertSame('not defined', $result['date']);
     }
 
     public function testGetLastCommitDetailParsesLogData(): void
@@ -116,9 +118,9 @@ final class GitLoaderTest extends TestCase
 
         $result = $gitLoader->getLastCommitDetail();
 
-        self::assertSame('John Doe', $result['author']);
-        self::assertSame(date('Y/m/d H:i', 1700000000), $result['date']);
-        self::assertSame('abc123', $result['sha']);
+        $this->assertSame('John Doe', $result['author']);
+        $this->assertSame(date('Y/m/d H:i', 1700000000), $result['date']);
+        $this->assertSame('abc123', $result['sha']);
     }
 
     public function testGetLastCommitDetailWithNoMatchingLogFormat(): void
@@ -130,16 +132,16 @@ final class GitLoaderTest extends TestCase
 
         $result = $gitLoader->getLastCommitDetail();
 
-        self::assertSame('not defined', $result['author']);
-        self::assertSame('not defined', $result['date']);
-        self::assertSame('abc123', $result['sha']);
+        $this->assertSame('not defined', $result['author']);
+        $this->assertSame('not defined', $result['date']);
+        $this->assertSame('abc123', $result['sha']);
     }
 
     public function testExecCommandThrowsOnFailureWithLastLine(): void
     {
         $gitLoader = new FailingGitLoader($this->tempDir, 'Something went wrong');
 
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Something went wrong');
 
         $gitLoader->getLastCommitDetail();
@@ -149,7 +151,7 @@ final class GitLoaderTest extends TestCase
     {
         $gitLoader = new FailingGitLoader($this->tempDir, '');
 
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('An unknown error occurred');
 
         $gitLoader->getLastCommitDetail();
@@ -177,6 +179,7 @@ final class GitLoaderTest extends TestCase
  */
 class TestableGitLoader extends GitLoader
 {
+    #[Override]
     protected function execCommand(string $command): bool|string
     {
         return 'abc123';
@@ -195,12 +198,13 @@ class FailingGitLoader extends GitLoader
         parent::__construct($rootDir);
     }
 
+    #[Override]
     protected function execCommand(string $command): bool|string
     {
         if ($this->lastLine) {
-            throw new \RuntimeException($this->lastLine);
+            throw new RuntimeException($this->lastLine);
         }
 
-        throw new \RuntimeException('An unknown error occurred');
+        throw new RuntimeException('An unknown error occurred');
     }
 }

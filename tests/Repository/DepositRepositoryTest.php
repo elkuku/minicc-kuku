@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Repository;
 
+use DateTime;
 use App\Entity\Deposit;
 use App\Helper\Paginator\PaginatorOptions;
 use App\Repository\DepositRepository;
@@ -29,7 +30,7 @@ final class DepositRepositoryTest extends KernelTestCase
 
         $result = $this->repository->getPaginatedList($options);
 
-        self::assertGreaterThanOrEqual(0, $result->count());
+        $this->assertGreaterThanOrEqual(0, $result->count());
     }
 
     public function testGetPaginatedListWithSearchCriteria(): void
@@ -45,21 +46,21 @@ final class DepositRepositoryTest extends KernelTestCase
 
         $result = $this->repository->getPaginatedList($options);
 
-        self::assertGreaterThanOrEqual(0, $result->count());
+        $this->assertGreaterThanOrEqual(0, $result->count());
     }
 
     public function testLookup(): void
     {
         $results = $this->repository->lookup(123);
 
-        self::assertGreaterThanOrEqual(0, count($results));
+        $this->assertGreaterThanOrEqual(0, count($results));
     }
 
     public function testSearch(): void
     {
         $results = $this->repository->search(123);
 
-        self::assertGreaterThanOrEqual(0, count($results));
+        $this->assertGreaterThanOrEqual(0, count($results));
     }
 
     public function testHas(): void
@@ -67,17 +68,17 @@ final class DepositRepositoryTest extends KernelTestCase
         $deposit = $this->ensureDeposit();
 
         $result = $this->repository->has($deposit);
-        self::assertTrue($result);
+        $this->assertTrue($result);
     }
 
     public function testHasReturnsFalseForNonExistentDeposit(): void
     {
         $deposit = new Deposit();
-        $deposit->setDate(new \DateTime('1900-01-01'));
+        $deposit->setDate(new DateTime('1900-01-01'));
         $deposit->setDocument('999999');
 
         $result = $this->repository->has($deposit);
-        self::assertFalse($result);
+        $this->assertFalse($result);
     }
 
     private function ensureDeposit(): Deposit
@@ -89,7 +90,7 @@ final class DepositRepositoryTest extends KernelTestCase
         }
 
         $deposit = new Deposit();
-        $deposit->setDate(new \DateTime());
+        $deposit->setDate(new DateTime());
         $deposit->setDocument('test-123');
         $deposit->setAmount('100');
 

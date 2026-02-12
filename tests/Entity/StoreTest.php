@@ -16,7 +16,7 @@ final class StoreTest extends TestCase
     {
         $store = new Store();
 
-        self::assertNull($store->getId());
+        $this->assertNull($store->getId());
     }
 
     public function testSetId(): void
@@ -25,8 +25,8 @@ final class StoreTest extends TestCase
 
         $result = $store->setId(42);
 
-        self::assertSame($store, $result);
-        self::assertSame(42, $store->getId());
+        $this->assertSame($store, $result);
+        $this->assertSame(42, $store->getId());
     }
 
     public function testToString(): void
@@ -37,7 +37,7 @@ final class StoreTest extends TestCase
 
         $result = (string) $store;
 
-        self::assertSame('5 - Centro Comercial', $result);
+        $this->assertSame('5 - Centro Comercial', $result);
     }
 
     public function testToStringWithNullId(): void
@@ -48,163 +48,163 @@ final class StoreTest extends TestCase
         $result = (string) $store;
 
         // Store id is null but sprintf %d converts null to 0
-        self::assertSame('0 - Test Store', $result);
+        $this->assertSame('0 - Test Store', $result);
     }
 
     public function testUserIdGetterSetter(): void
     {
         $store = new Store();
 
-        self::assertSame(0, $store->getUserId());
+        $this->assertSame(0, $store->getUserId());
 
         $result = $store->setUserId(123);
 
-        self::assertSame($store, $result);
-        self::assertSame(123, $store->getUserId());
+        $this->assertSame($store, $result);
+        $this->assertSame(123, $store->getUserId());
     }
 
     public function testDestinationGetterSetter(): void
     {
         $store = new Store();
 
-        self::assertSame('', $store->getDestination());
+        $this->assertSame('', $store->getDestination());
 
         $result = $store->setDestination('Local 101');
 
-        self::assertSame($store, $result);
-        self::assertSame('Local 101', $store->getDestination());
+        $this->assertSame($store, $result);
+        $this->assertSame('Local 101', $store->getDestination());
     }
 
     public function testValAlqGetterSetter(): void
     {
         $store = new Store();
 
-        self::assertSame(0.0, $store->getValAlq());
+        $this->assertEqualsWithDelta(0.0, $store->getValAlq(), PHP_FLOAT_EPSILON);
 
         $result = $store->setValAlq(500.50);
 
-        self::assertSame($store, $result);
-        self::assertSame(500.50, $store->getValAlq());
+        $this->assertSame($store, $result);
+        $this->assertEqualsWithDelta(500.50, $store->getValAlq(), PHP_FLOAT_EPSILON);
     }
 
     public function testCntLanfortGetterSetter(): void
     {
         $store = new Store();
 
-        self::assertSame(0, $store->getCntLanfort());
+        $this->assertSame(0, $store->getCntLanfort());
 
         $result = $store->setCntLanfort(5);
 
-        self::assertSame($store, $result);
-        self::assertSame(5, $store->getCntLanfort());
+        $this->assertSame($store, $result);
+        $this->assertSame(5, $store->getCntLanfort());
     }
 
     public function testCntNeonGetterSetter(): void
     {
         $store = new Store();
 
-        self::assertSame(0, $store->getCntNeon());
+        $this->assertSame(0, $store->getCntNeon());
 
         $result = $store->setCntNeon(3);
 
-        self::assertSame($store, $result);
-        self::assertSame(3, $store->getCntNeon());
+        $this->assertSame($store, $result);
+        $this->assertSame(3, $store->getCntNeon());
     }
 
     public function testCntSwitchGetterSetter(): void
     {
         $store = new Store();
 
-        self::assertSame(0, $store->getCntSwitch());
+        $this->assertSame(0, $store->getCntSwitch());
 
         $result = $store->setCntSwitch(8);
 
-        self::assertSame($store, $result);
-        self::assertSame(8, $store->getCntSwitch());
+        $this->assertSame($store, $result);
+        $this->assertSame(8, $store->getCntSwitch());
     }
 
     public function testCntTomaGetterSetter(): void
     {
         $store = new Store();
 
-        self::assertSame(0, $store->getCntToma());
+        $this->assertSame(0, $store->getCntToma());
 
         $result = $store->setCntToma(10);
 
-        self::assertSame($store, $result);
-        self::assertSame(10, $store->getCntToma());
+        $this->assertSame($store, $result);
+        $this->assertSame(10, $store->getCntToma());
     }
 
     public function testCntVentanaGetterSetter(): void
     {
         $store = new Store();
 
-        self::assertSame(0, $store->getCntVentana());
+        $this->assertSame(0, $store->getCntVentana());
 
         $result = $store->setCntVentana(4);
 
-        self::assertSame($store, $result);
-        self::assertSame(4, $store->getCntVentana());
+        $this->assertSame($store, $result);
+        $this->assertSame(4, $store->getCntVentana());
     }
 
     public function testCntLlavesGetterSetter(): void
     {
         $store = new Store();
 
-        self::assertSame(0, $store->getCntLlaves());
+        $this->assertSame(0, $store->getCntLlaves());
 
         $result = $store->setCntLlaves(2);
 
-        self::assertSame($store, $result);
-        self::assertSame(2, $store->getCntLlaves());
+        $this->assertSame($store, $result);
+        $this->assertSame(2, $store->getCntLlaves());
     }
 
     public function testCntMedAguaGetterSetter(): void
     {
         $store = new Store();
 
-        self::assertSame(0, $store->getCntMedAgua());
+        $this->assertSame(0, $store->getCntMedAgua());
 
         $result = $store->setCntMedAgua(1);
 
-        self::assertSame($store, $result);
-        self::assertSame(1, $store->getCntMedAgua());
+        $this->assertSame($store, $result);
+        $this->assertSame(1, $store->getCntMedAgua());
     }
 
     public function testCntMedElecGetterSetter(): void
     {
         $store = new Store();
 
-        self::assertSame(0, $store->getCntMedElec());
+        $this->assertSame(0, $store->getCntMedElec());
 
         $result = $store->setCntMedElec(1);
 
-        self::assertSame($store, $result);
-        self::assertSame(1, $store->getCntMedElec());
+        $this->assertSame($store, $result);
+        $this->assertSame(1, $store->getCntMedElec());
     }
 
     public function testMedAguaGetterSetter(): void
     {
         $store = new Store();
 
-        self::assertSame('', $store->getMedAgua());
+        $this->assertSame('', $store->getMedAgua());
 
         $result = $store->setMedAgua('AGUA-001');
 
-        self::assertSame($store, $result);
-        self::assertSame('AGUA-001', $store->getMedAgua());
+        $this->assertSame($store, $result);
+        $this->assertSame('AGUA-001', $store->getMedAgua());
     }
 
     public function testMedElectricoGetterSetter(): void
     {
         $store = new Store();
 
-        self::assertSame('', $store->getMedElectrico());
+        $this->assertSame('', $store->getMedElectrico());
 
         $result = $store->setMedElectrico('ELEC-001');
 
-        self::assertSame($store, $result);
-        self::assertSame('ELEC-001', $store->getMedElectrico());
+        $this->assertSame($store, $result);
+        $this->assertSame('ELEC-001', $store->getMedElectrico());
     }
 
     public function testUserGetterSetter(): void
@@ -212,12 +212,12 @@ final class StoreTest extends TestCase
         $store = new Store();
         $user = $this->createUser();
 
-        self::assertNull($store->getUser());
+        $this->assertNotInstanceOf(User::class, $store->getUser());
 
         $result = $store->setUser($user);
 
-        self::assertSame($store, $result);
-        self::assertSame($user, $store->getUser());
+        $this->assertSame($store, $result);
+        $this->assertSame($user, $store->getUser());
     }
 
     public function testSetUserToNull(): void
@@ -228,28 +228,28 @@ final class StoreTest extends TestCase
         $store->setUser($user);
         $store->setUser(null);
 
-        self::assertNull($store->getUser());
+        $this->assertNotInstanceOf(User::class, $store->getUser());
     }
 
     public function testAllPropertiesDefaultValues(): void
     {
         $store = new Store();
 
-        self::assertNull($store->getId());
-        self::assertSame(0, $store->getUserId());
-        self::assertSame('', $store->getDestination());
-        self::assertSame(0.0, $store->getValAlq());
-        self::assertSame(0, $store->getCntLanfort());
-        self::assertSame(0, $store->getCntNeon());
-        self::assertSame(0, $store->getCntSwitch());
-        self::assertSame(0, $store->getCntToma());
-        self::assertSame(0, $store->getCntVentana());
-        self::assertSame(0, $store->getCntLlaves());
-        self::assertSame(0, $store->getCntMedAgua());
-        self::assertSame(0, $store->getCntMedElec());
-        self::assertSame('', $store->getMedAgua());
-        self::assertSame('', $store->getMedElectrico());
-        self::assertNull($store->getUser());
+        $this->assertNull($store->getId());
+        $this->assertSame(0, $store->getUserId());
+        $this->assertSame('', $store->getDestination());
+        $this->assertEqualsWithDelta(0.0, $store->getValAlq(), PHP_FLOAT_EPSILON);
+        $this->assertSame(0, $store->getCntLanfort());
+        $this->assertSame(0, $store->getCntNeon());
+        $this->assertSame(0, $store->getCntSwitch());
+        $this->assertSame(0, $store->getCntToma());
+        $this->assertSame(0, $store->getCntVentana());
+        $this->assertSame(0, $store->getCntLlaves());
+        $this->assertSame(0, $store->getCntMedAgua());
+        $this->assertSame(0, $store->getCntMedElec());
+        $this->assertSame('', $store->getMedAgua());
+        $this->assertSame('', $store->getMedElectrico());
+        $this->assertNotInstanceOf(User::class, $store->getUser());
     }
 
     private function setStoreId(Store $store, int $id): void

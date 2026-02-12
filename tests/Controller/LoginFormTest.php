@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller;
 
+use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 final class LoginFormTest extends WebTestCase
@@ -11,7 +12,7 @@ final class LoginFormTest extends WebTestCase
     public function testLoginPageIsAccessible(): void
     {
         $client = static::createClient();
-        $crawler = $client->request('GET', '/login');
+        $client->request('GET', '/login');
 
         self::assertResponseIsSuccessful();
         self::assertSelectorTextContains('h2', 'Login');
@@ -52,7 +53,7 @@ final class LoginFormTest extends WebTestCase
         $client->followRedirect();
 
         $cookie = $client->getCookieJar()->get('KUKUREMEMBERME');
-        self::assertNotNull($cookie, 'Remember me cookie should be set');
+        $this->assertInstanceOf(Cookie::class, $cookie, 'Remember me cookie should be set');
     }
 
     public function testLoginWithInvalidUserShowsError(): void
@@ -67,7 +68,7 @@ final class LoginFormTest extends WebTestCase
         $client->submit($form);
 
         self::assertResponseRedirects('/login');
-        $crawler = $client->followRedirect();
+        $client->followRedirect();
 
         self::assertSelectorExists('.alert-danger');
     }
@@ -84,7 +85,7 @@ final class LoginFormTest extends WebTestCase
         $client->submit($form);
 
         self::assertResponseRedirects('/login');
-        $crawler = $client->followRedirect();
+        $client->followRedirect();
 
         self::assertSelectorExists('.alert-danger');
     }
@@ -167,7 +168,7 @@ final class LoginFormTest extends WebTestCase
         $client->request('GET', '/admin/payments');
 
         self::assertResponseRedirects();
-        self::assertStringContainsString('/login', (string) $client->getResponse()->headers->get('Location'));
+        $this->assertStringContainsString('/login', (string) $client->getResponse()->headers->get('Location'));
     }
 
     public function testLoginRedirectsToOriginallyRequestedPage(): void

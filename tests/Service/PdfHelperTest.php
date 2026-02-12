@@ -18,7 +18,7 @@ final class PdfHelperTest extends TestCase
     {
         $helper = $this->createPdfHelper();
 
-        self::assertSame('/project/root', $helper->getRoot());
+        $this->assertSame('/project/root', $helper->getRoot());
     }
 
     public function testGetOutputFromHtmlDelegatesToPdfEngine(): void
@@ -31,27 +31,25 @@ final class PdfHelperTest extends TestCase
 
         $result = $helper->getOutputFromHtml('<h1>Hello</h1>');
 
-        self::assertSame('pdf-binary-content', $result);
+        $this->assertSame('pdf-binary-content', $result);
     }
 
     public function testRenderTransactionHtmlCallsTwigWithCorrectTemplate(): void
     {
-        $store = (new Store())->setId(1);
+        $store = new Store()->setId(1);
         $transactionRepo = $this->createStub(TransactionRepository::class);
         $transactionRepo->method('findByStoreAndYear')->willReturn([]);
         $transactionRepo->method('getSaldoAnterior')->willReturn(0);
 
         $twig = $this->createMock(Environment::class);
-        $twig->expects(self::once())
+        $twig->expects($this->once())
             ->method('render')
             ->with(
                 '_pdf/transactions-pdf.html.twig',
-                self::callback(static function (array $params) use ($store): bool {
-                    return $params['store'] === $store
-                        && $params['year'] === 2024
-                        && $params['saldoAnterior'] === 0
-                        && \is_array($params['transactions']);
-                }),
+                self::callback(static fn(array $params): bool => $params['store'] === $store
+                    && $params['year'] === 2024
+                    && $params['saldoAnterior'] === 0
+                    && \is_array($params['transactions'])),
             )
             ->willReturn('<html>transactions</html>');
 
@@ -59,7 +57,7 @@ final class PdfHelperTest extends TestCase
 
         $result = $helper->renderTransactionHtml($transactionRepo, $store, 2024);
 
-        self::assertSame('<html>transactions</html>', $result);
+        $this->assertSame('<html>transactions</html>', $result);
     }
 
     public function testRenderPayrollsHtmlCallsTwigWithCorrectTemplate(): void
@@ -73,7 +71,7 @@ final class PdfHelperTest extends TestCase
         ]);
 
         $twig = $this->createMock(Environment::class);
-        $twig->expects(self::once())
+        $twig->expects($this->once())
             ->method('render')
             ->with(
                 '_pdf/payrolls-pdf.html.twig',
@@ -86,13 +84,13 @@ final class PdfHelperTest extends TestCase
 
         $result = $helper->renderPayrollsHtml(2024, 3, $payrollHelper);
 
-        self::assertSame('<html>payrolls</html>', $result);
+        $this->assertSame('<html>payrolls</html>', $result);
     }
 
     public function testGetHeaderHtmlCallsTwigWithCorrectTemplateAndRootPath(): void
     {
         $twig = $this->createMock(Environment::class);
-        $twig->expects(self::once())
+        $twig->expects($this->once())
             ->method('render')
             ->with(
                 '_header-pdf.html.twig',
@@ -104,13 +102,13 @@ final class PdfHelperTest extends TestCase
 
         $result = $helper->getHeaderHtml();
 
-        self::assertSame('<header>header</header>', $result);
+        $this->assertSame('<header>header</header>', $result);
     }
 
     public function testGetFooterHtmlCallsTwigWithCorrectTemplate(): void
     {
         $twig = $this->createMock(Environment::class);
-        $twig->expects(self::once())
+        $twig->expects($this->once())
             ->method('render')
             ->with('_footer-pdf.html.twig')
             ->willReturn('<footer>footer</footer>');
@@ -119,7 +117,7 @@ final class PdfHelperTest extends TestCase
 
         $result = $helper->getFooterHtml();
 
-        self::assertSame('<footer>footer</footer>', $result);
+        $this->assertSame('<footer>footer</footer>', $result);
     }
 
     private function createPdfHelper(

@@ -20,7 +20,7 @@ final class UserTypeTest extends TestCase
         $builder->method('add')->willReturnSelf();
 
         $addedFields = [];
-        $builder->expects(self::exactly(2))
+        $builder->expects($this->exactly(2))
             ->method('add')
             ->willReturnCallback(function (string $name, ?string $type = null) use (&$addedFields, $builder): FormBuilderInterface {
                 $addedFields[$name] = $type;
@@ -31,10 +31,10 @@ final class UserTypeTest extends TestCase
         $type = new UserType();
         $type->buildForm($builder, []);
 
-        self::assertArrayHasKey('name', $addedFields);
-        self::assertSame(TextType::class, $addedFields['name']);
-        self::assertArrayHasKey('email', $addedFields);
-        self::assertSame(EmailType::class, $addedFields['email']);
+        $this->assertArrayHasKey('name', $addedFields);
+        $this->assertSame(TextType::class, $addedFields['name']);
+        $this->assertArrayHasKey('email', $addedFields);
+        $this->assertSame(EmailType::class, $addedFields['email']);
     }
 
     public function testConfigureOptionsSetsDataClass(): void
@@ -46,6 +46,6 @@ final class UserTypeTest extends TestCase
 
         $options = $resolver->resolve();
 
-        self::assertSame(User::class, $options['data_class']);
+        $this->assertSame(User::class, $options['data_class']);
     }
 }

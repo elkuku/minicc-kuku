@@ -24,21 +24,21 @@ final class UserAdminCommandTest extends TestCase
 
     public function testExtendsUserAdminBaseCommand(): void
     {
-        self::assertInstanceOf(UserAdminBaseCommand::class, $this->command);
+        $this->assertInstanceOf(UserAdminBaseCommand::class, $this->command);
     }
 
     public function testCommandName(): void
     {
-        self::assertSame('user-admin', $this->command->getName());
+        $this->assertSame('user-admin', $this->command->getName());
     }
 
     public function testCommandDescription(): void
     {
-        self::assertSame('Administer user accounts', $this->command->getDescription());
+        $this->assertSame('Administer user accounts', $this->command->getDescription());
     }
 
     public function testCommandAliases(): void
     {
-        self::assertSame(['useradmin', 'admin'], $this->command->getAliases());
+        $this->assertSame(['useradmin', 'admin'], $this->command->getAliases());
     }
 }

@@ -15,7 +15,7 @@ final class ChartBuilderServiceTest extends TestCase
     {
         $chartBuilder = $this->createStub(ChartBuilderInterface::class);
         $chartBuilder->method('createChart')
-            ->willReturnCallback(fn(string $type) => new Chart($type));
+            ->willReturnCallback(fn(string $type): Chart => new Chart($type));
 
         $service = new ChartBuilderService($chartBuilder);
         $labels = ['Jan', 'Feb', 'Mar'];
@@ -23,20 +23,20 @@ final class ChartBuilderServiceTest extends TestCase
 
         $chart = $service->getDashboardChart('Revenue', $labels, $data);
 
-        self::assertSame('bar', $chart->getType());
+        $this->assertSame('bar', $chart->getType());
 
         $chartData = $chart->getData();
-        self::assertSame($labels, $chartData['labels']);
-        self::assertCount(1, $chartData['datasets']);
-        self::assertSame('Revenue', $chartData['datasets'][0]['label']);
-        self::assertSame($data, $chartData['datasets'][0]['data']);
+        $this->assertSame($labels, $chartData['labels']);
+        $this->assertCount(1, $chartData['datasets']);
+        $this->assertSame('Revenue', $chartData['datasets'][0]['label']);
+        $this->assertSame($data, $chartData['datasets'][0]['data']);
     }
 
     public function testGetStoreChartReturnsLineChartWithTwoDatasets(): void
     {
         $chartBuilder = $this->createStub(ChartBuilderInterface::class);
         $chartBuilder->method('createChart')
-            ->willReturnCallback(fn(string $type) => new Chart($type));
+            ->willReturnCallback(fn(string $type): Chart => new Chart($type));
 
         $service = new ChartBuilderService($chartBuilder);
         $labels = ['Week 1', 'Week 2'];
@@ -45,14 +45,14 @@ final class ChartBuilderServiceTest extends TestCase
 
         $chart = $service->getStoreChart($labels, $payments, $rent);
 
-        self::assertSame('line', $chart->getType());
+        $this->assertSame('line', $chart->getType());
 
         $chartData = $chart->getData();
-        self::assertSame($labels, $chartData['labels']);
-        self::assertCount(2, $chartData['datasets']);
-        self::assertSame('Pagos', $chartData['datasets'][0]['label']);
-        self::assertSame($payments, $chartData['datasets'][0]['data']);
-        self::assertSame('Alquiler', $chartData['datasets'][1]['label']);
-        self::assertSame($rent, $chartData['datasets'][1]['data']);
+        $this->assertSame($labels, $chartData['labels']);
+        $this->assertCount(2, $chartData['datasets']);
+        $this->assertSame('Pagos', $chartData['datasets'][0]['label']);
+        $this->assertSame($payments, $chartData['datasets'][0]['data']);
+        $this->assertSame('Alquiler', $chartData['datasets'][1]['label']);
+        $this->assertSame($rent, $chartData['datasets'][1]['data']);
     }
 }

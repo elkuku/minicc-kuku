@@ -26,7 +26,7 @@ final class ShaFinderTest extends TestCase
     {
         $shaFinder = new ShaFinder($this->tempDir);
 
-        self::assertSame('n/a', $shaFinder->getSha());
+        $this->assertSame('n/a', $shaFinder->getSha());
     }
 
     public function testGetShaReadsFromShaTxt(): void
@@ -35,7 +35,7 @@ final class ShaFinderTest extends TestCase
 
         $shaFinder = new ShaFinder($this->tempDir);
 
-        self::assertSame('abc123def', $shaFinder->getSha());
+        $this->assertSame('abc123def', $shaFinder->getSha());
     }
 
     public function testGetShaReadsFromGitHeadWhenNoShaTxt(): void
@@ -45,7 +45,7 @@ final class ShaFinderTest extends TestCase
 
         $shaFinder = new ShaFinder($this->tempDir);
 
-        self::assertSame('git-sha-456', $shaFinder->getSha());
+        $this->assertSame('git-sha-456', $shaFinder->getSha());
     }
 
     public function testGetShaPrefersShaTxtOverGitHead(): void
@@ -56,7 +56,7 @@ final class ShaFinderTest extends TestCase
 
         $shaFinder = new ShaFinder($this->tempDir);
 
-        self::assertSame('sha-txt-value', $shaFinder->getSha());
+        $this->assertSame('sha-txt-value', $shaFinder->getSha());
     }
 
     public function testGetShaReturnsNaForEmptyShaTxt(): void
@@ -65,7 +65,7 @@ final class ShaFinderTest extends TestCase
 
         $shaFinder = new ShaFinder($this->tempDir);
 
-        self::assertSame('n/a', $shaFinder->getSha());
+        $this->assertSame('n/a', $shaFinder->getSha());
     }
 
     public function testGetShaReturnsNaForEmptyGitHead(): void
@@ -75,7 +75,7 @@ final class ShaFinderTest extends TestCase
 
         $shaFinder = new ShaFinder($this->tempDir);
 
-        self::assertSame('n/a', $shaFinder->getSha());
+        $this->assertSame('n/a', $shaFinder->getSha());
     }
 
     public function testGetShaWithWhitespace(): void
@@ -85,7 +85,7 @@ final class ShaFinderTest extends TestCase
         $shaFinder = new ShaFinder($this->tempDir);
 
         // file_get_contents preserves whitespace
-        self::assertSame("  abc123  \n", $shaFinder->getSha());
+        $this->assertSame("  abc123  \n", $shaFinder->getSha());
     }
 
     private function removeDirectory(string $dir): void

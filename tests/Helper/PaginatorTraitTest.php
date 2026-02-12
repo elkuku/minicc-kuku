@@ -17,11 +17,11 @@ final class PaginatorTraitTest extends TestCase
         $request = Request::create('/test');
         $options = $this->getPaginatorOptions($request, 25);
 
-        self::assertSame(1, $options->getPage());
-        self::assertSame(25, $options->getLimit());
-        self::assertSame('id', $options->getOrder());
-        self::assertSame('ASC', $options->getOrderDir());
-        self::assertSame([], $options->getCriteria());
+        $this->assertSame(1, $options->getPage());
+        $this->assertSame(25, $options->getLimit());
+        $this->assertSame('id', $options->getOrder());
+        $this->assertSame('ASC', $options->getOrderDir());
+        $this->assertSame([], $options->getCriteria());
     }
 
     public function testCustomValues(): void
@@ -36,10 +36,10 @@ final class PaginatorTraitTest extends TestCase
         ]);
         $options = $this->getPaginatorOptions($request, 25);
 
-        self::assertSame(3, $options->getPage());
-        self::assertSame(50, $options->getLimit());
-        self::assertSame('name', $options->getOrder());
-        self::assertSame('DESC', $options->getOrderDir());
+        $this->assertSame(3, $options->getPage());
+        $this->assertSame(50, $options->getLimit());
+        $this->assertSame('name', $options->getOrder());
+        $this->assertSame('DESC', $options->getOrderDir());
     }
 
     public function testCriteriaPassthrough(): void
@@ -51,7 +51,7 @@ final class PaginatorTraitTest extends TestCase
         ]);
         $options = $this->getPaginatorOptions($request, 10);
 
-        self::assertSame(['status' => 'active'], $options->getCriteria());
+        $this->assertSame(['status' => 'active'], $options->getCriteria());
     }
 
     public function testPartialOptions(): void
@@ -64,10 +64,10 @@ final class PaginatorTraitTest extends TestCase
         ]);
         $options = $this->getPaginatorOptions($request, 15);
 
-        self::assertSame(2, $options->getPage());
-        self::assertSame(15, $options->getLimit());
-        self::assertSame('date', $options->getOrder());
-        self::assertSame('ASC', $options->getOrderDir());
+        $this->assertSame(2, $options->getPage());
+        $this->assertSame(15, $options->getLimit());
+        $this->assertSame('date', $options->getOrder());
+        $this->assertSame('ASC', $options->getOrderDir());
     }
 
     public function testListLimitUsedAsDefault(): void
@@ -75,6 +75,6 @@ final class PaginatorTraitTest extends TestCase
         $request = Request::create('/test');
         $options = $this->getPaginatorOptions($request, 42);
 
-        self::assertSame(42, $options->getLimit());
+        $this->assertSame(42, $options->getLimit());
     }
 }

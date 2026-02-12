@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Helper;
 
+use Iterator;
 use App\Helper\IntlConverter;
 use DateTime;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -17,18 +18,18 @@ final class IntlConverterTest extends TestCase
 
         $result = IntlConverter::formatDate($date);
 
-        self::assertStringContainsString('15', $result);
-        self::assertStringContainsString('marzo', $result);
-        self::assertStringContainsString('2024', $result);
+        $this->assertStringContainsString('15', $result);
+        $this->assertStringContainsString('marzo', $result);
+        $this->assertStringContainsString('2024', $result);
     }
 
     public function testFormatDateWithStringDate(): void
     {
         $result = IntlConverter::formatDate('2024-03-15');
 
-        self::assertStringContainsString('15', $result);
-        self::assertStringContainsString('marzo', $result);
-        self::assertStringContainsString('2024', $result);
+        $this->assertStringContainsString('15', $result);
+        $this->assertStringContainsString('marzo', $result);
+        $this->assertStringContainsString('2024', $result);
     }
 
     public function testFormatDateWithCustomFormat(): void
@@ -37,8 +38,8 @@ final class IntlConverterTest extends TestCase
 
         $result = IntlConverter::formatDate($date, 'MMMM YYYY');
 
-        self::assertStringContainsString('diciembre', $result);
-        self::assertStringContainsString('2024', $result);
+        $this->assertStringContainsString('diciembre', $result);
+        $this->assertStringContainsString('2024', $result);
     }
 
     public function testFormatDateWithGermanLocale(): void
@@ -47,9 +48,9 @@ final class IntlConverterTest extends TestCase
 
         $result = IntlConverter::formatDate($date, "d. MMMM YYYY", 'de_DE');
 
-        self::assertStringContainsString('15', $result);
-        self::assertStringContainsString('März', $result);
-        self::assertStringContainsString('2024', $result);
+        $this->assertStringContainsString('15', $result);
+        $this->assertStringContainsString('März', $result);
+        $this->assertStringContainsString('2024', $result);
     }
 
     public function testFormatDateWithEnglishLocale(): void
@@ -58,9 +59,9 @@ final class IntlConverterTest extends TestCase
 
         $result = IntlConverter::formatDate($date, 'MMMM d, YYYY', 'en_US');
 
-        self::assertStringContainsString('15', $result);
-        self::assertStringContainsString('March', $result);
-        self::assertStringContainsString('2024', $result);
+        $this->assertStringContainsString('15', $result);
+        $this->assertStringContainsString('March', $result);
+        $this->assertStringContainsString('2024', $result);
     }
 
     #[DataProvider('dateFormattingProvider')]
@@ -70,30 +71,28 @@ final class IntlConverterTest extends TestCase
 
         $result = IntlConverter::formatDate($date, $format, 'es_ES');
 
-        self::assertStringContainsString($expectedContains, $result);
+        $this->assertStringContainsString($expectedContains, $result);
     }
 
     /**
-     * @return array<string, array{string, string, string}>
+     * @return Iterator<string, array{string, string, string}>
      */
-    public static function dateFormattingProvider(): array
+    public static function dateFormattingProvider(): Iterator
     {
-        return [
-            'january' => ['2024-01-01', 'MMMM', 'enero'],
-            'february' => ['2024-02-01', 'MMMM', 'febrero'],
-            'march' => ['2024-03-01', 'MMMM', 'marzo'],
-            'april' => ['2024-04-01', 'MMMM', 'abril'],
-            'may' => ['2024-05-01', 'MMMM', 'mayo'],
-            'june' => ['2024-06-01', 'MMMM', 'junio'],
-            'july' => ['2024-07-01', 'MMMM', 'julio'],
-            'august' => ['2024-08-01', 'MMMM', 'agosto'],
-            'september' => ['2024-09-01', 'MMMM', 'septiembre'],
-            'october' => ['2024-10-01', 'MMMM', 'octubre'],
-            'november' => ['2024-11-01', 'MMMM', 'noviembre'],
-            'december' => ['2024-12-01', 'MMMM', 'diciembre'],
-            'year only' => ['2024-06-15', 'YYYY', '2024'],
-            'day only' => ['2024-06-15', 'd', '15'],
-        ];
+        yield 'january' => ['2024-01-01', 'MMMM', 'enero'];
+        yield 'february' => ['2024-02-01', 'MMMM', 'febrero'];
+        yield 'march' => ['2024-03-01', 'MMMM', 'marzo'];
+        yield 'april' => ['2024-04-01', 'MMMM', 'abril'];
+        yield 'may' => ['2024-05-01', 'MMMM', 'mayo'];
+        yield 'june' => ['2024-06-01', 'MMMM', 'junio'];
+        yield 'july' => ['2024-07-01', 'MMMM', 'julio'];
+        yield 'august' => ['2024-08-01', 'MMMM', 'agosto'];
+        yield 'september' => ['2024-09-01', 'MMMM', 'septiembre'];
+        yield 'october' => ['2024-10-01', 'MMMM', 'octubre'];
+        yield 'november' => ['2024-11-01', 'MMMM', 'noviembre'];
+        yield 'december' => ['2024-12-01', 'MMMM', 'diciembre'];
+        yield 'year only' => ['2024-06-15', 'YYYY', '2024'];
+        yield 'day only' => ['2024-06-15', 'd', '15'];
     }
 
     public function testFormatDateDefaultFormat(): void
@@ -102,9 +101,9 @@ final class IntlConverterTest extends TestCase
 
         $result = IntlConverter::formatDate($date);
 
-        self::assertStringContainsString('15', $result);
-        self::assertStringContainsString('de', $result);
-        self::assertStringContainsString('junio', $result);
-        self::assertStringContainsString('2024', $result);
+        $this->assertStringContainsString('15', $result);
+        $this->assertStringContainsString('de', $result);
+        $this->assertStringContainsString('junio', $result);
+        $this->assertStringContainsString('2024', $result);
     }
 }

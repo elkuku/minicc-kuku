@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller;
 
+use App\Entity\User;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -18,7 +19,7 @@ final class UserControllerTest extends WebTestCase
         /** @var UserRepository $userRepository */
         $userRepository = static::getContainer()->get(UserRepository::class);
         $admin = $userRepository->findOneBy(['email' => 'admin@example.com']);
-        self::assertNotNull($admin);
+        $this->assertInstanceOf(User::class, $admin);
         $this->client->loginUser($admin);
     }
 
@@ -67,7 +68,7 @@ final class UserControllerTest extends WebTestCase
         /** @var UserRepository $userRepository */
         $userRepository = static::getContainer()->get(UserRepository::class);
         $user = $userRepository->findOneBy(['email' => 'user1@example.com']);
-        self::assertNotNull($user);
+        $this->assertInstanceOf(User::class, $user);
 
         $this->client->request('GET', '/users/edit/' . $user->getId());
 
@@ -96,7 +97,7 @@ final class UserControllerTest extends WebTestCase
         /** @var UserRepository $userRepository */
         $userRepository = static::getContainer()->get(UserRepository::class);
         $user = $userRepository->findOneBy(['email' => 'user2@example.com']);
-        self::assertNotNull($user);
+        $this->assertInstanceOf(User::class, $user);
 
         $crawler = $this->client->request('GET', '/users/edit/' . $user->getId());
         $form = $crawler->filter('button[type="submit"]')->form([
@@ -119,7 +120,7 @@ final class UserControllerTest extends WebTestCase
         /** @var UserRepository $userRepository */
         $userRepository = static::getContainer()->get(UserRepository::class);
         $user = $userRepository->findOneBy(['email' => 'user1@example.com']);
-        self::assertNotNull($user);
+        $this->assertInstanceOf(User::class, $user);
         $client->loginUser($user);
 
         $client->request('GET', '/users');

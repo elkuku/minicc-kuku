@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Repository;
 
+use DateTime;
 use App\Entity\Store;
 use App\Entity\User;
 use App\Helper\Paginator\PaginatorOptions;
@@ -32,11 +33,11 @@ final class TransactionRepositoryTest extends KernelTestCase
         $transactions = $this->repository->findByStoreAndYear($store, $year);
 
         foreach ($transactions as $transaction) {
-            self::assertSame($store->getId(), $transaction->getStore()->getId());
-            self::assertSame($year, (int) $transaction->getDate()->format('Y'));
+            $this->assertSame($store->getId(), $transaction->getStore()->getId());
+            $this->assertSame($year, (int) $transaction->getDate()->format('Y'));
         }
 
-        self::assertGreaterThanOrEqual(0, count($transactions));
+        $this->assertGreaterThanOrEqual(0, count($transactions));
     }
 
     public function testGetSaldoForStore(): void
@@ -44,7 +45,7 @@ final class TransactionRepositoryTest extends KernelTestCase
         $store = $this->getTestStore();
         $saldo = $this->repository->getSaldo($store);
 
-        self::assertNotNull($saldo);
+        $this->assertNotNull($saldo);
     }
 
     public function testGetSaldoAnterior(): void
@@ -54,7 +55,7 @@ final class TransactionRepositoryTest extends KernelTestCase
 
         $result = $this->repository->getSaldoAnterior($store, $year);
 
-        self::assertTrue(is_numeric($result) || $result === null);
+        $this->assertTrue(is_numeric($result) || $result === null);
     }
 
     public function testGetSaldoALaFecha(): void
@@ -63,7 +64,7 @@ final class TransactionRepositoryTest extends KernelTestCase
 
         $result = $this->repository->getSaldoALaFecha($store, date('Y-m-d'));
 
-        self::assertTrue(is_numeric($result) || $result === null);
+        $this->assertTrue(is_numeric($result) || $result === null);
     }
 
     public function testFindMonthPayments(): void
@@ -74,7 +75,7 @@ final class TransactionRepositoryTest extends KernelTestCase
 
         $payments = $this->repository->findMonthPayments($store, $month, $year);
 
-        self::assertGreaterThanOrEqual(0, count($payments));
+        $this->assertGreaterThanOrEqual(0, count($payments));
     }
 
     public function testFindByDate(): void
@@ -84,7 +85,7 @@ final class TransactionRepositoryTest extends KernelTestCase
 
         $transactions = $this->repository->findByDate($year, $month);
 
-        self::assertGreaterThanOrEqual(0, count($transactions));
+        $this->assertGreaterThanOrEqual(0, count($transactions));
     }
 
     public function testGetPagosPorAno(): void
@@ -93,7 +94,7 @@ final class TransactionRepositoryTest extends KernelTestCase
 
         $pagos = $this->repository->getPagosPorAno($year);
 
-        self::assertGreaterThanOrEqual(0, count($pagos));
+        $this->assertGreaterThanOrEqual(0, count($pagos));
     }
 
     public function testGetRawList(): void
@@ -103,7 +104,7 @@ final class TransactionRepositoryTest extends KernelTestCase
 
         $result = $this->repository->getRawList($options);
 
-        self::assertGreaterThanOrEqual(0, $result->count());
+        $this->assertGreaterThanOrEqual(0, $result->count());
     }
 
     public function testGetRawListWithSearchCriteria(): void
@@ -118,7 +119,7 @@ final class TransactionRepositoryTest extends KernelTestCase
 
         $result = $this->repository->getRawList($options);
 
-        self::assertGreaterThanOrEqual(0, $result->count());
+        $this->assertGreaterThanOrEqual(0, $result->count());
     }
 
     public function testGetRawListWithStoreCriteria(): void
@@ -132,7 +133,7 @@ final class TransactionRepositoryTest extends KernelTestCase
 
         $result = $this->repository->getRawList($options);
 
-        self::assertGreaterThanOrEqual(0, $result->count());
+        $this->assertGreaterThanOrEqual(0, $result->count());
     }
 
     public function testGetRawListWithTypeCriteria(): void
@@ -145,7 +146,7 @@ final class TransactionRepositoryTest extends KernelTestCase
 
         $result = $this->repository->getRawList($options);
 
-        self::assertGreaterThanOrEqual(0, $result->count());
+        $this->assertGreaterThanOrEqual(0, $result->count());
     }
 
     public function testGetRawListWithRecipeAndCommentCriteria(): void
@@ -159,21 +160,21 @@ final class TransactionRepositoryTest extends KernelTestCase
 
         $result = $this->repository->getRawList($options);
 
-        self::assertGreaterThanOrEqual(0, $result->count());
+        $this->assertGreaterThanOrEqual(0, $result->count());
     }
 
     public function testGetLastRecipeNo(): void
     {
         $number = $this->repository->getLastRecipeNo();
 
-        self::assertGreaterThanOrEqual(0, $number);
+        $this->assertGreaterThanOrEqual(0, $number);
     }
 
     public function testGetLastChargementDate(): void
     {
         $date = $this->repository->getLastChargementDate();
 
-        self::assertInstanceOf(\DateTime::class, $date);
+        $this->assertInstanceOf(DateTime::class, $date);
     }
 
     public function testCheckChargementRequired(): void
@@ -181,7 +182,7 @@ final class TransactionRepositoryTest extends KernelTestCase
         $result = $this->repository->checkChargementRequired();
 
         // Result depends on fixture data timing - just verify it runs without error
-        self::assertThat($result, self::logicalOr(self::isTrue(), self::isFalse()));
+        $this->assertThat($result, self::logicalOr(self::isTrue(), self::isFalse()));
     }
 
     public function testFindByStoreYearAndUser(): void
@@ -193,19 +194,19 @@ final class TransactionRepositoryTest extends KernelTestCase
         $transactions = $this->repository->findByStoreYearAndUser($store, $year, $user);
 
         foreach ($transactions as $transaction) {
-            self::assertSame($store->getId(), $transaction->getStore()->getId());
-            self::assertSame($year, (int) $transaction->getDate()->format('Y'));
-            self::assertSame($user->getId(), $transaction->getUser()->getId());
+            $this->assertSame($store->getId(), $transaction->getStore()->getId());
+            $this->assertSame($year, (int) $transaction->getDate()->format('Y'));
+            $this->assertSame($user->getId(), $transaction->getUser()->getId());
         }
 
-        self::assertGreaterThanOrEqual(0, count($transactions));
+        $this->assertGreaterThanOrEqual(0, count($transactions));
     }
 
     public function testFindByIds(): void
     {
         $transactions = $this->repository->findByIds([1, 2, 3]);
 
-        self::assertGreaterThanOrEqual(0, count($transactions));
+        $this->assertGreaterThanOrEqual(0, count($transactions));
     }
 
     private function getTestStore(): Store
@@ -213,7 +214,7 @@ final class TransactionRepositoryTest extends KernelTestCase
         /** @var StoreRepository $storeRepository */
         $storeRepository = self::getContainer()->get(StoreRepository::class);
         $store = $storeRepository->findOneBy(['destination' => 'TEST']);
-        self::assertNotNull($store);
+        $this->assertInstanceOf(Store::class, $store);
 
         return $store;
     }
@@ -223,7 +224,7 @@ final class TransactionRepositoryTest extends KernelTestCase
         /** @var UserRepository $userRepository */
         $userRepository = self::getContainer()->get(UserRepository::class);
         $user = $userRepository->findOneBy(['email' => 'user1@example.com']);
-        self::assertNotNull($user);
+        $this->assertInstanceOf(User::class, $user);
 
         return $user;
     }

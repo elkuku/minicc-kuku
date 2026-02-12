@@ -22,8 +22,8 @@ final class UserTest extends TestCase
         $serialized = serialize($user);
         $unserialized = unserialize($serialized);
 
-        self::assertInstanceOf(User::class, $unserialized);
-        self::assertSame('test@example.com', $unserialized->getEmail());
+        $this->assertInstanceOf(User::class, $unserialized);
+        $this->assertSame('test@example.com', $unserialized->getEmail());
     }
 
     public function testSerializeContainsIdAndEmail(): void
@@ -35,9 +35,9 @@ final class UserTest extends TestCase
 
         $data = $user->__serialize();
 
-        self::assertArrayHasKey('id', $data);
-        self::assertArrayHasKey('email', $data);
-        self::assertSame('serialize@example.com', $data['email']);
+        $this->assertArrayHasKey('id', $data);
+        $this->assertArrayHasKey('email', $data);
+        $this->assertSame('serialize@example.com', $data['email']);
     }
 
     public function testUnserializeRestoresData(): void
@@ -51,7 +51,7 @@ final class UserTest extends TestCase
             'email' => 'restored@example.com',
         ]);
 
-        self::assertSame('restored@example.com', $user->getEmail());
+        $this->assertSame('restored@example.com', $user->getEmail());
     }
 
     public function testUnserializeWithMissingData(): void
@@ -64,8 +64,8 @@ final class UserTest extends TestCase
         $incompleteData = [];
         $user->__unserialize($incompleteData);
 
-        self::assertNull($user->getId());
-        self::assertSame('', $user->getEmail());
+        $this->assertNull($user->getId());
+        $this->assertSame('', $user->getEmail());
     }
 
     public function testToStringReturnsName(): void
@@ -75,7 +75,7 @@ final class UserTest extends TestCase
         $user->setName('John Doe');
         $user->setGender(Gender::male);
 
-        self::assertSame('John Doe', (string) $user);
+        $this->assertSame('John Doe', (string) $user);
     }
 
     public function testGetUserIdentifierReturnsEmail(): void
@@ -85,7 +85,7 @@ final class UserTest extends TestCase
         $user->setName('Test');
         $user->setGender(Gender::male);
 
-        self::assertSame('identifier@example.com', $user->getUserIdentifier());
+        $this->assertSame('identifier@example.com', $user->getUserIdentifier());
     }
 
     public function testSetIdentifierSetsEmail(): void
@@ -97,8 +97,8 @@ final class UserTest extends TestCase
 
         $result = $user->setIdentifier('new@example.com');
 
-        self::assertSame($user, $result);
-        self::assertSame('new@example.com', $user->getEmail());
+        $this->assertSame($user, $result);
+        $this->assertSame('new@example.com', $user->getEmail());
     }
 
     public function testGetRolesReturnsArrayWithSingleRole(): void
@@ -111,8 +111,8 @@ final class UserTest extends TestCase
 
         $roles = $user->getRoles();
 
-        self::assertCount(1, $roles);
-        self::assertSame('ROLE_ADMIN', $roles[0]);
+        $this->assertCount(1, $roles);
+        $this->assertSame('ROLE_ADMIN', $roles[0]);
     }
 
     public function testSetRolesSetsFirstRole(): void
@@ -124,8 +124,8 @@ final class UserTest extends TestCase
 
         $result = $user->setRoles(['ROLE_CASHIER', 'ROLE_USER']);
 
-        self::assertSame($user, $result);
-        self::assertSame('ROLE_CASHIER', $user->getRole());
+        $this->assertSame($user, $result);
+        $this->assertSame('ROLE_CASHIER', $user->getRole());
     }
 
     public function testDefaultRole(): void
@@ -135,7 +135,7 @@ final class UserTest extends TestCase
         $user->setName('Test');
         $user->setGender(Gender::male);
 
-        self::assertSame('ROLE_USER', $user->getRole());
+        $this->assertSame('ROLE_USER', $user->getRole());
     }
 
 
@@ -146,7 +146,7 @@ final class UserTest extends TestCase
         $user->setEmail('test@example.com');
         $user->setGender(Gender::male);
 
-        self::assertNull($user->getPassword());
+        $this->assertNull($user->getPassword());
     }
 
     public function testGetSaltReturnsNull(): void
@@ -155,7 +155,7 @@ final class UserTest extends TestCase
         $user->setEmail('test@example.com');
         $user->setGender(Gender::male);
 
-        self::assertNull($user->getSalt());
+        $this->assertNull($user->getSalt());
     }
 
     public function testRolesConstant(): void
@@ -166,7 +166,7 @@ final class UserTest extends TestCase
             'admin' => 'ROLE_ADMIN',
         ];
 
-        self::assertSame($expected, User::ROLES);
+        $this->assertSame(User::ROLES, $expected);
     }
 
     public function testGoogleId(): void
@@ -175,12 +175,12 @@ final class UserTest extends TestCase
         $user->setEmail('test@example.com');
         $user->setGender(Gender::male);
 
-        self::assertSame('', $user->getGoogleId());
+        $this->assertSame('', $user->getGoogleId());
 
         $result = $user->setGoogleId('google-123');
 
-        self::assertSame($user, $result);
-        self::assertSame('google-123', $user->getGoogleId());
+        $this->assertSame($user, $result);
+        $this->assertSame('google-123', $user->getGoogleId());
     }
 
     public function testIsActive(): void
@@ -189,15 +189,15 @@ final class UserTest extends TestCase
         $user->setEmail('test@example.com');
         $user->setGender(Gender::male);
 
-        self::assertNull($user->isIsActive());
+        $this->assertNull($user->isIsActive());
 
         $result = $user->setIsActive(true);
 
-        self::assertSame($user, $result);
-        self::assertTrue($user->isIsActive());
+        $this->assertSame($user, $result);
+        $this->assertTrue($user->isIsActive());
 
         $user->setIsActive(false);
-        self::assertFalse($user->isIsActive());
+        $this->assertFalse($user->isIsActive());
     }
 
     public function testPhoneNumbers(): void
@@ -207,12 +207,12 @@ final class UserTest extends TestCase
         $user->setGender(Gender::male);
 
         $result = $user->setTelefono('123-456-7890');
-        self::assertSame($user, $result);
-        self::assertSame('123-456-7890', $user->getTelefono());
+        $this->assertSame($user, $result);
+        $this->assertSame('123-456-7890', $user->getTelefono());
 
         $result = $user->setTelefono2('098-765-4321');
-        self::assertSame($user, $result);
-        self::assertSame('098-765-4321', $user->getTelefono2());
+        $this->assertSame($user, $result);
+        $this->assertSame('098-765-4321', $user->getTelefono2());
     }
 
     public function testDireccion(): void
@@ -223,8 +223,8 @@ final class UserTest extends TestCase
 
         $result = $user->setDireccion('123 Main Street');
 
-        self::assertSame($user, $result);
-        self::assertSame('123 Main Street', $user->getDireccion());
+        $this->assertSame($user, $result);
+        $this->assertSame('123 Main Street', $user->getDireccion());
     }
 
     public function testInqCiAndRuc(): void
@@ -233,16 +233,16 @@ final class UserTest extends TestCase
         $user->setEmail('test@example.com');
         $user->setGender(Gender::male);
 
-        self::assertSame('', $user->getInqCi());
-        self::assertSame('', $user->getInqRuc());
+        $this->assertSame('', $user->getInqCi());
+        $this->assertSame('', $user->getInqRuc());
 
         $result = $user->setInqCi('123456789-0');
-        self::assertSame($user, $result);
-        self::assertSame('123456789-0', $user->getInqCi());
+        $this->assertSame($user, $result);
+        $this->assertSame('123456789-0', $user->getInqCi());
 
         $result = $user->setInqRuc('1234567890001');
-        self::assertSame($user, $result);
-        self::assertSame('1234567890001', $user->getInqRuc());
+        $this->assertSame($user, $result);
+        $this->assertSame('1234567890001', $user->getInqRuc());
     }
 
     public function testStoresCollection(): void
@@ -253,7 +253,7 @@ final class UserTest extends TestCase
 
         $stores = $user->getStores();
 
-        self::assertCount(0, $stores);
+        $this->assertCount(0, $stores);
     }
 
     public function testAddStore(): void
@@ -267,9 +267,9 @@ final class UserTest extends TestCase
 
         $result = $user->addStore($store);
 
-        self::assertSame($user, $result);
-        self::assertCount(1, $user->getStores());
-        self::assertTrue($user->getStores()->contains($store));
+        $this->assertSame($user, $result);
+        $this->assertCount(1, $user->getStores());
+        $this->assertTrue($user->getStores()->contains($store));
     }
 
     public function testRemoveStore(): void
@@ -282,13 +282,13 @@ final class UserTest extends TestCase
         $store->setDestination('Test Store');
 
         $user->addStore($store);
-        self::assertCount(1, $user->getStores());
+        $this->assertCount(1, $user->getStores());
 
         $result = $user->removeStore($store);
 
-        self::assertSame($user, $result);
-        self::assertCount(0, $user->getStores());
-        self::assertFalse($user->getStores()->contains($store));
+        $this->assertSame($user, $result);
+        $this->assertCount(0, $user->getStores());
+        $this->assertFalse($user->getStores()->contains($store));
     }
 
     public function testAddMultipleStores(): void
@@ -306,7 +306,7 @@ final class UserTest extends TestCase
         $user->addStore($store1);
         $user->addStore($store2);
 
-        self::assertCount(2, $user->getStores());
+        $this->assertCount(2, $user->getStores());
     }
 
     #[IgnoreDeprecations]
@@ -319,7 +319,7 @@ final class UserTest extends TestCase
         // Should not throw - deprecated no-op method
         $user->eraseCredentials();
 
-        self::assertSame('test@example.com', $user->getEmail());
+        $this->assertSame('test@example.com', $user->getEmail());
     }
 
     public function testToStringWithNullName(): void
@@ -328,7 +328,7 @@ final class UserTest extends TestCase
         $user->setEmail('test@example.com');
         $user->setGender(Gender::male);
 
-        self::assertSame('', (string) $user);
+        $this->assertSame('', (string) $user);
     }
 
     public function testSetInqRucToNull(): void
@@ -338,11 +338,11 @@ final class UserTest extends TestCase
         $user->setGender(Gender::male);
 
         $user->setInqRuc('1234567890001');
-        self::assertSame('1234567890001', $user->getInqRuc());
+        $this->assertSame('1234567890001', $user->getInqRuc());
 
         $result = $user->setInqRuc(null);
-        self::assertSame($user, $result);
-        self::assertNull($user->getInqRuc());
+        $this->assertSame($user, $result);
+        $this->assertNull($user->getInqRuc());
     }
 
     public function testNullablePhoneNumbers(): void
@@ -353,11 +353,11 @@ final class UserTest extends TestCase
 
         $user->setTelefono('123');
         $user->setTelefono(null);
-        self::assertNull($user->getTelefono());
+        $this->assertNull($user->getTelefono());
 
         $user->setTelefono2('456');
         $user->setTelefono2(null);
-        self::assertNull($user->getTelefono2());
+        $this->assertNull($user->getTelefono2());
     }
 
     public function testNullableDireccion(): void
@@ -368,7 +368,7 @@ final class UserTest extends TestCase
 
         $user->setDireccion('Some address');
         $user->setDireccion(null);
-        self::assertNull($user->getDireccion());
+        $this->assertNull($user->getDireccion());
     }
 
     public function testSetRoleAndGetRole(): void
@@ -379,9 +379,9 @@ final class UserTest extends TestCase
 
         $result = $user->setRole('ROLE_CASHIER');
 
-        self::assertSame($user, $result);
-        self::assertSame('ROLE_CASHIER', $user->getRole());
-        self::assertSame(['ROLE_CASHIER'], $user->getRoles());
+        $this->assertSame($user, $result);
+        $this->assertSame('ROLE_CASHIER', $user->getRole());
+        $this->assertSame(['ROLE_CASHIER'], $user->getRoles());
     }
 
     public function testGenderGetterSetter(): void
@@ -391,8 +391,8 @@ final class UserTest extends TestCase
 
         foreach (Gender::cases() as $gender) {
             $result = $user->setGender($gender);
-            self::assertSame($user, $result);
-            self::assertSame($gender, $user->getGender());
+            $this->assertSame($user, $result);
+            $this->assertSame($gender, $user->getGender());
         }
     }
 }

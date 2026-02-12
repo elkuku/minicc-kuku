@@ -14,7 +14,7 @@ final class PaymentMethodTypeTest extends TestCase
     {
         $builder = $this->createMock(FormBuilderInterface::class);
 
-        $builder->expects(self::once())
+        $builder->expects($this->once())
             ->method('add')
             ->with('name')
             ->willReturnSelf();

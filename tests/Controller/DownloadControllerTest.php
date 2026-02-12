@@ -4,23 +4,22 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller;
 
+use App\Entity\User;
+use App\Entity\Store;
 use App\Repository\StoreRepository;
 use App\Repository\UserRepository;
-use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 final class DownloadControllerTest extends WebTestCase
 {
-    private KernelBrowser $client;
-
     protected function setUp(): void
     {
-        $this->client = static::createClient();
+        $client = static::createClient();
         /** @var UserRepository $userRepository */
         $userRepository = static::getContainer()->get(UserRepository::class);
         $admin = $userRepository->findOneBy(['email' => 'admin@example.com']);
-        self::assertNotNull($admin);
-        $this->client->loginUser($admin);
+        $this->assertInstanceOf(User::class, $admin);
+        $client->loginUser($admin);
     }
 
     public function testDownloadUsersListRequiresAdmin(): void
@@ -30,7 +29,7 @@ final class DownloadControllerTest extends WebTestCase
         /** @var UserRepository $userRepository */
         $userRepository = static::getContainer()->get(UserRepository::class);
         $user = $userRepository->findOneBy(['email' => 'user1@example.com']);
-        self::assertNotNull($user);
+        $this->assertInstanceOf(User::class, $user);
         $client->loginUser($user);
 
         $client->request('GET', '/download/users-list');
@@ -45,7 +44,7 @@ final class DownloadControllerTest extends WebTestCase
         /** @var UserRepository $userRepository */
         $userRepository = static::getContainer()->get(UserRepository::class);
         $user = $userRepository->findOneBy(['email' => 'user1@example.com']);
-        self::assertNotNull($user);
+        $this->assertInstanceOf(User::class, $user);
         $client->loginUser($user);
 
         $client->request('GET', '/download/users-ruc-list');
@@ -60,19 +59,19 @@ final class DownloadControllerTest extends WebTestCase
         /** @var UserRepository $userRepository */
         $userRepository = static::getContainer()->get(UserRepository::class);
         $user = $userRepository->findOneBy(['email' => 'user1@example.com']);
-        self::assertNotNull($user);
+        $this->assertInstanceOf(User::class, $user);
         $client->loginUser($user);
         /** @var StoreRepository $storeRepository */
         $storeRepository = static::getContainer()->get(StoreRepository::class);
         $store = $storeRepository->findOneBy(['destination' => 'TEST']);
-        self::assertNotNull($store);
+        $this->assertInstanceOf(Store::class, $store);
         $storeId = $store->getId();
 
         $client->request('GET', '/download/store-transactions/' . $storeId . '/2024');
 
         // May fail due to wkhtmltopdf not being available, but should not be 403
         $statusCode = $client->getResponse()->getStatusCode();
-        self::assertNotSame(403, $statusCode);
+        $this->assertNotSame(403, $statusCode);
     }
 
     public function testStoreTransactionsDeniedForWrongUser(): void
@@ -82,12 +81,12 @@ final class DownloadControllerTest extends WebTestCase
         /** @var UserRepository $userRepository */
         $userRepository = static::getContainer()->get(UserRepository::class);
         $user = $userRepository->findOneBy(['email' => 'user2@example.com']);
-        self::assertNotNull($user);
+        $this->assertInstanceOf(User::class, $user);
         $client->loginUser($user);
         /** @var StoreRepository $storeRepository */
         $storeRepository = static::getContainer()->get(StoreRepository::class);
         $store = $storeRepository->findOneBy(['destination' => 'TEST']);
-        self::assertNotNull($store);
+        $this->assertInstanceOf(Store::class, $store);
         $storeId = $store->getId();
 
         $client->request('GET', '/download/store-transactions/' . $storeId . '/2024');
@@ -102,7 +101,7 @@ final class DownloadControllerTest extends WebTestCase
         /** @var UserRepository $userRepository */
         $userRepository = static::getContainer()->get(UserRepository::class);
         $user = $userRepository->findOneBy(['email' => 'user1@example.com']);
-        self::assertNotNull($user);
+        $this->assertInstanceOf(User::class, $user);
         $client->loginUser($user);
 
         $client->request('GET', '/download/planillas');
@@ -117,7 +116,7 @@ final class DownloadControllerTest extends WebTestCase
         /** @var UserRepository $userRepository */
         $userRepository = static::getContainer()->get(UserRepository::class);
         $user = $userRepository->findOneBy(['email' => 'user1@example.com']);
-        self::assertNotNull($user);
+        $this->assertInstanceOf(User::class, $user);
         $client->loginUser($user);
 
         $client->request('GET', '/download/transactions');

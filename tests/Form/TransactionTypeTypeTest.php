@@ -29,7 +29,7 @@ final class TransactionTypeTypeTest extends TestCase
         $builder->method('add')->willReturnSelf();
 
         $addedFields = [];
-        $builder->expects(self::exactly(count($expectedFields)))
+        $builder->expects($this->exactly(count($expectedFields)))
             ->method('add')
             ->willReturnCallback(function (string $name) use (&$addedFields, $builder): FormBuilderInterface {
                 $addedFields[] = $name;
@@ -40,6 +40,6 @@ final class TransactionTypeTypeTest extends TestCase
         $type = new TransactionTypeType();
         $type->buildForm($builder, []);
 
-        self::assertSame($expectedFields, $addedFields);
+        $this->assertSame($expectedFields, $addedFields);
     }
 }

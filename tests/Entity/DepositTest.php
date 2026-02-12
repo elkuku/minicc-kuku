@@ -32,8 +32,8 @@ final class DepositTest extends TestCase
 
         $result = $deposit->setEntity($paymentMethod);
 
-        self::assertSame($deposit, $result);
-        self::assertSame($paymentMethod, $deposit->getEntity());
+        $this->assertSame($deposit, $result);
+        $this->assertSame($paymentMethod, $deposit->getEntity());
     }
 
     public function testSetEntityAcceptsIdThree(): void
@@ -43,8 +43,8 @@ final class DepositTest extends TestCase
 
         $result = $deposit->setEntity($paymentMethod);
 
-        self::assertSame($deposit, $result);
-        self::assertSame($paymentMethod, $deposit->getEntity());
+        $this->assertSame($deposit, $result);
+        $this->assertSame($paymentMethod, $deposit->getEntity());
     }
 
     public function testJsonSerialize(): void
@@ -59,16 +59,16 @@ final class DepositTest extends TestCase
 
         $json = $deposit->jsonSerialize();
 
-        self::assertArrayHasKey('id', $json);
-        self::assertArrayHasKey('amount', $json);
-        self::assertArrayHasKey('document', $json);
-        self::assertArrayHasKey('date', $json);
-        self::assertArrayHasKey('entity', $json);
+        $this->assertArrayHasKey('id', $json);
+        $this->assertArrayHasKey('amount', $json);
+        $this->assertArrayHasKey('document', $json);
+        $this->assertArrayHasKey('date', $json);
+        $this->assertArrayHasKey('entity', $json);
 
-        self::assertSame('1500.50', $json['amount']);
-        self::assertSame('DOC-123', $json['document']);
-        self::assertSame('2024-03-15', $json['date']);
-        self::assertSame(2, $json['entity']);
+        $this->assertSame('1500.50', $json['amount']);
+        $this->assertSame('DOC-123', $json['document']);
+        $this->assertSame('2024-03-15', $json['date']);
+        $this->assertSame(2, $json['entity']);
     }
 
     public function testJsonSerializeWithNullId(): void
@@ -83,7 +83,7 @@ final class DepositTest extends TestCase
 
         $json = $deposit->jsonSerialize();
 
-        self::assertNull($json['id']);
+        $this->assertNull($json['id']);
     }
 
     public function testDateGetterSetter(): void
@@ -93,8 +93,8 @@ final class DepositTest extends TestCase
 
         $result = $deposit->setDate($date);
 
-        self::assertSame($deposit, $result);
-        self::assertSame($date, $deposit->getDate());
+        $this->assertSame($deposit, $result);
+        $this->assertSame($date, $deposit->getDate());
     }
 
     public function testDocumentGetterSetter(): void
@@ -103,8 +103,8 @@ final class DepositTest extends TestCase
 
         $result = $deposit->setDocument('INVOICE-2024-001');
 
-        self::assertSame($deposit, $result);
-        self::assertSame('INVOICE-2024-001', $deposit->getDocument());
+        $this->assertSame($deposit, $result);
+        $this->assertSame('INVOICE-2024-001', $deposit->getDocument());
     }
 
     public function testAmountGetterSetter(): void
@@ -113,22 +113,22 @@ final class DepositTest extends TestCase
 
         $result = $deposit->setAmount('9999.99');
 
-        self::assertSame($deposit, $result);
-        self::assertSame('9999.99', $deposit->getAmount());
+        $this->assertSame($deposit, $result);
+        $this->assertSame('9999.99', $deposit->getAmount());
     }
 
     public function testGetIdReturnsNullForNewEntity(): void
     {
         $deposit = new Deposit();
 
-        self::assertNull($deposit->getId());
+        $this->assertNull($deposit->getId());
     }
 
     public function testGetTransactionReturnsNullByDefault(): void
     {
         $deposit = new Deposit();
 
-        self::assertNull($deposit->getTransaction());
+        $this->assertNotInstanceOf(Transaction::class, $deposit->getTransaction());
     }
 
     public function testSetTransactionSetsOwningSide(): void
@@ -138,9 +138,9 @@ final class DepositTest extends TestCase
 
         $result = $deposit->setTransaction($transaction);
 
-        self::assertSame($deposit, $result);
-        self::assertSame($transaction, $deposit->getTransaction());
-        self::assertSame($deposit, $transaction->getDeposit());
+        $this->assertSame($deposit, $result);
+        $this->assertSame($transaction, $deposit->getTransaction());
+        $this->assertSame($deposit, $transaction->getDeposit());
     }
 
     public function testSetTransactionToNullUnsetsOwningSide(): void
@@ -149,12 +149,12 @@ final class DepositTest extends TestCase
         $transaction = new Transaction();
 
         $deposit->setTransaction($transaction);
-        self::assertSame($transaction, $deposit->getTransaction());
+        $this->assertSame($transaction, $deposit->getTransaction());
 
         $deposit->setTransaction(null);
 
-        self::assertNull($deposit->getTransaction());
-        self::assertNull($transaction->getDeposit());
+        $this->assertNull($deposit->getTransaction());
+        $this->assertNotInstanceOf(Deposit::class, $transaction->getDeposit());
     }
 
     public function testSetTransactionReplacesExistingTransaction(): void
@@ -164,12 +164,12 @@ final class DepositTest extends TestCase
         $transaction2 = new Transaction();
 
         $deposit->setTransaction($transaction1);
-        self::assertSame($transaction1, $deposit->getTransaction());
-        self::assertSame($deposit, $transaction1->getDeposit());
+        $this->assertSame($transaction1, $deposit->getTransaction());
+        $this->assertSame($deposit, $transaction1->getDeposit());
 
         $deposit->setTransaction($transaction2);
-        self::assertSame($transaction2, $deposit->getTransaction());
-        self::assertSame($deposit, $transaction2->getDeposit());
+        $this->assertSame($transaction2, $deposit->getTransaction());
+        $this->assertSame($deposit, $transaction2->getDeposit());
     }
 
     public function testSetTransactionToNullWhenAlreadyNull(): void
@@ -178,8 +178,8 @@ final class DepositTest extends TestCase
 
         $result = $deposit->setTransaction(null);
 
-        self::assertSame($deposit, $result);
-        self::assertNull($deposit->getTransaction());
+        $this->assertSame($deposit, $result);
+        $this->assertNotInstanceOf(Transaction::class, $deposit->getTransaction());
     }
 
     public function testSetTransactionSkipsSetDepositWhenAlreadySet(): void
@@ -193,8 +193,8 @@ final class DepositTest extends TestCase
         // Now set via the inverse side - should skip setDeposit since it's already set
         $deposit->setTransaction($transaction);
 
-        self::assertSame($transaction, $deposit->getTransaction());
-        self::assertSame($deposit, $transaction->getDeposit());
+        $this->assertSame($transaction, $deposit->getTransaction());
+        $this->assertSame($deposit, $transaction->getDeposit());
     }
 
     private function createPaymentMethodWithId(int $id): PaymentMethod

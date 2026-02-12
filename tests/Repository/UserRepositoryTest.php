@@ -24,11 +24,11 @@ final class UserRepositoryTest extends KernelTestCase
     {
         $users = $this->repository->findActiveUsers();
 
-        self::assertNotEmpty($users);
+        $this->assertNotEmpty($users);
 
         foreach ($users as $user) {
-            self::assertSame('ROLE_USER', $user->getRole());
-            self::assertTrue($user->isIsActive());
+            $this->assertSame('ROLE_USER', $user->getRole());
+            $this->assertTrue($user->isIsActive());
         }
     }
 
@@ -40,18 +40,18 @@ final class UserRepositoryTest extends KernelTestCase
         $sorted = $names;
         sort($sorted);
 
-        self::assertSame($sorted, $names);
+        $this->assertSame($sorted, $names);
     }
 
     public function testGetSortedByStoreReturnsActiveUsers(): void
     {
         $users = $this->repository->getSortedByStore();
 
-        self::assertNotEmpty($users);
+        $this->assertNotEmpty($users);
 
         foreach ($users as $user) {
-            self::assertSame('ROLE_USER', $user->getRole());
-            self::assertTrue($user->isIsActive());
+            $this->assertSame('ROLE_USER', $user->getRole());
+            $this->assertTrue($user->isIsActive());
         }
     }
 }

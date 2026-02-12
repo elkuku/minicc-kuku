@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller;
 
+use App\Entity\User;
+use App\Entity\PaymentMethod;
+use DateTime;
 use App\Entity\Deposit;
 use App\Repository\DepositRepository;
 use App\Repository\PaymentMethodRepository;
@@ -22,7 +25,7 @@ final class DepositControllerTest extends WebTestCase
         /** @var UserRepository $userRepository */
         $userRepository = static::getContainer()->get(UserRepository::class);
         $admin = $userRepository->findOneBy(['email' => 'admin@example.com']);
-        self::assertNotNull($admin);
+        $this->assertInstanceOf(User::class, $admin);
         $this->client->loginUser($admin);
     }
 
@@ -32,7 +35,7 @@ final class DepositControllerTest extends WebTestCase
 
         // Fixture deposit may lack entity relation causing template error
         $statusCode = $this->client->getResponse()->getStatusCode();
-        self::assertContains($statusCode, [200, 500]);
+        $this->assertContains($statusCode, [200, 500]);
     }
 
     public function testDepositSearchReturnsResults(): void
@@ -52,7 +55,7 @@ final class DepositControllerTest extends WebTestCase
 
         // Fixture deposit may lack entity relation causing jsonSerialize error
         $statusCode = $this->client->getResponse()->getStatusCode();
-        self::assertContains($statusCode, [200, 500]);
+        $this->assertContains($statusCode, [200, 500]);
     }
 
     public function testDepositLookupReturnsNullForMissing(): void
@@ -61,8 +64,8 @@ final class DepositControllerTest extends WebTestCase
 
         self::assertResponseIsSuccessful();
         $response = $this->client->getResponse();
-        self::assertSame('application/json', $response->headers->get('Content-Type'));
-        self::assertSame('null', $response->getContent());
+        $this->assertSame('application/json', $response->headers->get('Content-Type'));
+        $this->assertSame('null', $response->getContent());
     }
 
     public function testDepositDeniedForRegularUser(): void
@@ -72,7 +75,7 @@ final class DepositControllerTest extends WebTestCase
         /** @var UserRepository $userRepository */
         $userRepository = static::getContainer()->get(UserRepository::class);
         $user = $userRepository->findOneBy(['email' => 'user1@example.com']);
-        self::assertNotNull($user);
+        $this->assertInstanceOf(User::class, $user);
         $client->loginUser($user);
 
         $client->request('GET', '/deposits');
@@ -106,12 +109,12 @@ final class DepositControllerTest extends WebTestCase
         /** @var PaymentMethodRepository $pmRepository */
         $pmRepository = static::getContainer()->get(PaymentMethodRepository::class);
         $paymentMethod = $pmRepository->findOneBy([]);
-        self::assertNotNull($paymentMethod);
+        $this->assertInstanceOf(PaymentMethod::class, $paymentMethod);
 
         $deposit = new Deposit();
         $deposit->setDocument('999');
         $deposit->setAmount('100');
-        $deposit->setDate(new \DateTime());
+        $deposit->setDate(new DateTime());
         $deposit->setEntity($paymentMethod);
 
         /** @var EntityManagerInterface $em */

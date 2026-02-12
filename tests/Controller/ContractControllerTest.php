@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller;
 
+use App\Entity\User;
 use App\Entity\Contract;
 use App\Repository\ContractRepository;
 use App\Repository\UserRepository;
@@ -22,7 +23,7 @@ final class ContractControllerTest extends WebTestCase
         /** @var UserRepository $userRepository */
         $userRepository = static::getContainer()->get(UserRepository::class);
         $admin = $userRepository->findOneBy(['email' => 'admin@example.com']);
-        self::assertNotNull($admin);
+        $this->assertInstanceOf(User::class, $admin);
         $this->client->loginUser($admin);
     }
 
@@ -78,7 +79,7 @@ final class ContractControllerTest extends WebTestCase
 
         self::assertResponseIsSuccessful();
         $response = $this->client->getResponse();
-        self::assertSame('application/json', $response->headers->get('Content-Type'));
+        $this->assertSame('application/json', $response->headers->get('Content-Type'));
     }
 
     public function testContractDeniedForRegularUser(): void
@@ -88,7 +89,7 @@ final class ContractControllerTest extends WebTestCase
         /** @var UserRepository $userRepository */
         $userRepository = static::getContainer()->get(UserRepository::class);
         $user = $userRepository->findOneBy(['email' => 'user1@example.com']);
-        self::assertNotNull($user);
+        $this->assertInstanceOf(User::class, $user);
         $client->loginUser($user);
 
         $client->request('GET', '/contracts');

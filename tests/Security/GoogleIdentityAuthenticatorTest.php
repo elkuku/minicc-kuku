@@ -43,7 +43,7 @@ final class GoogleIdentityAuthenticatorTest extends TestCase
         $authenticator = $this->createAuthenticator();
         $request = Request::create('/connect/google/verify', 'POST');
 
-        self::assertTrue($authenticator->supports($request));
+        $this->assertTrue($authenticator->supports($request));
     }
 
     public function testSupportsReturnsFalseForOtherPaths(): void
@@ -51,7 +51,7 @@ final class GoogleIdentityAuthenticatorTest extends TestCase
         $authenticator = $this->createAuthenticator();
         $request = Request::create('/login', 'POST');
 
-        self::assertFalse($authenticator->supports($request));
+        $this->assertFalse($authenticator->supports($request));
     }
 
     public function testAuthenticateThrowsExceptionWhenNoCredentials(): void
@@ -78,8 +78,8 @@ final class GoogleIdentityAuthenticatorTest extends TestCase
 
         $response = $authenticator->onAuthenticationSuccess($request, $token, 'main');
 
-        self::assertInstanceOf(RedirectResponse::class, $response);
-        self::assertSame('/welcome', $response->getTargetUrl());
+        $this->assertInstanceOf(RedirectResponse::class, $response);
+        $this->assertSame('/welcome', $response->getTargetUrl());
     }
 
     public function testOnAuthenticationSuccessRedirectsToTargetPath(): void
@@ -97,7 +97,7 @@ final class GoogleIdentityAuthenticatorTest extends TestCase
 
         $response = $authenticator->onAuthenticationSuccess($request, $token, 'main');
 
-        self::assertSame('/stores', $response->getTargetUrl());
+        $this->assertSame('/stores', $response->getTargetUrl());
     }
 
     public function testOnAuthenticationFailureRedirectsToLoginWithFlash(): void
@@ -105,7 +105,7 @@ final class GoogleIdentityAuthenticatorTest extends TestCase
         $authenticator = $this->createAuthenticator();
 
         $flashBag = $this->createMock(FlashBagInterface::class);
-        $flashBag->expects(self::once())
+        $flashBag->expects($this->once())
             ->method('add')
             ->with('danger', 'Auth failed');
 
@@ -119,8 +119,8 @@ final class GoogleIdentityAuthenticatorTest extends TestCase
 
         $response = $authenticator->onAuthenticationFailure($request, $exception);
 
-        self::assertInstanceOf(RedirectResponse::class, $response);
-        self::assertSame('/login', $response->getTargetUrl());
+        $this->assertInstanceOf(RedirectResponse::class, $response);
+        $this->assertSame('/login', $response->getTargetUrl());
     }
 
     public function testGetUserReturnsUserFoundByGoogleId(): void
@@ -145,7 +145,7 @@ final class GoogleIdentityAuthenticatorTest extends TestCase
 
         $result = $this->callGetUser($authenticator, $googleUser);
 
-        self::assertSame($user, $result);
+        $this->assertSame($user, $result);
     }
 
     public function testGetUserFoundByEmailUpdatesGoogleId(): void
@@ -158,6 +158,7 @@ final class GoogleIdentityAuthenticatorTest extends TestCase
                 if (isset($criteria['googleId'])) {
                     return null;
                 }
+
                 if (isset($criteria['email']) && $criteria['email'] === 'test@example.com') {
                     return $user;
                 }
@@ -166,8 +167,8 @@ final class GoogleIdentityAuthenticatorTest extends TestCase
             });
 
         $entityManager = $this->createMock(EntityManagerInterface::class);
-        $entityManager->expects(self::once())->method('persist')->with($user);
-        $entityManager->expects(self::once())->method('flush');
+        $entityManager->expects($this->once())->method('persist')->with($user);
+        $entityManager->expects($this->once())->method('flush');
 
         $authenticator = $this->createAuthenticatorWith($userRepository, $entityManager);
         $googleUser = new GoogleUser([
@@ -177,8 +178,8 @@ final class GoogleIdentityAuthenticatorTest extends TestCase
 
         $result = $this->callGetUser($authenticator, $googleUser);
 
-        self::assertSame($user, $result);
-        self::assertSame('new-google-id', $user->getGoogleId());
+        $this->assertSame($user, $result);
+        $this->assertSame('new-google-id', $user->getGoogleId());
     }
 
     public function testGetUserThrowsWhenNotFound(): void
@@ -237,7 +238,7 @@ final class GoogleIdentityAuthenticatorTest extends TestCase
 
     private function createTestUser(): User
     {
-        return (new User())
+        return new User()
             ->setEmail('test@example.com')
             ->setName('Test User')
             ->setGender(Gender::male);

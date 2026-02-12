@@ -18,34 +18,13 @@ return RectorConfig::configure()
     ->withAttributesSets()
     ->withPreparedSets(
         deadCode: true,
-#        codeQuality: true,
         codingStyle: true,
         typeDeclarations: true,
         privatization: true,
-#        naming: true,
         rectorPreset: true,
+        phpunitCodeQuality: true,
 )
     ->withComposerBased(twig: true, doctrine: true, phpunit: true, symfony: true)
     ->withImportNames(removeUnusedImports: true)
 
 ;
-
-
-
-return static function (RectorConfig $rectorConfig): void {
-
-    $rectorConfig->symfonyContainerXml(
-        __DIR__.'/var/cache/dev/App_KernelDevDebugContainer.xml'
-    );
-
-    $rectorConfig->sets([
-        LevelSetList::UP_TO_PHP_82,
-
-        SymfonySetList::SYMFONY_64,
-        SymfonySetList::SYMFONY_CODE_QUALITY,
-        SymfonySetList::SYMFONY_CONSTRUCTOR_INJECTION,
-
-        SetList::EARLY_RETURN,
-        SetList::TYPE_DECLARATION,
-    ]);
-};

@@ -30,8 +30,8 @@ final class AppExtensionRuntimeTest extends TestCase
 
         $users = $runtime->getSystemUsers();
 
-        self::assertCount(1, $users);
-        self::assertSame($user, $users[0]);
+        $this->assertCount(1, $users);
+        $this->assertSame($user, $users[0]);
     }
 
     public function testGetValueWithTax(): void
@@ -44,7 +44,7 @@ final class AppExtensionRuntimeTest extends TestCase
 
         $result = $runtime->getValueWithTax(100.0);
 
-        self::assertSame(112.0, $result);
+        $this->assertEqualsWithDelta(112.0, $result, PHP_FLOAT_EPSILON);
     }
 
     public function testGetTaxFromTotal(): void
@@ -57,7 +57,7 @@ final class AppExtensionRuntimeTest extends TestCase
 
         $result = $runtime->getTaxFromTotal(112.0);
 
-        self::assertEqualsWithDelta(12.0, $result, 0.01);
+        $this->assertEqualsWithDelta(12.0, $result, 0.01);
     }
 
     public function testGetSHA(): void
@@ -72,6 +72,6 @@ final class AppExtensionRuntimeTest extends TestCase
             new TaxService(12.0),
         );
 
-        self::assertSame('abc1234', $runtime->getSHA());
+        $this->assertSame('abc1234', $runtime->getSHA());
     }
 }

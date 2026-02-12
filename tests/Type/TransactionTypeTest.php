@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Type;
 
+use Iterator;
 use App\Type\TransactionType;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -14,20 +15,18 @@ final class TransactionTypeTest extends TestCase
     #[DataProvider('translationKeyProvider')]
     public function testTranslationKey(TransactionType $type, string $expected): void
     {
-        self::assertSame($expected, $type->translationKey());
+        $this->assertSame($expected, $type->translationKey());
     }
 
     /**
-     * @return array<string, array{TransactionType, string}>
+     * @return Iterator<string, array{TransactionType, string}>
      */
-    public static function translationKeyProvider(): array
+    public static function translationKeyProvider(): Iterator
     {
-        return [
-            'rent' => [TransactionType::rent, 'TRANSACTION_TYPE_RENT'],
-            'payment' => [TransactionType::payment, 'TRANSACTION_TYPE_PAYMENT'],
-            'initial' => [TransactionType::initial, 'TRANSACTION_TYPE_INITIAL'],
-            'adjustment' => [TransactionType::adjustment, 'TRANSACTION_TYPE_ADJUSTMENT'],
-        ];
+        yield 'rent' => [TransactionType::rent, 'TRANSACTION_TYPE_RENT'];
+        yield 'payment' => [TransactionType::payment, 'TRANSACTION_TYPE_PAYMENT'];
+        yield 'initial' => [TransactionType::initial, 'TRANSACTION_TYPE_INITIAL'];
+        yield 'adjustment' => [TransactionType::adjustment, 'TRANSACTION_TYPE_ADJUSTMENT'];
     }
 
     #[DataProvider('translatedNameProvider')]
@@ -35,71 +34,65 @@ final class TransactionTypeTest extends TestCase
     {
         $translatable = $type->translatedName();
 
-        self::assertInstanceOf(TranslatableMessage::class, $translatable);
-        self::assertSame($expectedKey, $translatable->getMessage());
+        $this->assertInstanceOf(TranslatableMessage::class, $translatable);
+        $this->assertSame($expectedKey, $translatable->getMessage());
     }
 
     /**
-     * @return array<string, array{TransactionType, string}>
+     * @return Iterator<string, array{TransactionType, string}>
      */
-    public static function translatedNameProvider(): array
+    public static function translatedNameProvider(): Iterator
     {
-        return [
-            'rent' => [TransactionType::rent, 'TRANSACTION_TYPE_RENT'],
-            'payment' => [TransactionType::payment, 'TRANSACTION_TYPE_PAYMENT'],
-            'initial' => [TransactionType::initial, 'TRANSACTION_TYPE_INITIAL'],
-            'adjustment' => [TransactionType::adjustment, 'TRANSACTION_TYPE_ADJUSTMENT'],
-        ];
+        yield 'rent' => [TransactionType::rent, 'TRANSACTION_TYPE_RENT'];
+        yield 'payment' => [TransactionType::payment, 'TRANSACTION_TYPE_PAYMENT'];
+        yield 'initial' => [TransactionType::initial, 'TRANSACTION_TYPE_INITIAL'];
+        yield 'adjustment' => [TransactionType::adjustment, 'TRANSACTION_TYPE_ADJUSTMENT'];
     }
 
     #[DataProvider('cssClassProvider')]
     public function testCssClass(TransactionType $type, string $expected): void
     {
-        self::assertSame($expected, $type->cssClass());
+        $this->assertSame($expected, $type->cssClass());
     }
 
     /**
-     * @return array<string, array{TransactionType, string}>
+     * @return Iterator<string, array{TransactionType, string}>
      */
-    public static function cssClassProvider(): array
+    public static function cssClassProvider(): Iterator
     {
-        return [
-            'rent' => [TransactionType::rent, 'table-success'],
-            'payment' => [TransactionType::payment, ''],
-            'initial' => [TransactionType::initial, 'table-info'],
-            'adjustment' => [TransactionType::adjustment, 'table-warning'],
-        ];
+        yield 'rent' => [TransactionType::rent, 'table-success'];
+        yield 'payment' => [TransactionType::payment, ''];
+        yield 'initial' => [TransactionType::initial, 'table-info'];
+        yield 'adjustment' => [TransactionType::adjustment, 'table-warning'];
     }
 
     #[DataProvider('cssClassPdfProvider')]
     public function testCssClassPdf(TransactionType $type, string $expected): void
     {
-        self::assertSame($expected, $type->cssClassPdf());
+        $this->assertSame($expected, $type->cssClassPdf());
     }
 
     /**
-     * @return array<string, array{TransactionType, string}>
+     * @return Iterator<string, array{TransactionType, string}>
      */
-    public static function cssClassPdfProvider(): array
+    public static function cssClassPdfProvider(): Iterator
     {
-        return [
-            'rent' => [TransactionType::rent, 'rent'],
-            'payment' => [TransactionType::payment, ''],
-            'initial' => [TransactionType::initial, 'initial'],
-            'adjustment' => [TransactionType::adjustment, 'adjustment'],
-        ];
+        yield 'rent' => [TransactionType::rent, 'rent'];
+        yield 'payment' => [TransactionType::payment, ''];
+        yield 'initial' => [TransactionType::initial, 'initial'];
+        yield 'adjustment' => [TransactionType::adjustment, 'adjustment'];
     }
 
     public function testEnumCasesCount(): void
     {
-        self::assertCount(4, TransactionType::cases());
+        $this->assertCount(4, TransactionType::cases());
     }
 
     public function testEnumValues(): void
     {
-        self::assertSame('1', TransactionType::rent->value);
-        self::assertSame('2', TransactionType::payment->value);
-        self::assertSame('3', TransactionType::initial->value);
-        self::assertSame('4', TransactionType::adjustment->value);
+        $this->assertSame('1', TransactionType::rent->value);
+        $this->assertSame('2', TransactionType::payment->value);
+        $this->assertSame('3', TransactionType::initial->value);
+        $this->assertSame('4', TransactionType::adjustment->value);
     }
 }

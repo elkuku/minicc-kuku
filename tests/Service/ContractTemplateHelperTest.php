@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Service;
 
+use Iterator;
 use App\Entity\Contract;
 use App\Service\ContractTemplateHelper;
 use App\Type\Gender;
@@ -24,35 +25,35 @@ final class ContractTemplateHelperTest extends TestCase
     {
         $keys = $this->helper->getReplacementStrings();
 
-        self::assertContains('local_no', $keys);
-        self::assertContains('destination', $keys);
-        self::assertContains('val_alq', $keys);
-        self::assertContains('txt_alq', $keys);
-        self::assertContains('val_garantia', $keys);
-        self::assertContains('txt_garantia', $keys);
-        self::assertContains('fecha_long', $keys);
-        self::assertContains('inq_nombreapellido', $keys);
-        self::assertContains('inq_ci', $keys);
-        self::assertContains('senor_a', $keys);
-        self::assertContains('el_la', $keys);
-        self::assertContains('del_la', $keys);
-        self::assertContains('cnt_lanfort', $keys);
-        self::assertContains('cnt_neon', $keys);
-        self::assertContains('cnt_switch', $keys);
-        self::assertContains('cnt_toma', $keys);
-        self::assertContains('cnt_ventana', $keys);
-        self::assertContains('cnt_llaves', $keys);
-        self::assertContains('cnt_med_agua', $keys);
-        self::assertContains('cnt_med_elec', $keys);
-        self::assertContains('med_electrico', $keys);
-        self::assertContains('med_agua', $keys);
+        $this->assertContains('local_no', $keys);
+        $this->assertContains('destination', $keys);
+        $this->assertContains('val_alq', $keys);
+        $this->assertContains('txt_alq', $keys);
+        $this->assertContains('val_garantia', $keys);
+        $this->assertContains('txt_garantia', $keys);
+        $this->assertContains('fecha_long', $keys);
+        $this->assertContains('inq_nombreapellido', $keys);
+        $this->assertContains('inq_ci', $keys);
+        $this->assertContains('senor_a', $keys);
+        $this->assertContains('el_la', $keys);
+        $this->assertContains('del_la', $keys);
+        $this->assertContains('cnt_lanfort', $keys);
+        $this->assertContains('cnt_neon', $keys);
+        $this->assertContains('cnt_switch', $keys);
+        $this->assertContains('cnt_toma', $keys);
+        $this->assertContains('cnt_ventana', $keys);
+        $this->assertContains('cnt_llaves', $keys);
+        $this->assertContains('cnt_med_agua', $keys);
+        $this->assertContains('cnt_med_elec', $keys);
+        $this->assertContains('med_electrico', $keys);
+        $this->assertContains('med_agua', $keys);
     }
 
     public function testGetReplacementStringsCount(): void
     {
         $keys = $this->helper->getReplacementStrings();
 
-        self::assertCount(22, $keys);
+        $this->assertCount(22, $keys);
     }
 
     public function testReplaceContentWithSimplePlaceholder(): void
@@ -62,7 +63,7 @@ final class ContractTemplateHelperTest extends TestCase
 
         $result = $this->helper->replaceContent($contract);
 
-        self::assertSame('Local número 42', $result);
+        $this->assertSame('Local número 42', $result);
     }
 
     public function testReplaceContentWithMultiplePlaceholders(): void
@@ -72,7 +73,7 @@ final class ContractTemplateHelperTest extends TestCase
 
         $result = $this->helper->replaceContent($contract);
 
-        self::assertSame('Local 42 - Destino: Centro Comercial', $result);
+        $this->assertSame('Local 42 - Destino: Centro Comercial', $result);
     }
 
     public function testReplaceContentFormatsValAlqWithTwoDecimals(): void
@@ -82,7 +83,7 @@ final class ContractTemplateHelperTest extends TestCase
 
         $result = $this->helper->replaceContent($contract);
 
-        self::assertSame('Alquiler: 150.50', $result);
+        $this->assertSame('Alquiler: 150.50', $result);
     }
 
     public function testReplaceContentFormatsValGarantiaWithTwoDecimals(): void
@@ -92,7 +93,7 @@ final class ContractTemplateHelperTest extends TestCase
 
         $result = $this->helper->replaceContent($contract);
 
-        self::assertSame('Garantía: 300.00', $result);
+        $this->assertSame('Garantía: 300.00', $result);
     }
 
     public function testReplaceContentIncludesCurrencyWords(): void
@@ -102,8 +103,8 @@ final class ContractTemplateHelperTest extends TestCase
 
         $result = $this->helper->replaceContent($contract);
 
-        self::assertNotEmpty($result);
-        self::assertStringContainsString('dolar', strtolower($result));
+        $this->assertNotEmpty($result);
+        $this->assertStringContainsString('dolar', strtolower($result));
     }
 
     public function testReplaceContentIncludesGarantiaCurrencyWords(): void
@@ -113,8 +114,8 @@ final class ContractTemplateHelperTest extends TestCase
 
         $result = $this->helper->replaceContent($contract);
 
-        self::assertNotEmpty($result);
-        self::assertStringContainsString('dolar', strtolower($result));
+        $this->assertNotEmpty($result);
+        $this->assertStringContainsString('dolar', strtolower($result));
     }
 
     public function testReplaceContentInqFields(): void
@@ -124,7 +125,7 @@ final class ContractTemplateHelperTest extends TestCase
 
         $result = $this->helper->replaceContent($contract);
 
-        self::assertSame('Juan Pérez CI: 1234567890-1', $result);
+        $this->assertSame('Juan Pérez CI: 1234567890-1', $result);
     }
 
     #[DataProvider('genderProvider')]
@@ -140,19 +141,17 @@ final class ContractTemplateHelperTest extends TestCase
 
         $result = $this->helper->replaceContent($contract);
 
-        self::assertSame("$expectedSenor $expectedElLa $expectedDelLa", $result);
+        $this->assertSame(sprintf('%s %s %s', $expectedSenor, $expectedElLa, $expectedDelLa), $result);
     }
 
     /**
-     * @return array<string, array{Gender, string, string, string}>
+     * @return Iterator<string, array{Gender, string, string, string}>
      */
-    public static function genderProvider(): array
+    public static function genderProvider(): Iterator
     {
-        return [
-            'male' => [Gender::male, 'señor', 'el', 'del'],
-            'female' => [Gender::female, 'señora', 'la', 'de la'],
-            'other' => [Gender::other, 'señor@', 'l@', 'de l@'],
-        ];
+        yield 'male' => [Gender::male, 'señor', 'el', 'del'];
+        yield 'female' => [Gender::female, 'señora', 'la', 'de la'];
+        yield 'other' => [Gender::other, 'señor@', 'l@', 'de l@'];
     }
 
     public function testReplaceContentCounterFields(): void
@@ -165,7 +164,7 @@ final class ContractTemplateHelperTest extends TestCase
 
         $result = $this->helper->replaceContent($contract);
 
-        self::assertSame('3 5 2 4 6 1 7 8', $result);
+        $this->assertSame('3 5 2 4 6 1 7 8', $result);
     }
 
     public function testReplaceContentMeterFields(): void
@@ -175,7 +174,7 @@ final class ContractTemplateHelperTest extends TestCase
 
         $result = $this->helper->replaceContent($contract);
 
-        self::assertSame('Eléctrico: MED-ELEC-001 Agua: MED-AGUA-001', $result);
+        $this->assertSame('Eléctrico: MED-ELEC-001 Agua: MED-AGUA-001', $result);
     }
 
     public function testReplaceContentWithNoPlaceholders(): void
@@ -185,7 +184,7 @@ final class ContractTemplateHelperTest extends TestCase
 
         $result = $this->helper->replaceContent($contract);
 
-        self::assertSame('Texto sin marcadores', $result);
+        $this->assertSame('Texto sin marcadores', $result);
     }
 
     public function testReplaceContentWithDateField(): void
@@ -196,8 +195,8 @@ final class ContractTemplateHelperTest extends TestCase
 
         $result = $this->helper->replaceContent($contract);
 
-        self::assertStringContainsString('15', $result);
-        self::assertStringContainsString('2024', $result);
+        $this->assertStringContainsString('15', $result);
+        $this->assertStringContainsString('2024', $result);
     }
 
     public function testReplaceContentPreservesUnknownBrackets(): void
@@ -207,13 +206,13 @@ final class ContractTemplateHelperTest extends TestCase
 
         $result = $this->helper->replaceContent($contract);
 
-        self::assertStringContainsString('42', $result);
-        self::assertStringContainsString('[unknown_field]', $result);
+        $this->assertStringContainsString('42', $result);
+        $this->assertStringContainsString('[unknown_field]', $result);
     }
 
     private function createContract(): Contract
     {
-        return (new Contract())
+        return new Contract()
             ->setStoreNumber(42)
             ->setDestination('Centro Comercial')
             ->setValAlq(150.50)

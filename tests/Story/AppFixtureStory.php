@@ -20,7 +20,7 @@ final class AppFixtureStory extends Story
 {
     public function build(): void
     {
-        $admin = UserFactory::createOne([
+        UserFactory::createOne([
             'name' => 'admin',
             'email' => 'admin@example.com',
             'role' => User::ROLES['admin'],

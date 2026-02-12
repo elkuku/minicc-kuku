@@ -23,8 +23,8 @@ final class EmailHelperTest extends TestCase
     {
         $from = $this->helper->getFrom();
 
-        self::assertInstanceOf(Address::class, $from);
-        self::assertSame('admin@example.com', $from->getAddress());
+        $this->assertInstanceOf(Address::class, $from);
+        $this->assertSame('admin@example.com', $from->getAddress());
     }
 
     public function testCreateEmailReturnsEmailWithCorrectFields(): void
@@ -32,10 +32,10 @@ final class EmailHelperTest extends TestCase
         $to = new Address('user@example.com');
         $email = $this->helper->createEmail($to, 'Test Subject');
 
-        self::assertInstanceOf(Email::class, $email);
-        self::assertSame('admin@example.com', $email->getFrom()[0]->getAddress());
-        self::assertSame('user@example.com', $email->getTo()[0]->getAddress());
-        self::assertSame('Test Subject', $email->getSubject());
+        $this->assertInstanceOf(Email::class, $email);
+        $this->assertSame('admin@example.com', $email->getFrom()[0]->getAddress());
+        $this->assertSame('user@example.com', $email->getTo()[0]->getAddress());
+        $this->assertSame('Test Subject', $email->getSubject());
     }
 
     public function testCreateTemplatedEmailReturnsTemplatedEmailWithCorrectFields(): void
@@ -43,19 +43,19 @@ final class EmailHelperTest extends TestCase
         $to = new Address('user@example.com');
         $email = $this->helper->createTemplatedEmail($to, 'Templated Subject');
 
-        self::assertInstanceOf(TemplatedEmail::class, $email);
-        self::assertSame('admin@example.com', $email->getFrom()[0]->getAddress());
-        self::assertSame('user@example.com', $email->getTo()[0]->getAddress());
-        self::assertSame('Templated Subject', $email->getSubject());
+        $this->assertInstanceOf(TemplatedEmail::class, $email);
+        $this->assertSame('admin@example.com', $email->getFrom()[0]->getAddress());
+        $this->assertSame('user@example.com', $email->getTo()[0]->getAddress());
+        $this->assertSame('Templated Subject', $email->getSubject());
     }
 
     public function testCreateAdminEmailSetsFromAndToAsAdminAddress(): void
     {
         $email = $this->helper->createAdminEmail('Admin Subject');
 
-        self::assertInstanceOf(Email::class, $email);
-        self::assertSame('admin@example.com', $email->getFrom()[0]->getAddress());
-        self::assertSame('admin@example.com', $email->getTo()[0]->getAddress());
-        self::assertSame('Admin Subject', $email->getSubject());
+        $this->assertInstanceOf(Email::class, $email);
+        $this->assertSame('admin@example.com', $email->getFrom()[0]->getAddress());
+        $this->assertSame('admin@example.com', $email->getTo()[0]->getAddress());
+        $this->assertSame('Admin Subject', $email->getSubject());
     }
 }

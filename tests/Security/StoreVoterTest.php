@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Security;
 
+use ReflectionMethod;
 use App\Entity\Store;
 use App\Entity\User;
 use App\Security\StoreVoter;
@@ -19,9 +20,9 @@ final class StoreVoterTest extends TestCase
         $voter = new StoreVoter($this->createStub(Security::class));
         $store = new Store();
 
-        $method = new \ReflectionMethod(StoreVoter::class, 'supports');
+        $method = new ReflectionMethod(StoreVoter::class, 'supports');
 
-        self::assertTrue($method->invoke($voter, StoreVoter::VIEW, $store));
+        $this->assertTrue($method->invoke($voter, StoreVoter::VIEW, $store));
     }
 
     public function testSupportsReturnsTrueForEditAttribute(): void
@@ -29,9 +30,9 @@ final class StoreVoterTest extends TestCase
         $voter = new StoreVoter($this->createStub(Security::class));
         $store = new Store();
 
-        $method = new \ReflectionMethod(StoreVoter::class, 'supports');
+        $method = new ReflectionMethod(StoreVoter::class, 'supports');
 
-        self::assertTrue($method->invoke($voter, StoreVoter::EDIT, $store));
+        $this->assertTrue($method->invoke($voter, StoreVoter::EDIT, $store));
     }
 
     public function testSupportsReturnsTrueForExportAttribute(): void
@@ -39,9 +40,9 @@ final class StoreVoterTest extends TestCase
         $voter = new StoreVoter($this->createStub(Security::class));
         $store = new Store();
 
-        $method = new \ReflectionMethod(StoreVoter::class, 'supports');
+        $method = new ReflectionMethod(StoreVoter::class, 'supports');
 
-        self::assertTrue($method->invoke($voter, StoreVoter::EXPORT, $store));
+        $this->assertTrue($method->invoke($voter, StoreVoter::EXPORT, $store));
     }
 
     public function testSupportsReturnsFalseForUnsupportedAttribute(): void
@@ -49,18 +50,18 @@ final class StoreVoterTest extends TestCase
         $voter = new StoreVoter($this->createStub(Security::class));
         $store = new Store();
 
-        $method = new \ReflectionMethod(StoreVoter::class, 'supports');
+        $method = new ReflectionMethod(StoreVoter::class, 'supports');
 
-        self::assertFalse($method->invoke($voter, 'delete', $store));
+        $this->assertFalse($method->invoke($voter, 'delete', $store));
     }
 
     public function testSupportsReturnsFalseForNonStoreSubject(): void
     {
         $voter = new StoreVoter($this->createStub(Security::class));
 
-        $method = new \ReflectionMethod(StoreVoter::class, 'supports');
+        $method = new ReflectionMethod(StoreVoter::class, 'supports');
 
-        self::assertFalse($method->invoke($voter, StoreVoter::VIEW, 'not-a-store'));
+        $this->assertFalse($method->invoke($voter, StoreVoter::VIEW, 'not-a-store'));
     }
 
     public function testVoteOnAttributeGrantsAccessForAdmin(): void
@@ -72,9 +73,9 @@ final class StoreVoterTest extends TestCase
         $voter = new StoreVoter($security);
         $token = $this->createStub(TokenInterface::class);
 
-        $method = new \ReflectionMethod(StoreVoter::class, 'voteOnAttribute');
+        $method = new ReflectionMethod(StoreVoter::class, 'voteOnAttribute');
 
-        self::assertTrue($method->invoke($voter, StoreVoter::VIEW, new Store(), $token));
+        $this->assertTrue($method->invoke($voter, StoreVoter::VIEW, new Store(), $token));
     }
 
     public function testVoteOnAttributeDeniesAccessWhenNotUserInstance(): void
@@ -87,9 +88,9 @@ final class StoreVoterTest extends TestCase
         $token = $this->createStub(TokenInterface::class);
         $token->method('getUser')->willReturn(null);
 
-        $method = new \ReflectionMethod(StoreVoter::class, 'voteOnAttribute');
+        $method = new ReflectionMethod(StoreVoter::class, 'voteOnAttribute');
 
-        self::assertFalse($method->invoke($voter, StoreVoter::VIEW, new Store(), $token));
+        $this->assertFalse($method->invoke($voter, StoreVoter::VIEW, new Store(), $token));
     }
 
     public function testVoteOnAttributeViewGrantsAccessForCashier(): void
@@ -107,9 +108,9 @@ final class StoreVoterTest extends TestCase
         $token = $this->createStub(TokenInterface::class);
         $token->method('getUser')->willReturn($user);
 
-        $method = new \ReflectionMethod(StoreVoter::class, 'voteOnAttribute');
+        $method = new ReflectionMethod(StoreVoter::class, 'voteOnAttribute');
 
-        self::assertTrue($method->invoke($voter, StoreVoter::VIEW, new Store(), $token));
+        $this->assertTrue($method->invoke($voter, StoreVoter::VIEW, new Store(), $token));
     }
 
     public function testVoteOnAttributeViewGrantsAccessForStoreOwner(): void
@@ -126,9 +127,9 @@ final class StoreVoterTest extends TestCase
         $token = $this->createStub(TokenInterface::class);
         $token->method('getUser')->willReturn($user);
 
-        $method = new \ReflectionMethod(StoreVoter::class, 'voteOnAttribute');
+        $method = new ReflectionMethod(StoreVoter::class, 'voteOnAttribute');
 
-        self::assertTrue($method->invoke($voter, StoreVoter::VIEW, $store, $token));
+        $this->assertTrue($method->invoke($voter, StoreVoter::VIEW, $store, $token));
     }
 
     public function testVoteOnAttributeViewDeniesAccessForNonOwner(): void
@@ -146,9 +147,9 @@ final class StoreVoterTest extends TestCase
         $token = $this->createStub(TokenInterface::class);
         $token->method('getUser')->willReturn($user);
 
-        $method = new \ReflectionMethod(StoreVoter::class, 'voteOnAttribute');
+        $method = new ReflectionMethod(StoreVoter::class, 'voteOnAttribute');
 
-        self::assertFalse($method->invoke($voter, StoreVoter::VIEW, $store, $token));
+        $this->assertFalse($method->invoke($voter, StoreVoter::VIEW, $store, $token));
     }
 
     public function testVoteOnAttributeExportGrantsAccessForStoreOwner(): void
@@ -165,9 +166,9 @@ final class StoreVoterTest extends TestCase
         $token = $this->createStub(TokenInterface::class);
         $token->method('getUser')->willReturn($user);
 
-        $method = new \ReflectionMethod(StoreVoter::class, 'voteOnAttribute');
+        $method = new ReflectionMethod(StoreVoter::class, 'voteOnAttribute');
 
-        self::assertTrue($method->invoke($voter, StoreVoter::EXPORT, $store, $token));
+        $this->assertTrue($method->invoke($voter, StoreVoter::EXPORT, $store, $token));
     }
 
     public function testVoteOnAttributeEditDeniedForNonAdmin(): void
@@ -182,16 +183,16 @@ final class StoreVoterTest extends TestCase
         $token = $this->createStub(TokenInterface::class);
         $token->method('getUser')->willReturn($user);
 
-        $method = new \ReflectionMethod(StoreVoter::class, 'voteOnAttribute');
+        $method = new ReflectionMethod(StoreVoter::class, 'voteOnAttribute');
 
-        self::assertFalse($method->invoke($voter, StoreVoter::EDIT, new Store(), $token));
+        $this->assertFalse($method->invoke($voter, StoreVoter::EDIT, new Store(), $token));
     }
 
     public function testConstantsAreCorrect(): void
     {
-        self::assertSame('view', StoreVoter::VIEW);
-        self::assertSame('edit', StoreVoter::EDIT);
-        self::assertSame('export', StoreVoter::EXPORT);
+        $this->assertSame('view', StoreVoter::VIEW);
+        $this->assertSame('edit', StoreVoter::EDIT);
+        $this->assertSame('export', StoreVoter::EXPORT);
     }
 
     private function createUser(string $email = 'test@example.com'): User

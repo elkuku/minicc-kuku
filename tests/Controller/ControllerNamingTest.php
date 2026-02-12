@@ -68,6 +68,6 @@ final class ControllerNamingTest extends KernelTestCase
             $it->next();
         }
 
-        self::assertEquals(0, $failures, sprintf("ERROR: %d failures.\n", $failures));
+        $this->assertSame(0, $failures, sprintf("ERROR: %d failures.\n", $failures));
     }
 }

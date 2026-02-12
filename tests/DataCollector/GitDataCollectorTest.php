@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\DataCollector;
 
+use Exception;
 use App\DataCollector\GitDataCollector;
 use App\Helper\GitLoader;
 use PHPUnit\Framework\TestCase;
@@ -17,7 +18,7 @@ final class GitDataCollectorTest extends TestCase
         $gitLoader = $this->createStub(GitLoader::class);
         $collector = new GitDataCollector($gitLoader);
 
-        self::assertSame('app.git_data_collector', $collector->getName());
+        $this->assertSame('app.git_data_collector', $collector->getName());
     }
 
     public function testCollectStoresGitData(): void
@@ -34,11 +35,11 @@ final class GitDataCollectorTest extends TestCase
         $collector = new GitDataCollector($gitLoader);
         $collector->collect(new Request(), new Response());
 
-        self::assertSame('main', $collector->getGitBranch());
-        self::assertSame('Test commit', $collector->getLastCommitMessage());
-        self::assertSame('John Doe', $collector->getLastCommitAuthor());
-        self::assertSame('2024/03/15 10:30', $collector->getLastCommitDate());
-        self::assertSame('abc123', $collector->getSha());
+        $this->assertSame('main', $collector->getGitBranch());
+        $this->assertSame('Test commit', $collector->getLastCommitMessage());
+        $this->assertSame('John Doe', $collector->getLastCommitAuthor());
+        $this->assertSame('2024/03/15 10:30', $collector->getLastCommitDate());
+        $this->assertSame('abc123', $collector->getSha());
     }
 
     public function testReset(): void
@@ -56,12 +57,12 @@ final class GitDataCollectorTest extends TestCase
         $collector->collect(new Request(), new Response());
 
         // Verify data is set before reset
-        self::assertSame('main', $collector->getGitBranch());
+        $this->assertSame('main', $collector->getGitBranch());
 
         $collector->reset();
 
         // After reset, data is cleared - this test verifies reset() completes without error
-        self::assertInstanceOf(GitDataCollector::class, $collector);
+        $this->assertInstanceOf(GitDataCollector::class, $collector);
     }
 
     public function testCollectWithException(): void
@@ -76,10 +77,10 @@ final class GitDataCollectorTest extends TestCase
         ]);
 
         $collector = new GitDataCollector($gitLoader);
-        $exception = new \Exception('Test exception');
+        $exception = new Exception('Test exception');
         $collector->collect(new Request(), new Response(), $exception);
 
-        self::assertSame('feature/test', $collector->getGitBranch());
+        $this->assertSame('feature/test', $collector->getGitBranch());
     }
 
     public function testGetGitBranch(): void
@@ -96,7 +97,7 @@ final class GitDataCollectorTest extends TestCase
         $collector = new GitDataCollector($gitLoader);
         $collector->collect(new Request(), new Response());
 
-        self::assertSame('develop', $collector->getGitBranch());
+        $this->assertSame('develop', $collector->getGitBranch());
     }
 
     public function testGetLastCommitMessage(): void
@@ -113,7 +114,7 @@ final class GitDataCollectorTest extends TestCase
         $collector = new GitDataCollector($gitLoader);
         $collector->collect(new Request(), new Response());
 
-        self::assertSame('Add new feature', $collector->getLastCommitMessage());
+        $this->assertSame('Add new feature', $collector->getLastCommitMessage());
     }
 
     public function testGetLastCommitAuthor(): void
@@ -130,7 +131,7 @@ final class GitDataCollectorTest extends TestCase
         $collector = new GitDataCollector($gitLoader);
         $collector->collect(new Request(), new Response());
 
-        self::assertSame('Alice Smith', $collector->getLastCommitAuthor());
+        $this->assertSame('Alice Smith', $collector->getLastCommitAuthor());
     }
 
     public function testGetLastCommitDate(): void
@@ -147,7 +148,7 @@ final class GitDataCollectorTest extends TestCase
         $collector = new GitDataCollector($gitLoader);
         $collector->collect(new Request(), new Response());
 
-        self::assertSame('2024/06/15 14:30', $collector->getLastCommitDate());
+        $this->assertSame('2024/06/15 14:30', $collector->getLastCommitDate());
     }
 
     public function testGetSha(): void
@@ -164,6 +165,6 @@ final class GitDataCollectorTest extends TestCase
         $collector = new GitDataCollector($gitLoader);
         $collector->collect(new Request(), new Response());
 
-        self::assertSame('xyz789abc', $collector->getSha());
+        $this->assertSame('xyz789abc', $collector->getSha());
     }
 }

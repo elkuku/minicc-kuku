@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller;
 
+use App\Entity\User;
+use App\Entity\Store;
+use App\Entity\PaymentMethod;
+use DateTime;
 use App\Entity\Transaction;
 use App\Repository\PaymentMethodRepository;
 use App\Repository\StoreRepository;
@@ -24,7 +28,7 @@ final class TransactionControllerTest extends WebTestCase
         /** @var UserRepository $userRepository */
         $userRepository = static::getContainer()->get(UserRepository::class);
         $admin = $userRepository->findOneBy(['email' => 'admin@example.com']);
-        self::assertNotNull($admin);
+        $this->assertInstanceOf(User::class, $admin);
         $this->client->loginUser($admin);
     }
 
@@ -54,7 +58,7 @@ final class TransactionControllerTest extends WebTestCase
         /** @var UserRepository $userRepository */
         $userRepository = static::getContainer()->get(UserRepository::class);
         $user = $userRepository->findOneBy(['email' => 'user1@example.com']);
-        self::assertNotNull($user);
+        $this->assertInstanceOf(User::class, $user);
         $client->loginUser($user);
 
         $client->request('GET', '/transactions');
@@ -128,24 +132,24 @@ final class TransactionControllerTest extends WebTestCase
         /** @var StoreRepository $storeRepository */
         $storeRepository = static::getContainer()->get(StoreRepository::class);
         $store = $storeRepository->findOneBy([]);
-        self::assertNotNull($store);
+        $this->assertInstanceOf(Store::class, $store);
 
         /** @var UserRepository $userRepository */
         $userRepository = static::getContainer()->get(UserRepository::class);
         $user = $userRepository->findOneBy(['email' => 'admin@example.com']);
-        self::assertNotNull($user);
+        $this->assertInstanceOf(User::class, $user);
 
         /** @var PaymentMethodRepository $pmRepository */
         $pmRepository = static::getContainer()->get(PaymentMethodRepository::class);
         $paymentMethod = $pmRepository->findOneBy([]);
-        self::assertNotNull($paymentMethod);
+        $this->assertInstanceOf(PaymentMethod::class, $paymentMethod);
 
         $transaction = new Transaction();
         $transaction->setStore($store);
         $transaction->setUser($user);
         $transaction->setType(TransactionType::payment);
         $transaction->setMethod($paymentMethod);
-        $transaction->setDate(new \DateTime());
+        $transaction->setDate(new DateTime());
         $transaction->setAmount('50.00');
 
         /** @var EntityManagerInterface $em */

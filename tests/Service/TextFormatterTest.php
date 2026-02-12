@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Service;
 
+use Iterator;
 use App\Entity\User;
 use App\Service\TextFormatter;
 use App\Type\Gender;
@@ -25,7 +26,7 @@ final class TextFormatterTest extends TestCase
 
         $result = $this->formatter->formatRUC($user);
 
-        self::assertSame('123 456 789 0 001', $result);
+        $this->assertSame('123 456 789 0 001', $result);
     }
 
     public function testFormatRuc10Characters(): void
@@ -34,7 +35,7 @@ final class TextFormatterTest extends TestCase
 
         $result = $this->formatter->formatRUC($user);
 
-        self::assertSame('123 456 789 0', $result);
+        $this->assertSame('123 456 789 0', $result);
     }
 
     public function testFormatRucShorterThan13Characters(): void
@@ -43,7 +44,7 @@ final class TextFormatterTest extends TestCase
 
         $result = $this->formatter->formatRUC($user);
 
-        self::assertSame('123 456 789', $result);
+        $this->assertSame('123 456 789', $result);
     }
 
     public function testFormatRucFallsBackToCi(): void
@@ -52,7 +53,7 @@ final class TextFormatterTest extends TestCase
 
         $result = $this->formatter->formatRUC($user);
 
-        self::assertSame('123 456 789 0', $result);
+        $this->assertSame('123 456 789 0', $result);
     }
 
     public function testFormatRucRemovesDashesFromCi(): void
@@ -61,7 +62,7 @@ final class TextFormatterTest extends TestCase
 
         $result = $this->formatter->formatRUC($user);
 
-        self::assertSame('123 456', $result);
+        $this->assertSame('123 456', $result);
     }
 
     public function testFormatRucReturnsQuestionMarkWhenEmpty(): void
@@ -70,7 +71,7 @@ final class TextFormatterTest extends TestCase
 
         $result = $this->formatter->formatRUC($user);
 
-        self::assertSame('?', $result);
+        $this->assertSame('?', $result);
     }
 
     public function testFormatRucPrefersRucOverCi(): void
@@ -79,7 +80,7 @@ final class TextFormatterTest extends TestCase
 
         $result = $this->formatter->formatRUC($user);
 
-        self::assertSame('123 456 789 0 001', $result);
+        $this->assertSame('123 456 789 0 001', $result);
     }
 
     #[DataProvider('rucFormattingProvider')]
@@ -89,24 +90,22 @@ final class TextFormatterTest extends TestCase
 
         $result = $this->formatter->formatRUC($user);
 
-        self::assertSame($expected, $result);
+        $this->assertSame($expected, $result);
     }
 
     /**
-     * @return array<string, array{?string, string, string}>
+     * @return Iterator<string, array{(string | null), string, string}>
      */
-    public static function rucFormattingProvider(): array
+    public static function rucFormattingProvider(): Iterator
     {
-        return [
-            '13-digit RUC' => ['1234567890001', '', '123 456 789 0 001'],
-            '10-digit RUC' => ['1234567890', '', '123 456 789 0'],
-            '9-digit RUC' => ['123456789', '', '123 456 789'],
-            '6-digit RUC' => ['123456', '', '123 456'],
-            'CI with dash' => [null, '123456789-0', '123 456 789 0'],
-            'CI without dash' => [null, '1234567890', '123 456 789 0'],
-            'empty both' => [null, '', '?'],
-            'empty string RUC' => ['', '', '?'],
-        ];
+        yield '13-digit RUC' => ['1234567890001', '', '123 456 789 0 001'];
+        yield '10-digit RUC' => ['1234567890', '', '123 456 789 0'];
+        yield '9-digit RUC' => ['123456789', '', '123 456 789'];
+        yield '6-digit RUC' => ['123456', '', '123 456'];
+        yield 'CI with dash' => [null, '123456789-0', '123 456 789 0'];
+        yield 'CI without dash' => [null, '1234567890', '123 456 789 0'];
+        yield 'empty both' => [null, '', '?'];
+        yield 'empty string RUC' => ['', '', '?'];
     }
 
     private function createUser(?string $ruc = null, string $ci = ''): User

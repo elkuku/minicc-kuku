@@ -32,7 +32,7 @@ final class StoreTypeTest extends TestCase
         $builder->method('add')->willReturnSelf();
 
         $addedFields = [];
-        $builder->expects(self::exactly(count($expectedFields)))
+        $builder->expects($this->exactly(count($expectedFields)))
             ->method('add')
             ->willReturnCallback(function (string $name) use (&$addedFields, $builder): FormBuilderInterface {
                 $addedFields[] = $name;
@@ -43,6 +43,6 @@ final class StoreTypeTest extends TestCase
         $type = new StoreType();
         $type->buildForm($builder, []);
 
-        self::assertSame($expectedFields, $addedFields);
+        $this->assertSame($expectedFields, $addedFields);
     }
 }

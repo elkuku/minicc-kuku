@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Repository;
 
+use App\Entity\Contract;
 use App\Repository\ContractRepository;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
@@ -23,17 +24,17 @@ final class ContractRepositoryTest extends KernelTestCase
     {
         $contracts = $this->repository->findContracts();
 
-        self::assertGreaterThanOrEqual(0, count($contracts));
+        $this->assertGreaterThanOrEqual(0, count($contracts));
     }
 
     public function testFindContractsFilteredByStore(): void
     {
         $contracts = $this->repository->findContracts(1);
 
-        self::assertGreaterThanOrEqual(0, count($contracts));
+        $this->assertGreaterThanOrEqual(0, count($contracts));
 
         foreach ($contracts as $contract) {
-            self::assertSame(1, $contract->getStoreNumber());
+            $this->assertSame(1, $contract->getStoreNumber());
         }
     }
 
@@ -43,10 +44,10 @@ final class ContractRepositoryTest extends KernelTestCase
 
         $contracts = $this->repository->findContracts(0, $year);
 
-        self::assertGreaterThanOrEqual(0, count($contracts));
+        $this->assertGreaterThanOrEqual(0, count($contracts));
 
         foreach ($contracts as $contract) {
-            self::assertSame($year, (int) $contract->getDate()->format('Y'));
+            $this->assertSame($year, (int) $contract->getDate()->format('Y'));
         }
     }
 
@@ -56,11 +57,11 @@ final class ContractRepositoryTest extends KernelTestCase
 
         $contracts = $this->repository->findContracts(1, $year);
 
-        self::assertGreaterThanOrEqual(0, count($contracts));
+        $this->assertGreaterThanOrEqual(0, count($contracts));
 
         foreach ($contracts as $contract) {
-            self::assertSame(1, $contract->getStoreNumber());
-            self::assertSame($year, (int) $contract->getDate()->format('Y'));
+            $this->assertSame(1, $contract->getStoreNumber());
+            $this->assertSame($year, (int) $contract->getDate()->format('Y'));
         }
     }
 
@@ -73,6 +74,6 @@ final class ContractRepositoryTest extends KernelTestCase
         }
 
         $result = $this->repository->findTemplate();
-        self::assertNotNull($result);
+        $this->assertInstanceOf(Contract::class, $result);
     }
 }

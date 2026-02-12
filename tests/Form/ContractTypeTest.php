@@ -40,7 +40,7 @@ final class ContractTypeTest extends TestCase
         $builder->method('add')->willReturnSelf();
 
         $addedFields = [];
-        $builder->expects(self::exactly(count($expectedFields)))
+        $builder->expects($this->exactly(count($expectedFields)))
             ->method('add')
             ->willReturnCallback(function (string $name) use (&$addedFields, $builder): FormBuilderInterface {
                 $addedFields[] = $name;
@@ -51,7 +51,7 @@ final class ContractTypeTest extends TestCase
         $type = new ContractType();
         $type->buildForm($builder, []);
 
-        self::assertSame($expectedFields, $addedFields);
+        $this->assertSame($expectedFields, $addedFields);
     }
 
     public function testConfigureOptionsSetsDataClass(): void
@@ -63,6 +63,6 @@ final class ContractTypeTest extends TestCase
 
         $options = $resolver->resolve();
 
-        self::assertSame(Contract::class, $options['data_class']);
+        $this->assertSame(Contract::class, $options['data_class']);
     }
 }

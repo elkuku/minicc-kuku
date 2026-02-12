@@ -22,14 +22,8 @@ final class TwigExtensionTest2 extends WebTestCase
 
     public function testPriceFilter(): void
     {
-        self::assertSame(
-            '<span class="amount">112.00</span>',
-            $this->twigExtension->priceFilter(112)
-        );
-        self::assertSame(
-            '<span class="amount amount-red">-112.00</span>',
-            $this->twigExtension->priceFilter(-112)
-        );
+        $this->assertSame('<span class="amount">112.00</span>', $this->twigExtension->priceFilter(112));
+        $this->assertSame('<span class="amount amount-red">-112.00</span>', $this->twigExtension->priceFilter(-112));
     }
 
     public function testFormatRuc(): void
@@ -37,49 +31,28 @@ final class TwigExtensionTest2 extends WebTestCase
         $user = new User()
             ->setInqCi('123456789-6');
 
-        self::assertSame(
-            '123 456 789 6',
-            $this->twigExtension->formatRUC($user)
-        );
+        $this->assertSame('123 456 789 6', $this->twigExtension->formatRUC($user));
 
         $user = new User()
             ->setInqRuc('1234567896001');
 
-        self::assertSame(
-            '123 456 789 6 001',
-            $this->twigExtension->formatRUC($user)
-        );
+        $this->assertSame('123 456 789 6 001', $this->twigExtension->formatRUC($user));
 
         $user = new User()
             ->setInqRuc('12345678961');
 
-        self::assertSame(
-            '123 456 789 61',
-            $this->twigExtension->formatRUC($user)
-        );
+        $this->assertSame('123 456 789 61', $this->twigExtension->formatRUC($user));
     }
 
     public function testIntlDate(): void
     {
-        self::assertSame(
-            '15 de septiembre 1966',
-            $this->twigExtension->intlDate('1966-09-15')
-        );
+        $this->assertSame('15 de septiembre 1966', $this->twigExtension->intlDate('1966-09-15'));
 
-        self::assertSame(
-            '15 de September 1966',
-            $this->twigExtension->intlDate('1966-09-15', lang: 'de_DE')
-        );
+        $this->assertSame('15 de September 1966', $this->twigExtension->intlDate('1966-09-15', lang: 'de_DE'));
 
-        self::assertSame(
-            '15 September 1966',
-            $this->twigExtension->intlDate('1966-09-15', 'd MMMM YYYY', 'de_DE')
-        );
+        $this->assertSame('15 September 1966', $this->twigExtension->intlDate('1966-09-15', 'd MMMM YYYY', 'de_DE'));
 
-        self::assertSame(
-            'INVALID',
-            $this->twigExtension->intlDate('INVALID')
-        );
+        $this->assertSame('INVALID', $this->twigExtension->intlDate('INVALID'));
     }
 
 

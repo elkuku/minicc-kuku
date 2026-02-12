@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Security;
 
+use ReflectionMethod;
 use App\Security\LoginFormAuthenticator;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,7 +31,7 @@ final class LoginFormAuthenticatorTest extends TestCase
         $authenticator = new LoginFormAuthenticator($this->createRouter(), 'test');
         $request = Request::create('/login', 'POST');
 
-        self::assertTrue($authenticator->supports($request));
+        $this->assertTrue($authenticator->supports($request));
     }
 
     public function testSupportsReturnsFalseForGetLogin(): void
@@ -38,7 +39,7 @@ final class LoginFormAuthenticatorTest extends TestCase
         $authenticator = new LoginFormAuthenticator($this->createRouter(), 'test');
         $request = Request::create('/login', 'GET');
 
-        self::assertFalse($authenticator->supports($request));
+        $this->assertFalse($authenticator->supports($request));
     }
 
     public function testSupportsReturnsFalseForOtherPaths(): void
@@ -46,7 +47,7 @@ final class LoginFormAuthenticatorTest extends TestCase
         $authenticator = new LoginFormAuthenticator($this->createRouter(), 'test');
         $request = Request::create('/other', 'POST');
 
-        self::assertFalse($authenticator->supports($request));
+        $this->assertFalse($authenticator->supports($request));
     }
 
     public function testAuthenticateThrowsExceptionInProductionEnv(): void
@@ -93,7 +94,7 @@ final class LoginFormAuthenticatorTest extends TestCase
 
         $passport = $authenticator->authenticate($request);
 
-        self::assertSame('user@example.com', $passport->getBadge(UserBadge::class)?->getUserIdentifier());
+        $this->assertSame('user@example.com', $passport->getBadge(UserBadge::class)?->getUserIdentifier());
     }
 
     public function testAuthenticateWorksInDevEnv(): void
@@ -108,7 +109,7 @@ final class LoginFormAuthenticatorTest extends TestCase
 
         $passport = $authenticator->authenticate($request);
 
-        self::assertSame('admin@example.com', $passport->getBadge(UserBadge::class)?->getUserIdentifier());
+        $this->assertSame('admin@example.com', $passport->getBadge(UserBadge::class)?->getUserIdentifier());
     }
 
     public function testOnAuthenticationSuccessRedirectsToWelcome(): void
@@ -124,7 +125,7 @@ final class LoginFormAuthenticatorTest extends TestCase
 
         $response = $authenticator->onAuthenticationSuccess($request, $token, 'main');
 
-        self::assertSame('/welcome', $response->getTargetUrl());
+        $this->assertSame('/welcome', $response->getTargetUrl());
     }
 
     public function testOnAuthenticationSuccessRedirectsToTargetPath(): void
@@ -142,17 +143,17 @@ final class LoginFormAuthenticatorTest extends TestCase
 
         $response = $authenticator->onAuthenticationSuccess($request, $token, 'main');
 
-        self::assertSame('/stores', $response->getTargetUrl());
+        $this->assertSame('/stores', $response->getTargetUrl());
     }
 
     public function testGetLoginUrlReturnsLoginRoute(): void
     {
         $authenticator = new LoginFormAuthenticator($this->createRouter(), 'test');
 
-        $method = new \ReflectionMethod(LoginFormAuthenticator::class, 'getLoginUrl');
+        $method = new ReflectionMethod(LoginFormAuthenticator::class, 'getLoginUrl');
 
         $request = Request::create('/login');
 
-        self::assertSame('/login', $method->invoke($authenticator, $request));
+        $this->assertSame('/login', $method->invoke($authenticator, $request));
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Twig;
 
+use Iterator;
 use App\Twig\Extension\AppExtension;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -24,26 +25,26 @@ final class AppExtensionTest extends TestCase
     {
         $filters = $this->extension->getFilters();
 
-        self::assertNotEmpty($filters);
+        $this->assertNotEmpty($filters);
 
         $filterNames = array_map(fn(TwigFilter $f): string => $f->getName(), $filters);
-        self::assertContains('invert', $filterNames);
-        self::assertContains('cast_to_array', $filterNames);
-        self::assertContains('short_name', $filterNames);
-        self::assertContains('conIva', $filterNames);
-        self::assertContains('taxFromTotal', $filterNames);
+        $this->assertContains('invert', $filterNames);
+        $this->assertContains('cast_to_array', $filterNames);
+        $this->assertContains('short_name', $filterNames);
+        $this->assertContains('conIva', $filterNames);
+        $this->assertContains('taxFromTotal', $filterNames);
     }
 
     public function testGetFunctionsReturnsArray(): void
     {
         $functions = $this->extension->getFunctions();
 
-        self::assertNotEmpty($functions);
+        $this->assertNotEmpty($functions);
 
         $functionNames = array_map(fn(TwigFunction $f): string => $f->getName(), $functions);
-        self::assertContains('getSHA', $functionNames);
-        self::assertContains('findSystemUsers', $functionNames);
-        self::assertContains('getCurrentYear', $functionNames);
+        $this->assertContains('getSHA', $functionNames);
+        $this->assertContains('findSystemUsers', $functionNames);
+        $this->assertContains('getCurrentYear', $functionNames);
     }
 
     #[DataProvider('invertFilterProvider')]
@@ -51,22 +52,20 @@ final class AppExtensionTest extends TestCase
     {
         $result = $this->extension->invertFilter($input);
 
-        self::assertSame($expected, $result);
+        $this->assertSame($expected, $result);
     }
 
     /**
-     * @return array<string, array{int|float, int|float}>
+     * @return Iterator<string, array{(float | int), (float | int)}>
      */
-    public static function invertFilterProvider(): array
+    public static function invertFilterProvider(): Iterator
     {
-        return [
-            'positive int' => [100, -100],
-            'negative int' => [-100, 100],
-            'zero int' => [0, 0],
-            'positive float' => [50.5, -50.5],
-            'negative float' => [-50.5, 50.5],
-            'zero float' => [0.0, 0],
-        ];
+        yield 'positive int' => [100, -100];
+        yield 'negative int' => [-100, 100];
+        yield 'zero int' => [0, 0];
+        yield 'positive float' => [50.5, -50.5];
+        yield 'negative float' => [-50.5, 50.5];
+        yield 'zero float' => [0.0, 0];
     }
 
     #[DataProvider('shortNameProvider')]
@@ -74,22 +73,20 @@ final class AppExtensionTest extends TestCase
     {
         $result = $this->extension->shortName($longName);
 
-        self::assertSame($expected, $result);
+        $this->assertSame($expected, $result);
     }
 
     /**
-     * @return array<string, array{string, string}>
+     * @return Iterator<string, array{string, string}>
      */
-    public static function shortNameProvider(): array
+    public static function shortNameProvider(): Iterator
     {
-        return [
-            'two parts' => ['Juan Perez', 'Juan Perez'],
-            'three parts' => ['Juan José Perez', 'Juan Perez'],
-            'four parts' => ['Juan José Perez Pillo', 'Juan Perez'],
-            'single name' => ['Juan', 'Juan'],
-            'five parts' => ['Juan José Perez Pillo Garcia', 'Juan José Perez Pillo Garcia'],
-            'empty string' => ['', ''],
-        ];
+        yield 'two parts' => ['Juan Perez', 'Juan Perez'];
+        yield 'three parts' => ['Juan José Perez', 'Juan Perez'];
+        yield 'four parts' => ['Juan José Perez Pillo', 'Juan Perez'];
+        yield 'single name' => ['Juan', 'Juan'];
+        yield 'five parts' => ['Juan José Perez Pillo Garcia', 'Juan José Perez Pillo Garcia'];
+        yield 'empty string' => ['', ''];
     }
 
     public function testObjectFilterConvertsObjectToArray(): void
@@ -100,10 +97,10 @@ final class AppExtensionTest extends TestCase
 
         $result = $this->extension->objectFilter($object);
 
-        self::assertArrayHasKey('name', $result);
-        self::assertArrayHasKey('value', $result);
-        self::assertSame('Test', $result['name']);
-        self::assertSame(123, $result['value']);
+        $this->assertArrayHasKey('name', $result);
+        $this->assertArrayHasKey('value', $result);
+        $this->assertSame('Test', $result['name']);
+        $this->assertSame(123, $result['value']);
     }
 
     public function testObjectFilterWithComplexObject(): void
@@ -116,8 +113,8 @@ final class AppExtensionTest extends TestCase
 
         $result = $this->extension->objectFilter($object);
 
-        self::assertArrayHasKey('publicProp', $result);
-        self::assertSame('public', $result['publicProp']);
+        $this->assertArrayHasKey('publicProp', $result);
+        $this->assertSame('public', $result['publicProp']);
     }
 
     public function testGetCurrentYearReturnsCurrentYear(): void
@@ -126,13 +123,13 @@ final class AppExtensionTest extends TestCase
 
         $result = $this->extension->getCurrentYear();
 
-        self::assertSame($expectedYear, $result);
+        $this->assertSame($expectedYear, $result);
     }
 
     public function testGetCurrentYearReturnsReasonableValue(): void
     {
         $result = $this->extension->getCurrentYear();
 
-        self::assertGreaterThan(2020, $result);
+        $this->assertGreaterThan(2020, $result);
     }
 }

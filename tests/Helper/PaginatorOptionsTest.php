@@ -14,12 +14,12 @@ final class PaginatorOptionsTest extends TestCase
     {
         $options = new PaginatorOptions();
 
-        self::assertSame(0, $options->getPage());
-        self::assertSame(0, $options->getMaxPages());
-        self::assertSame(10, $options->getLimit());
-        self::assertSame('id', $options->getOrder());
-        self::assertSame('ASC', $options->getOrderDir());
-        self::assertSame([], $options->getCriteria());
+        $this->assertSame(0, $options->getPage());
+        $this->assertSame(0, $options->getMaxPages());
+        $this->assertSame(10, $options->getLimit());
+        $this->assertSame('id', $options->getOrder());
+        $this->assertSame('ASC', $options->getOrderDir());
+        $this->assertSame([], $options->getCriteria());
     }
 
     public function testSetPage(): void
@@ -28,8 +28,8 @@ final class PaginatorOptionsTest extends TestCase
 
         $result = $options->setPage(5);
 
-        self::assertSame($options, $result);
-        self::assertSame(5, $options->getPage());
+        $this->assertSame($options, $result);
+        $this->assertSame(5, $options->getPage());
     }
 
     public function testSetMaxPages(): void
@@ -38,8 +38,8 @@ final class PaginatorOptionsTest extends TestCase
 
         $result = $options->setMaxPages(20);
 
-        self::assertSame($options, $result);
-        self::assertSame(20, $options->getMaxPages());
+        $this->assertSame($options, $result);
+        $this->assertSame(20, $options->getMaxPages());
     }
 
     public function testSetLimit(): void
@@ -48,8 +48,8 @@ final class PaginatorOptionsTest extends TestCase
 
         $result = $options->setLimit(25);
 
-        self::assertSame($options, $result);
-        self::assertSame(25, $options->getLimit());
+        $this->assertSame($options, $result);
+        $this->assertSame(25, $options->getLimit());
     }
 
     public function testSetOrder(): void
@@ -58,8 +58,8 @@ final class PaginatorOptionsTest extends TestCase
 
         $result = $options->setOrder('name');
 
-        self::assertSame($options, $result);
-        self::assertSame('name', $options->getOrder());
+        $this->assertSame($options, $result);
+        $this->assertSame('name', $options->getOrder());
     }
 
     public function testSetOrderDirAsc(): void
@@ -68,8 +68,8 @@ final class PaginatorOptionsTest extends TestCase
 
         $result = $options->setOrderDir('ASC');
 
-        self::assertSame($options, $result);
-        self::assertSame('ASC', $options->getOrderDir());
+        $this->assertSame($options, $result);
+        $this->assertSame('ASC', $options->getOrderDir());
     }
 
     public function testSetOrderDirDesc(): void
@@ -78,8 +78,8 @@ final class PaginatorOptionsTest extends TestCase
 
         $result = $options->setOrderDir('DESC');
 
-        self::assertSame($options, $result);
-        self::assertSame('DESC', $options->getOrderDir());
+        $this->assertSame($options, $result);
+        $this->assertSame('DESC', $options->getOrderDir());
     }
 
     public function testSetOrderDirCaseInsensitive(): void
@@ -88,7 +88,7 @@ final class PaginatorOptionsTest extends TestCase
 
         $options->setOrderDir('desc');
 
-        self::assertSame('desc', $options->getOrderDir());
+        $this->assertSame('desc', $options->getOrderDir());
     }
 
     public function testSetOrderDirThrowsOnInvalidValue(): void
@@ -108,8 +108,8 @@ final class PaginatorOptionsTest extends TestCase
 
         $result = $options->setCriteria($criteria);
 
-        self::assertSame($options, $result);
-        self::assertSame($criteria, $options->getCriteria());
+        $this->assertSame($options, $result);
+        $this->assertSame($criteria, $options->getCriteria());
     }
 
     public function testSearchCriteriaExistingKey(): void
@@ -117,8 +117,8 @@ final class PaginatorOptionsTest extends TestCase
         $options = new PaginatorOptions();
         $options->setCriteria(['name' => 'John', 'status' => 'active']);
 
-        self::assertSame('John', $options->searchCriteria('name'));
-        self::assertSame('active', $options->searchCriteria('status'));
+        $this->assertSame('John', $options->searchCriteria('name'));
+        $this->assertSame('active', $options->searchCriteria('status'));
     }
 
     public function testSearchCriteriaNonExistingKey(): void
@@ -126,14 +126,14 @@ final class PaginatorOptionsTest extends TestCase
         $options = new PaginatorOptions();
         $options->setCriteria(['name' => 'John']);
 
-        self::assertSame('', $options->searchCriteria('nonexistent'));
+        $this->assertSame('', $options->searchCriteria('nonexistent'));
     }
 
     public function testSearchCriteriaEmptyCriteria(): void
     {
         $options = new PaginatorOptions();
 
-        self::assertSame('', $options->searchCriteria('anykey'));
+        $this->assertSame('', $options->searchCriteria('anykey'));
     }
 
     public function testFluentInterface(): void
@@ -148,12 +148,12 @@ final class PaginatorOptionsTest extends TestCase
             ->setOrderDir('DESC')
             ->setCriteria(['active' => 'true']);
 
-        self::assertSame($options, $result);
-        self::assertSame(1, $options->getPage());
-        self::assertSame(10, $options->getMaxPages());
-        self::assertSame(20, $options->getLimit());
-        self::assertSame('created_at', $options->getOrder());
-        self::assertSame('DESC', $options->getOrderDir());
-        self::assertSame(['active' => 'true'], $options->getCriteria());
+        $this->assertSame($options, $result);
+        $this->assertSame(1, $options->getPage());
+        $this->assertSame(10, $options->getMaxPages());
+        $this->assertSame(20, $options->getLimit());
+        $this->assertSame('created_at', $options->getOrder());
+        $this->assertSame('DESC', $options->getOrderDir());
+        $this->assertSame(['active' => 'true'], $options->getCriteria());
     }
 }

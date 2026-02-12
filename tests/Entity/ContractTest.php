@@ -35,20 +35,20 @@ final class ContractTest extends TestCase
 
         $result = $contract->setValuesFromStore($store);
 
-        self::assertSame($contract, $result);
-        self::assertSame(42, $contract->getStoreNumber());
-        self::assertSame('Tienda Centro', $contract->getDestination());
-        self::assertSame(500.50, $contract->getValAlq());
-        self::assertSame(3, $contract->getCntLanfort());
-        self::assertSame(2, $contract->getCntLlaves());
-        self::assertSame(1, $contract->getCntMedAgua());
-        self::assertSame(1, $contract->getCntMedElec());
-        self::assertSame(4, $contract->getCntNeon());
-        self::assertSame(5, $contract->getCntSwitch());
-        self::assertSame(6, $contract->getCntToma());
-        self::assertSame(2, $contract->getCntVentana());
-        self::assertSame('ELEC-001', $contract->getMedElectrico());
-        self::assertSame('AGUA-001', $contract->getMedAgua());
+        $this->assertSame($contract, $result);
+        $this->assertSame(42, $contract->getStoreNumber());
+        $this->assertSame('Tienda Centro', $contract->getDestination());
+        $this->assertEqualsWithDelta(500.50, $contract->getValAlq(), PHP_FLOAT_EPSILON);
+        $this->assertSame(3, $contract->getCntLanfort());
+        $this->assertSame(2, $contract->getCntLlaves());
+        $this->assertSame(1, $contract->getCntMedAgua());
+        $this->assertSame(1, $contract->getCntMedElec());
+        $this->assertSame(4, $contract->getCntNeon());
+        $this->assertSame(5, $contract->getCntSwitch());
+        $this->assertSame(6, $contract->getCntToma());
+        $this->assertSame(2, $contract->getCntVentana());
+        $this->assertSame('ELEC-001', $contract->getMedElectrico());
+        $this->assertSame('AGUA-001', $contract->getMedAgua());
     }
 
     public function testSetValuesFromStoreWithDefaultValues(): void
@@ -60,19 +60,19 @@ final class ContractTest extends TestCase
         $contract->setGender(Gender::female);
         $contract->setValuesFromStore($store);
 
-        self::assertSame(1, $contract->getStoreNumber());
-        self::assertSame('', $contract->getDestination());
-        self::assertSame(0.0, $contract->getValAlq());
-        self::assertSame(0, $contract->getCntLanfort());
-        self::assertSame(0, $contract->getCntLlaves());
-        self::assertSame(0, $contract->getCntMedAgua());
-        self::assertSame(0, $contract->getCntMedElec());
-        self::assertSame(0, $contract->getCntNeon());
-        self::assertSame(0, $contract->getCntSwitch());
-        self::assertSame(0, $contract->getCntToma());
-        self::assertSame(0, $contract->getCntVentana());
-        self::assertSame('', $contract->getMedElectrico());
-        self::assertSame('', $contract->getMedAgua());
+        $this->assertSame(1, $contract->getStoreNumber());
+        $this->assertSame('', $contract->getDestination());
+        $this->assertEqualsWithDelta(0.0, $contract->getValAlq(), PHP_FLOAT_EPSILON);
+        $this->assertSame(0, $contract->getCntLanfort());
+        $this->assertSame(0, $contract->getCntLlaves());
+        $this->assertSame(0, $contract->getCntMedAgua());
+        $this->assertSame(0, $contract->getCntMedElec());
+        $this->assertSame(0, $contract->getCntNeon());
+        $this->assertSame(0, $contract->getCntSwitch());
+        $this->assertSame(0, $contract->getCntToma());
+        $this->assertSame(0, $contract->getCntVentana());
+        $this->assertSame('', $contract->getMedElectrico());
+        $this->assertSame('', $contract->getMedAgua());
     }
 
     public function testConstructorSetsDefaultDate(): void
@@ -83,15 +83,15 @@ final class ContractTest extends TestCase
 
         $date = $contract->getDate();
 
-        self::assertGreaterThanOrEqual($before, $date);
-        self::assertLessThanOrEqual($after, $date);
+        $this->assertGreaterThanOrEqual($before, $date);
+        $this->assertLessThanOrEqual($after, $date);
     }
 
     public function testGetIdReturnsNullForNewEntity(): void
     {
         $contract = new Contract();
 
-        self::assertNull($contract->getId());
+        $this->assertNull($contract->getId());
     }
 
     public function testInqNombreapellido(): void
@@ -101,8 +101,8 @@ final class ContractTest extends TestCase
 
         $result = $contract->setInqNombreapellido('Juan Pérez');
 
-        self::assertSame($contract, $result);
-        self::assertSame('Juan Pérez', $contract->getInqNombreapellido());
+        $this->assertSame($contract, $result);
+        $this->assertSame('Juan Pérez', $contract->getInqNombreapellido());
     }
 
     public function testInqCi(): void
@@ -110,12 +110,12 @@ final class ContractTest extends TestCase
         $contract = new Contract();
         $contract->setGender(Gender::male);
 
-        self::assertSame('000000000-0', $contract->getInqCi());
+        $this->assertSame('000000000-0', $contract->getInqCi());
 
         $result = $contract->setInqCi('123456789-0');
 
-        self::assertSame($contract, $result);
-        self::assertSame('123456789-0', $contract->getInqCi());
+        $this->assertSame($contract, $result);
+        $this->assertSame('123456789-0', $contract->getInqCi());
     }
 
     public function testDestination(): void
@@ -125,8 +125,8 @@ final class ContractTest extends TestCase
 
         $result = $contract->setDestination('Local Comercial');
 
-        self::assertSame($contract, $result);
-        self::assertSame('Local Comercial', $contract->getDestination());
+        $this->assertSame($contract, $result);
+        $this->assertSame('Local Comercial', $contract->getDestination());
     }
 
     public function testValAlq(): void
@@ -136,8 +136,8 @@ final class ContractTest extends TestCase
 
         $result = $contract->setValAlq(750.25);
 
-        self::assertSame($contract, $result);
-        self::assertSame(750.25, $contract->getValAlq());
+        $this->assertSame($contract, $result);
+        $this->assertEqualsWithDelta(750.25, $contract->getValAlq(), PHP_FLOAT_EPSILON);
     }
 
     public function testValGarantia(): void
@@ -147,8 +147,8 @@ final class ContractTest extends TestCase
 
         $result = $contract->setValGarantia(1500.00);
 
-        self::assertSame($contract, $result);
-        self::assertSame(1500.00, $contract->getValGarantia());
+        $this->assertSame($contract, $result);
+        $this->assertEqualsWithDelta(1500.00, $contract->getValGarantia(), PHP_FLOAT_EPSILON);
     }
 
     public function testDate(): void
@@ -160,8 +160,8 @@ final class ContractTest extends TestCase
 
         $result = $contract->setDate($date);
 
-        self::assertSame($contract, $result);
-        self::assertSame($date, $contract->getDate());
+        $this->assertSame($contract, $result);
+        $this->assertSame($date, $contract->getDate());
     }
 
     public function testGender(): void
@@ -170,8 +170,8 @@ final class ContractTest extends TestCase
 
         $result = $contract->setGender(Gender::female);
 
-        self::assertSame($contract, $result);
-        self::assertSame(Gender::female, $contract->getGender());
+        $this->assertSame($contract, $result);
+        $this->assertSame(Gender::female, $contract->getGender());
     }
 
     public function testStoreNumber(): void
@@ -181,8 +181,8 @@ final class ContractTest extends TestCase
 
         $result = $contract->setStoreNumber(123);
 
-        self::assertSame($contract, $result);
-        self::assertSame(123, $contract->getStoreNumber());
+        $this->assertSame($contract, $result);
+        $this->assertSame(123, $contract->getStoreNumber());
     }
 
     public function testText(): void
@@ -190,12 +190,12 @@ final class ContractTest extends TestCase
         $contract = new Contract();
         $contract->setGender(Gender::male);
 
-        self::assertSame('', $contract->getText());
+        $this->assertSame('', $contract->getText());
 
         $result = $contract->setText('Contract text content here');
 
-        self::assertSame($contract, $result);
-        self::assertSame('Contract text content here', $contract->getText());
+        $this->assertSame($contract, $result);
+        $this->assertSame('Contract text content here', $contract->getText());
     }
 
     public function testAllCountFields(): void
@@ -204,36 +204,36 @@ final class ContractTest extends TestCase
         $contract->setGender(Gender::male);
 
         $result = $contract->setCntLanfort(10);
-        self::assertSame($contract, $result);
-        self::assertSame(10, $contract->getCntLanfort());
+        $this->assertSame($contract, $result);
+        $this->assertSame(10, $contract->getCntLanfort());
 
         $result = $contract->setCntNeon(5);
-        self::assertSame($contract, $result);
-        self::assertSame(5, $contract->getCntNeon());
+        $this->assertSame($contract, $result);
+        $this->assertSame(5, $contract->getCntNeon());
 
         $result = $contract->setCntSwitch(8);
-        self::assertSame($contract, $result);
-        self::assertSame(8, $contract->getCntSwitch());
+        $this->assertSame($contract, $result);
+        $this->assertSame(8, $contract->getCntSwitch());
 
         $result = $contract->setCntToma(12);
-        self::assertSame($contract, $result);
-        self::assertSame(12, $contract->getCntToma());
+        $this->assertSame($contract, $result);
+        $this->assertSame(12, $contract->getCntToma());
 
         $result = $contract->setCntVentana(3);
-        self::assertSame($contract, $result);
-        self::assertSame(3, $contract->getCntVentana());
+        $this->assertSame($contract, $result);
+        $this->assertSame(3, $contract->getCntVentana());
 
         $result = $contract->setCntLlaves(4);
-        self::assertSame($contract, $result);
-        self::assertSame(4, $contract->getCntLlaves());
+        $this->assertSame($contract, $result);
+        $this->assertSame(4, $contract->getCntLlaves());
 
         $result = $contract->setCntMedAgua(2);
-        self::assertSame($contract, $result);
-        self::assertSame(2, $contract->getCntMedAgua());
+        $this->assertSame($contract, $result);
+        $this->assertSame(2, $contract->getCntMedAgua());
 
         $result = $contract->setCntMedElec(2);
-        self::assertSame($contract, $result);
-        self::assertSame(2, $contract->getCntMedElec());
+        $this->assertSame($contract, $result);
+        $this->assertSame(2, $contract->getCntMedElec());
     }
 
     public function testMeterFields(): void
@@ -241,16 +241,16 @@ final class ContractTest extends TestCase
         $contract = new Contract();
         $contract->setGender(Gender::male);
 
-        self::assertSame('', $contract->getMedElectrico());
-        self::assertSame('', $contract->getMedAgua());
+        $this->assertSame('', $contract->getMedElectrico());
+        $this->assertSame('', $contract->getMedAgua());
 
         $result = $contract->setMedElectrico('ELEC-2024-001');
-        self::assertSame($contract, $result);
-        self::assertSame('ELEC-2024-001', $contract->getMedElectrico());
+        $this->assertSame($contract, $result);
+        $this->assertSame('ELEC-2024-001', $contract->getMedElectrico());
 
         $result = $contract->setMedAgua('AGUA-2024-001');
-        self::assertSame($contract, $result);
-        self::assertSame('AGUA-2024-001', $contract->getMedAgua());
+        $this->assertSame($contract, $result);
+        $this->assertSame('AGUA-2024-001', $contract->getMedAgua());
     }
 
     private function setStoreId(Store $store, int $id): void

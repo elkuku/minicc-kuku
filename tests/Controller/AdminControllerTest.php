@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller;
 
+use App\Entity\User;
+use App\Entity\Store;
+use App\Entity\PaymentMethod;
 use App\Repository\PaymentMethodRepository;
 use App\Repository\StoreRepository;
 use App\Repository\UserRepository;
@@ -20,7 +23,7 @@ final class AdminControllerTest extends WebTestCase
         /** @var UserRepository $userRepository */
         $userRepository = static::getContainer()->get(UserRepository::class);
         $admin = $userRepository->findOneBy(['email' => 'admin@example.com']);
-        self::assertNotNull($admin);
+        $this->assertInstanceOf(User::class, $admin);
         $this->client->loginUser($admin);
     }
 
@@ -39,7 +42,7 @@ final class AdminControllerTest extends WebTestCase
         /** @var UserRepository $userRepository */
         $userRepository = static::getContainer()->get(UserRepository::class);
         $user = $userRepository->findOneBy(['email' => 'user1@example.com']);
-        self::assertNotNull($user);
+        $this->assertInstanceOf(User::class, $user);
         $client->loginUser($user);
 
         $client->request('GET', '/admin/tasks');
@@ -69,7 +72,7 @@ final class AdminControllerTest extends WebTestCase
 
         // The backup command will likely fail in test env, but the route should exist
         $statusCode = $this->client->getResponse()->getStatusCode();
-        self::assertContains($statusCode, [200, 500]);
+        $this->assertContains($statusCode, [200, 500]);
     }
 
     public function testCollectRentGetForm(): void
@@ -85,13 +88,13 @@ final class AdminControllerTest extends WebTestCase
         /** @var StoreRepository $storeRepository */
         $storeRepository = static::getContainer()->get(StoreRepository::class);
         $store = $storeRepository->findOneBy(['destination' => 'TEST']);
-        self::assertNotNull($store);
+        $this->assertInstanceOf(Store::class, $store);
         $storeId = $store->getId();
-        self::assertNotNull($storeId);
+        $this->assertNotNull($storeId);
         /** @var UserRepository $userRepository */
         $userRepository = static::getContainer()->get(UserRepository::class);
         $user = $userRepository->findOneBy(['email' => 'user1@example.com']);
-        self::assertNotNull($user);
+        $this->assertInstanceOf(User::class, $user);
 
         $this->client->request('POST', '/admin/collect-rent', [
             'values' => [$storeId => '100'],
@@ -101,7 +104,7 @@ final class AdminControllerTest extends WebTestCase
 
         // Controller hard-codes find(1) for payment method; may 500 if ID differs
         $statusCode = $this->client->getResponse()->getStatusCode();
-        self::assertContains($statusCode, [302, 500]);
+        $this->assertContains($statusCode, [302, 500]);
     }
 
     public function testCollectRentPostSkipsEmptyValues(): void
@@ -109,13 +112,13 @@ final class AdminControllerTest extends WebTestCase
         /** @var StoreRepository $storeRepository */
         $storeRepository = static::getContainer()->get(StoreRepository::class);
         $store = $storeRepository->findOneBy(['destination' => 'TEST']);
-        self::assertNotNull($store);
+        $this->assertInstanceOf(Store::class, $store);
         $storeId = $store->getId();
-        self::assertNotNull($storeId);
+        $this->assertNotNull($storeId);
         /** @var UserRepository $userRepository */
         $userRepository = static::getContainer()->get(UserRepository::class);
         $user = $userRepository->findOneBy(['email' => 'user1@example.com']);
-        self::assertNotNull($user);
+        $this->assertInstanceOf(User::class, $user);
 
         $this->client->request('POST', '/admin/collect-rent', [
             'values' => [$storeId => ''],
@@ -124,7 +127,7 @@ final class AdminControllerTest extends WebTestCase
         ]);
 
         $statusCode = $this->client->getResponse()->getStatusCode();
-        self::assertContains($statusCode, [302, 500]);
+        $this->assertContains($statusCode, [302, 500]);
     }
 
     public function testPayDayGetForm(): void
@@ -140,11 +143,11 @@ final class AdminControllerTest extends WebTestCase
         /** @var StoreRepository $storeRepository */
         $storeRepository = static::getContainer()->get(StoreRepository::class);
         $store = $storeRepository->findOneBy(['destination' => 'TEST']);
-        self::assertNotNull($store);
+        $this->assertInstanceOf(Store::class, $store);
         /** @var PaymentMethodRepository $paymentMethodRepository */
         $paymentMethodRepository = static::getContainer()->get(PaymentMethodRepository::class);
         $paymentMethod = $paymentMethodRepository->findOneBy(['name' => 'Bar']);
-        self::assertNotNull($paymentMethod);
+        $this->assertInstanceOf(PaymentMethod::class, $paymentMethod);
         $paymentMethodId = $paymentMethod->getId();
 
         $this->client->request('POST', '/admin/pay-day', [

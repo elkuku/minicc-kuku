@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller;
 
+use App\Entity\User;
+use App\Entity\Store;
 use App\Repository\StoreRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -19,7 +21,7 @@ final class StoreControllerTest extends WebTestCase
         /** @var UserRepository $userRepository */
         $userRepository = static::getContainer()->get(UserRepository::class);
         $admin = $userRepository->findOneBy(['email' => 'admin@example.com']);
-        self::assertNotNull($admin);
+        $this->assertInstanceOf(User::class, $admin);
         $this->client->loginUser($admin);
     }
 
@@ -44,7 +46,7 @@ final class StoreControllerTest extends WebTestCase
         /** @var StoreRepository $storeRepository */
         $storeRepository = static::getContainer()->get(StoreRepository::class);
         $store = $storeRepository->findOneBy(['destination' => 'TEST']);
-        self::assertNotNull($store);
+        $this->assertInstanceOf(Store::class, $store);
         $storeId = $store->getId();
 
         $this->client->request('GET', '/stores/edit/' . $storeId);
@@ -73,7 +75,7 @@ final class StoreControllerTest extends WebTestCase
         /** @var StoreRepository $storeRepository */
         $storeRepository = static::getContainer()->get(StoreRepository::class);
         $store = $storeRepository->findOneBy(['destination' => 'TEST']);
-        self::assertNotNull($store);
+        $this->assertInstanceOf(Store::class, $store);
         $storeId = $store->getId();
 
         $this->client->request('GET', '/stores/edit/' . $storeId);
@@ -96,12 +98,12 @@ final class StoreControllerTest extends WebTestCase
         /** @var UserRepository $userRepository */
         $userRepository = static::getContainer()->get(UserRepository::class);
         $user = $userRepository->findOneBy(['email' => 'user1@example.com']);
-        self::assertNotNull($user);
+        $this->assertInstanceOf(User::class, $user);
         $client->loginUser($user);
         /** @var StoreRepository $storeRepository */
         $storeRepository = static::getContainer()->get(StoreRepository::class);
         $store = $storeRepository->findOneBy(['destination' => 'TEST']);
-        self::assertNotNull($store);
+        $this->assertInstanceOf(Store::class, $store);
         $storeId = $store->getId();
 
         $client->request('GET', '/stores/' . $storeId);
@@ -115,7 +117,7 @@ final class StoreControllerTest extends WebTestCase
         /** @var StoreRepository $storeRepository */
         $storeRepository = static::getContainer()->get(StoreRepository::class);
         $store = $storeRepository->findOneBy(['destination' => 'TEST']);
-        self::assertNotNull($store);
+        $this->assertInstanceOf(Store::class, $store);
         $storeId = $store->getId();
 
         $this->client->request('GET', '/stores/' . $storeId);
@@ -131,12 +133,12 @@ final class StoreControllerTest extends WebTestCase
         /** @var UserRepository $userRepository */
         $userRepository = static::getContainer()->get(UserRepository::class);
         $user = $userRepository->findOneBy(['email' => 'user2@example.com']);
-        self::assertNotNull($user);
+        $this->assertInstanceOf(User::class, $user);
         $client->loginUser($user);
         /** @var StoreRepository $storeRepository */
         $storeRepository = static::getContainer()->get(StoreRepository::class);
         $store = $storeRepository->findOneBy(['destination' => 'TEST']);
-        self::assertNotNull($store);
+        $this->assertInstanceOf(Store::class, $store);
         $storeId = $store->getId();
 
         $client->request('GET', '/stores/' . $storeId);
@@ -149,7 +151,7 @@ final class StoreControllerTest extends WebTestCase
         /** @var StoreRepository $storeRepository */
         $storeRepository = static::getContainer()->get(StoreRepository::class);
         $store = $storeRepository->findOneBy(['destination' => 'TEST']);
-        self::assertNotNull($store);
+        $this->assertInstanceOf(Store::class, $store);
         $storeId = $store->getId();
 
         $this->client->request('GET', '/stores/' . $storeId . '?year=2024');
@@ -165,7 +167,7 @@ final class StoreControllerTest extends WebTestCase
         /** @var UserRepository $userRepository */
         $userRepository = static::getContainer()->get(UserRepository::class);
         $user = $userRepository->findOneBy(['email' => 'user1@example.com']);
-        self::assertNotNull($user);
+        $this->assertInstanceOf(User::class, $user);
         $client->loginUser($user);
 
         $client->request('GET', '/stores');

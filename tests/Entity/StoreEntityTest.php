@@ -35,7 +35,7 @@ final class StoreEntityTest extends KernelTestCase
         $entityManager->flush();
 
         $storeId = $store->getId();
-        self::assertNotNull($storeId);
+        $this->assertNotNull($storeId);
 
         // Clear the entity manager to force reloading from database
         $entityManager->clear();
@@ -44,9 +44,9 @@ final class StoreEntityTest extends KernelTestCase
         // properties are not correctly typed
         $loadedStore = $storeRepository->find($storeId);
 
-        self::assertNotNull($loadedStore);
-        self::assertSame('Test Store', $loadedStore->getDestination());
-        self::assertNull($loadedStore->getUserId());
+        $this->assertInstanceOf(Store::class, $loadedStore);
+        $this->assertSame('Test Store', $loadedStore->getDestination());
+        $this->assertNull($loadedStore->getUserId());
 
         // Cleanup
         $entityManager->remove($loadedStore);

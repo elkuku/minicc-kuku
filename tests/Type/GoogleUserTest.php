@@ -27,42 +27,42 @@ final class GoogleUserTest extends TestCase
 
     public function testGetId(): void
     {
-        self::assertSame('123456789', $this->googleUser->getId());
+        $this->assertSame('123456789', $this->googleUser->getId());
     }
 
     public function testGetName(): void
     {
-        self::assertSame('John Doe', $this->googleUser->getName());
+        $this->assertSame('John Doe', $this->googleUser->getName());
     }
 
     public function testGetFirstName(): void
     {
-        self::assertSame('John', $this->googleUser->getFirstName());
+        $this->assertSame('John', $this->googleUser->getFirstName());
     }
 
     public function testGetLastName(): void
     {
-        self::assertSame('Doe', $this->googleUser->getLastName());
+        $this->assertSame('Doe', $this->googleUser->getLastName());
     }
 
     public function testGetLocale(): void
     {
-        self::assertSame('en_US', $this->googleUser->getLocale());
+        $this->assertSame('en_US', $this->googleUser->getLocale());
     }
 
     public function testGetEmail(): void
     {
-        self::assertSame('john.doe@example.com', $this->googleUser->getEmail());
+        $this->assertSame('john.doe@example.com', $this->googleUser->getEmail());
     }
 
     public function testGetHostedDomain(): void
     {
-        self::assertSame('example.com', $this->googleUser->getHostedDomain());
+        $this->assertSame('example.com', $this->googleUser->getHostedDomain());
     }
 
     public function testGetAvatar(): void
     {
-        self::assertSame('https://example.com/avatar.jpg', $this->googleUser->getAvatar());
+        $this->assertSame('https://example.com/avatar.jpg', $this->googleUser->getAvatar());
     }
 
     public function testToArray(): void
@@ -78,7 +78,7 @@ final class GoogleUserTest extends TestCase
             'picture' => 'https://example.com/avatar.jpg',
         ];
 
-        self::assertSame($expected, $this->googleUser->toArray());
+        $this->assertSame($expected, $this->googleUser->toArray());
     }
 
     public function testMissingOptionalFieldsReturnNull(): void
@@ -88,14 +88,14 @@ final class GoogleUserTest extends TestCase
             'name' => 'Minimal User',
         ]);
 
-        self::assertSame('999', $minimalUser->getId());
-        self::assertSame('Minimal User', $minimalUser->getName());
-        self::assertNull($minimalUser->getFirstName());
-        self::assertNull($minimalUser->getLastName());
-        self::assertNull($minimalUser->getLocale());
-        self::assertNull($minimalUser->getEmail());
-        self::assertNull($minimalUser->getHostedDomain());
-        self::assertNull($minimalUser->getAvatar());
+        $this->assertSame('999', $minimalUser->getId());
+        $this->assertSame('Minimal User', $minimalUser->getName());
+        $this->assertNull($minimalUser->getFirstName());
+        $this->assertNull($minimalUser->getLastName());
+        $this->assertNull($minimalUser->getLocale());
+        $this->assertNull($minimalUser->getEmail());
+        $this->assertNull($minimalUser->getHostedDomain());
+        $this->assertNull($minimalUser->getAvatar());
     }
 
     public function testPartialData(): void
@@ -106,10 +106,10 @@ final class GoogleUserTest extends TestCase
             'email' => 'jane@example.com',
         ]);
 
-        self::assertSame('456', $partialUser->getId());
-        self::assertSame('Jane Smith', $partialUser->getName());
-        self::assertSame('jane@example.com', $partialUser->getEmail());
-        self::assertNull($partialUser->getFirstName());
-        self::assertNull($partialUser->getAvatar());
+        $this->assertSame('456', $partialUser->getId());
+        $this->assertSame('Jane Smith', $partialUser->getName());
+        $this->assertSame('jane@example.com', $partialUser->getEmail());
+        $this->assertNull($partialUser->getFirstName());
+        $this->assertNull($partialUser->getAvatar());
     }
 }

@@ -11,65 +11,65 @@ final class DbDriversTest extends TestCase
 {
     public function testPostgreSQLValue(): void
     {
-        self::assertSame('postgresql', DbDrivers::PostgreSQL->value);
+        $this->assertSame('postgresql', DbDrivers::PostgreSQL->value);
     }
 
     public function testMySQLValue(): void
     {
-        self::assertSame('mysql', DbDrivers::MySQL->value);
+        $this->assertSame('mysql', DbDrivers::MySQL->value);
     }
 
     public function testMariaDBValue(): void
     {
-        self::assertSame('mariadb', DbDrivers::MariaDB->value);
+        $this->assertSame('mariadb', DbDrivers::MariaDB->value);
     }
 
     public function testCasesCount(): void
     {
-        self::assertCount(3, DbDrivers::cases());
+        $this->assertCount(3, DbDrivers::cases());
     }
 
     public function testFromPostgresql(): void
     {
         $driver = DbDrivers::from('postgresql');
 
-        self::assertSame(DbDrivers::PostgreSQL, $driver);
+        $this->assertSame(DbDrivers::PostgreSQL, $driver);
     }
 
     public function testFromMysql(): void
     {
         $driver = DbDrivers::from('mysql');
 
-        self::assertSame(DbDrivers::MySQL, $driver);
+        $this->assertSame(DbDrivers::MySQL, $driver);
     }
 
     public function testFromMariadb(): void
     {
         $driver = DbDrivers::from('mariadb');
 
-        self::assertSame(DbDrivers::MariaDB, $driver);
+        $this->assertSame(DbDrivers::MariaDB, $driver);
     }
 
     public function testTryFromInvalidReturnsNull(): void
     {
         $driver = DbDrivers::tryFrom('invalid');
 
-        self::assertNotSame(DbDrivers::PostgreSQL, $driver);
-        self::assertNotSame(DbDrivers::MySQL, $driver);
-        self::assertNotSame(DbDrivers::MariaDB, $driver);
+        $this->assertNotSame(DbDrivers::PostgreSQL, $driver);
+        $this->assertNotSame(DbDrivers::MySQL, $driver);
+        $this->assertNotSame(DbDrivers::MariaDB, $driver);
     }
 
     public function testTryFromValidReturnsEnum(): void
     {
         $driver = DbDrivers::tryFrom('mysql');
 
-        self::assertSame(DbDrivers::MySQL, $driver);
+        $this->assertSame(DbDrivers::MySQL, $driver);
     }
 
     public function testEnumNames(): void
     {
-        self::assertSame('PostgreSQL', DbDrivers::PostgreSQL->name);
-        self::assertSame('MySQL', DbDrivers::MySQL->name);
-        self::assertSame('MariaDB', DbDrivers::MariaDB->name);
+        $this->assertSame('PostgreSQL', DbDrivers::PostgreSQL->name);
+        $this->assertSame('MySQL', DbDrivers::MySQL->name);
+        $this->assertSame('MariaDB', DbDrivers::MariaDB->name);
     }
 }

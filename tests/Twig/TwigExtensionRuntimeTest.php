@@ -26,7 +26,7 @@ final class TwigExtensionRuntimeTest extends WebTestCase
 
     public function testX(): void
     {
-        self::assertSame(112.0, $this->twigExtensionRuntime->getValueWithTax(100));
-        self::assertSame(12.0, $this->twigExtensionRuntime->getTaxFromTotal(112));
+        $this->assertEqualsWithDelta(112.0, $this->twigExtensionRuntime->getValueWithTax(100), PHP_FLOAT_EPSILON);
+        $this->assertEqualsWithDelta(12.0, $this->twigExtensionRuntime->getTaxFromTotal(112), PHP_FLOAT_EPSILON);
     }
 }
