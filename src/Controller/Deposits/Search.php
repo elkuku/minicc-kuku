@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[IsGranted('ROLE_ADMIN')]
-#[Route(path: '//deposits/search', name: 'deposits_search', methods: ['GET'])]
+#[Route(path: '/deposits/search', name: 'deposits_search', methods: ['GET'])]
 class Search extends BaseController
 {
     public function __construct(private readonly DepositRepository $depositRepository) {}

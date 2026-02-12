@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Tests\Factory;
 
-use DateTime;
 use App\Entity\Deposit;
+use DateTime;
 use Zenstruck\Foundry\Persistence\PersistentObjectFactory;
 
 /**
@@ -27,6 +27,7 @@ final class DepositFactory extends PersistentObjectFactory
             'date' => new DateTime(),
             'document' => self::faker()->numerify('###'),
             'amount' => '0',
+            'entity' => PaymentMethodFactory::new(),
         ];
     }
 }

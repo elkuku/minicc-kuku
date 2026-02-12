@@ -59,7 +59,7 @@ final class AppFixtureStory extends Story
         ]);
 
         PaymentMethodFactory::createOne(['name' => 'Bar']);
-        PaymentMethodFactory::createOne(['name' => 'pch-765']);
+        $pch = PaymentMethodFactory::createOne(['name' => 'pch-765']);
         $gye = PaymentMethodFactory::createOne(['name' => 'gye-1005345']);
 
         TransactionFactory::createOne([
@@ -91,6 +91,7 @@ final class AppFixtureStory extends Story
             'date' => new DateTime(),
             'document' => '123',
             'amount' => '123',
+            'entity' => $pch,
         ]);
     }
 }

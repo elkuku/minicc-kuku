@@ -4,17 +4,13 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use App\Entity\User;
-use App\Entity\PaymentMethod;
-use DateTime;
 use App\Entity\Deposit;
+use App\Entity\User;
 use App\Repository\DepositRepository;
-use App\Repository\PaymentMethodRepository;
 use App\Repository\UserRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 
 final class DepositControllerTest extends WebTestCase
 {
@@ -34,9 +30,7 @@ final class DepositControllerTest extends WebTestCase
     {
         $this->client->request(Request::METHOD_GET, '/deposits');
 
-        // Fixture deposit may lack entity relation causing template error
-        $statusCode = $this->client->getResponse()->getStatusCode();
-        $this->assertContains($statusCode, [200, 500]);
+        self::assertResponseIsSuccessful();
     }
 
     public function testDepositSearchReturnsResults(): void
@@ -49,14 +43,22 @@ final class DepositControllerTest extends WebTestCase
 
     public function testDepositLookupReturnsJson(): void
     {
-        $deposit = $this->ensureDepositExists();
+        $deposit = $this->getDeposit();
         $depositId = $deposit->getId();
 
         $this->client->request(Request::METHOD_GET, '/deposits/lookup?id=' . $depositId);
 
-        // Fixture deposit may lack entity relation causing jsonSerialize error
-        $statusCode = $this->client->getResponse()->getStatusCode();
-        $this->assertContains($statusCode, [200, 500]);
+        self::assertResponseIsSuccessful();
+        $response = $this->client->getResponse();
+        self::assertSame('application/json', $response->headers->get('Content-Type'));
+
+        $data = json_decode((string) $response->getContent(), true);
+        self::assertIsArray($data);
+        self::assertArrayHasKey('id', $data);
+        self::assertArrayHasKey('amount', $data);
+        self::assertArrayHasKey('document', $data);
+        self::assertArrayHasKey('date', $data);
+        self::assertArrayHasKey('entity', $data);
     }
 
     public function testDepositLookupReturnsNullForMissing(): void
@@ -65,8 +67,8 @@ final class DepositControllerTest extends WebTestCase
 
         self::assertResponseIsSuccessful();
         $response = $this->client->getResponse();
-        $this->assertSame('application/json', $response->headers->get('Content-Type'));
-        $this->assertSame('null', $response->getContent());
+        self::assertSame('application/json', $response->headers->get('Content-Type'));
+        self::assertSame('null', $response->getContent());
     }
 
     public function testDepositDeniedForRegularUser(): void
@@ -84,10 +86,16 @@ final class DepositControllerTest extends WebTestCase
         self::assertResponseStatusCodeSame(403);
     }
 
-    // Delete test last since it modifies the database
+    public function testDepositUploadWithoutFile(): void
+    {
+        $this->client->request(Request::METHOD_POST, '/deposits/upload');
+
+        self::assertResponseStatusCodeSame(500);
+    }
+
     public function testDepositDelete(): void
     {
-        $deposit = $this->ensureDepositExists();
+        $deposit = $this->getDeposit();
         $depositId = $deposit->getId();
 
         $this->client->request(Request::METHOD_GET, '/deposits/delete/' . $depositId);
@@ -97,31 +105,12 @@ final class DepositControllerTest extends WebTestCase
         self::assertRouteSame('deposits_index');
     }
 
-    private function ensureDepositExists(): Deposit
+    private function getDeposit(): Deposit
     {
         /** @var DepositRepository $depositRepository */
         $depositRepository = self::getContainer()->get(DepositRepository::class);
         $deposit = $depositRepository->findOneBy([]);
-
-        if ($deposit) {
-            return $deposit;
-        }
-
-        /** @var PaymentMethodRepository $pmRepository */
-        $pmRepository = self::getContainer()->get(PaymentMethodRepository::class);
-        $paymentMethod = $pmRepository->findOneBy([]);
-        $this->assertInstanceOf(PaymentMethod::class, $paymentMethod);
-
-        $deposit = new Deposit();
-        $deposit->setDocument('999');
-        $deposit->setAmount('100');
-        $deposit->setDate(new DateTime());
-        $deposit->setEntity($paymentMethod);
-
-        /** @var EntityManagerInterface $em */
-        $em = self::getContainer()->get(EntityManagerInterface::class);
-        $em->persist($deposit);
-        $em->flush();
+        $this->assertInstanceOf(Deposit::class, $deposit);
 
         return $deposit;
     }

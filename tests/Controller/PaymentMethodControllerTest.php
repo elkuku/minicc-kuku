@@ -125,14 +125,6 @@ final class PaymentMethodControllerTest extends WebTestCase
 
     private function ensurePaymentMethodForDelete(): PaymentMethod
     {
-        /** @var PaymentMethodRepository $paymentMethodRepository */
-        $paymentMethodRepository = self::getContainer()->get(PaymentMethodRepository::class);
-        $method = $paymentMethodRepository->findOneBy(['name' => 'pch-765']);
-
-        if ($method) {
-            return $method;
-        }
-
         $method = new PaymentMethod();
         $method->setName('test-delete-me');
 
