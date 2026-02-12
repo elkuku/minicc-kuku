@@ -6,7 +6,6 @@ namespace App\Repository;
 
 use App\Entity\Contract;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Collections\Criteria;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -51,14 +50,8 @@ class ContractRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function findTemplate(): mixed
+    public function findTemplate(): ?Contract
     {
-        $data = $this->matching(
-            Criteria::create()->where(
-                Criteria::expr()->eq('id', 1)
-            )
-        );
-
-        return $data[0];
+        return $this->find(1);
     }
 }

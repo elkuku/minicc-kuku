@@ -35,28 +35,11 @@ final class ControllerAccessTest extends ControllerBaseTest
             'login' => [
                 'statusCodes' => [
                     'GET' => 200,
-                    'POST' => 302,
                 ],
             ],
             'mail_planillas' => [
                 'statusCodes' => [
                     'GET' => 500, // TODO: WTF
-                ],
-            ],
-            'contracts_edit' => [
-                'statusCodes' => [
-                    'GET' => 302,
-                    'POST' => 302,
-                ],
-            ],
-            'contracts_delete' => [
-                'statusCodes' => [
-                    'GET' => 302,
-                ],
-            ],
-            'contracts_generate' => [
-                'statusCodes' => [
-                    'GET' => 302,
                 ],
             ],
         ];

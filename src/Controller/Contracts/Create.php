@@ -21,18 +21,22 @@ class Create extends BaseController
 {
     #[Route(path: '/contracts/create', name: 'contracts_create', methods: ['POST'])]
     public function new(
-        StoreRepository        $storeRepo,
-        UserRepository         $userRepo,
-        ContractRepository     $contractRepo,
-        Request                $request,
+        StoreRepository $storeRepo,
+        UserRepository $userRepo,
+        ContractRepository $contractRepo,
+        Request $request,
         EntityManagerInterface $entityManager,
-        TaxService             $taxService,
+        TaxService $taxService,
     ): Response
     {
         $store = $storeRepo->find($request->request->getInt('store'));
         $user = $userRepo->find($request->request->getInt('user'));
         $contract = new Contract();
-        $contract->setText($contractRepo->findTemplate()->getText());
+        $template = $contractRepo->findTemplate();
+        if ($template !== null) {
+            $contract->setText($template->getText());
+        }
+
         if ($store) {
             $contract->setValuesFromStore($store);
         }
