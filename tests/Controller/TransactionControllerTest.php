@@ -62,7 +62,47 @@ final class TransactionControllerTest extends WebTestCase
         self::assertResponseStatusCodeSame(403);
     }
 
-    // Delete test last since it modifies the database
+    public function testTransactionEditPostForm(): void
+    {
+        $transaction = $this->ensureTransactionExists();
+        $transactionId = $transaction->getId();
+
+        $this->client->request(
+            'GET',
+            '/transactions/edit/' . $transactionId . '?view=/transactions'
+        );
+        $this->client->submitForm('Guardar', [
+            'transaction_type[amount]' => '99.99',
+            'transaction_type[comment]' => 'Updated via test',
+        ]);
+
+        self::assertResponseRedirects('/transactions');
+    }
+
+    public function testTransactionEditPostFormDefaultRedirect(): void
+    {
+        $transaction = $this->ensureTransactionExists();
+        $transactionId = $transaction->getId();
+
+        $this->client->request('GET', '/transactions/edit/' . $transactionId);
+        $this->client->submitForm('Guardar', [
+            'transaction_type[amount]' => '88.88',
+            'transaction_type[comment]' => 'Default redirect test',
+        ]);
+
+        self::assertResponseRedirects();
+    }
+
+    public function testTransactionDeleteWithViewRedirect(): void
+    {
+        $transaction = $this->ensureTransactionExists();
+        $transactionId = $transaction->getId();
+
+        $this->client->request('GET', '/transactions/delete/' . $transactionId . '?view=/transactions');
+
+        self::assertResponseRedirects('/transactions');
+    }
+
     public function testTransactionDelete(): void
     {
         $transaction = $this->ensureTransactionExists();

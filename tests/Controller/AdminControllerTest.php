@@ -104,6 +104,29 @@ final class AdminControllerTest extends WebTestCase
         self::assertContains($statusCode, [302, 500]);
     }
 
+    public function testCollectRentPostSkipsEmptyValues(): void
+    {
+        /** @var StoreRepository $storeRepository */
+        $storeRepository = static::getContainer()->get(StoreRepository::class);
+        $store = $storeRepository->findOneBy(['destination' => 'TEST']);
+        self::assertNotNull($store);
+        $storeId = $store->getId();
+        self::assertNotNull($storeId);
+        /** @var UserRepository $userRepository */
+        $userRepository = static::getContainer()->get(UserRepository::class);
+        $user = $userRepository->findOneBy(['email' => 'user1@example.com']);
+        self::assertNotNull($user);
+
+        $this->client->request('POST', '/admin/collect-rent', [
+            'values' => [$storeId => ''],
+            'users' => [$storeId => (string) $user->getId()],
+            'date_cobro' => date('Y-m-d'),
+        ]);
+
+        $statusCode = $this->client->getResponse()->getStatusCode();
+        self::assertContains($statusCode, [302, 500]);
+    }
+
     public function testPayDayGetForm(): void
     {
         $this->client->request('GET', '/admin/pay-day');

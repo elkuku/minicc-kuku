@@ -39,7 +39,7 @@ class Edit extends BaseController
             }
 
             return $this->redirectToRoute(
-                'store-transactions',
+                'stores_transactions',
                 [
                     'id' => $transaction->getStore()->getId(),
                 ]

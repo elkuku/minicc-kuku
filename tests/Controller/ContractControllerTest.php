@@ -56,6 +56,22 @@ final class ContractControllerTest extends WebTestCase
         self::assertRouteSame('contracts_edit');
     }
 
+    public function testContractEditPostForm(): void
+    {
+        $contract = $this->ensureContractExists();
+        $contractId = $contract->getId();
+
+        $crawler = $this->client->request('GET', '/contracts/edit/' . $contractId);
+        $form = $crawler->selectButton('Guardar')->form();
+        $form['contract[inqNombreApellido]'] = 'Updated Tester';
+        $form['contract[destination]'] = 'Updated Destination';
+        $this->client->submit($form);
+
+        self::assertResponseRedirects();
+        $this->client->followRedirect();
+        self::assertRouteSame('contracts_index');
+    }
+
     public function testContractTemplateStringsReturnsJson(): void
     {
         $this->client->request('GET', '/contracts/template-strings');

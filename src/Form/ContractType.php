@@ -74,9 +74,11 @@ class ContractType extends AbstractType
             ])
             ->add('medElectrico', null, [
                 'label' => 'Electrico',
+                'empty_data' => '',
             ])
             ->add('medAgua', null, [
                 'label' => 'Agua',
+                'empty_data' => '',
             ])
             // Text
             ->add('text');
