@@ -40,7 +40,7 @@ jobs:
       run: composer install --no-ansi --no-interaction --prefer-dist
     - name: Execute tests (Unit and Feature tests) via PHPUnit
       env:
-        DATABASE_URL: mysql://root:@127.0.0.1:3306/symfony
+        DATABASE_URL: mysql://root:@127.0.0.1:3306/symfony?serverVersion=8.0
       run: |
         bin/console doctrine:database:create --env=test --if-not-exists
         vendor/bin/phpunit --display-deprecations

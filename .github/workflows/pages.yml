@@ -41,15 +41,13 @@ jobs:
 
       - name: Setup Database
         env:
-          DATABASE_URL: mysql://root:@127.0.0.1:3306/symfony
+          DATABASE_URL: mysql://root:@127.0.0.1:3306/symfony?serverVersion=8.0
         run: |
           bin/console doctrine:database:create --env=test --if-not-exists
-          bin/console doctrine:migrations:migrate -n --env=test
-          bin/console doctrine:fixtures:load -n --env=test
 
       - name: Run Tests with Coverage
         env:
-          DATABASE_URL: mysql://root:@127.0.0.1:3306/symfony
+          DATABASE_URL: mysql://root:@127.0.0.1:3306/symfony?serverVersion=8.0
           XDEBUG_MODE: coverage
         run: vendor/bin/phpunit --coverage-html coverage
 
