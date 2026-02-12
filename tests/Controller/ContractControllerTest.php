@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
 use App\Entity\User;
 use App\Entity\Contract;
 use App\Repository\ContractRepository;
@@ -29,7 +30,7 @@ final class ContractControllerTest extends WebTestCase
 
     public function testContractIndex(): void
     {
-        $this->client->request('GET', '/contracts');
+        $this->client->request(Request::METHOD_GET, '/contracts');
 
         self::assertResponseIsSuccessful();
         self::assertRouteSame('contracts_index');
@@ -37,7 +38,7 @@ final class ContractControllerTest extends WebTestCase
 
     public function testContractIndexWithFilters(): void
     {
-        $this->client->request('POST', '/contracts', [
+        $this->client->request(Request::METHOD_POST, '/contracts', [
             'store_id' => 1,
             'year' => 2024,
         ]);
@@ -51,7 +52,7 @@ final class ContractControllerTest extends WebTestCase
         $contract = $this->ensureContractExists();
         $contractId = $contract->getId();
 
-        $this->client->request('GET', '/contracts/edit/' . $contractId);
+        $this->client->request(Request::METHOD_GET, '/contracts/edit/' . $contractId);
 
         self::assertResponseIsSuccessful();
         self::assertRouteSame('contracts_edit');
@@ -62,7 +63,7 @@ final class ContractControllerTest extends WebTestCase
         $contract = $this->ensureContractExists();
         $contractId = $contract->getId();
 
-        $crawler = $this->client->request('GET', '/contracts/edit/' . $contractId);
+        $crawler = $this->client->request(Request::METHOD_GET, '/contracts/edit/' . $contractId);
         $form = $crawler->selectButton('Guardar')->form();
         $form['contract[inqNombreApellido]'] = 'Updated Tester';
         $form['contract[destination]'] = 'Updated Destination';
@@ -75,7 +76,7 @@ final class ContractControllerTest extends WebTestCase
 
     public function testContractTemplateStringsReturnsJson(): void
     {
-        $this->client->request('GET', '/contracts/template-strings');
+        $this->client->request(Request::METHOD_GET, '/contracts/template-strings');
 
         self::assertResponseIsSuccessful();
         $response = $this->client->getResponse();
@@ -92,7 +93,7 @@ final class ContractControllerTest extends WebTestCase
         $this->assertInstanceOf(User::class, $user);
         $client->loginUser($user);
 
-        $client->request('GET', '/contracts');
+        $client->request(Request::METHOD_GET, '/contracts');
 
         self::assertResponseStatusCodeSame(403);
     }
@@ -103,7 +104,7 @@ final class ContractControllerTest extends WebTestCase
         $contract = $this->ensureContractExists();
         $contractId = $contract->getId();
 
-        $this->client->request('GET', '/contracts/delete/' . $contractId);
+        $this->client->request(Request::METHOD_GET, '/contracts/delete/' . $contractId);
 
         self::assertResponseRedirects();
         $this->client->followRedirect();

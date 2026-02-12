@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -16,7 +17,7 @@ final class SecurityControllerTest extends WebTestCase
 
         // POST to the Google verify endpoint - it throws UnexpectedValueException
         // which results in a 500, but the route exists and is handled
-        $client->request('POST', '/connect/google/verify');
+        $client->request(Request::METHOD_POST, '/connect/google/verify');
 
         $statusCode = $client->getResponse()->getStatusCode();
         // Should not be 404 - route exists. May be 500 (exception) or redirect
@@ -26,7 +27,7 @@ final class SecurityControllerTest extends WebTestCase
     public function testLoginPageIsAccessible(): void
     {
         $client = static::createClient();
-        $client->request('GET', '/login');
+        $client->request(Request::METHOD_GET, '/login');
 
         self::assertResponseIsSuccessful();
         self::assertRouteSame('login');
@@ -41,7 +42,7 @@ final class SecurityControllerTest extends WebTestCase
         $this->assertInstanceOf(User::class, $user);
         $client->loginUser($user);
 
-        $client->request('GET', '/logout');
+        $client->request(Request::METHOD_GET, '/logout');
 
         self::assertResponseRedirects();
     }

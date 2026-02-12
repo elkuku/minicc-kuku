@@ -41,7 +41,7 @@ final class GoogleIdentityAuthenticatorTest extends TestCase
     public function testSupportsReturnsTrueForGoogleVerifyPath(): void
     {
         $authenticator = $this->createAuthenticator();
-        $request = Request::create('/connect/google/verify', 'POST');
+        $request = Request::create('/connect/google/verify', Request::METHOD_POST);
 
         $this->assertTrue($authenticator->supports($request));
     }
@@ -49,7 +49,7 @@ final class GoogleIdentityAuthenticatorTest extends TestCase
     public function testSupportsReturnsFalseForOtherPaths(): void
     {
         $authenticator = $this->createAuthenticator();
-        $request = Request::create('/login', 'POST');
+        $request = Request::create('/login', Request::METHOD_POST);
 
         $this->assertFalse($authenticator->supports($request));
     }
@@ -57,7 +57,7 @@ final class GoogleIdentityAuthenticatorTest extends TestCase
     public function testAuthenticateThrowsExceptionWhenNoCredentials(): void
     {
         $authenticator = $this->createAuthenticator();
-        $request = Request::create('/connect/google/verify', 'POST');
+        $request = Request::create('/connect/google/verify', Request::METHOD_POST);
 
         $this->expectException(AuthenticationException::class);
         $this->expectExceptionMessage('Missing credentials :(');
@@ -202,7 +202,7 @@ final class GoogleIdentityAuthenticatorTest extends TestCase
     public function testAuthenticateThrowsOnInvalidToken(): void
     {
         $authenticator = $this->createAuthenticator();
-        $request = Request::create('/connect/google/verify', 'POST', [
+        $request = Request::create('/connect/google/verify', Request::METHOD_POST, [
             'credential' => 'invalid-token',
         ]);
 

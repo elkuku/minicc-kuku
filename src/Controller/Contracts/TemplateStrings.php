@@ -14,8 +14,12 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route(path: '/contracts/template-strings', name: 'contracts_template_strings', methods: ['GET'])]
 class TemplateStrings extends BaseController
 {
-    public function __invoke(ContractTemplateHelper $templateHelper): JsonResponse
+    public function __construct(private readonly ContractTemplateHelper $templateHelper)
     {
-        return $this->json($templateHelper->getReplacementStrings());
+    }
+
+    public function __invoke(): JsonResponse
+    {
+        return $this->json($this->templateHelper->getReplacementStrings());
     }
 }

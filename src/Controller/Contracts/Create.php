@@ -19,20 +19,20 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_ADMIN')]
 class Create extends BaseController
 {
+    public function __construct(private readonly StoreRepository $storeRepo, private readonly UserRepository $userRepo, private readonly ContractRepository $contractRepo, private readonly TaxService $taxService)
+    {
+    }
+
     #[Route(path: '/contracts/create', name: 'contracts_create', methods: ['POST'])]
     public function new(
-        StoreRepository $storeRepo,
-        UserRepository $userRepo,
-        ContractRepository $contractRepo,
         Request $request,
         EntityManagerInterface $entityManager,
-        TaxService $taxService,
     ): Response
     {
-        $store = $storeRepo->find($request->request->getInt('store'));
-        $user = $userRepo->find($request->request->getInt('user'));
+        $store = $this->storeRepo->find($request->request->getInt('store'));
+        $user = $this->userRepo->find($request->request->getInt('user'));
         $contract = new Contract();
-        $template = $contractRepo->findTemplate();
+        $template = $this->contractRepo->findTemplate();
         if ($template !== null) {
             $contract->setText($template->getText());
         }
@@ -65,7 +65,7 @@ class Create extends BaseController
             [
                 'form' => $form,
                 'data' => $contract,
-                'ivaMultiplier' => $taxService->getTaxValue(),
+                'ivaMultiplier' => $this->taxService->getTaxValue(),
                 'title' => 'Nuevo Contrato',
             ]
         );

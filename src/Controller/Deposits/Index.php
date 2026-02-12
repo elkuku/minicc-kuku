@@ -19,15 +19,18 @@ class Index extends BaseController
 {
     use PaginatorTrait;
 
+    public function __construct(private readonly DepositRepository $depositRepository)
+    {
+    }
+
     public function __invoke(
-        DepositRepository $depositRepository,
         Request           $request,
         #[Autowire('%env(LIST_LIMIT)%')]
         int               $listLimit
     ): Response
     {
         $paginatorOptions = $this->getPaginatorOptions($request, $listLimit);
-        $deposits = $depositRepository->getPaginatedList($paginatorOptions);
+        $deposits = $this->depositRepository->getPaginatedList($paginatorOptions);
         $paginatorOptions->setMaxPages(
             (int)ceil(
                 \count($deposits) / $paginatorOptions->getLimit()

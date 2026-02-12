@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
 use App\Entity\User;
 use App\Entity\Store;
 use App\Repository\StoreRepository;
@@ -32,7 +33,7 @@ final class DownloadControllerTest extends WebTestCase
         $this->assertInstanceOf(User::class, $user);
         $client->loginUser($user);
 
-        $client->request('GET', '/download/users-list');
+        $client->request(Request::METHOD_GET, '/download/users-list');
 
         self::assertResponseStatusCodeSame(403);
     }
@@ -47,7 +48,7 @@ final class DownloadControllerTest extends WebTestCase
         $this->assertInstanceOf(User::class, $user);
         $client->loginUser($user);
 
-        $client->request('GET', '/download/users-ruc-list');
+        $client->request(Request::METHOD_GET, '/download/users-ruc-list');
 
         self::assertResponseStatusCodeSame(403);
     }
@@ -67,7 +68,7 @@ final class DownloadControllerTest extends WebTestCase
         $this->assertInstanceOf(Store::class, $store);
         $storeId = $store->getId();
 
-        $client->request('GET', '/download/store-transactions/' . $storeId . '/2024');
+        $client->request(Request::METHOD_GET, '/download/store-transactions/' . $storeId . '/2024');
 
         // May fail due to wkhtmltopdf not being available, but should not be 403
         $statusCode = $client->getResponse()->getStatusCode();
@@ -89,7 +90,7 @@ final class DownloadControllerTest extends WebTestCase
         $this->assertInstanceOf(Store::class, $store);
         $storeId = $store->getId();
 
-        $client->request('GET', '/download/store-transactions/' . $storeId . '/2024');
+        $client->request(Request::METHOD_GET, '/download/store-transactions/' . $storeId . '/2024');
 
         self::assertResponseStatusCodeSame(403);
     }
@@ -104,7 +105,7 @@ final class DownloadControllerTest extends WebTestCase
         $this->assertInstanceOf(User::class, $user);
         $client->loginUser($user);
 
-        $client->request('GET', '/download/planillas');
+        $client->request(Request::METHOD_GET, '/download/planillas');
 
         self::assertResponseStatusCodeSame(403);
     }
@@ -119,7 +120,7 @@ final class DownloadControllerTest extends WebTestCase
         $this->assertInstanceOf(User::class, $user);
         $client->loginUser($user);
 
-        $client->request('GET', '/download/transactions');
+        $client->request(Request::METHOD_GET, '/download/transactions');
 
         self::assertResponseStatusCodeSame(403);
     }

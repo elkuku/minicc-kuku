@@ -22,14 +22,12 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_ADMIN')]
 class TransactionsClients extends BaseController
 {
+    public function __construct(private readonly StoreRepository $storeRepository, private readonly TransactionRepository $transactionRepository, private readonly Pdf $pdf, private readonly PdfHelper $PDFHelper, private readonly MailerInterface $mailer, private readonly EmailHelper $emailHelper)
+    {
+    }
+
     public function __invoke(
-        StoreRepository       $storeRepository,
-        TransactionRepository $transactionRepository,
         Request               $request,
-        Pdf                   $pdf,
-        PdfHelper             $PDFHelper,
-        MailerInterface       $mailer,
-        EmailHelper           $emailHelper,
     ): Response
     {
         $recipients = $request->request->all('recipients');
@@ -38,14 +36,14 @@ class TransactionsClients extends BaseController
             return $this->render(
                 'mail/transactions-clients.html.twig',
                 [
-                    'stores' => $storeRepository->getActive(),
+                    'stores' => $this->storeRepository->getActive(),
                     'years' => range(date('Y'), date('Y', strtotime('-5 year'))),
                 ]
             );
         }
 
         $year = $request->request->getInt('year', (int)date('Y'));
-        $stores = $storeRepository->getActive();
+        $stores = $this->storeRepository->getActive();
         $failures = [];
         $successes = [];
 
@@ -56,15 +54,15 @@ class TransactionsClients extends BaseController
 
             $fileName = sprintf('movimientos-%s-%d.pdf', $store->getId(), $year);
 
-            $document = $pdf->getOutputFromHtml(
-                $PDFHelper->renderTransactionHtml(
-                    $transactionRepository,
+            $document = $this->pdf->getOutputFromHtml(
+                $this->PDFHelper->renderTransactionHtml(
+                    $this->transactionRepository,
                     $store,
                     $year
                 )
             );
 
-            $email = $emailHelper
+            $email = $this->emailHelper
                 ->createTemplatedEmail(
                     to: new Address((string)$store->getUser()?->getEmail(), (string)$store->getUser()?->getName()),
                     subject: sprintf('Movimientos del local %s ano %d', $store->getId(), $year)
@@ -79,7 +77,7 @@ class TransactionsClients extends BaseController
                 ->attach($document, $fileName);
 
             try {
-                $mailer->send($email);
+                $this->mailer->send($email);
                 $successes[] = $store->getId();
             } catch (TransportExceptionInterface $exception) {
                 $failures[] = $exception->getMessage();

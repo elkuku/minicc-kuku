@@ -21,23 +21,21 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route(path: '/mail/transactions', name: 'mail_transactions', methods: ['POST'])]
 class Transactions extends BaseController
 {
+    public function __construct(private readonly TransactionRepository $transactionRepository, private readonly StoreRepository $storeRepository, private readonly Pdf $pdf, private readonly PdfHelper $PDFHelper, private readonly MailerInterface $mailer, private readonly EmailHelper $emailHelper)
+    {
+    }
+
     public function __invoke(
         Request               $request,
-        TransactionRepository $transactionRepository,
-        StoreRepository       $storeRepository,
-        Pdf                   $pdf,
-        PdfHelper             $PDFHelper,
-        MailerInterface       $mailer,
-        EmailHelper           $emailHelper,
     ): RedirectResponse
     {
         $year = $request->request->getInt('year', (int)date('Y'));
         $htmlPages = [];
-        $stores = $storeRepository->findAll();
+        $stores = $this->storeRepository->findAll();
         foreach ($stores as $store) {
             if ($store->getUserId()) {
-                $htmlPages[] = $PDFHelper->renderTransactionHtml(
-                    $transactionRepository,
+                $htmlPages[] = $this->PDFHelper->renderTransactionHtml(
+                    $this->transactionRepository,
                     $store,
                     $year
                 );
@@ -47,20 +45,20 @@ class Transactions extends BaseController
         $fileName = sprintf('movimientos-%d.pdf', $year);
         try {
             $attachment = new DataPart(
-                $pdf->getOutputFromHtml($htmlPages),
+                $this->pdf->getOutputFromHtml($htmlPages),
                 $fileName,
                 'application/pdf'
             );
 
-            $email = $emailHelper->createEmail(
-                to: $emailHelper->getFrom(),
+            $email = $this->emailHelper->createEmail(
+                to: $this->emailHelper->getFrom(),
                 subject: 'Movimientos de los locales ano ' . $year
             )
                 ->text('Backup - Date: ' . date('Y-m-d'))
                 ->html('<h3>Backup</h3>Date: ' . date('Y-m-d'))
                 ->addPart($attachment);
 
-            $mailer->send($email);
+            $this->mailer->send($email);
             $this->addFlash('success', 'Mail has been sent successfully.');
         } catch (Exception|TransportExceptionInterface $exception) {
             $this->addFlash('danger', $exception->getMessage());

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
 use App\Entity\User;
 use App\Entity\Store;
 use App\Entity\PaymentMethod;
@@ -34,7 +35,7 @@ final class TransactionControllerTest extends WebTestCase
 
     public function testTransactionIndex(): void
     {
-        $this->client->request('GET', '/transactions');
+        $this->client->request(Request::METHOD_GET, '/transactions');
 
         self::assertResponseIsSuccessful();
         self::assertRouteSame('transactions_index');
@@ -45,7 +46,7 @@ final class TransactionControllerTest extends WebTestCase
         $transaction = $this->ensureTransactionExists();
         $transactionId = $transaction->getId();
 
-        $this->client->request('GET', '/transactions/edit/' . $transactionId);
+        $this->client->request(Request::METHOD_GET, '/transactions/edit/' . $transactionId);
 
         self::assertResponseIsSuccessful();
         self::assertRouteSame('transactions_edit');
@@ -61,7 +62,7 @@ final class TransactionControllerTest extends WebTestCase
         $this->assertInstanceOf(User::class, $user);
         $client->loginUser($user);
 
-        $client->request('GET', '/transactions');
+        $client->request(Request::METHOD_GET, '/transactions');
 
         self::assertResponseStatusCodeSame(403);
     }
@@ -72,7 +73,7 @@ final class TransactionControllerTest extends WebTestCase
         $transactionId = $transaction->getId();
 
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             '/transactions/edit/' . $transactionId . '?view=/transactions'
         );
         $this->client->submitForm('Guardar', [
@@ -88,7 +89,7 @@ final class TransactionControllerTest extends WebTestCase
         $transaction = $this->ensureTransactionExists();
         $transactionId = $transaction->getId();
 
-        $this->client->request('GET', '/transactions/edit/' . $transactionId);
+        $this->client->request(Request::METHOD_GET, '/transactions/edit/' . $transactionId);
         $this->client->submitForm('Guardar', [
             'transaction_type[amount]' => '88.88',
             'transaction_type[comment]' => 'Default redirect test',
@@ -102,7 +103,7 @@ final class TransactionControllerTest extends WebTestCase
         $transaction = $this->ensureTransactionExists();
         $transactionId = $transaction->getId();
 
-        $this->client->request('GET', '/transactions/delete/' . $transactionId . '?view=/transactions');
+        $this->client->request(Request::METHOD_GET, '/transactions/delete/' . $transactionId . '?view=/transactions');
 
         self::assertResponseRedirects('/transactions');
     }
@@ -112,7 +113,7 @@ final class TransactionControllerTest extends WebTestCase
         $transaction = $this->ensureTransactionExists();
         $transactionId = $transaction->getId();
 
-        $this->client->request('GET', '/transactions/delete/' . $transactionId);
+        $this->client->request(Request::METHOD_GET, '/transactions/delete/' . $transactionId);
 
         self::assertResponseRedirects();
         $this->client->followRedirect();

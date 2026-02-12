@@ -22,14 +22,12 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_ADMIN')]
 class PlanillasClients extends BaseController
 {
+    public function __construct(private readonly StoreRepository $storeRepository, private readonly Pdf $pdf, private readonly PdfHelper $PDFHelper, private readonly MailerInterface $mailer, private readonly EmailHelper $emailHelper, private readonly PayrollHelper $payrollHelper)
+    {
+    }
+
     public function __invoke(
-        StoreRepository $storeRepository,
-        Request         $request,
-        Pdf             $pdf,
-        PdfHelper       $PDFHelper,
-        MailerInterface $mailer,
-        EmailHelper     $emailHelper,
-        PayrollHelper   $payrollHelper
+        Request         $request
     ): Response
     {
         $recipients = $request->request->all('recipients');
@@ -38,7 +36,7 @@ class PlanillasClients extends BaseController
             return $this->render(
                 'mail/planillas-clients.html.twig',
                 [
-                    'stores' => $storeRepository->getActive(),
+                    'stores' => $this->storeRepository->getActive(),
                 ]
             );
         }
@@ -46,7 +44,7 @@ class PlanillasClients extends BaseController
         $year = (int)date('Y');
         $month = (int)date('m');
         $fileName = sprintf('planilla-%d-%s.pdf', $year, $month);
-        $stores = $storeRepository->getActive();
+        $stores = $this->storeRepository->getActive();
         $failures = [];
         $successes = [];
 
@@ -61,11 +59,11 @@ class PlanillasClients extends BaseController
                 continue;
             }
 
-            $document = $pdf->getOutputFromHtml(
-                $PDFHelper->renderPayrollsHtml(
+            $document = $this->pdf->getOutputFromHtml(
+                $this->PDFHelper->renderPayrollsHtml(
                     $year,
                     $month,
-                    $payrollHelper,
+                    $this->payrollHelper,
                     (int)$store->getId()
                 ),
                 [
@@ -73,7 +71,7 @@ class PlanillasClients extends BaseController
                 ]
             );
 
-            $email = $emailHelper->createTemplatedEmail(
+            $email = $this->emailHelper->createTemplatedEmail(
                 to: new Address($user->getEmail(), $user->getName() ?? ''),
                 subject: sprintf('Su planilla del local %s (%s - %d)', $store->getId(), $month, $year)
             )
@@ -83,12 +81,12 @@ class PlanillasClients extends BaseController
                     'store' => $store,
                     'factDate' => sprintf('%d-%s-1', $year, $month),
                     'fileName' => $fileName,
-                    'payroll' => $payrollHelper->getData($year, $month, (int) $store->getId()),
+                    'payroll' => $this->payrollHelper->getData($year, $month, (int) $store->getId()),
                 ])
                 ->attach($document, $fileName);
 
             try {
-                $mailer->send($email);
+                $this->mailer->send($email);
                 $successes[] = $store->getId();
             } catch (TransportExceptionInterface $exception) {
                 $failures[] = $exception->getMessage();

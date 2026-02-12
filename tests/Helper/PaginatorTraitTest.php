@@ -26,7 +26,7 @@ final class PaginatorTraitTest extends TestCase
 
     public function testCustomValues(): void
     {
-        $request = Request::create('/test', 'GET', [
+        $request = Request::create('/test', Request::METHOD_GET, [
             'paginatorOptions' => [
                 'page' => '3',
                 'limit' => '50',
@@ -44,7 +44,7 @@ final class PaginatorTraitTest extends TestCase
 
     public function testCriteriaPassthrough(): void
     {
-        $request = Request::create('/test', 'GET', [
+        $request = Request::create('/test', Request::METHOD_GET, [
             'paginatorOptions' => [
                 'criteria' => ['status' => 'active'],
             ],
@@ -56,7 +56,7 @@ final class PaginatorTraitTest extends TestCase
 
     public function testPartialOptions(): void
     {
-        $request = Request::create('/test', 'GET', [
+        $request = Request::create('/test', Request::METHOD_GET, [
             'paginatorOptions' => [
                 'page' => '2',
                 'order' => 'date',

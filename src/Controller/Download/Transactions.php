@@ -16,19 +16,19 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route(path: '/download/transactions', name: 'download_transactions', methods: ['GET'])]
 class Transactions extends BaseController
 {
-    public function __invoke(
-        TransactionRepository $transactionRepository,
-        StoreRepository       $storeRepository,
-        PdfHelper             $pdfHelper
-    ): PdfResponse
+    public function __construct(private readonly TransactionRepository $transactionRepository, private readonly StoreRepository $storeRepository, private readonly PdfHelper $pdfHelper)
+    {
+    }
+
+    public function __invoke(): PdfResponse
     {
         $htmlPages = [];
         $year = (int)date('Y');
-        $stores = $storeRepository->findAll();
+        $stores = $this->storeRepository->findAll();
         foreach ($stores as $store) {
             if ($store->getUserId()) {
-                $htmlPages[] = $pdfHelper->renderTransactionHtml(
-                    $transactionRepository,
+                $htmlPages[] = $this->pdfHelper->renderTransactionHtml(
+                    $this->transactionRepository,
                     $store,
                     $year
                 );
@@ -36,13 +36,12 @@ class Transactions extends BaseController
         }
 
         $filename = sprintf('movimientos-%d-%s.pdf', $year, date('Y-m-d'));
-
         return new PdfResponse(
-            $pdfHelper->getOutputFromHtml(
+            $this->pdfHelper->getOutputFromHtml(
                 $htmlPages,
                 [
-                    'header-html' => $pdfHelper->getHeaderHtml(),
-                    'footer-html' => $pdfHelper->getFooterHtml(),
+                    'header-html' => $this->pdfHelper->getHeaderHtml(),
+                    'footer-html' => $this->pdfHelper->getFooterHtml(),
                     'enable-local-file-access' => true,
                 ]
             ),

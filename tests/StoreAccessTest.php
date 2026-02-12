@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests;
 
+use Symfony\Component\HttpFoundation\Request;
 use UnexpectedValueException;
 use App\Repository\UserRepository;
 use PHPUnit\Framework\ExpectationFailedException;
@@ -15,7 +16,7 @@ final class StoreAccessTest extends WebTestCase
     {
         $client = static::createClient();
 
-        $client->request('GET', '/stores/1');
+        $client->request(Request::METHOD_GET, '/stores/1');
         self::assertResponseRedirects();
         $crawler = $client->followRedirect();
 
@@ -45,7 +46,7 @@ final class StoreAccessTest extends WebTestCase
 
         $client->loginUser($testUser);
 
-        $crawler = $client->request('GET', '/stores/1');
+        $crawler = $client->request(Request::METHOD_GET, '/stores/1');
         try {
             //  self::assertSelectorTextContains('small', 'Forbidden');
             $this->assertStringContainsString("The user doesn't have ROLE_ADMIN", (string)$client->getResponse()->getContent());
@@ -74,7 +75,7 @@ final class StoreAccessTest extends WebTestCase
 
         $client->loginUser($testUser);
 
-        $crawler = $client->request('GET', '/stores/1');
+        $crawler = $client->request(Request::METHOD_GET, '/stores/1');
         try {
             self::assertSelectorTextContains('h2', 'Transacciones');
         } catch (ExpectationFailedException $expectationFailedException) {

@@ -15,7 +15,9 @@ return RectorConfig::configure()
     ->withPaths([__DIR__ . '/src', __DIR__ . '/tests'])
     ->withSkip([__DIR__ . '/src/Service/PhpXlsxGenerator.php',])
     ->withPhpSets()
-    ->withAttributesSets()
+    ->withAttributesSets(
+        symfony: true
+    )
     ->withPreparedSets(
         deadCode: true,
         codingStyle: true,
@@ -23,6 +25,8 @@ return RectorConfig::configure()
         privatization: true,
         rectorPreset: true,
         phpunitCodeQuality: true,
+        symfonyCodeQuality: true,
+        symfonyConfigs: true,
 )
     ->withComposerBased(twig: true, doctrine: true, phpunit: true, symfony: true)
     ->withImportNames(removeUnusedImports: true)

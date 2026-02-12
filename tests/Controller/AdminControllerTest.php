@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
 use App\Entity\User;
 use App\Entity\Store;
 use App\Entity\PaymentMethod;
@@ -29,7 +30,7 @@ final class AdminControllerTest extends WebTestCase
 
     public function testTasksPage(): void
     {
-        $this->client->request('GET', '/admin/tasks');
+        $this->client->request(Request::METHOD_GET, '/admin/tasks');
 
         self::assertResponseIsSuccessful();
         self::assertRouteSame('admin_tasks');
@@ -45,14 +46,14 @@ final class AdminControllerTest extends WebTestCase
         $this->assertInstanceOf(User::class, $user);
         $client->loginUser($user);
 
-        $client->request('GET', '/admin/tasks');
+        $client->request(Request::METHOD_GET, '/admin/tasks');
 
         self::assertResponseStatusCodeSame(403);
     }
 
     public function testPaymentsPage(): void
     {
-        $this->client->request('GET', '/admin/payments');
+        $this->client->request(Request::METHOD_GET, '/admin/payments');
 
         self::assertResponseIsSuccessful();
         self::assertRouteSame('admin_payments');
@@ -60,7 +61,7 @@ final class AdminControllerTest extends WebTestCase
 
     public function testPaymentsWithYearFilter(): void
     {
-        $this->client->request('GET', '/admin/payments?year=2024');
+        $this->client->request(Request::METHOD_GET, '/admin/payments?year=2024');
 
         self::assertResponseIsSuccessful();
         self::assertRouteSame('admin_payments');
@@ -68,7 +69,7 @@ final class AdminControllerTest extends WebTestCase
 
     public function testBackupDbPage(): void
     {
-        $this->client->request('GET', '/admin/backup-db');
+        $this->client->request(Request::METHOD_GET, '/admin/backup-db');
 
         // The backup command will likely fail in test env, but the route should exist
         $statusCode = $this->client->getResponse()->getStatusCode();
@@ -77,7 +78,7 @@ final class AdminControllerTest extends WebTestCase
 
     public function testCollectRentGetForm(): void
     {
-        $this->client->request('GET', '/admin/collect-rent');
+        $this->client->request(Request::METHOD_GET, '/admin/collect-rent');
 
         self::assertResponseIsSuccessful();
         self::assertRouteSame('admin_collect_rent');
@@ -96,7 +97,7 @@ final class AdminControllerTest extends WebTestCase
         $user = $userRepository->findOneBy(['email' => 'user1@example.com']);
         $this->assertInstanceOf(User::class, $user);
 
-        $this->client->request('POST', '/admin/collect-rent', [
+        $this->client->request(Request::METHOD_POST, '/admin/collect-rent', [
             'values' => [$storeId => '100'],
             'users' => [$storeId => (string) $user->getId()],
             'date_cobro' => date('Y-m-d'),
@@ -120,7 +121,7 @@ final class AdminControllerTest extends WebTestCase
         $user = $userRepository->findOneBy(['email' => 'user1@example.com']);
         $this->assertInstanceOf(User::class, $user);
 
-        $this->client->request('POST', '/admin/collect-rent', [
+        $this->client->request(Request::METHOD_POST, '/admin/collect-rent', [
             'values' => [$storeId => ''],
             'users' => [$storeId => (string) $user->getId()],
             'date_cobro' => date('Y-m-d'),
@@ -132,7 +133,7 @@ final class AdminControllerTest extends WebTestCase
 
     public function testPayDayGetForm(): void
     {
-        $this->client->request('GET', '/admin/pay-day');
+        $this->client->request(Request::METHOD_GET, '/admin/pay-day');
 
         self::assertResponseIsSuccessful();
         self::assertRouteSame('admin_pay_day');
@@ -150,7 +151,7 @@ final class AdminControllerTest extends WebTestCase
         $this->assertInstanceOf(PaymentMethod::class, $paymentMethod);
         $paymentMethodId = $paymentMethod->getId();
 
-        $this->client->request('POST', '/admin/pay-day', [
+        $this->client->request(Request::METHOD_POST, '/admin/pay-day', [
             'payments' => [
                 'date' => ['2024-01-15'],
                 'store' => [(string) $store->getId()],

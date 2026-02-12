@@ -15,12 +15,11 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route(path: '/', name: 'welcome', methods: ['GET'])]
 class Welcome extends BaseController
 {
-    public function __invoke(
-        StoreRepository       $storeRepository,
-        TransactionRepository $transactionRepository,
-        TaxService            $taxService,
-        ChartBuilderService   $chartBuilderService
-    ): Response
+    public function __construct(private readonly StoreRepository $storeRepository, private readonly TransactionRepository $transactionRepository, private readonly TaxService $taxService, private readonly ChartBuilderService $chartBuilderService)
+    {
+    }
+
+    public function __invoke(): Response
     {
         $user = $this->getUser();
         $balances = null;
@@ -30,10 +29,10 @@ class Welcome extends BaseController
             'balances' => [],
         ];
         if ($user) {
-            foreach ($storeRepository->getActive() as $store) {
-                $balance = $transactionRepository->getSaldo($store);
+            foreach ($this->storeRepository->getActive() as $store) {
+                $balance = $this->transactionRepository->getSaldo($store);
                 $chartData['headers'][] = 'Local ' . $store->getId();
-                $valAlq = $taxService->addTax($store->getValAlq());
+                $valAlq = $this->taxService->addTax($store->getValAlq());
 
                 $chartData['monthsDebt'][] = $valAlq
                     ? round(-$balance / $valAlq, 1)
@@ -53,17 +52,17 @@ class Welcome extends BaseController
             [
                 'stores' => $user?->getStores(),
                 'balances' => $balances,
-                'chartBalances' => $chartBuilderService->getDashboardChart(
+                'chartBalances' => $this->chartBuilderService->getDashboardChart(
                     'Saldo en $',
                     $chartData['headers'],
                     $chartData['balances']
                 ),
-                'chartMonthsDebt' => $chartBuilderService->getDashboardChart(
+                'chartMonthsDebt' => $this->chartBuilderService->getDashboardChart(
                     'Meses de deuda',
                     $chartData['headers'],
                     $chartData['monthsDebt']
                 ),
-                'chargementRequired' => $transactionRepository->checkChargementRequired(),
+                'chargementRequired' => $this->transactionRepository->checkChargementRequired(),
             ]
         );
     }

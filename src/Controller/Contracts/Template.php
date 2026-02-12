@@ -17,14 +17,16 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route(path: '/contracts/template', name: 'contracts_template', methods: ['GET', 'POST',])]
 class Template extends BaseController
 {
+    public function __construct(private readonly ContractRepository $contractRepository, private readonly TaxService $taxService)
+    {
+    }
+
     public function __invoke(
-        ContractRepository     $contractRepository,
         Request                $request,
         EntityManagerInterface $entityManager,
-        TaxService             $taxService,
     ): Response
     {
-        $data = $contractRepository->findTemplate();
+        $data = $this->contractRepository->findTemplate();
         $form = $this->createForm(ContractType::class, $data);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -43,7 +45,7 @@ class Template extends BaseController
             [
                 'form' => $form,
                 'data' => $data,
-                'ivaMultiplier' => $taxService->getTaxValue(),
+                'ivaMultiplier' => $this->taxService->getTaxValue(),
                 'title' => 'Plantilla',
             ]
         );

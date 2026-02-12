@@ -29,7 +29,7 @@ final class LoginFormAuthenticatorTest extends TestCase
     public function testSupportsReturnsTrueForPostLogin(): void
     {
         $authenticator = new LoginFormAuthenticator($this->createRouter(), 'test');
-        $request = Request::create('/login', 'POST');
+        $request = Request::create('/login', Request::METHOD_POST);
 
         $this->assertTrue($authenticator->supports($request));
     }
@@ -37,7 +37,7 @@ final class LoginFormAuthenticatorTest extends TestCase
     public function testSupportsReturnsFalseForGetLogin(): void
     {
         $authenticator = new LoginFormAuthenticator($this->createRouter(), 'test');
-        $request = Request::create('/login', 'GET');
+        $request = Request::create('/login', Request::METHOD_GET);
 
         $this->assertFalse($authenticator->supports($request));
     }
@@ -45,7 +45,7 @@ final class LoginFormAuthenticatorTest extends TestCase
     public function testSupportsReturnsFalseForOtherPaths(): void
     {
         $authenticator = new LoginFormAuthenticator($this->createRouter(), 'test');
-        $request = Request::create('/other', 'POST');
+        $request = Request::create('/other', Request::METHOD_POST);
 
         $this->assertFalse($authenticator->supports($request));
     }
@@ -54,7 +54,7 @@ final class LoginFormAuthenticatorTest extends TestCase
     {
         $authenticator = new LoginFormAuthenticator($this->createRouter(), 'prod');
         $session = $this->createStub(SessionInterface::class);
-        $request = Request::create('/login', 'POST', [
+        $request = Request::create('/login', Request::METHOD_POST, [
             'identifier' => 'user@example.com',
             '_csrf_token' => 'token123',
         ]);
@@ -70,7 +70,7 @@ final class LoginFormAuthenticatorTest extends TestCase
     {
         $authenticator = new LoginFormAuthenticator($this->createRouter(), 'test');
         $session = $this->createStub(SessionInterface::class);
-        $request = Request::create('/login', 'POST', [
+        $request = Request::create('/login', Request::METHOD_POST, [
             'identifier' => '',
             '_csrf_token' => 'token123',
         ]);
@@ -86,7 +86,7 @@ final class LoginFormAuthenticatorTest extends TestCase
     {
         $authenticator = new LoginFormAuthenticator($this->createRouter(), 'test');
         $session = $this->createStub(SessionInterface::class);
-        $request = Request::create('/login', 'POST', [
+        $request = Request::create('/login', Request::METHOD_POST, [
             'identifier' => 'user@example.com',
             '_csrf_token' => 'token123',
         ]);
@@ -101,7 +101,7 @@ final class LoginFormAuthenticatorTest extends TestCase
     {
         $authenticator = new LoginFormAuthenticator($this->createRouter(), 'dev');
         $session = $this->createStub(SessionInterface::class);
-        $request = Request::create('/login', 'POST', [
+        $request = Request::create('/login', Request::METHOD_POST, [
             'identifier' => 'admin@example.com',
             '_csrf_token' => 'csrf',
         ]);

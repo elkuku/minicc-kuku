@@ -15,8 +15,11 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route(path: '/users', name: 'users_index', methods: ['GET', 'POST'])]
 class Index extends BaseController
 {
+    public function __construct(private readonly UserRepository $userRepo)
+    {
+    }
+
     public function __invoke(
-        UserRepository $userRepo,
         Request        $request
     ): Response
     {
@@ -31,7 +34,7 @@ class Index extends BaseController
         return $this->render(
             'users/index.html.twig',
             [
-                'users' => $userRepo->findBy($criteria),
+                'users' => $this->userRepo->findBy($criteria),
                 'userActive' => $userActive,
             ]
         );

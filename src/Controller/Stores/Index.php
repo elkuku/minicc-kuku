@@ -14,14 +14,16 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route(path: '/stores', name: 'stores_index', methods: ['GET'])]
 class Index extends BaseController
 {
-    public function __invoke(
-        StoreRepository $storeRepository
-    ): Response
+    public function __construct(private readonly StoreRepository $storeRepository)
+    {
+    }
+
+    public function __invoke(): Response
     {
         return $this->render(
             'stores/list.html.twig',
             [
-                'stores' => $storeRepository->findAll(),
+                'stores' => $this->storeRepository->findAll(),
             ]
         );
     }

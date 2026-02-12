@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -19,7 +20,7 @@ final class WelcomeTest extends WebTestCase
         $this->assertInstanceOf(User::class, $admin);
         $client->loginUser($admin);
 
-        $client->request('GET', '/');
+        $client->request(Request::METHOD_GET, '/');
 
         self::assertResponseIsSuccessful();
         self::assertRouteSame('welcome');
@@ -29,7 +30,7 @@ final class WelcomeTest extends WebTestCase
     {
         $client = static::createClient();
 
-        $client->request('GET', '/');
+        $client->request(Request::METHOD_GET, '/');
 
         self::assertResponseIsSuccessful();
         self::assertRouteSame('welcome');
@@ -44,7 +45,7 @@ final class WelcomeTest extends WebTestCase
         $this->assertInstanceOf(User::class, $user);
         $client->loginUser($user);
 
-        $client->request('GET', '/');
+        $client->request(Request::METHOD_GET, '/');
 
         self::assertResponseIsSuccessful();
         self::assertRouteSame('welcome');

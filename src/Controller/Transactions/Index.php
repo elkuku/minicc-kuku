@@ -21,16 +21,18 @@ class Index extends BaseController
 {
     use PaginatorTrait;
 
+    public function __construct(private readonly StoreRepository $storeRepo, private readonly TransactionRepository $transactionRepo)
+    {
+    }
+
     public function __invoke(
-        StoreRepository       $storeRepo,
-        TransactionRepository $transactionRepo,
         Request               $request,
         #[Autowire('%env(LIST_LIMIT)%')]
         int                   $listLimit,
     ): Response
     {
         $paginatorOptions = $this->getPaginatorOptions($request, $listLimit);
-        $transactions = $transactionRepo->getRawList($paginatorOptions);
+        $transactions = $this->transactionRepo->getRawList($paginatorOptions);
         $paginatorOptions->setMaxPages(
             (int)ceil(
                 $transactions->count() / $paginatorOptions->getLimit()
@@ -43,7 +45,7 @@ class Index extends BaseController
                 'transactions' => $transactions,
                 'paginatorOptions' => $paginatorOptions,
                 'transactionTypes' => TransactionType::cases(),
-                'stores' => $storeRepo->findAll(),
+                'stores' => $this->storeRepo->findAll(),
             ]
         );
     }

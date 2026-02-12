@@ -15,24 +15,24 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route(path: '/download/users-ruc-list', name: 'download_users_ruc_list', methods: ['GET'])]
 class UsersRucList extends BaseController
 {
-    public function __invoke(
-        UserRepository $userRepository,
-        PdfHelper      $pdfHelper,
-    ): PdfResponse
+    public function __construct(private readonly UserRepository $userRepository, private readonly PdfHelper $pdfHelper)
+    {
+    }
+
+    public function __invoke(): PdfResponse
     {
         $html = $this->renderView(
             '_pdf/ruclist.html.twig',
             [
-                'users' => $userRepository->getSortedByStore(),
+                'users' => $this->userRepository->getSortedByStore(),
             ]
         );
-
         return new PdfResponse(
-            $pdfHelper->getOutputFromHtml(
+            $this->pdfHelper->getOutputFromHtml(
                 $html,
                 [
-                    'header-html' => $pdfHelper->getHeaderHtml(),
-                    'footer-html' => $pdfHelper->getFooterHtml(),
+                    'header-html' => $this->pdfHelper->getHeaderHtml(),
+                    'footer-html' => $this->pdfHelper->getFooterHtml(),
                     'enable-local-file-access' => true,
                 ]
             ),

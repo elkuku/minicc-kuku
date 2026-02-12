@@ -22,10 +22,11 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_ADMIN')]
 class CollectRent extends BaseController
 {
+    public function __construct(private readonly StoreRepository $storeRepository, private readonly UserRepository $userRepository, private readonly PaymentMethodRepository $paymentMethodRepository)
+    {
+    }
+
     public function __invoke(
-        StoreRepository         $storeRepository,
-        UserRepository          $userRepository,
-        PaymentMethodRepository $paymentMethodRepository,
         Request                 $request,
         EntityManagerInterface  $entityManager,
     ): Response
@@ -35,13 +36,13 @@ class CollectRent extends BaseController
             return $this->render(
                 'admin/collect-rent.html.twig',
                 [
-                    'stores' => $storeRepository->getActive(),
+                    'stores' => $this->storeRepository->getActive(),
                 ]
             );
         }
 
         $users = $request->request->all('users');
-        $method = $paymentMethodRepository->find(1);
+        $method = $this->paymentMethodRepository->find(1);
 
         if (!$method) {
             throw new UnexpectedValueException('Invalid payment method.');
@@ -52,13 +53,13 @@ class CollectRent extends BaseController
                 continue;
             }
 
-            $user = $userRepository->find((int)$users[$storeId]);
+            $user = $this->userRepository->find((int)$users[$storeId]);
 
             if (!$user) {
                 throw new UnexpectedValueException('Store has no user.');
             }
 
-            $store = $storeRepository->find((int)$storeId);
+            $store = $this->storeRepository->find((int)$storeId);
 
             if (!$store) {
                 throw new UnexpectedValueException('Store does not exist.');

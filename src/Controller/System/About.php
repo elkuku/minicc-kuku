@@ -18,14 +18,17 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_ADMIN')]
 class About extends BaseController
 {
+    public function __construct(private readonly KernelInterface $kernel)
+    {
+    }
+
     public function __invoke(
-        #[Autowire('%kernel.project_dir%')] string $projectDir,
-        KernelInterface                            $kernel
+        #[Autowire('%kernel.project_dir%')] string $projectDir
     ): Response
     {
         $output = new BufferedOutput();
 
-        $application = new Application($kernel);
+        $application = new Application($this->kernel);
         $application->setAutoExit(false);
         $application->run(new ArrayInput(['command' => 'about']), $output);
 

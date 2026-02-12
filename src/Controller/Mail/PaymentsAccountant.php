@@ -20,11 +20,12 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_ADMIN')]
 class PaymentsAccountant extends BaseController
 {
+    public function __construct(private readonly TransactionRepository $repository, private readonly EmailHelper $emailHelper, private readonly MailerInterface $mailer)
+    {
+    }
+
     public function __invoke(
         Request                                       $request,
-        TransactionRepository                         $repository,
-        EmailHelper                                   $emailHelper,
-        MailerInterface                               $mailer,
         #[Autowire('%env(EMAIL_ACCOUNTANT)%')] string $emailAccountant,
     ): Response
     {
@@ -33,7 +34,7 @@ class PaymentsAccountant extends BaseController
         $ids = array_map(intval(...), array_filter($request->request->all('ids'), is_numeric(...)));
 
         if ($ids) {
-            $email = $emailHelper->createTemplatedEmail(
+            $email = $this->emailHelper->createTemplatedEmail(
                 to: Address::create($emailAccountant),
                 subject: sprintf('Pagos del MiniCC KuKu - %d / %d', $month, $year)
             )
@@ -41,12 +42,12 @@ class PaymentsAccountant extends BaseController
                 ->context([
                     'year' => $year,
                     'month' => $month,
-                    'payments' => $repository->findByIds($ids),
+                    'payments' => $this->repository->findByIds($ids),
                     'fileName' => '@todo$fileName',//@todo ->attach($document, $fileName)
                 ]);
 
             try {
-                $mailer->send($email);
+                $this->mailer->send($email);
                 $this->addFlash('success', 'Payments have been mailed.');
             } catch (TransportExceptionInterface $exception) {
                 $this->addFlash('danger', 'Payments have NOT been mailed! - ' . $exception->getMessage());
@@ -60,7 +61,7 @@ class PaymentsAccountant extends BaseController
             [
                 'month' => $month,
                 'year' => $year,
-                'payments' => $repository->findByDate($year, $month),
+                'payments' => $this->repository->findByDate($year, $month),
             ]
         );
     }

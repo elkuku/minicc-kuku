@@ -16,23 +16,21 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route(path: '/download/clients-to-excel', name: 'download_clients_to_excel', methods: ['GET'])]
 class ClientsToExcel extends BaseController
 {
-    public function __invoke(
-        UserRepository $userRepository,
-        TextFormatter  $textFormatter,
-    ): RedirectResponse
+    public function __construct(private readonly UserRepository $userRepository, private readonly TextFormatter $textFormatter)
     {
-        $users = $userRepository->getSortedByStore();
+    }
 
+    public function __invoke(): RedirectResponse
+    {
+        $users = $this->userRepository->getSortedByStore();
         $rows = [];
         $rows[] = ['Nombre', 'Email', 'RUC', 'Direccion', 'Telefono'];
-
         foreach ($users as $user) {
-            $rows[] = [$user->getName(), $user->getEmail(), $textFormatter->formatRUC($user), $user->getDireccion(), $user->getTelefono()];
+            $rows[] = [$user->getName(), $user->getEmail(), $this->textFormatter->formatRUC($user), $user->getDireccion(), $user->getTelefono()];
         }
 
         $xlsx = PhpXlsxGenerator::fromArray($rows);
         $xlsx->downloadAs('clientes-' . gmdate('Y-m-d') . '.xlsx');
-
         return $this->redirectToRoute('admin_tasks');
     }
 }

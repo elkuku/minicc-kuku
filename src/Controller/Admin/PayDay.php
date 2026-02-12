@@ -25,23 +25,24 @@ use Symfony\Component\Serializer\Serializer;
 #[IsGranted('ROLE_ADMIN')]
 class PayDay extends BaseController
 {
+    public function __construct(private readonly StoreRepository $storeRepository, private readonly PaymentMethodRepository $paymentMethodRepository, private readonly TransactionRepository $transactionRepository)
+    {
+    }
+
     public function __invoke(
-        StoreRepository         $storeRepository,
-        PaymentMethodRepository $paymentMethodRepository,
-        TransactionRepository   $transactionRepository,
         Request                 $request,
         EntityManagerInterface  $entityManager,
     ): Response
     {
         $payments = $request->request->all('payments');
         if (!$payments) {
-            $paymentMethods = $paymentMethodRepository->findAll();
+            $paymentMethods = $this->paymentMethodRepository->findAll();
             $serializer = new Serializer([new GetSetMethodNormalizer()], ['json' => new JsonEncoder()]);
             return $this->render(
                 'admin/payday.html.twig',
                 [
-                    'stores' => $storeRepository->getActive(),
-                    'lastRecipeNo' => $transactionRepository->getLastRecipeNo() + 1,
+                    'stores' => $this->storeRepository->getActive(),
+                    'lastRecipeNo' => $this->transactionRepository->getLastRecipeNo() + 1,
                     'paymentMethods' => $paymentMethods,
                     'paymentMethodsString' => $serializer->serialize($paymentMethods, 'json'),
                 ]
@@ -53,13 +54,13 @@ class PayDay extends BaseController
                 continue;
             }
 
-            $store = $storeRepository->find((int)$payments['store'][$i]);
+            $store = $this->storeRepository->find((int)$payments['store'][$i]);
 
             if (!$store) {
                 continue;
             }
 
-            $method = $paymentMethodRepository->find((int)$payments['method'][$i]);
+            $method = $this->paymentMethodRepository->find((int)$payments['method'][$i]);
 
             if (!$method) {
                 throw new UnexpectedValueException('Invalid payment method.');

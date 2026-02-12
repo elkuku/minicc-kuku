@@ -15,8 +15,11 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route(path: '/payment-methods', name: 'payment_methods_index', methods: ['GET'])]
 class Index extends BaseController
 {
+    public function __construct(private readonly PaymentMethodRepository $repository)
+    {
+    }
+
     public function __invoke(
-        PaymentMethodRepository $repository,
         Request                 $request
     ): Response
     {
@@ -27,7 +30,7 @@ class Index extends BaseController
         return $this->render(
             'payment-methods/' . $template,
             [
-                'paymentMethods' => $repository->findAll(),
+                'paymentMethods' => $this->repository->findAll(),
             ]
         );
     }

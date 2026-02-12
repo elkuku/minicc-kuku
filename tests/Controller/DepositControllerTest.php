@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
 use App\Entity\User;
 use App\Entity\PaymentMethod;
 use DateTime;
@@ -31,7 +32,7 @@ final class DepositControllerTest extends WebTestCase
 
     public function testDepositIndex(): void
     {
-        $this->client->request('GET', '/deposits');
+        $this->client->request(Request::METHOD_GET, '/deposits');
 
         // Fixture deposit may lack entity relation causing template error
         $statusCode = $this->client->getResponse()->getStatusCode();
@@ -40,7 +41,7 @@ final class DepositControllerTest extends WebTestCase
 
     public function testDepositSearchReturnsResults(): void
     {
-        $this->client->request('GET', '/deposits/search?q=123');
+        $this->client->request(Request::METHOD_GET, '/deposits/search?q=123');
 
         self::assertResponseIsSuccessful();
         self::assertRouteSame('deposits_search');
@@ -51,7 +52,7 @@ final class DepositControllerTest extends WebTestCase
         $deposit = $this->ensureDepositExists();
         $depositId = $deposit->getId();
 
-        $this->client->request('GET', '/deposits/lookup?id=' . $depositId);
+        $this->client->request(Request::METHOD_GET, '/deposits/lookup?id=' . $depositId);
 
         // Fixture deposit may lack entity relation causing jsonSerialize error
         $statusCode = $this->client->getResponse()->getStatusCode();
@@ -60,7 +61,7 @@ final class DepositControllerTest extends WebTestCase
 
     public function testDepositLookupReturnsNullForMissing(): void
     {
-        $this->client->request('GET', '/deposits/lookup?id=999999');
+        $this->client->request(Request::METHOD_GET, '/deposits/lookup?id=999999');
 
         self::assertResponseIsSuccessful();
         $response = $this->client->getResponse();
@@ -78,7 +79,7 @@ final class DepositControllerTest extends WebTestCase
         $this->assertInstanceOf(User::class, $user);
         $client->loginUser($user);
 
-        $client->request('GET', '/deposits');
+        $client->request(Request::METHOD_GET, '/deposits');
 
         self::assertResponseStatusCodeSame(403);
     }
@@ -89,7 +90,7 @@ final class DepositControllerTest extends WebTestCase
         $deposit = $this->ensureDepositExists();
         $depositId = $deposit->getId();
 
-        $this->client->request('GET', '/deposits/delete/' . $depositId);
+        $this->client->request(Request::METHOD_GET, '/deposits/delete/' . $depositId);
 
         self::assertResponseRedirects();
         $this->client->followRedirect();

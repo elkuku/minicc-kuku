@@ -11,16 +11,18 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
+    public function __construct(private readonly AuthenticationUtils $authenticationUtils)
+    {
+    }
+
     #[Route(path: '/login', name: 'login', methods: ['GET', 'POST'])]
-    public function login(
-        AuthenticationUtils $authenticationUtils
-    ): Response
+    public function login(): Response
     {
         return $this->render(
             'auth/login.html.twig',
             [
-                'last_username' => $authenticationUtils->getLastUsername(),
-                'error' => $authenticationUtils->getLastAuthenticationError(),
+                'last_username' => $this->authenticationUtils->getLastUsername(),
+                'error' => $this->authenticationUtils->getLastAuthenticationError(),
             ]
         );
     }

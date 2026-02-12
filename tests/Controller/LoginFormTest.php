@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -12,7 +13,7 @@ final class LoginFormTest extends WebTestCase
     public function testLoginPageIsAccessible(): void
     {
         $client = static::createClient();
-        $client->request('GET', '/login');
+        $client->request(Request::METHOD_GET, '/login');
 
         self::assertResponseIsSuccessful();
         self::assertSelectorTextContains('h2', 'Login');
@@ -25,7 +26,7 @@ final class LoginFormTest extends WebTestCase
     public function testSuccessfulLoginRedirectsToWelcome(): void
     {
         $client = static::createClient();
-        $crawler = $client->request('GET', '/login');
+        $crawler = $client->request(Request::METHOD_GET, '/login');
 
         $form = $crawler->selectButton('Login')->form([
             'identifier' => 'admin@example.com',
@@ -43,7 +44,7 @@ final class LoginFormTest extends WebTestCase
     public function testSuccessfulLoginSetsRememberMeCookie(): void
     {
         $client = static::createClient();
-        $crawler = $client->request('GET', '/login');
+        $crawler = $client->request(Request::METHOD_GET, '/login');
 
         $form = $crawler->selectButton('Login')->form([
             'identifier' => 'user1@example.com',
@@ -59,7 +60,7 @@ final class LoginFormTest extends WebTestCase
     public function testLoginWithInvalidUserShowsError(): void
     {
         $client = static::createClient();
-        $crawler = $client->request('GET', '/login');
+        $crawler = $client->request(Request::METHOD_GET, '/login');
 
         $form = $crawler->selectButton('Login')->form([
             'identifier' => 'nonexistent@example.com',
@@ -76,7 +77,7 @@ final class LoginFormTest extends WebTestCase
     public function testLoginWithEmptyIdentifierShowsError(): void
     {
         $client = static::createClient();
-        $crawler = $client->request('GET', '/login');
+        $crawler = $client->request(Request::METHOD_GET, '/login');
 
         $form = $crawler->selectButton('Login')->form([
             'identifier' => '',
@@ -93,10 +94,10 @@ final class LoginFormTest extends WebTestCase
     public function testLoginWithInvalidCsrfTokenFails(): void
     {
         $client = static::createClient();
-        $client->request('GET', '/login');
+        $client->request(Request::METHOD_GET, '/login');
 
         // Submit form with invalid CSRF token
-        $client->request('POST', '/login', [
+        $client->request(Request::METHOD_POST, '/login', [
             'identifier' => 'admin@example.com',
             '_csrf_token' => 'invalid_token',
         ]);
@@ -110,7 +111,7 @@ final class LoginFormTest extends WebTestCase
     public function testLoggedInUserCanAccessProtectedRoute(): void
     {
         $client = static::createClient();
-        $crawler = $client->request('GET', '/login');
+        $crawler = $client->request(Request::METHOD_GET, '/login');
 
         $form = $crawler->selectButton('Login')->form([
             'identifier' => 'admin@example.com',
@@ -120,7 +121,7 @@ final class LoginFormTest extends WebTestCase
         $client->followRedirect();
 
         // Now try to access an admin-protected route
-        $client->request('GET', '/admin/payments');
+        $client->request(Request::METHOD_GET, '/admin/payments');
 
         self::assertResponseIsSuccessful();
     }
@@ -128,7 +129,7 @@ final class LoginFormTest extends WebTestCase
     public function testNonAdminCannotAccessAdminRoute(): void
     {
         $client = static::createClient();
-        $crawler = $client->request('GET', '/login');
+        $crawler = $client->request(Request::METHOD_GET, '/login');
 
         $form = $crawler->selectButton('Login')->form([
             'identifier' => 'user1@example.com',
@@ -138,7 +139,7 @@ final class LoginFormTest extends WebTestCase
         $client->followRedirect();
 
         // Try to access an admin-protected route
-        $client->request('GET', '/admin/payments');
+        $client->request(Request::METHOD_GET, '/admin/payments');
 
         self::assertResponseStatusCodeSame(403);
     }
@@ -146,7 +147,7 @@ final class LoginFormTest extends WebTestCase
     public function testLogoutWorks(): void
     {
         $client = static::createClient();
-        $crawler = $client->request('GET', '/login');
+        $crawler = $client->request(Request::METHOD_GET, '/login');
 
         $form = $crawler->selectButton('Login')->form([
             'identifier' => 'admin@example.com',
@@ -159,13 +160,13 @@ final class LoginFormTest extends WebTestCase
         self::assertResponseIsSuccessful();
 
         // Logout
-        $client->request('GET', '/logout');
+        $client->request(Request::METHOD_GET, '/logout');
 
         self::assertResponseRedirects('/');
         $client->followRedirect();
 
         // Try to access a protected route - should redirect to login
-        $client->request('GET', '/admin/payments');
+        $client->request(Request::METHOD_GET, '/admin/payments');
 
         self::assertResponseRedirects();
         $this->assertStringContainsString('/login', (string) $client->getResponse()->headers->get('Location'));
@@ -176,7 +177,7 @@ final class LoginFormTest extends WebTestCase
         $client = static::createClient();
 
         // Try to access a protected page first
-        $client->request('GET', '/admin/payments');
+        $client->request(Request::METHOD_GET, '/admin/payments');
 
         // Should redirect to login
         self::assertResponseRedirects();

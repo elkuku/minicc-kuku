@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
 use App\Entity\User;
 use App\Entity\PaymentMethod;
 use App\Repository\PaymentMethodRepository;
@@ -28,7 +29,7 @@ final class PaymentMethodControllerTest extends WebTestCase
 
     public function testPaymentMethodIndex(): void
     {
-        $this->client->request('GET', '/payment-methods');
+        $this->client->request(Request::METHOD_GET, '/payment-methods');
 
         self::assertResponseIsSuccessful();
         self::assertRouteSame('payment_methods_index');
@@ -36,7 +37,7 @@ final class PaymentMethodControllerTest extends WebTestCase
 
     public function testPaymentMethodIndexAjax(): void
     {
-        $this->client->request('GET', '/payment-methods?ajax=1');
+        $this->client->request(Request::METHOD_GET, '/payment-methods?ajax=1');
 
         self::assertResponseIsSuccessful();
         self::assertRouteSame('payment_methods_index');
@@ -44,7 +45,7 @@ final class PaymentMethodControllerTest extends WebTestCase
 
     public function testPaymentMethodCreateGetForm(): void
     {
-        $this->client->request('GET', '/payment-methods/create');
+        $this->client->request(Request::METHOD_GET, '/payment-methods/create');
 
         self::assertResponseIsSuccessful();
         self::assertRouteSame('payment_methods_create');
@@ -58,7 +59,7 @@ final class PaymentMethodControllerTest extends WebTestCase
         $this->assertInstanceOf(PaymentMethod::class, $method);
         $methodId = $method->getId();
 
-        $this->client->request('GET', '/payment-methods/edit/' . $methodId);
+        $this->client->request(Request::METHOD_GET, '/payment-methods/edit/' . $methodId);
 
         self::assertResponseIsSuccessful();
         self::assertRouteSame('payment_methods_edit');
@@ -66,7 +67,7 @@ final class PaymentMethodControllerTest extends WebTestCase
 
     public function testPaymentMethodCreatePostValidForm(): void
     {
-        $this->client->request('GET', '/payment-methods/create');
+        $this->client->request(Request::METHOD_GET, '/payment-methods/create');
         $this->client->submitForm('Guardar', [
             'payment_method[name]' => 'test-new-method',
         ]);
@@ -84,7 +85,7 @@ final class PaymentMethodControllerTest extends WebTestCase
         $this->assertInstanceOf(PaymentMethod::class, $method);
         $methodId = $method->getId();
 
-        $this->client->request('GET', '/payment-methods/edit/' . $methodId);
+        $this->client->request(Request::METHOD_GET, '/payment-methods/edit/' . $methodId);
         $this->client->submitForm('Guardar', [
             'payment_method[name]' => 'gye-1005345-updated',
         ]);
@@ -104,7 +105,7 @@ final class PaymentMethodControllerTest extends WebTestCase
         $this->assertInstanceOf(User::class, $user);
         $client->loginUser($user);
 
-        $client->request('GET', '/payment-methods');
+        $client->request(Request::METHOD_GET, '/payment-methods');
 
         self::assertResponseStatusCodeSame(403);
     }
@@ -115,7 +116,7 @@ final class PaymentMethodControllerTest extends WebTestCase
         $method = $this->ensurePaymentMethodForDelete();
         $methodId = $method->getId();
 
-        $this->client->request('GET', '/payment-methods/delete/' . $methodId);
+        $this->client->request(Request::METHOD_GET, '/payment-methods/delete/' . $methodId);
 
         self::assertResponseRedirects();
         $this->client->followRedirect();

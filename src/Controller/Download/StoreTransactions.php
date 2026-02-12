@@ -16,16 +16,18 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route(path: '/download/store-transactions/{id}/{year}', name: 'download_store_transactions', methods: ['GET'])]
 class StoreTransactions extends BaseController
 {
+    public function __construct(private readonly TransactionRepository $transactionRepository, private readonly PdfHelper $pdfHelper)
+    {
+    }
+
     public function __invoke(
         Store                 $store,
-        int                   $year,
-        TransactionRepository $transactionRepository,
-        PdfHelper             $pdfHelper
+        int                   $year
     ): PdfResponse
     {
         $this->denyAccessUnlessGranted('export', $store);
-        $html = $pdfHelper->renderTransactionHtml(
-            $transactionRepository,
+        $html = $this->pdfHelper->renderTransactionHtml(
+            $this->transactionRepository,
             $store,
             $year
         );
@@ -37,11 +39,11 @@ class StoreTransactions extends BaseController
         );
 
         return new PdfResponse(
-            $pdfHelper->getOutputFromHtml(
+            $this->pdfHelper->getOutputFromHtml(
                 $html,
                 [
-                    'header-html' => $pdfHelper->getHeaderHtml(),
-                    'footer-html' => $pdfHelper->getFooterHtml(),
+                    'header-html' => $this->pdfHelper->getHeaderHtml(),
+                    'footer-html' => $this->pdfHelper->getFooterHtml(),
                     'enable-local-file-access' => true,
                 ]
             ),

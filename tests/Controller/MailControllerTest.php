@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -25,7 +26,7 @@ final class MailControllerTest extends WebTestCase
 
     public function testTransactionsClientsGetForm(): void
     {
-        $this->client->request('GET', '/mail/transactions-clients');
+        $this->client->request(Request::METHOD_GET, '/mail/transactions-clients');
 
         self::assertResponseIsSuccessful();
         self::assertRouteSame('mail_transactions_clients');
@@ -33,7 +34,7 @@ final class MailControllerTest extends WebTestCase
 
     public function testPlanillasClientsGetForm(): void
     {
-        $this->client->request('GET', '/mail/planillas-clients');
+        $this->client->request(Request::METHOD_GET, '/mail/planillas-clients');
 
         self::assertResponseIsSuccessful();
         self::assertRouteSame('mail_planillas_clients');
@@ -41,7 +42,7 @@ final class MailControllerTest extends WebTestCase
 
     public function testPaymentsAccountantGetForm(): void
     {
-        $this->client->request('GET', '/mail/payments-accountant');
+        $this->client->request(Request::METHOD_GET, '/mail/payments-accountant');
 
         self::assertResponseIsSuccessful();
         self::assertRouteSame('mail_payments_accountant');
@@ -49,7 +50,7 @@ final class MailControllerTest extends WebTestCase
 
     public function testPaymentsAccountantPostSendsEmail(): void
     {
-        $this->client->request('POST', '/mail/payments-accountant', [
+        $this->client->request(Request::METHOD_POST, '/mail/payments-accountant', [
             'year' => 2024,
             'month' => 1,
             'ids' => ['1'],
@@ -69,7 +70,7 @@ final class MailControllerTest extends WebTestCase
         $this->assertInstanceOf(User::class, $user);
         $client->loginUser($user);
 
-        $client->request('GET', '/mail/transactions-clients');
+        $client->request(Request::METHOD_GET, '/mail/transactions-clients');
 
         self::assertResponseStatusCodeSame(403);
     }
@@ -84,7 +85,7 @@ final class MailControllerTest extends WebTestCase
         $this->assertInstanceOf(User::class, $user);
         $client->loginUser($user);
 
-        $client->request('GET', '/mail/planillas-clients');
+        $client->request(Request::METHOD_GET, '/mail/planillas-clients');
 
         self::assertResponseStatusCodeSame(403);
     }
@@ -99,7 +100,7 @@ final class MailControllerTest extends WebTestCase
         $this->assertInstanceOf(User::class, $user);
         $client->loginUser($user);
 
-        $client->request('GET', '/mail/payments-accountant');
+        $client->request(Request::METHOD_GET, '/mail/payments-accountant');
 
         self::assertResponseStatusCodeSame(403);
     }

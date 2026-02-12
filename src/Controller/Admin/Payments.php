@@ -15,9 +15,12 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_CASHIER')]
 class Payments extends BaseController
 {
+    public function __construct(private readonly TransactionRepository $repository)
+    {
+    }
+
     public function __invoke(
-        Request               $request,
-        TransactionRepository $repository
+        Request               $request
     ): Response
     {
         $year = $request->query->getInt('year', (int)date('Y'));
@@ -28,7 +31,7 @@ class Payments extends BaseController
             [
                 'year' => $year,
                 'month' => $month,
-                'transactions' => $repository->getPagosPorAno($year),
+                'transactions' => $this->repository->getPagosPorAno($year),
             ]
         );
     }

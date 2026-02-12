@@ -16,10 +16,11 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route(path: '/contracts', name: 'contracts_index', methods: ['GET', 'POST'])]
 class Index extends BaseController
 {
+    public function __construct(private readonly StoreRepository $storeRepository, private readonly UserRepository $userRepository, private readonly ContractRepository $contractRepository)
+    {
+    }
+
     public function __invoke(
-        StoreRepository    $storeRepository,
-        UserRepository     $userRepository,
-        ContractRepository $contractRepository,
         Request            $request
     ): Response
     {
@@ -29,9 +30,9 @@ class Index extends BaseController
         return $this->render(
             'contracts/index.html.twig',
             [
-                'stores' => $storeRepository->findAll(),
-                'users' => $userRepository->findActiveUsers(),
-                'contracts' => $contractRepository->findContracts($storeId, $year),
+                'stores' => $this->storeRepository->findAll(),
+                'users' => $this->userRepository->findActiveUsers(),
+                'contracts' => $this->contractRepository->findContracts($storeId, $year),
                 'year' => $year,
                 'storeId' => $storeId,
             ]

@@ -23,14 +23,16 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route(path: '/deposits/upload', name: 'deposits_upload', methods: ['GET', 'POST'])]
 class Upload extends BaseController
 {
+    public function __construct(private readonly PaymentMethodRepository $paymentMethodRepository, private readonly DepositRepository $depositRepository)
+    {
+    }
+
     public function __invoke(
-        PaymentMethodRepository $paymentMethodRepository,
-        DepositRepository       $depositRepository,
         Request                 $request,
         EntityManagerInterface  $entityManager,
     ): RedirectResponse
     {
-        $entity = $paymentMethodRepository->find(2);
+        $entity = $this->paymentMethodRepository->find(2);
         if (!$entity) {
             throw new UnexpectedValueException('Invalid entity');
         }
@@ -61,7 +63,7 @@ class Upload extends BaseController
                 ->setDocument($line->{'numero de documento'})
                 ->setAmount($line->credito);
 
-            if (false === $depositRepository->has($deposit)) {
+            if (false === $this->depositRepository->has($deposit)) {
                 $entityManager->persist($deposit);
                 ++$insertCount;
             }

@@ -18,38 +18,36 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_ADMIN')]
 class Planillas extends BaseController
 {
+    public function __construct(private readonly Pdf $pdf, private readonly PdfHelper $PDFHelper, private readonly MailerInterface $mailer, private readonly EmailHelper $emailHelper, private readonly PayrollHelper $payrollHelper)
+    {
+    }
+
     #[Route(path: '/mail/planillas', name: 'mail_planillas', methods: ['GET'])]
-    public function planillas(
-        Pdf             $pdf,
-        PdfHelper       $PDFHelper,
-        MailerInterface $mailer,
-        EmailHelper     $emailHelper,
-        PayrollHelper   $payrollHelper,
-    ): Response
+    public function planillas(): Response
     {
         $year = (int)date('Y');
         $month = (int)date('m');
         $fileName = sprintf('payrolls-%d-%s.pdf', $year, $month);
         $html = 'Attachment: ' . $fileName;
-        $document = $pdf->getOutputFromHtml(
-            $PDFHelper->renderPayrollsHtml(
+        $document = $this->pdf->getOutputFromHtml(
+            $this->PDFHelper->renderPayrollsHtml(
                 $year,
                 $month,
-                $payrollHelper
+                $this->payrollHelper
             ),
             [
                 'enable-local-file-access' => true,
             ]
         );
-        $email = $emailHelper->createEmail(
-            to: $emailHelper->getFrom(),
+        $email = $this->emailHelper->createEmail(
+            to: $this->emailHelper->getFrom(),
             subject: sprintf('Planillas %d-%s', $year, $month)
         )
             ->subject(sprintf('Planillas %d-%s', $year, $month))
             ->html($html)
             ->attach($document, $fileName);
         try {
-            $mailer->send($email);
+            $this->mailer->send($email);
             $this->addFlash('success', 'Mail has been sent.');
         } catch (TransportExceptionInterface $transportException) {
             $this->addFlash('danger', 'ERROR sending mail: ' . $transportException->getMessage());

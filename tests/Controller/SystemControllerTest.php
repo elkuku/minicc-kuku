@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -25,7 +26,7 @@ final class SystemControllerTest extends WebTestCase
 
     public function testAboutPage(): void
     {
-        $this->client->request('GET', '/system/about');
+        $this->client->request(Request::METHOD_GET, '/system/about');
 
         self::assertResponseIsSuccessful();
         self::assertRouteSame('system_about');
@@ -41,14 +42,14 @@ final class SystemControllerTest extends WebTestCase
         $this->assertInstanceOf(User::class, $user);
         $client->loginUser($user);
 
-        $client->request('GET', '/system/about');
+        $client->request(Request::METHOD_GET, '/system/about');
 
         self::assertResponseStatusCodeSame(403);
     }
 
     public function testLogviewPage(): void
     {
-        $this->client->request('GET', '/system/logview');
+        $this->client->request(Request::METHOD_GET, '/system/logview');
 
         self::assertResponseIsSuccessful();
         self::assertRouteSame('system_logview');
@@ -80,7 +81,7 @@ LOG;
         file_put_contents($logFile, $logContent);
 
         try {
-            $this->client->request('GET', '/system/logview');
+            $this->client->request(Request::METHOD_GET, '/system/logview');
 
             self::assertResponseIsSuccessful();
             self::assertRouteSame('system_logview');
@@ -99,7 +100,7 @@ LOG;
         $this->assertInstanceOf(User::class, $user);
         $client->loginUser($user);
 
-        $client->request('GET', '/system/logview');
+        $client->request(Request::METHOD_GET, '/system/logview');
 
         self::assertResponseStatusCodeSame(403);
     }

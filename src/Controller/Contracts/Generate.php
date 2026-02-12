@@ -15,15 +15,17 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route(path: '/contracts/generate/{id}', name: 'contracts_generate', requirements: ['id' => '\d+',], methods: ['GET'])]
 class Generate extends BaseController
 {
+    public function __construct(private readonly Pdf $pdf, private readonly ContractTemplateHelper $templateHelper)
+    {
+    }
+
     public function __invoke(
         Contract               $contract,
-        Pdf                    $pdf,
-        ContractTemplateHelper $templateHelper,
     ): PdfResponse
     {
         return new PdfResponse(
-            $pdf->getOutputFromHtml(
-                $templateHelper->replaceContent($contract),
+            $this->pdf->getOutputFromHtml(
+                $this->templateHelper->replaceContent($contract),
                 ['encoding' => 'utf-8']
             ),
             sprintf(
