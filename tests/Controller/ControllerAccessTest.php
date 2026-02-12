@@ -45,18 +45,18 @@ final class ControllerAccessTest extends ControllerBaseTest
             ],
             'contracts_edit' => [
                 'statusCodes' => [
-                    'GET' => 404,
-                    'POST' => 404,
+                    'GET' => 302,
+                    'POST' => 302,
                 ],
             ],
             'contracts_delete' => [
                 'statusCodes' => [
-                    'GET' => 404,
+                    'GET' => 302,
                 ],
             ],
             'contracts_generate' => [
                 'statusCodes' => [
-                    'GET' => 404,
+                    'GET' => 302,
                 ],
             ],
         ];

@@ -19,4 +19,5 @@ return [
     Symfony\UX\Icons\UXIconsBundle::class => ['all' => true],
     KuKu\SFSystemToolsBundle\KuKuSFSystemToolsBundle::class => ['all' => true],
     Jawira\DoctrineDiagramBundle\DoctrineDiagramBundle::class => ['dev' => true, 'test' => true],
+    Zenstruck\Foundry\ZenstruckFoundryBundle::class => ['dev' => true, 'test' => true],
 ];

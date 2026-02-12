@@ -1,0 +1,12 @@
+when@dev: &dev
+    zenstruck_foundry:
+        persistence:
+            flush_once: true
+
+when@test:
+    <<: *dev
+    zenstruck_foundry:
+        persistence:
+            flush_once: true
+        global_state:
+            - App\Tests\Story\AppFixtureStory
