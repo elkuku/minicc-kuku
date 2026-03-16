@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\System;
 
 use App\Controller\BaseController;
-use LogicException;
+use App\Service\DeployLogParser;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
@@ -21,71 +21,28 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_ADMIN')]
 class Logview extends BaseController
 {
-    public function __construct(private readonly KernelInterface $kernel) {}
+    public function __construct(
+        private readonly KernelInterface $kernel,
+        private readonly DeployLogParser $logParser,
+    ) {}
 
     public function __invoke(
         #[Autowire('%kernel.project_dir%')] string $projectDir
-    ): Response
-    {
+    ): Response {
         $filesystem = new Filesystem();
         $filename = $projectDir.'/var/log/deploy.log';
-
         $entries = [];
-        $entry = null;
-        $dateTime = null;
         $error = '';
 
         try {
             if ($filesystem->exists($filename)) {
-                $contents = $filesystem->readFile($filename);
-                $lines = explode("\n", $contents);
-                foreach ($lines as $line) {
-                    $line = trim($line);
-                    if ($line === '' || $line === '0') {
-                        continue;
-                    }
-
-                    if (str_starts_with($line, '>>>==============')) {
-                        if (is_null($entry)) {
-                            $entry = '';
-                        } else {
-                            throw new LogicException('Entry finished string not found');
-                        }
-
-                        continue;
-                    }
-
-                    if (str_starts_with($line, '<<<===========')) {
-                        if (is_null($entry)) {
-                            throw new LogicException('Entry not started.');
-                        }
-
-                        $entries[(string)$dateTime] = $entry;
-                        $entry = null;
-
-                        continue;
-                    }
-
-                    if ('' === $entry) {
-                        //The first line contains the dateTime string
-                        $dateTime = $line;
-                        $entry = $line."\n";
-
-                        continue;
-                    }
-
-                    $entry .= $line."\n";
-                }
-
-                //  dd($contents,$entries);
+                $entries = $this->logParser->parse($filesystem->readFile($filename));
             } else {
                 $error = 'No log file found!';
             }
-
         } catch (IOException $ioException) {
             $this->addFlash('danger', $ioException->getMessage());
         }
-
 
         $output = new BufferedOutput();
 

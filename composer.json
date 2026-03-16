@@ -95,6 +95,7 @@
         "symfony/phpunit-bridge": "^8.0",
         "symfony/stopwatch": "*",
         "symfony/web-profiler-bundle": "*",
+        "tomasvotruba/cognitive-complexity": "^1.0",
         "zenstruck/foundry": "^2.9"
     },
     "config": {

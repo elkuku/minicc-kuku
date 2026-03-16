@@ -15,6 +15,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 use Exception;
@@ -249,49 +250,53 @@ class TransactionRepository extends ServiceEntityRepository
                 ->setParameter('type', (int)$criteria['type']);
         }
 
-        if ($options->searchCriteria('amount') !== '' && $options->searchCriteria('amount') !== '0') {
+        $this->applySearchFilters($query, $options);
+
+        return $this->paginate(
+            $query->getQuery(),
+            $options->getPage(),
+            $options->getLimit()
+        );
+    }
+
+    private function hasCriteria(PaginatorOptions $options, string $key): bool
+    {
+        $value = $options->searchCriteria($key);
+
+        return $value !== '' && $value !== '0';
+    }
+
+    private function applySearchFilters(QueryBuilder $query, PaginatorOptions $options): void
+    {
+        if ($this->hasCriteria($options, 'amount')) {
             $query->andWhere('t.amount = :amount')
-                ->setParameter(
-                    'amount',
-                    (float)$options->searchCriteria('amount')
-                );
+                ->setParameter('amount', (float)$options->searchCriteria('amount'));
         }
 
-        if ($options->searchCriteria('store') !== '' && $options->searchCriteria('store') !== '0') {
+        if ($this->hasCriteria($options, 'store')) {
             $query->andWhere('t.store = :store')
                 ->setParameter('store', (int)$options->searchCriteria('store'));
         }
 
-        if ($options->searchCriteria('date_from') !== '' && $options->searchCriteria('date_from') !== '0') {
+        if ($this->hasCriteria($options, 'date_from')) {
             $query->andWhere('t.date >= :date_from')
-                ->setParameter(
-                    'date_from',
-                    $options->searchCriteria('date_from')
-                );
+                ->setParameter('date_from', $options->searchCriteria('date_from'));
         }
 
-        if ($options->searchCriteria('date_to') !== '' && $options->searchCriteria('date_to') !== '0') {
+        if ($this->hasCriteria($options, 'date_to')) {
             $query->andWhere('t.date <= :date_to')
                 ->setParameter('date_to', $options->searchCriteria('date_to'));
         }
 
-        if ($options->searchCriteria('recipe') !== '' && $options->searchCriteria('recipe') !== '0') {
+        if ($this->hasCriteria($options, 'recipe')) {
             $query->andWhere('t.recipeNo = :recipe')
                 ->setParameter('recipe', (int)$options->searchCriteria('recipe'));
         }
 
-        if ($options->searchCriteria('comment') !== '' && $options->searchCriteria('comment') !== '0') {
+        if ($this->hasCriteria($options, 'comment')) {
             $query->andWhere('t.comment LIKE :searchTerm')
                 ->setParameter('searchTerm', '%'.$options->searchCriteria('comment').'%');
         }
-
-        $query = $query->getQuery();
-
-        return $this->paginate(
-            $query,
-            $options->getPage(),
-            $options->getLimit()
-        );
     }
 
     public function getLastRecipeNo(): int
