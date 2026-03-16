@@ -47,45 +47,6 @@ final class DepositTest extends TestCase
         $this->assertSame($paymentMethod, $deposit->getEntity());
     }
 
-    public function testJsonSerialize(): void
-    {
-        $deposit = new Deposit();
-        $paymentMethod = $this->createPaymentMethodWithId(2);
-
-        $deposit->setEntity($paymentMethod);
-        $deposit->setDate(new DateTime('2024-03-15'));
-        $deposit->setDocument('DOC-123');
-        $deposit->setAmount('1500.50');
-
-        $json = $deposit->jsonSerialize();
-
-        $this->assertArrayHasKey('id', $json);
-        $this->assertArrayHasKey('amount', $json);
-        $this->assertArrayHasKey('document', $json);
-        $this->assertArrayHasKey('date', $json);
-        $this->assertArrayHasKey('entity', $json);
-
-        $this->assertSame('1500.50', $json['amount']);
-        $this->assertSame('DOC-123', $json['document']);
-        $this->assertSame('2024-03-15', $json['date']);
-        $this->assertSame(2, $json['entity']);
-    }
-
-    public function testJsonSerializeWithNullId(): void
-    {
-        $deposit = new Deposit();
-        $paymentMethod = $this->createPaymentMethodWithId(2);
-
-        $deposit->setEntity($paymentMethod);
-        $deposit->setDate(new DateTime('2024-01-01'));
-        $deposit->setDocument('TEST');
-        $deposit->setAmount('100.00');
-
-        $json = $deposit->jsonSerialize();
-
-        $this->assertNull($json['id']);
-    }
-
     public function testDateGetterSetter(): void
     {
         $deposit = new Deposit();

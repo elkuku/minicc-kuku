@@ -13,12 +13,10 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToOne;
-use JsonSerializable;
-use Override;
 use UnexpectedValueException;
 
 #[Entity(repositoryClass: DepositRepository::class)]
-class Deposit implements JsonSerializable
+class Deposit
 {
     #[Column, Id, GeneratedValue]
     private ?int $id = null;
@@ -118,27 +116,5 @@ class Deposit implements JsonSerializable
         $this->transaction = $transaction;
 
         return $this;
-    }
-
-    /**
-     * Specify data which should be serialized to JSON.
-     *
-     * @see  http://php.net/manual/en/jsonserializable.jsonserialize.php
-     *
-     * @return array{id: int|null, amount: string, document: string, date: string, entity: int|null} data which can be serialized by <b>json_encode</b>,
-     *                                                                                              which is a value of any type other than a resource
-     *
-     * @since 5.4.0
-     */
-    #[Override]
-    public function jsonSerialize(): array
-    {
-        return [
-            'id' => $this->id,
-            'amount' => $this->amount,
-            'document' => $this->document,
-            'date' => $this->date->format('Y-m-d'),
-            'entity' => $this->entity->getId(),
-        ];
     }
 }

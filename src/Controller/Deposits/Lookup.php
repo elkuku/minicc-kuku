@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Deposits;
 
 use App\Controller\BaseController;
+use App\Dto\DepositDto;
 use App\Repository\DepositRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,10 +21,8 @@ class Lookup extends BaseController
     public function __invoke(Request $request): JsonResponse
     {
         $id = $request->query->get('id');
-
         $deposit = $this->depositRepository->find($id);
 
-        return $this->json($deposit);
+        return $this->json($deposit !== null ? DepositDto::fromDeposit($deposit) : null);
     }
-
 }
