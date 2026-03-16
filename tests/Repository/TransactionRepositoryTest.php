@@ -202,11 +202,50 @@ final class TransactionRepositoryTest extends KernelTestCase
         $this->assertGreaterThanOrEqual(0, count($transactions));
     }
 
-    public function testFindByIds(): void
+    public function testFindByIdsReturnsMatchingTransactions(): void
     {
-        $transactions = $this->repository->findByIds([1, 2, 3]);
+        $all = $this->repository->findBy([], limit: 3);
+        $ids = array_map(static fn($t) => $t->getId(), $all);
+        $ids = array_filter($ids, static fn($id) => $id !== null);
 
-        $this->assertGreaterThanOrEqual(0, count($transactions));
+        $result = $this->repository->findByIds(array_values($ids));
+
+        self::assertCount(count($ids), $result);
+        $returnedIds = array_map(static fn($t) => $t->getId(), $result);
+        foreach ($ids as $id) {
+            self::assertContains($id, $returnedIds);
+        }
+    }
+
+    public function testFindByIdsReturnsOnlyRequestedIds(): void
+    {
+        $all = $this->repository->findBy([], limit: 5);
+        if (count($all) < 2) {
+            self::markTestSkipped('Need at least 2 transactions in fixtures.');
+        }
+
+        $first = $all[0];
+        $firstId = $first->getId();
+        self::assertNotNull($firstId);
+
+        $result = $this->repository->findByIds([$firstId]);
+
+        self::assertCount(1, $result);
+        self::assertSame($firstId, $result[0]->getId());
+    }
+
+    public function testFindByIdsWithEmptyArrayReturnsEmpty(): void
+    {
+        $result = $this->repository->findByIds([]);
+
+        self::assertSame([], $result);
+    }
+
+    public function testFindByIdsWithNonExistentIdsReturnsEmpty(): void
+    {
+        $result = $this->repository->findByIds([PHP_INT_MAX - 1, PHP_INT_MAX]);
+
+        self::assertSame([], $result);
     }
 
     private function getTestStore(): Store

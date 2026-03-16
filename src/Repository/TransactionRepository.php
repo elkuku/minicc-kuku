@@ -195,11 +195,14 @@ class TransactionRepository extends ServiceEntityRepository
      */
     public function findByIds(array $ids): array
     {
+        if ($ids === []) {
+            return [];
+        }
+
         /** @var Transaction[] $result */
         $result = $this->createQueryBuilder('t')
-            //->andWhere('t.id IN (:ids)')
-            ->andWhere('t.id IN('.implode(',', $ids).')')
-            //   ->setParameter('ids', implode(',', $ids))
+            ->andWhere('t.id IN (:ids)')
+            ->setParameter('ids', $ids)
             ->getQuery()
             ->getResult();
 
