@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Entity\Store;
+use App\Entity\Transaction;
 use App\Repository\StoreRepository;
 use App\Repository\TransactionRepository;
 
@@ -16,7 +17,7 @@ class PayrollHelper
     ) {}
 
     /**
-     * @return array{factDate: string, prevDate: string, stores: Store[], storeData: array<string|int, array{saldoIni: mixed, transactions: float[]}>}
+     * @return array{factDate: string, prevDate: string, stores: Store[], storeData: array<int, array{saldoIni: mixed, transactions: Transaction[]}>}
      */
     public function getData(
         int $year,
@@ -38,28 +39,26 @@ class PayrollHelper
 
         $prevDate = $prevYear.'-'.$prevMonth.'-01';
 
-        $storeData = [];
         $selectedStores = [];
-
         foreach ($stores as $store) {
             if ($storeId && $store->getId() !== $storeId) {
                 continue;
             }
 
-            $storeData[(int)$store->getId()]['saldoIni']
-                = $this->transactionRepository->getSaldoALaFecha(
-                $store,
-                $prevYear.'-'.$prevMonth.'-01'
-            );
-
-            $storeData[(int)$store->getId()]['transactions']
-                = $this->transactionRepository->findMonthPayments(
-                $store,
-                $prevMonth,
-                $prevYear
-            );
-
             $selectedStores[] = $store;
+        }
+
+        $selectedIds = array_map(static fn (Store $s): int => (int) $s->getId(), $selectedStores);
+        $prevDateStr = $prevYear.'-'.$prevMonth.'-01';
+
+        $saldos = $this->transactionRepository->getSaldoALaFechaByStores($selectedIds, $prevDateStr);
+        $payments = $this->transactionRepository->findMonthPaymentsByStores($selectedIds, $prevMonth, $prevYear);
+
+        $storeData = [];
+        foreach ($selectedStores as $store) {
+            $id = (int) $store->getId();
+            $storeData[$id]['saldoIni'] = $saldos[$id] ?? null;
+            $storeData[$id]['transactions'] = $payments[$id] ?? [];
         }
 
         return [

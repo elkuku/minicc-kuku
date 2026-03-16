@@ -248,6 +248,48 @@ final class TransactionRepositoryTest extends KernelTestCase
         self::assertSame([], $result);
     }
 
+    public function testGetSaldoALaFechaByStoresWithEmptyArrayReturnsEmpty(): void
+    {
+        $result = $this->repository->getSaldoALaFechaByStores([], date('Y-m-d'));
+
+        self::assertSame([], $result);
+    }
+
+    public function testGetSaldoALaFechaByStoresReturnsResultForKnownStore(): void
+    {
+        $store = $this->getTestStore();
+        $storeId = (int) $store->getId();
+
+        $result = $this->repository->getSaldoALaFechaByStores([$storeId], date('Y-m-d'));
+
+        if ($result !== []) {
+            self::assertArrayHasKey($storeId, $result);
+            self::assertTrue(is_numeric($result[$storeId]) || $result[$storeId] === null);
+        }
+    }
+
+    public function testFindMonthPaymentsByStoresWithEmptyArrayReturnsEmpty(): void
+    {
+        $result = $this->repository->findMonthPaymentsByStores([], (int) date('m'), (int) date('Y'));
+
+        self::assertSame([], $result);
+    }
+
+    public function testFindMonthPaymentsByStoresGroupsByStore(): void
+    {
+        $store = $this->getTestStore();
+        $storeId = (int) $store->getId();
+        $month = (int) date('m');
+        $year = (int) date('Y');
+
+        $result = $this->repository->findMonthPaymentsByStores([$storeId], $month, $year);
+
+        foreach ($result as $id => $transactions) {
+            self::assertSame($storeId, $id);
+            self::assertNotEmpty($transactions);
+        }
+    }
+
     private function getTestStore(): Store
     {
         /** @var StoreRepository $storeRepository */

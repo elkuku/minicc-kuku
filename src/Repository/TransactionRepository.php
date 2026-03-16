@@ -144,6 +144,35 @@ class TransactionRepository extends ServiceEntityRepository
     }
 
     /**
+     * @param array<int> $storeIds
+     * @return array<int, mixed>
+     */
+    public function getSaldoALaFechaByStores(array $storeIds, string $date): array
+    {
+        if ($storeIds === []) {
+            return [];
+        }
+
+        /** @var array<array{storeId: string, total: mixed}> $rows */
+        $rows = $this->createQueryBuilder('t')
+            ->select('IDENTITY(t.store) as storeId, SUM(t.amount) as total')
+            ->andWhere('t.store IN (:storeIds)')
+            ->andWhere('t.date < :date')
+            ->setParameter('storeIds', $storeIds)
+            ->setParameter('date', $date)
+            ->groupBy('t.store')
+            ->getQuery()
+            ->getResult();
+
+        $result = [];
+        foreach ($rows as $row) {
+            $result[(int) $row['storeId']] = $row['total'];
+        }
+
+        return $result;
+    }
+
+    /**
      * @return array<float>
      */
     public function findMonthPayments(
@@ -166,6 +195,39 @@ class TransactionRepository extends ServiceEntityRepository
             ->orderBy('p.date', 'ASC')
             ->getQuery()
             ->getResult();
+
+        return $result;
+    }
+
+    /**
+     * @param array<int> $storeIds
+     * @return array<int, Transaction[]>
+     */
+    public function findMonthPaymentsByStores(array $storeIds, int $month, int $year): array
+    {
+        if ($storeIds === []) {
+            return [];
+        }
+
+        /** @var Transaction[] $transactions */
+        $transactions = $this->createQueryBuilder('p')
+            ->andWhere('p.store IN (:storeIds)')
+            ->andWhere('MONTH(p.date) = :month')
+            ->andWhere('YEAR(p.date) = :year')
+            ->andWhere('p.type = :type1 OR p.type = :type2')
+            ->setParameter('storeIds', $storeIds)
+            ->setParameter('month', $month)
+            ->setParameter('year', $year)
+            ->setParameter('type1', TransactionType::payment)
+            ->setParameter('type2', TransactionType::adjustment)
+            ->orderBy('p.date', 'ASC')
+            ->getQuery()
+            ->getResult();
+
+        $result = [];
+        foreach ($transactions as $transaction) {
+            $result[(int) $transaction->getStore()->getId()][] = $transaction;
+        }
 
         return $result;
     }

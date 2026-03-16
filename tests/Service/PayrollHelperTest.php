@@ -66,8 +66,8 @@ final class PayrollHelperTest extends TestCase
         $store = new Store()->setId(10);
 
         $transactionRepo = $this->createStub(TransactionRepository::class);
-        $transactionRepo->method('getSaldoALaFecha')->willReturn(500.0);
-        $transactionRepo->method('findMonthPayments')->willReturn([100.0, 200.0]);
+        $transactionRepo->method('getSaldoALaFechaByStores')->willReturn([10 => 500.0]);
+        $transactionRepo->method('findMonthPaymentsByStores')->willReturn([10 => [100.0, 200.0]]);
 
         $storeRepo = $this->createStub(StoreRepository::class);
         $storeRepo->method('findAll')->willReturn([$store]);
@@ -143,8 +143,8 @@ final class PayrollHelperTest extends TestCase
         $storeRepo->method('findAll')->willReturn($stores);
 
         $transactionRepo = $this->createStub(TransactionRepository::class);
-        $transactionRepo->method('getSaldoALaFecha')->willReturn(0);
-        $transactionRepo->method('findMonthPayments')->willReturn([]);
+        $transactionRepo->method('getSaldoALaFechaByStores')->willReturn([]);
+        $transactionRepo->method('findMonthPaymentsByStores')->willReturn([]);
 
         return new PayrollHelper($storeRepo, $transactionRepo);
     }

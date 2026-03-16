@@ -35,32 +35,25 @@
 
 ## Medium Priority
 
-### Magic number payment method IDs
-**Files:** `src/Service/DepositImporter.php:29`, `src/Controller/Admin/CollectRent.php:49`, `src/Entity/Deposit.php:51`
+### ~~Magic number payment method IDs~~ ✅ Done
+~~**Files:** `src/Service/DepositImporter.php:29`, `src/Controller/Admin/CollectRent.php:49`, `src/Entity/Deposit.php:51`~~
 
-`find(1)` (BAR) and `find(2)` (BANK) are hardcoded in three places. Centralise with a `PaymentMethodId` enum:
+~~`find(1)` (BAR) and `find(2)` (BANK) are hardcoded in three places. Centralise with a `PaymentMethodId` enum.~~
 
-```php
-enum PaymentMethodId: int {
-    case BAR = 1;
-    case BANK = 2;
-}
-```
+### ~~Business logic in `Contract` entity~~ ✅ Done
+~~**File:** `src/Entity/Contract.php:168-185`~~
 
-### Business logic in `Contract` entity
-**File:** `src/Entity/Contract.php:168-185`
+~~`setValuesFromStore()` hydrates a Contract from a Store and is only called from one controller. Move to a `ContractFactory` service.~~
 
-`setValuesFromStore()` hydrates a Contract from a Store and is only called from one controller. Move to a `ContractFactory` service.
+### ~~Transaction creation in controllers~~ ✅ Done
+~~**Files:** `src/Controller/Admin/PayDay.php`, `src/Controller/Admin/CollectRent.php`~~
 
-### Transaction creation in controllers
-**Files:** `src/Controller/Admin/PayDay.php`, `src/Controller/Admin/CollectRent.php`
+~~Both controllers create Transaction entities inline with long setter chains. Extract a `TransactionFactory` service to improve testability.~~
 
-Both controllers create Transaction entities inline with long setter chains. Extract a `TransactionBatchProcessor` service to improve testability.
+### ~~N+1 query risk in `PayrollHelper`~~ ✅ Done
+~~**File:** `src/Service/PayrollHelper.php:44-63`~~
 
-### N+1 query risk in `PayrollHelper`
-**File:** `src/Service/PayrollHelper.php:44-63`
-
-Loops over stores and fires `getSaldoALaFecha()` + `findMonthPayments()` separately per iteration. Add batch repository methods to reduce query count.
+~~Loops over stores and fires `getSaldoALaFecha()` + `findMonthPayments()` separately per iteration. Added `getSaldoALaFechaByStores()` and `findMonthPaymentsByStores()` batch methods to `TransactionRepository`, reducing N+1 queries to 2 queries total.~~
 
 ---
 
