@@ -71,7 +71,7 @@ Has a `@TODO This should be translatable!` comment. Use Symfony's `TranslatableM
 ### Scattered date handling
 **17+ files** use `date()`, `new DateTime()`, and `strtotime()` directly. Inject Symfony's `ClockInterface` to make date-dependent code testable and consistent.
 
-### Missing unit tests
-- `src/Service/DepositImporter.php` — CSV parsing logic has no unit tests.
-- `src/Service/PayrollHelper.php` — Date boundary conditions not covered.
-- `src/Repository/TransactionRepository.php` — `getPagosPorAno()` and `checkChargementRequired()` lack specific test cases.
+### ~~Missing unit tests~~ ✅ Done
+- ~~`src/Service/DepositImporter.php` — CSV parsing logic has no unit tests.~~ Added `DepositImporterTest` with 8 tests.
+- ~~`src/Service/PayrollHelper.php` — Date boundary conditions not covered.~~ Already covered by existing PayrollHelperTest (Jan/Feb/Dec/May boundary tests).
+- ~~`src/Repository/TransactionRepository.php` — `getPagosPorAno()` and `checkChargementRequired()` lack specific test cases.~~ Added structure and edge case tests.
