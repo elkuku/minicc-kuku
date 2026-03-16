@@ -7,6 +7,8 @@ namespace App\Service;
 use App\Enum\DbDrivers;
 use RuntimeException;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\Process;
 use ValueError;
 
 readonly class BackupManager
@@ -18,6 +20,18 @@ readonly class BackupManager
     public function getDbUrl(): string
     {
         return $this->databaseUrl;
+    }
+
+    /**
+     * @throws ProcessFailedException
+     */
+    public function runBackup(string $backupFile): void
+    {
+        $process = Process::fromShellCommandline(
+            $this->getBackupCommand().' > '.escapeshellarg($backupFile)
+        );
+        $process->setTimeout(300);
+        $process->mustRun();
     }
 
     public function getBackupCommand(): string
@@ -50,14 +64,14 @@ readonly class BackupManager
                 '%s pg_dump -h %s -p %s -U %s %s',
                 sprintf('PGPASSWORD=%s', escapeshellarg($dbPass)),
                 escapeshellarg($dbHost),
-                escapeshellarg((string)$dbPort),
+                escapeshellarg((string) $dbPort),
                 escapeshellarg($dbUser),
                 escapeshellarg($dbName)
             ),
             DbDrivers::MySQL => sprintf(
                 'mysqldump --no-tablespaces -h%s -P%s -u%s -p%s %s',
                 escapeshellarg($dbHost),
-                escapeshellarg((string)$dbPort),
+                escapeshellarg((string) $dbPort),
                 escapeshellarg($dbUser),
                 escapeshellarg($dbPass),
                 escapeshellarg($dbName)
@@ -65,7 +79,7 @@ readonly class BackupManager
             DbDrivers::MariaDB => sprintf(
                 'mariadb-dump --no-tablespaces -h%s -P%s -u%s -p%s %s',
                 escapeshellarg($dbHost),
-                escapeshellarg((string)$dbPort),
+                escapeshellarg((string) $dbPort),
                 escapeshellarg($dbUser),
                 escapeshellarg($dbPass),
                 escapeshellarg($dbName)

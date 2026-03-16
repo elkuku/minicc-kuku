@@ -9,9 +9,19 @@ use App\Service\BackupManager;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 
 final class BackupManagerTest extends TestCase
 {
+    public function testRunBackupThrowsProcessFailedExceptionOnBadConnection(): void
+    {
+        $manager = new BackupManager('mysql://user:pass@127.0.0.1:19999/db');
+
+        $this->expectException(ProcessFailedException::class);
+
+        $manager->runBackup(sys_get_temp_dir().'/test-backup-never-created.sql');
+    }
+
     public function testGetDbUrl(): void
     {
         $manager = new BackupManager('postgresql://user:pass@localhost:5432/dbname');

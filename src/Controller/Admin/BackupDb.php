@@ -10,6 +10,7 @@ use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -27,19 +28,19 @@ class BackupDb extends AbstractController
     {
         $date = new DateTime()->format('Y-m-d_H-i-s');
         $backupFile = sys_get_temp_dir().sprintf('/backup_%s.sql', $date);
-        $command = $this->backupManager->getBackupCommand().' > '.escapeshellarg($backupFile).' 2>&1';
-        system($command, $result);
-        if ($result !== 0) {
-            $this->addFlash('error', 'Database backup failed');
-        } else {
+
+        try {
+            $this->backupManager->runBackup($backupFile);
+
             $email = $this->emailHelper
                 ->createAdminEmail('Backup: '.$date)
                 ->text('Backup: '.$date)
                 ->attachFromPath($backupFile);
 
             $this->mailer->send($email);
-
             $this->addFlash('success', 'Database backup has been sent to your email.');
+        } catch (ProcessFailedException) {
+            $this->addFlash('error', 'Database backup failed');
         }
 
         return $this->render('admin/tasks.html.twig');
