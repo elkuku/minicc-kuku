@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Enum\PaymentMethodId;
 use App\Repository\DepositRepository;
 use DateTime;
 use Doctrine\DBAL\Types\Types;
@@ -46,7 +47,7 @@ class Deposit
 
     public function setEntity(PaymentMethod $entity): static
     {
-        if (1 === $entity->getId()) {
+        if (PaymentMethodId::BAR->value === $entity->getId()) {
             throw new UnexpectedValueException('The entity with ID "1" is supposed to be the BAR payment method!');
         }
 

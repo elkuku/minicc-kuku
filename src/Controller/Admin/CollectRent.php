@@ -6,6 +6,7 @@ namespace App\Controller\Admin;
 
 use App\Controller\BaseController;
 use App\Entity\Transaction;
+use App\Enum\PaymentMethodId;
 use App\Repository\PaymentMethodRepository;
 use App\Repository\StoreRepository;
 use App\Repository\UserRepository;
@@ -46,7 +47,7 @@ class CollectRent extends BaseController
 
         /** @var array<string, string> $users */
         $users = $request->request->all('users');
-        $method = $this->paymentMethodRepository->find(1);
+        $method = $this->paymentMethodRepository->find(PaymentMethodId::BAR->value);
 
         if (!$method) {
             throw new UnexpectedValueException('Invalid payment method.');

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Entity\Deposit;
+use App\Enum\PaymentMethodId;
 use App\Helper\CsvParser\CsvObject;
 use App\Helper\CsvParser\CsvParser;
 use App\Repository\DepositRepository;
@@ -26,7 +27,7 @@ readonly class DepositImporter
 
     public function importFromRequest(Request $request): int
     {
-        $entity = $this->paymentMethodRepository->find(2);
+        $entity = $this->paymentMethodRepository->find(PaymentMethodId::BANK->value);
         if (!$entity) {
             throw new UnexpectedValueException('Invalid entity');
         }
