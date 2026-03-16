@@ -15,11 +15,14 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route(path: '/deposits/upload', name: 'deposits_upload', methods: ['GET', 'POST'])]
 class Upload extends BaseController
 {
+    public function __construct(private readonly DepositImporter $importer)
+    {
+    }
+
     public function __invoke(
         Request $request,
-        DepositImporter $importer,
     ): RedirectResponse {
-        $insertCount = $importer->importFromRequest($request);
+        $insertCount = $this->importer->importFromRequest($request);
 
         $this->addFlash(
             $insertCount !== 0 ? 'success' : 'warning',

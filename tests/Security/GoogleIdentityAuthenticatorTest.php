@@ -232,7 +232,7 @@ final class GoogleIdentityAuthenticatorTest extends TestCase
     ): User {
         $method = new ReflectionMethod($authenticator, 'getUser');
         $result = $method->invoke($authenticator, $googleUser);
-        assert($result instanceof User);
+        self::assertInstanceOf(User::class, $result);
 
         return $result;
     }

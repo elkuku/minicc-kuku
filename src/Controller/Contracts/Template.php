@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Contracts;
 
+use App\Entity\Contract;
 use App\Controller\BaseController;
 use App\Form\ContractType;
 use App\Repository\ContractRepository;
@@ -31,7 +32,7 @@ class Template extends BaseController
         $form = $this->createForm(ContractType::class, $data);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var \App\Entity\Contract $data */
+            /** @var Contract $data */
             $data = $form->getData();
             $entityManager->persist($data);
             $entityManager->flush();

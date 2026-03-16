@@ -14,7 +14,10 @@ try {
             __DIR__.'/src',
             __DIR__.'/tests',
         ])
-        ->withSkip([__DIR__.'/src/Service/PhpXlsxGenerator.php',])
+        ->withSkip([
+            __DIR__.'/src/Service/PhpXlsxGenerator.php',
+            \Rector\PHPUnit\CodeQuality\Rector\Class_\PreferPHPUnitThisCallRector::class,
+        ])
         //
         ->withSymfonyContainerXml(__DIR__.'/var/cache/dev/App_KernelDevDebugContainer.xml')
         ->withSymfonyContainerPhp(__DIR__.'/tests/symfony-container.php')
