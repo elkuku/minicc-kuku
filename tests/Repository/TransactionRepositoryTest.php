@@ -6,6 +6,7 @@ namespace App\Tests\Repository;
 
 use DateTime;
 use App\Entity\Store;
+use App\Entity\Transaction;
 use App\Entity\User;
 use App\Helper\Paginator\PaginatorOptions;
 use App\Repository\StoreRepository;
@@ -97,6 +98,46 @@ final class TransactionRepositoryTest extends KernelTestCase
         $this->assertGreaterThanOrEqual(0, count($pagos));
     }
 
+    public function testGetPagosPorAnoReturnsNestedStructure(): void
+    {
+        $year = (int) date('Y');
+
+        $pagos = $this->repository->getPagosPorAno($year);
+
+        // Fixture creates one payment transaction for this year
+        self::assertNotEmpty($pagos, 'Expected at least one store with payments in fixture year');
+
+        foreach ($pagos as $storeId => $months) {
+            self::assertIsInt($storeId, 'Top-level key must be an integer store ID');
+            foreach ($months as $month => $days) {
+                self::assertContains($month, range(1, 12));
+                $this->assertDaysInMonthAreValid($days, $year);
+            }
+        }
+    }
+
+    /**
+     * @param array<int, array<int, Transaction>> $days
+     */
+    private function assertDaysInMonthAreValid(array $days, int $year): void
+    {
+        foreach ($days as $day => $transactions) {
+            self::assertContains($day, range(1, 31));
+            self::assertNotEmpty($transactions);
+            foreach ($transactions as $transaction) {
+                self::assertInstanceOf(Transaction::class, $transaction);
+                self::assertSame($year, (int) $transaction->getDate()->format('Y'));
+            }
+        }
+    }
+
+    public function testGetPagosPorAnoWithUnknownYearReturnsEmpty(): void
+    {
+        $pagos = $this->repository->getPagosPorAno(1900);
+
+        self::assertSame([], $pagos);
+    }
+
     public function testGetRawList(): void
     {
         $options = new PaginatorOptions();
@@ -183,6 +224,16 @@ final class TransactionRepositoryTest extends KernelTestCase
 
         // Result depends on fixture data timing - just verify it runs without error
         $this->assertThat($result, self::logicalOr(self::isTrue(), self::isFalse()));
+    }
+
+    public function testCheckChargementRequiredReturnsFalseWithNoRentTransactions(): void
+    {
+        // Fixture creates no rent transactions, so getLastChargementDate() returns
+        // the current datetime (MAX of empty set → null → new DateTime('')).
+        // Since the "last charge" is effectively now, chargement is not required.
+        $result = $this->repository->checkChargementRequired();
+
+        self::assertFalse($result);
     }
 
     public function testFindByStoreYearAndUser(): void
