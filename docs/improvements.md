@@ -2,34 +2,34 @@
 
 ## Critical
 
-### SQL Injection in `TransactionRepository::findByIds()`
-**File:** `src/Repository/TransactionRepository.php:196-207`
+### ~~SQL Injection in `TransactionRepository::findByIds()`~~ ✅ Done
+~~**File:** `src/Repository/TransactionRepository.php:196-207`~~
 
-String interpolation `'t.id IN('.implode(',', $ids).')'` instead of a parameterized query. The correct parameterized version is commented out directly below it — uncomment and remove the unsafe version.
+~~String interpolation `'t.id IN('.implode(',', $ids).')'` instead of a parameterized query. The correct parameterized version is commented out directly below it — uncomment and remove the unsafe version.~~
 
 ---
 
 ## High Priority
 
-### Security: `system()` in BackupDb
-**File:** `src/Controller/Admin/BackupDb.php:31`
+### ~~Security: `system()` in BackupDb~~ ✅ Done
+~~**File:** `src/Controller/Admin/BackupDb.php:31`~~
 
-`system()` exposes DB credentials in process arguments. Replace with Symfony's `Process` component.
+~~`system()` exposes DB credentials in process arguments. Replace with Symfony's `Process` component.~~
 
-### Security: Deposit JSON leak
-**File:** `src/Controller/Deposits/Lookup.php`
+### ~~Security: Deposit JSON leak~~ ✅ Done
+~~**File:** `src/Controller/Deposits/Lookup.php`~~
 
-Returns the full entity as JSON without filtering sensitive fields. Introduce a DTO to control what gets serialized.
+~~Returns the full entity as JSON without filtering sensitive fields. Introduce a DTO to control what gets serialized.~~
 
-### Mail controller duplication
-**Files:** `src/Controller/Mail/` (5 controllers, 56–108 lines each)
+### ~~Mail controller duplication~~ ✅ Done
+~~**Files:** `src/Controller/Mail/` (5 controllers, 56–108 lines each)~~
 
-All five controllers follow the same pattern: loop stores → generate PDF → send email → add flash messages. Extract a `BulkMailService` to eliminate the duplication.
+~~All five controllers follow the same pattern: loop stores → generate PDF → send email → add flash messages. Extract a `BulkMailService` to eliminate the duplication.~~
 
-### Download controller duplication
-**Files:** `src/Controller/Download/Transactions.php`, `src/Controller/Download/Planillas.php`
+### ~~Download controller duplication~~ ✅ Done
+~~**Files:** `src/Controller/Download/Transactions.php`, `src/Controller/Download/Planillas.php`~~
 
-Both repeat the same PDF generation options inline. Extract a `PdfGenerationService`.
+~~Both repeat the same PDF generation options inline. Extract a `PdfGenerationService`.~~
 
 ---
 
