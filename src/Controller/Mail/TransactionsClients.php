@@ -12,6 +12,7 @@ use App\Service\BulkMailService;
 use App\Service\EmailHelper;
 use App\Service\MailBatchResult;
 use App\Service\PdfHelper;
+use Symfony\Component\Clock\ClockInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mime\Address;
@@ -29,6 +30,7 @@ class TransactionsClients extends BaseController
         private readonly PdfHelper $PDFHelper,
         private readonly EmailHelper $emailHelper,
         private readonly BulkMailService $bulkMailService,
+        private readonly ClockInterface $clock,
     ) {}
 
     public function __invoke(Request $request): Response
@@ -38,11 +40,11 @@ class TransactionsClients extends BaseController
         if ($recipients === []) {
             return $this->render('mail/transactions-clients.html.twig', [
                 'stores' => $this->storeRepository->getActive(),
-                'years' => range(date('Y'), date('Y', strtotime('-5 year'))),
+                'years' => range((int) $this->clock->now()->format('Y'), (int) $this->clock->now()->modify('-5 years')->format('Y')),
             ]);
         }
 
-        $year = $request->request->getInt('year', (int) date('Y'));
+        $year = $request->request->getInt('year', (int) $this->clock->now()->format('Y'));
 
         $result = $this->bulkMailService->sendToFilteredStores(
             $this->storeRepository->getActive(),

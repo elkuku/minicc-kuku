@@ -12,6 +12,7 @@ use App\Service\EmailHelper;
 use App\Service\MailBatchResult;
 use App\Service\PayrollHelper;
 use App\Service\PdfHelper;
+use Symfony\Component\Clock\ClockInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,6 +30,7 @@ class PlanillasClients extends BaseController
         private readonly EmailHelper $emailHelper,
         private readonly PayrollHelper $payrollHelper,
         private readonly BulkMailService $bulkMailService,
+        private readonly ClockInterface $clock,
     ) {}
 
     public function __invoke(Request $request): Response
@@ -41,8 +43,9 @@ class PlanillasClients extends BaseController
             ]);
         }
 
-        $year = (int) date('Y');
-        $month = (int) date('m');
+        $now = $this->clock->now();
+        $year = (int) $now->format('Y');
+        $month = (int) $now->format('m');
         $fileName = sprintf('planilla-%d-%s.pdf', $year, $month);
 
         $result = $this->bulkMailService->sendToFilteredStores(

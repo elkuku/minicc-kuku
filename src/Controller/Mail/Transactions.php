@@ -11,6 +11,7 @@ use App\Service\EmailHelper;
 use App\Service\PdfHelper;
 use Exception;
 use Knp\Snappy\Pdf;
+use Symfony\Component\Clock\ClockInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
@@ -21,13 +22,22 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route(path: '/mail/transactions', name: 'mail_transactions', methods: ['POST'])]
 class Transactions extends BaseController
 {
-    public function __construct(private readonly TransactionRepository $transactionRepository, private readonly StoreRepository $storeRepository, private readonly Pdf $pdf, private readonly PdfHelper $PDFHelper, private readonly MailerInterface $mailer, private readonly EmailHelper $emailHelper) {}
+    public function __construct(
+        private readonly TransactionRepository $transactionRepository,
+        private readonly StoreRepository $storeRepository,
+        private readonly Pdf $pdf,
+        private readonly PdfHelper $PDFHelper,
+        private readonly MailerInterface $mailer,
+        private readonly EmailHelper $emailHelper,
+        private readonly ClockInterface $clock,
+    ) {}
 
     public function __invoke(
         Request $request,
     ): RedirectResponse
     {
-        $year = $request->request->getInt('year', (int)date('Y'));
+        $now = $this->clock->now();
+        $year = $request->request->getInt('year', (int) $now->format('Y'));
         $htmlPages = [];
         $stores = $this->storeRepository->findAll();
         foreach ($stores as $store) {
@@ -52,8 +62,8 @@ class Transactions extends BaseController
                 to: $this->emailHelper->getFrom(),
                 subject: 'Movimientos de los locales ano '.$year
             )
-                ->text('Backup - Date: '.date('Y-m-d'))
-                ->html('<h3>Backup</h3>Date: '.date('Y-m-d'))
+                ->text('Backup - Date: '.$now->format('Y-m-d'))
+                ->html('<h3>Backup</h3>Date: '.$now->format('Y-m-d'))
                 ->addPart($attachment);
 
             $this->mailer->send($email);

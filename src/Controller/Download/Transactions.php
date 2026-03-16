@@ -9,6 +9,7 @@ use App\Repository\StoreRepository;
 use App\Repository\TransactionRepository;
 use App\Service\PdfHelper;
 use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
+use Symfony\Component\Clock\ClockInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -20,11 +21,13 @@ class Transactions extends BaseController
         private readonly TransactionRepository $transactionRepository,
         private readonly StoreRepository $storeRepository,
         private readonly PdfHelper $pdfHelper,
+        private readonly ClockInterface $clock,
     ) {}
 
     public function __invoke(): PdfResponse
     {
-        $year = (int) date('Y');
+        $now = $this->clock->now();
+        $year = (int) $now->format('Y');
         $htmlPages = [];
 
         foreach ($this->storeRepository->findAll() as $store) {
@@ -33,7 +36,7 @@ class Transactions extends BaseController
             }
         }
 
-        $filename = sprintf('movimientos-%d-%s.pdf', $year, date('Y-m-d'));
+        $filename = sprintf('movimientos-%d-%s.pdf', $year, $now->format('Y-m-d'));
 
         return new PdfResponse($this->pdfHelper->renderTransactionsPdf($htmlPages), $filename);
     }

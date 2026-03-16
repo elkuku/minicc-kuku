@@ -8,6 +8,7 @@ use App\Entity\Contract;
 use App\Service\ContractTemplateHelper;
 use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 use Knp\Snappy\Pdf;
+use Symfony\Component\Clock\ClockInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -15,7 +16,11 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route(path: '/contracts/generate/{id}', name: 'contracts_generate', requirements: ['id' => '\d+',], methods: ['GET'])]
 class Generate extends BaseController
 {
-    public function __construct(private readonly Pdf $pdf, private readonly ContractTemplateHelper $templateHelper) {}
+    public function __construct(
+        private readonly Pdf $pdf,
+        private readonly ContractTemplateHelper $templateHelper,
+        private readonly ClockInterface $clock,
+    ) {}
 
     public function __invoke(Contract $contract): PdfResponse
     {
@@ -27,7 +32,7 @@ class Generate extends BaseController
             sprintf(
                 'contrato-local-%d-%s.pdf',
                 $contract->getStoreNumber(),
-                date('Y-m-d')
+                $this->clock->now()->format('Y-m-d')
             )
         );
     }

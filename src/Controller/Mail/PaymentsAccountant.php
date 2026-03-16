@@ -7,6 +7,7 @@ namespace App\Controller\Mail;
 use App\Controller\BaseController;
 use App\Repository\TransactionRepository;
 use App\Service\EmailHelper;
+use Symfony\Component\Clock\ClockInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,15 +21,21 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_ADMIN')]
 class PaymentsAccountant extends BaseController
 {
-    public function __construct(private readonly TransactionRepository $repository, private readonly EmailHelper $emailHelper, private readonly MailerInterface $mailer) {}
+    public function __construct(
+        private readonly TransactionRepository $repository,
+        private readonly EmailHelper $emailHelper,
+        private readonly MailerInterface $mailer,
+        private readonly ClockInterface $clock,
+    ) {}
 
     public function __invoke(
         Request $request,
         #[Autowire('%env(EMAIL_ACCOUNTANT)%')] string $emailAccountant,
     ): Response
     {
-        $year = $request->request->getInt('year', (int)date('Y'));
-        $month = $request->request->getInt('month', (int)date('m'));
+        $now = $this->clock->now();
+        $year = $request->request->getInt('year', (int) $now->format('Y'));
+        $month = $request->request->getInt('month', (int) $now->format('m'));
         $ids = array_map(intval(...), array_filter($request->request->all('ids'), is_numeric(...)));
 
         if ($ids !== []) {

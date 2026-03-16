@@ -8,6 +8,7 @@ use App\Controller\BaseController;
 use App\Service\EmailHelper;
 use App\Service\PayrollHelper;
 use App\Service\PdfHelper;
+use Symfony\Component\Clock\ClockInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
@@ -22,13 +23,15 @@ class Planillas extends BaseController
         private readonly MailerInterface $mailer,
         private readonly EmailHelper $emailHelper,
         private readonly PayrollHelper $payrollHelper,
+        private readonly ClockInterface $clock,
     ) {}
 
     #[Route(path: '/mail/planillas', name: 'mail_planillas', methods: ['GET'])]
     public function planillas(): Response
     {
-        $year = (int) date('Y');
-        $month = (int) date('m');
+        $now = $this->clock->now();
+        $year = (int) $now->format('Y');
+        $month = (int) $now->format('m');
         $fileName = sprintf('payrolls-%d-%s.pdf', $year, $month);
         $document = $this->PDFHelper->renderPayrollPdf($year, $month, $this->payrollHelper);
 

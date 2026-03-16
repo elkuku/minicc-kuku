@@ -6,6 +6,7 @@ namespace App\Tests\Twig;
 
 use App\Twig\Extension\AppExtension;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\Clock\MockClock;
 
 final class TwigExtensionTest extends WebTestCase
 {
@@ -14,7 +15,7 @@ final class TwigExtensionTest extends WebTestCase
     protected function setUp(): void
     {
         self::createClient();
-        $this->twigExtension = new AppExtension();
+        $this->twigExtension = new AppExtension(new MockClock('2024-06-15'));
     }
 
 

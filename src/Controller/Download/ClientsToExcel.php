@@ -8,6 +8,7 @@ use App\Controller\BaseController;
 use App\Repository\UserRepository;
 use App\Service\PhpXlsxGenerator;
 use App\Service\TextFormatter;
+use Symfony\Component\Clock\ClockInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -16,7 +17,11 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route(path: '/download/clients-to-excel', name: 'download_clients_to_excel', methods: ['GET'])]
 class ClientsToExcel extends BaseController
 {
-    public function __construct(private readonly UserRepository $userRepository, private readonly TextFormatter $textFormatter) {}
+    public function __construct(
+        private readonly UserRepository $userRepository,
+        private readonly TextFormatter $textFormatter,
+        private readonly ClockInterface $clock,
+    ) {}
 
     public function __invoke(): RedirectResponse
     {
@@ -28,7 +33,7 @@ class ClientsToExcel extends BaseController
         }
 
         $xlsx = PhpXlsxGenerator::fromArray($rows);
-        $xlsx->downloadAs('clientes-'.gmdate('Y-m-d').'.xlsx');
+        $xlsx->downloadAs('clientes-'.$this->clock->now()->format('Y-m-d').'.xlsx');
         return $this->redirectToRoute('admin_tasks');
     }
 }

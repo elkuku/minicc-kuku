@@ -6,7 +6,7 @@ namespace App\Command;
 
 use App\Service\BackupManager;
 use App\Service\EmailHelper;
-use DateTime;
+use Symfony\Component\Clock\ClockInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -19,11 +19,12 @@ class BackupDbCommand
         private readonly BackupManager $backupManager,
         private readonly EmailHelper $emailHelper,
         private readonly MailerInterface $mailer,
+        private readonly ClockInterface $clock,
     ) {}
 
     public function __invoke(OutputInterface $output): int
     {
-        $date = new DateTime()->format('Y-m-d_H-i-s');
+        $date = $this->clock->now()->format('Y-m-d_H-i-s');
         $backupFile = sys_get_temp_dir().sprintf('/backup_%s.sql', $date);
 
         $command = $this->backupManager->getBackupCommand().' > '.escapeshellarg($backupFile);

@@ -8,6 +8,7 @@ use App\Command\BackupDbCommand;
 use App\Service\BackupManager;
 use App\Service\EmailHelper;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Clock\MockClock;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Mailer\MailerInterface;
@@ -26,7 +27,7 @@ final class BackupDbCommandTest extends TestCase
         $mailer = $this->createMock(MailerInterface::class);
         $mailer->expects($this->never())->method('send');
 
-        $command = new BackupDbCommand($backupManager, $emailHelper, $mailer);
+        $command = new BackupDbCommand($backupManager, $emailHelper, $mailer, new MockClock());
         $output = new BufferedOutput();
 
         $result = $command($output);
@@ -51,7 +52,7 @@ final class BackupDbCommandTest extends TestCase
         $mailer = $this->createMock(MailerInterface::class);
         $mailer->expects($this->once())->method('send');
 
-        $command = new BackupDbCommand($backupManager, $emailHelper, $mailer);
+        $command = new BackupDbCommand($backupManager, $emailHelper, $mailer, new MockClock());
         $output = new BufferedOutput();
 
         $result = $command($output);

@@ -9,6 +9,7 @@ use App\Twig\Extension\AppExtension;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use stdClass;
+use Symfony\Component\Clock\MockClock;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 
@@ -18,7 +19,7 @@ final class AppExtensionTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->extension = new AppExtension();
+        $this->extension = new AppExtension(new MockClock('2024-06-15'));
     }
 
     public function testGetFiltersReturnsArray(): void
@@ -119,11 +120,9 @@ final class AppExtensionTest extends TestCase
 
     public function testGetCurrentYearReturnsCurrentYear(): void
     {
-        $expectedYear = (int) date('Y');
-
         $result = $this->extension->getCurrentYear();
 
-        $this->assertSame($expectedYear, $result);
+        $this->assertSame(2024, $result); // MockClock fixed at 2024-06-15
     }
 
     public function testGetCurrentYearReturnsReasonableValue(): void

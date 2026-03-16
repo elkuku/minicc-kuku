@@ -13,6 +13,7 @@ use App\Repository\TransactionRepository;
 use App\Service\ChartBuilderService;
 use App\Service\TaxService;
 use App\Type\TransactionType;
+use Symfony\Component\Clock\ClockInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -21,7 +22,13 @@ class Transactions extends BaseController
 {
     use BreadcrumbTrait;
 
-    public function __construct(private readonly TransactionRepository $transactionRepository, private readonly StoreRepository $storeRepository, private readonly TaxService $taxService, private readonly ChartBuilderService $chartBuilder) {}
+    public function __construct(
+        private readonly TransactionRepository $transactionRepository,
+        private readonly StoreRepository $storeRepository,
+        private readonly TaxService $taxService,
+        private readonly ChartBuilderService $chartBuilder,
+        private readonly ClockInterface $clock,
+    ) {}
 
     #[Route(path: '/stores/{id}', name: 'stores_transactions', requirements: ['id' => '\d+',], methods: ['GET', 'POST',])]
     public function show(
@@ -30,7 +37,7 @@ class Transactions extends BaseController
     ): Response
     {
         $this->denyAccessUnlessGranted('view', $store);
-        $year = $request->query->getInt('year', (int)date('Y'));
+        $year = $request->query->getInt('year', (int) $this->clock->now()->format('Y'));
         $this->addBreadcrumb('Stores', 'stores_index')
             ->addBreadcrumb('Store '.$store->getId());
         $transactions = $this->transactionRepository->findByStoreAndYear($store, $year);

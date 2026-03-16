@@ -9,6 +9,7 @@ use App\Entity\Store;
 use App\Repository\TransactionRepository;
 use App\Service\PdfHelper;
 use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
+use Symfony\Component\Clock\ClockInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -16,7 +17,11 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route(path: '/download/store-transactions/{id}/{year}', name: 'download_store_transactions', methods: ['GET'])]
 class StoreTransactions extends BaseController
 {
-    public function __construct(private readonly TransactionRepository $transactionRepository, private readonly PdfHelper $pdfHelper) {}
+    public function __construct(
+        private readonly TransactionRepository $transactionRepository,
+        private readonly PdfHelper $pdfHelper,
+        private readonly ClockInterface $clock,
+    ) {}
 
     public function __invoke(
         Store $store,
@@ -33,7 +38,7 @@ class StoreTransactions extends BaseController
             'movimientos-%d-local-%d-%s.pdf',
             $year,
             $store->getId(),
-            date('Y-m-d')
+            $this->clock->now()->format('Y-m-d')
         );
 
         return new PdfResponse(

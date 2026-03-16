@@ -19,6 +19,7 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 use Exception;
+use Symfony\Component\Clock\ClockInterface;
 
 /**
  * @method Transaction|null find($id, $lockMode = null, $lockVersion = null)
@@ -32,7 +33,7 @@ class TransactionRepository extends ServiceEntityRepository
 {
     use PaginatorRepoTrait;
 
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, private readonly ClockInterface $clock)
     {
         parent::__construct($registry, Transaction::class);
     }
@@ -116,8 +117,6 @@ class TransactionRepository extends ServiceEntityRepository
      */
     public function getSaldoAnterior(Store $store, int $year): mixed
     {
-        $year ?: date('Y');
-
         return $this->createQueryBuilder('t')
             ->select('SUM(t.amount)')
             ->where('t.store = :store')
@@ -380,14 +379,15 @@ class TransactionRepository extends ServiceEntityRepository
 
     public function checkChargementRequired(): bool
     {
-        $currentYear = (int)new DateTime()->format('Y');
+        $now = $this->clock->now();
+        $currentYear = (int) $now->format('Y');
         $lastChargedYear = (int)$this->getLastChargementDate()->format('Y');
 
         if ($lastChargedYear < $currentYear) {
             return true;
         }
 
-        $currentMonth = (int)new DateTime()->format('m');
+        $currentMonth = (int) $now->format('m');
         $lastChargedMonth = (int)$this->getLastChargementDate()->format('m');
 
         if (12 === $currentMonth && 1 === $lastChargedMonth) {

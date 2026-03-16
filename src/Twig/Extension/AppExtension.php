@@ -6,6 +6,7 @@ namespace App\Twig\Extension;
 
 use App\Twig\Runtime\AppExtensionRuntime;
 use Override;
+use Symfony\Component\Clock\ClockInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
@@ -13,6 +14,9 @@ use function count;
 
 class AppExtension extends AbstractExtension
 {
+    public function __construct(private readonly ClockInterface $clock) {}
+
+
     /**
      * @return TwigFilter[]
      */
@@ -99,6 +103,6 @@ class AppExtension extends AbstractExtension
 
     public function getCurrentYear(): int
     {
-        return (int)date('Y');
+        return (int) $this->clock->now()->format('Y');
     }
 }

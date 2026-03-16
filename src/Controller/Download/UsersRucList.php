@@ -8,6 +8,7 @@ use App\Controller\BaseController;
 use App\Repository\UserRepository;
 use App\Service\PdfHelper;
 use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
+use Symfony\Component\Clock\ClockInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -15,7 +16,11 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route(path: '/download/users-ruc-list', name: 'download_users_ruc_list', methods: ['GET'])]
 class UsersRucList extends BaseController
 {
-    public function __construct(private readonly UserRepository $userRepository, private readonly PdfHelper $pdfHelper) {}
+    public function __construct(
+        private readonly UserRepository $userRepository,
+        private readonly PdfHelper $pdfHelper,
+        private readonly ClockInterface $clock,
+    ) {}
 
     public function __invoke(): PdfResponse
     {
@@ -34,7 +39,7 @@ class UsersRucList extends BaseController
                     'enable-local-file-access' => true,
                 ]
             ),
-            sprintf('user-list-%s.pdf', date('Y-m-d'))
+            sprintf('user-list-%s.pdf', $this->clock->now()->format('Y-m-d'))
         );
     }
 }

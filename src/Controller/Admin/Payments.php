@@ -6,6 +6,7 @@ namespace App\Controller\Admin;
 
 use App\Controller\BaseController;
 use App\Repository\TransactionRepository;
+use Symfony\Component\Clock\ClockInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -15,12 +16,17 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_CASHIER')]
 class Payments extends BaseController
 {
-    public function __construct(private readonly TransactionRepository $repository) {}
+    public function __construct(
+        private readonly TransactionRepository $repository,
+        private readonly ClockInterface $clock,
+    ) {}
 
     public function __invoke(Request $request): Response
     {
-        $year = $request->query->getInt('year', (int)date('Y'));
-        $month = $year === (int)date('Y') ? (int)date('m') : 1;
+        $now = $this->clock->now();
+        $currentYear = (int) $now->format('Y');
+        $year = $request->query->getInt('year', $currentYear);
+        $month = $year === $currentYear ? (int) $now->format('m') : 1;
 
         return $this->render(
             'admin/payments.html.twig',

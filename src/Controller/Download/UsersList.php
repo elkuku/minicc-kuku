@@ -8,12 +8,17 @@ use App\Controller\BaseController;
 use App\Repository\UserRepository;
 use App\Service\PdfHelper;
 use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
+use Symfony\Component\Clock\ClockInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class UsersList extends BaseController
 {
-    public function __construct(private readonly UserRepository $userRepository, private readonly PdfHelper $PdfHelper) {}
+    public function __construct(
+        private readonly UserRepository $userRepository,
+        private readonly PdfHelper $PdfHelper,
+        private readonly ClockInterface $clock,
+    ) {}
 
     #[IsGranted('ROLE_ADMIN')]
     #[Route(path: '/download/users-list', name: 'download_users_list', methods: ['GET'])]
@@ -27,7 +32,7 @@ class UsersList extends BaseController
         );
         return new PdfResponse(
             $this->PdfHelper->getOutputFromHtml($html),
-            sprintf('user-list-%s.pdf', date('Y-m-d'))
+            sprintf('user-list-%s.pdf', $this->clock->now()->format('Y-m-d'))
         );
     }
 }
