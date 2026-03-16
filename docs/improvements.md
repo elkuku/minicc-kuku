@@ -68,8 +68,8 @@
 
 Has a `@TODO This should be translatable!` comment. Use Symfony's `TranslatableMessage` for gender label strings.
 
-### Scattered date handling
-**17+ files** use `date()`, `new DateTime()`, and `strtotime()` directly. Inject Symfony's `ClockInterface` to make date-dependent code testable and consistent.
+### ~~Scattered date handling~~ ✅ Done
+~~**17+ files** use `date()`, `new DateTime()`, and `strtotime()` directly.~~ Injected `Symfony\Component\Clock\ClockInterface` into `TransactionRepository`, `AppExtension`, and 13 controllers/commands. Tests updated to use `MockClock`.
 
 ### ~~Missing unit tests~~ ✅ Done
 - ~~`src/Service/DepositImporter.php` — CSV parsing logic has no unit tests.~~ Added `DepositImporterTest` with 8 tests.
