@@ -12,10 +12,10 @@ use App\Service\BulkMailService;
 use App\Service\EmailHelper;
 use App\Service\MailBatchResult;
 use App\Service\PdfHelper;
-use Knp\Snappy\Pdf;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -26,7 +26,6 @@ class TransactionsClients extends BaseController
     public function __construct(
         private readonly StoreRepository $storeRepository,
         private readonly TransactionRepository $transactionRepository,
-        private readonly Pdf $pdf,
         private readonly PdfHelper $PDFHelper,
         private readonly EmailHelper $emailHelper,
         private readonly BulkMailService $bulkMailService,
@@ -48,10 +47,10 @@ class TransactionsClients extends BaseController
         $result = $this->bulkMailService->sendToFilteredStores(
             $this->storeRepository->getActive(),
             $recipients,
-            function (Store $store) use ($year): \Symfony\Component\Mime\Email {
+            function (Store $store) use ($year): Email {
                 $fileName = sprintf('movimientos-%s-%d.pdf', $store->getId(), $year);
 
-                $document = $this->pdf->getOutputFromHtml(
+                $document = $this->PDFHelper->renderTransactionsPdf(
                     $this->PDFHelper->renderTransactionHtml($this->transactionRepository, $store, $year)
                 );
 

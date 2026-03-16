@@ -12,7 +12,7 @@ use App\Service\EmailHelper;
 use App\Service\MailBatchResult;
 use App\Service\PayrollHelper;
 use App\Service\PdfHelper;
-use Knp\Snappy\Pdf;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mime\Address;
@@ -25,7 +25,6 @@ class PlanillasClients extends BaseController
 {
     public function __construct(
         private readonly StoreRepository $storeRepository,
-        private readonly Pdf $pdf,
         private readonly PdfHelper $PDFHelper,
         private readonly EmailHelper $emailHelper,
         private readonly PayrollHelper $payrollHelper,
@@ -49,11 +48,8 @@ class PlanillasClients extends BaseController
         $result = $this->bulkMailService->sendToFilteredStores(
             $this->storeRepository->getActive(),
             $recipients,
-            function (Store $store) use ($year, $month, $fileName): \Symfony\Component\Mime\Email {
-                $document = $this->pdf->getOutputFromHtml(
-                    $this->PDFHelper->renderPayrollsHtml($year, $month, $this->payrollHelper, (int) $store->getId()),
-                    ['enable-local-file-access' => true]
-                );
+            function (Store $store) use ($year, $month, $fileName): Email {
+                $document = $this->PDFHelper->renderPayrollPdf($year, $month, $this->payrollHelper, (int) $store->getId());
 
                 return $this->emailHelper->createTemplatedEmail(
                     to: new Address($store->getUser()?->getEmail() ?? '', $store->getUser()?->getName() ?? ''),

@@ -15,23 +15,17 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route(path: '/download/planillas', name: 'download_planillas', methods: ['GET'])]
 class Planillas extends BaseController
 {
-    public function __construct(private readonly PdfHelper $PdfHelper, private readonly PayrollHelper $payrollHelper) {}
+    public function __construct(
+        private readonly PdfHelper $pdfHelper,
+        private readonly PayrollHelper $payrollHelper,
+    ) {}
 
     public function __invoke(): PdfResponse
     {
-        $year = (int)date('Y');
-        $month = (int)date('m');
+        $year = (int) date('Y');
+        $month = (int) date('m');
         $filename = sprintf('payrolls-%d-%d.pdf', $year, $month);
-        $html = $this->PdfHelper->renderPayrollsHtml($year, $month, $this->payrollHelper);
-        return new PdfResponse(
-            $this->PdfHelper->getOutputFromHtml(
-                $html,
-                [
-                    'enable-local-file-access' => true,
-                ]
-            ),
-            $filename
-        );
-    }
 
+        return new PdfResponse($this->pdfHelper->renderPayrollPdf($year, $month, $this->payrollHelper), $filename);
+    }
 }

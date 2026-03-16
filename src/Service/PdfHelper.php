@@ -85,6 +85,34 @@ readonly class PdfHelper
         return $this->pdfEngine->getOutputFromHtml($htmlPages, $options);
     }
 
+    /**
+     * Render payroll HTML to PDF bytes with local-file-access enabled.
+     */
+    public function renderPayrollPdf(int $year, int $month, PayrollHelper $payrollHelper, int $storeId = 0): string
+    {
+        return $this->getOutputFromHtml(
+            $this->renderPayrollsHtml($year, $month, $payrollHelper, $storeId),
+            ['enable-local-file-access' => true]
+        );
+    }
+
+    /**
+     * Render transaction HTML pages to PDF bytes with headers/footers and local-file-access enabled.
+     *
+     * @param array<string>|string $htmlPages
+     */
+    public function renderTransactionsPdf(array|string $htmlPages): string
+    {
+        return $this->getOutputFromHtml(
+            $htmlPages,
+            [
+                'header-html' => $this->getHeaderHtml(),
+                'footer-html' => $this->getFooterHtml(),
+                'enable-local-file-access' => true,
+            ]
+        );
+    }
+
     public function getHeaderHtml(): string
     {
         return $this->twig->render(

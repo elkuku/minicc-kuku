@@ -120,6 +120,64 @@ final class PdfHelperTest extends TestCase
         $this->assertSame('<footer>footer</footer>', $result);
     }
 
+    public function testRenderPayrollPdfUsesLocalFileAccessOption(): void
+    {
+        $payrollHelper = $this->createStub(PayrollHelper::class);
+        $payrollHelper->method('getData')->willReturn([
+            'factDate' => '2024-3-1',
+            'prevDate' => '2024-2-01',
+            'stores' => [],
+            'storeData' => [],
+        ]);
+
+        $twig = $this->createStub(Environment::class);
+        $twig->method('render')->willReturn('<html>payrolls</html>');
+
+        $pdfEngine = $this->createMock(Pdf::class);
+        $pdfEngine->expects(self::once())
+            ->method('getOutputFromHtml')
+            ->with(
+                '<html>payrolls</html>',
+                self::callback(static fn(array $opts): bool => ($opts['enable-local-file-access'] ?? false) === true)
+            )
+            ->willReturn('%PDF-payroll');
+
+        $helper = $this->createPdfHelper(twig: $twig, pdfEngine: $pdfEngine);
+
+        $result = $helper->renderPayrollPdf(2024, 3, $payrollHelper);
+
+        self::assertSame('%PDF-payroll', $result);
+    }
+
+    public function testRenderTransactionsPdfUsesHeadersFootersAndLocalFileAccess(): void
+    {
+        $twig = $this->createStub(Environment::class);
+        $twig->method('render')->willReturnCallback(static fn(string $tpl) => match ($tpl) {
+            '_header-pdf.html.twig' => '<header/>',
+            '_footer-pdf.html.twig' => '<footer/>',
+            default => '<html/>',
+        });
+
+        $pdfEngine = $this->createMock(Pdf::class);
+        $pdfEngine->expects(self::once())
+            ->method('getOutputFromHtml')
+            ->with(
+                ['<html>page1</html>'],
+                self::callback(static fn(array $opts): bool =>
+                    ($opts['enable-local-file-access'] ?? false) === true
+                    && isset($opts['header-html'])
+                    && isset($opts['footer-html'])
+                )
+            )
+            ->willReturn('%PDF-transactions');
+
+        $helper = $this->createPdfHelper(twig: $twig, pdfEngine: $pdfEngine);
+
+        $result = $helper->renderTransactionsPdf(['<html>page1</html>']);
+
+        self::assertSame('%PDF-transactions', $result);
+    }
+
     private function createPdfHelper(
         ?Environment $twig = null,
         ?Pdf $pdfEngine = null,
