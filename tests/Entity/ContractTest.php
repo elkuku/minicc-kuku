@@ -5,76 +5,12 @@ declare(strict_types=1);
 namespace App\Tests\Entity;
 
 use App\Entity\Contract;
-use App\Entity\Store;
 use App\Type\Gender;
 use DateTime;
 use PHPUnit\Framework\TestCase;
-use ReflectionProperty;
 
 final class ContractTest extends TestCase
 {
-    public function testSetValuesFromStoreCopiesAllProperties(): void
-    {
-        $store = new Store();
-        $this->setStoreId($store, 42);
-        $store->setDestination('Tienda Centro');
-        $store->setValAlq(500.50);
-        $store->setCntLanfort(3);
-        $store->setCntLlaves(2);
-        $store->setCntMedAgua(1);
-        $store->setCntMedElec(1);
-        $store->setCntNeon(4);
-        $store->setCntSwitch(5);
-        $store->setCntToma(6);
-        $store->setCntVentana(2);
-        $store->setMedElectrico('ELEC-001');
-        $store->setMedAgua('AGUA-001');
-
-        $contract = new Contract();
-        $contract->setGender(Gender::male);
-
-        $result = $contract->setValuesFromStore($store);
-
-        $this->assertSame($contract, $result);
-        $this->assertSame(42, $contract->getStoreNumber());
-        $this->assertSame('Tienda Centro', $contract->getDestination());
-        $this->assertEqualsWithDelta(500.50, $contract->getValAlq(), PHP_FLOAT_EPSILON);
-        $this->assertSame(3, $contract->getCntLanfort());
-        $this->assertSame(2, $contract->getCntLlaves());
-        $this->assertSame(1, $contract->getCntMedAgua());
-        $this->assertSame(1, $contract->getCntMedElec());
-        $this->assertSame(4, $contract->getCntNeon());
-        $this->assertSame(5, $contract->getCntSwitch());
-        $this->assertSame(6, $contract->getCntToma());
-        $this->assertSame(2, $contract->getCntVentana());
-        $this->assertSame('ELEC-001', $contract->getMedElectrico());
-        $this->assertSame('AGUA-001', $contract->getMedAgua());
-    }
-
-    public function testSetValuesFromStoreWithDefaultValues(): void
-    {
-        $store = new Store();
-        $this->setStoreId($store, 1);
-
-        $contract = new Contract();
-        $contract->setGender(Gender::female);
-        $contract->setValuesFromStore($store);
-
-        $this->assertSame(1, $contract->getStoreNumber());
-        $this->assertSame('', $contract->getDestination());
-        $this->assertEqualsWithDelta(0.0, $contract->getValAlq(), PHP_FLOAT_EPSILON);
-        $this->assertSame(0, $contract->getCntLanfort());
-        $this->assertSame(0, $contract->getCntLlaves());
-        $this->assertSame(0, $contract->getCntMedAgua());
-        $this->assertSame(0, $contract->getCntMedElec());
-        $this->assertSame(0, $contract->getCntNeon());
-        $this->assertSame(0, $contract->getCntSwitch());
-        $this->assertSame(0, $contract->getCntToma());
-        $this->assertSame(0, $contract->getCntVentana());
-        $this->assertSame('', $contract->getMedElectrico());
-        $this->assertSame('', $contract->getMedAgua());
-    }
-
     public function testConstructorSetsDefaultDate(): void
     {
         $before = new DateTime();
@@ -253,9 +189,4 @@ final class ContractTest extends TestCase
         $this->assertSame('AGUA-2024-001', $contract->getMedAgua());
     }
 
-    private function setStoreId(Store $store, int $id): void
-    {
-        $reflection = new ReflectionProperty(Store::class, 'id');
-        $reflection->setValue($store, $id);
-    }
 }

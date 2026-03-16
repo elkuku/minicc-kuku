@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Controller\Contracts;
@@ -9,6 +10,7 @@ use App\Form\ContractType;
 use App\Repository\ContractRepository;
 use App\Repository\StoreRepository;
 use App\Repository\UserRepository;
+use App\Service\ContractFactory;
 use App\Service\TaxService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,30 +25,31 @@ class Create extends BaseController
         private readonly StoreRepository $storeRepo,
         private readonly UserRepository $userRepo,
         private readonly ContractRepository $contractRepo,
-        private readonly TaxService $taxService
+        private readonly TaxService $taxService,
+        private readonly ContractFactory $contractFactory,
     ) {}
 
     #[Route(path: '/contracts/create', name: 'contracts_create', methods: ['POST'])]
     public function new(
         Request $request,
         EntityManagerInterface $entityManager,
-    ): Response
-    {
+    ): Response {
         $store = $this->storeRepo->find($request->request->getInt('store'));
         $user = $this->userRepo->find($request->request->getInt('user'));
-        $contract = new Contract();
         $template = $this->contractRepo->findTemplate();
-        if ($template instanceof Contract) {
+        $template = $template instanceof Contract ? $template : null;
+
+        $contract = $store !== null
+            ? $this->contractFactory->createFromStore($store, $template)
+            : new Contract();
+
+        if ($store === null && $template !== null) {
             $contract->setText($template->getText());
         }
 
-        if ($store) {
-            $contract->setValuesFromStore($store);
-        }
-
-        if ($user) {
+        if ($user !== null) {
             $contract
-                ->setInqNombreapellido((string)$user->getName())
+                ->setInqNombreapellido((string) $user->getName())
                 ->setInqCi($user->getInqCi());
         }
 

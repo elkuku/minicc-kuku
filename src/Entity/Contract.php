@@ -165,25 +165,6 @@ class Contract
         return $this;
     }
 
-    public function setValuesFromStore(Store $store): self
-    {
-        $this->setStoreNumber((int)$store->getId())
-            ->setDestination($store->getDestination())
-            ->setValAlq($store->getValAlq())
-            ->setCntLanfort($store->getCntLanfort())
-            ->setCntLlaves($store->getCntLlaves())
-            ->setCntMedAgua($store->getCntMedAgua())
-            ->setCntMedElec($store->getCntMedElec())
-            ->setCntNeon($store->getCntNeon())
-            ->setCntSwitch($store->getCntSwitch())
-            ->setCntToma($store->getCntToma())
-            ->setCntVentana($store->getCntVentana())
-            ->setMedElectrico($store->getMedElectrico())
-            ->setMedAgua($store->getMedAgua());
-
-        return $this;
-    }
-
     public function getId(): ?int
     {
         return $this->id;
