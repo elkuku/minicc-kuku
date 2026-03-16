@@ -13,7 +13,7 @@ class ContractFactory
     {
         $contract = new Contract();
 
-        if ($template !== null) {
+        if ($template instanceof Contract) {
             $contract->setText($template->getText());
         }
 

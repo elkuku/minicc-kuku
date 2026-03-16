@@ -5,13 +5,11 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Controller\BaseController;
-use App\Entity\Transaction;
 use App\Enum\PaymentMethodId;
 use App\Repository\PaymentMethodRepository;
 use App\Repository\StoreRepository;
 use App\Repository\UserRepository;
-use App\Type\TransactionType;
-use DateTime;
+use App\Service\TransactionFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,7 +24,8 @@ class CollectRent extends BaseController
     public function __construct(
         private readonly StoreRepository $storeRepository,
         private readonly UserRepository $userRepository,
-        private readonly PaymentMethodRepository $paymentMethodRepository
+        private readonly PaymentMethodRepository $paymentMethodRepository,
+        private readonly TransactionFactory $transactionFactory,
     ) {}
 
     public function __invoke(
@@ -70,16 +69,13 @@ class CollectRent extends BaseController
                 throw new UnexpectedValueException('Store does not exist.');
             }
 
-            $transaction = new Transaction()
-                ->setDate(
-                    new DateTime((string)$request->request->get('date_cobro'))
-                )
-                ->setStore($store)
-                ->setUser($user)
-                ->setType(TransactionType::rent)
-                ->setMethod($method)
-                // Set negative value (!)
-                ->setAmount((string) (-(float) $value));
+            $transaction = $this->transactionFactory->createRent(
+                $store,
+                $user,
+                $method,
+                (string) $request->request->get('date_cobro'),
+                $value,
+            );
 
             $entityManager->persist($transaction);
         }

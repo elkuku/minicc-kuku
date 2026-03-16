@@ -43,7 +43,7 @@ class Create extends BaseController
             ? $this->contractFactory->createFromStore($store, $template)
             : new Contract();
 
-        if ($store === null && $template !== null) {
+        if ($store === null && $template instanceof Contract) {
             $contract->setText($template->getText());
         }
 

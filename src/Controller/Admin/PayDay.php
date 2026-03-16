@@ -5,12 +5,10 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Controller\BaseController;
-use App\Entity\Transaction;
 use App\Repository\PaymentMethodRepository;
 use App\Repository\StoreRepository;
 use App\Repository\TransactionRepository;
-use App\Type\TransactionType;
-use DateTime;
+use App\Service\TransactionFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,7 +26,8 @@ class PayDay extends BaseController
     public function __construct(
         private readonly StoreRepository $storeRepository,
         private readonly PaymentMethodRepository $paymentMethodRepository,
-        private readonly TransactionRepository $transactionRepository
+        private readonly TransactionRepository $transactionRepository,
+        private readonly TransactionFactory $transactionFactory,
     ) {}
 
     public function __invoke(
@@ -76,17 +75,17 @@ class PayDay extends BaseController
                 throw new UnexpectedValueException('Store has no user.');
             }
 
-            $transaction = new Transaction()
-                ->setDate(new DateTime($dateCobro))
-                ->setStore($store)
-                ->setUser($user)
-                ->setType(TransactionType::payment)
-                ->setMethod($method)
-                ->setRecipeNo((int)$payments['recipe'][$i])
-                ->setDocument((int)$payments['document'][$i])
-                ->setDepId((int)$payments['deposit'][$i])
-                ->setAmount($payments['amount'][$i])
-                ->setComment($payments['comment'][$i]);
+            $transaction = $this->transactionFactory->createPayment(
+                $store,
+                $user,
+                $method,
+                $dateCobro,
+                (int) $payments['recipe'][$i],
+                (int) $payments['document'][$i],
+                (int) $payments['deposit'][$i],
+                $payments['amount'][$i],
+                $payments['comment'][$i],
+            );
 
             $entityManager->persist($transaction);
         }
