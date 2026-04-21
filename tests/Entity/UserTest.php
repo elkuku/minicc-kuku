@@ -108,12 +108,13 @@ final class UserTest extends TestCase
         $user->setEmail('test@example.com');
         $user->setName('Test');
         $user->setGender(Gender::male);
-        $user->setRole('ROLE_ADMIN');
+        $user->setRole(UserRole::ADMIN);
 
         $roles = $user->getRoles();
 
-        $this->assertCount(1, $roles);
-        $this->assertSame('ROLE_ADMIN', $roles[0]);
+        $this->assertCount(2, $roles);
+        $this->assertContains('ROLE_ADMIN', $roles);
+        $this->assertContains('ROLE_USER', $roles);
     }
 
     public function testSetRoleSetsFirstRole(): void
@@ -176,7 +177,7 @@ final class UserTest extends TestCase
         $user->setEmail('test@example.com');
         $user->setGender(Gender::male);
 
-        $this->assertSame('', $user->getGoogleId());
+        $this->assertNull($user->getGoogleId());
 
         $result = $user->setGoogleId('google-123');
 
@@ -378,11 +379,12 @@ final class UserTest extends TestCase
         $user->setEmail('test@example.com');
         $user->setGender(Gender::male);
 
-        $result = $user->setRole('ROLE_CASHIER');
+        $result = $user->setRole(UserRole::CASHIER);
 
         $this->assertSame($user, $result);
         $this->assertSame('ROLE_CASHIER', $user->getRole());
-        $this->assertSame(['ROLE_CASHIER'], $user->getRoles());
+        $this->assertContains('ROLE_CASHIER', $user->getRoles());
+        $this->assertContains('ROLE_USER', $user->getRoles());
     }
 
     public function testGenderGetterSetter(): void

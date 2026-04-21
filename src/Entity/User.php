@@ -166,7 +166,7 @@ class User implements UserInterface, Stringable
      */
     public function setRoles(array $roles): self
     {
-        $this->role = $roles[0];
+        $this->role = UserRole::from($roles[0]);
 
         return $this;
     }

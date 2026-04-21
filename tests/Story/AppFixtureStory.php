@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Story;
 
-use App\Entity\User;
+use App\Enum\UserRole;
 use App\Type\Gender;
 use App\Type\TransactionType;
 use App\Tests\Factory\ContractFactory;
@@ -23,7 +23,7 @@ final class AppFixtureStory extends Story
         UserFactory::createOne([
             'name' => 'admin',
             'email' => 'admin@example.com',
-            'role' => User::ROLES['admin'],
+            'role' => UserRole::ADMIN,
             'gender' => Gender::female,
             'isActive' => true,
         ]);
@@ -31,7 +31,7 @@ final class AppFixtureStory extends Story
         $user1 = UserFactory::createOne([
             'name' => 'user1',
             'email' => 'user1@example.com',
-            'role' => User::ROLES['user'],
+            'role' => UserRole::USER,
             'gender' => Gender::female,
             'isActive' => true,
         ]);
@@ -39,7 +39,7 @@ final class AppFixtureStory extends Story
         UserFactory::createOne([
             'name' => 'user2',
             'email' => 'user2@example.com',
-            'role' => User::ROLES['user'],
+            'role' => UserRole::USER,
             'gender' => Gender::female,
             'isActive' => true,
         ]);
@@ -47,7 +47,7 @@ final class AppFixtureStory extends Story
         UserFactory::createOne([
             'name' => 'user3',
             'email' => 'user3@example.com',
-            'role' => User::ROLES['user'],
+            'role' => UserRole::USER,
             'gender' => Gender::male,
             'isActive' => false,
         ]);
@@ -69,6 +69,15 @@ final class AppFixtureStory extends Story
             'type' => TransactionType::payment,
             'method' => $gye,
             'amount' => '123.45',
+        ]);
+
+        TransactionFactory::createOne([
+            'store' => $store,
+            'user' => $user1,
+            'date' => new DateTime(),
+            'type' => TransactionType::payment,
+            'method' => $pch,
+            'amount' => '456.78',
         ]);
 
         $text = file_get_contents(

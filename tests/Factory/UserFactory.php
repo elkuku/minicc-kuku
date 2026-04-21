@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Factory;
 
 use App\Entity\User;
+use App\Enum\UserRole;
 use App\Type\Gender;
 use Zenstruck\Foundry\Persistence\PersistentObjectFactory;
 
@@ -26,7 +27,7 @@ final class UserFactory extends PersistentObjectFactory
         return [
             'email' => self::faker()->unique()->safeEmail(),
             'name' => self::faker()->userName(),
-            'role' => User::ROLES['user'],
+            'role' => UserRole::USER,
             'gender' => Gender::female,
             'isActive' => true,
             'inqCi' => '',
