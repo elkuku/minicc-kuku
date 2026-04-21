@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Enum\UserRole;
 use App\Repository\UserRepository;
 use App\Type\Gender;
 use Deprecated;
@@ -51,8 +52,8 @@ class User implements UserInterface, Stringable
     #[Column(type: Types::STRING, length: 40)]
     private ?string $name = null;
 
-    #[Column(type: Types::STRING, length: 50)]
-    private string $role = 'ROLE_USER';
+    #[Column(type: Types::STRING, length: 50, enumType: UserRole::class)]
+    private UserRole $role = UserRole::USER;
 
     #[Column(enumType: Gender::class)]
     private Gender $gender;
@@ -74,7 +75,7 @@ class User implements UserInterface, Stringable
     private ?string $direccion = '';
 
     #[Column(type: Types::STRING, length: 100, nullable: true)]
-    private string $googleId = '';
+    private ?string $googleId = null;
 
     #[Column(nullable: true)]
     private ?bool $isActive = null;
@@ -130,15 +131,20 @@ class User implements UserInterface, Stringable
     #[Override]
     public function getRoles(): array
     {
-        return [$this->getRole()];
+        $roles = [$this->getRole()];
+
+        // guarantee every user at least has ROLE_USER
+        $roles[] = UserRole::USER->value;
+
+        return \array_unique($roles);
     }
 
     public function getRole(): string
     {
-        return $this->role;
+        return $this->role->value;
     }
 
-    public function setRole(string $role): self
+    public function setRole(UserRole $role): self
     {
         $this->role = $role;
 
@@ -298,7 +304,7 @@ class User implements UserInterface, Stringable
         return $this;
     }
 
-    public function getGoogleId(): string
+    public function getGoogleId(): ?string
     {
         return $this->googleId;
     }

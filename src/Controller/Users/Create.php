@@ -26,8 +26,6 @@ class Create extends BaseController
         $form = $this->createForm(UserFullType::class, $user);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $user->setRole('ROLE_USER');
-
             $entityManager->persist($user);
             $entityManager->flush();
 

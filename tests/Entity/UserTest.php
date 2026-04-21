@@ -6,6 +6,7 @@ namespace App\Tests\Entity;
 
 use App\Entity\Store;
 use App\Entity\User;
+use App\Enum\UserRole;
 use App\Type\Gender;
 use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\TestCase;
@@ -115,14 +116,14 @@ final class UserTest extends TestCase
         $this->assertSame('ROLE_ADMIN', $roles[0]);
     }
 
-    public function testSetRolesSetsFirstRole(): void
+    public function testSetRoleSetsFirstRole(): void
     {
         $user = new User();
         $user->setEmail('test@example.com');
         $user->setName('Test');
         $user->setGender(Gender::male);
 
-        $result = $user->setRoles(['ROLE_CASHIER', 'ROLE_USER']);
+        $result = $user->setRole(UserRole::CASHIER);
 
         $this->assertSame($user, $result);
         $this->assertSame('ROLE_CASHIER', $user->getRole());
