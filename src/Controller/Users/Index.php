@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Users;
 
 use App\Controller\BaseController;
+use App\Enum\UserRole;
 use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,6 +23,7 @@ class Index extends BaseController
     ): Response
     {
         $userActive = $request->request->get('user_active', '1');
+        $userRole = (string) $request->request->get('user_role', '');
         $criteria = [];
 
         if ('0' === $userActive || '1' === $userActive) {
@@ -30,11 +32,22 @@ class Index extends BaseController
             $userActive = null;
         }
 
+        if ('' !== $userRole) {
+            $role = UserRole::tryFrom($userRole);
+            if ($role !== null) {
+                $criteria['role'] = $role;
+            } else {
+                $userRole = '';
+            }
+        }
+
         return $this->render(
             'users/index.html.twig',
             [
-                'users' => $this->userRepo->findBy($criteria),
+                'users'      => $this->userRepo->findBy($criteria),
                 'userActive' => $userActive,
+                'userRole'   => $userRole,
+                'roles'      => UserRole::cases(),
             ]
         );
     }

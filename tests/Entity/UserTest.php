@@ -127,7 +127,7 @@ final class UserTest extends TestCase
         $result = $user->setRole(UserRole::CASHIER);
 
         $this->assertSame($user, $result);
-        $this->assertSame('ROLE_CASHIER', $user->getRole());
+        $this->assertSame(UserRole::CASHIER, $user->getRole());
     }
 
     public function testDefaultRole(): void
@@ -137,7 +137,7 @@ final class UserTest extends TestCase
         $user->setName('Test');
         $user->setGender(Gender::male);
 
-        $this->assertSame('ROLE_USER', $user->getRole());
+        $this->assertSame(UserRole::USER, $user->getRole());
     }
 
 
@@ -382,7 +382,7 @@ final class UserTest extends TestCase
         $result = $user->setRole(UserRole::CASHIER);
 
         $this->assertSame($user, $result);
-        $this->assertSame('ROLE_CASHIER', $user->getRole());
+        $this->assertSame(UserRole::CASHIER, $user->getRole());
         $this->assertContains('ROLE_CASHIER', $user->getRoles());
         $this->assertContains('ROLE_USER', $user->getRoles());
     }

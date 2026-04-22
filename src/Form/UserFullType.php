@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Form;
 
 use App\Entity\User;
+use App\Enum\UserRole;
 use App\Type\Gender;
 use Override;
 use Symfony\Component\Form\AbstractType;
@@ -24,6 +25,10 @@ class UserFullType extends AbstractType
     {
         $builder
             ->add('isActive')
+            ->add('role', EnumType::class, [
+                'class' => UserRole::class,
+                'choice_label' => fn(UserRole $role): string => $role->label(),
+            ])
             ->add('gender', EnumType::class, [
                 'class' => Gender::class,
             ])

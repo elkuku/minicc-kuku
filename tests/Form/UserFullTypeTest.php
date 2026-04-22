@@ -16,6 +16,7 @@ final class UserFullTypeTest extends TestCase
     {
         $expectedFields = [
             'isActive',
+            'role',
             'gender',
             'name',
             'email',

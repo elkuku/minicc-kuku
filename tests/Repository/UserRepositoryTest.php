@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Repository;
 
 use App\Entity\User;
+use App\Enum\UserRole;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
@@ -27,7 +28,7 @@ final class UserRepositoryTest extends KernelTestCase
         $this->assertNotEmpty($users);
 
         foreach ($users as $user) {
-            $this->assertSame('ROLE_USER', $user->getRole());
+            $this->assertSame(UserRole::USER, $user->getRole());
             $this->assertTrue($user->isIsActive());
         }
     }
@@ -50,7 +51,7 @@ final class UserRepositoryTest extends KernelTestCase
         $this->assertNotEmpty($users);
 
         foreach ($users as $user) {
-            $this->assertSame('ROLE_USER', $user->getRole());
+            $this->assertSame(UserRole::USER, $user->getRole());
             $this->assertTrue($user->isIsActive());
         }
     }

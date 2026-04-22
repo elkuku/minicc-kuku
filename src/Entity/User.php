@@ -131,7 +131,7 @@ class User implements UserInterface, Stringable
     #[Override]
     public function getRoles(): array
     {
-        $roles = [$this->getRole()];
+        $roles = [$this->getRole()->value];
 
         // guarantee every user at least has ROLE_USER
         $roles[] = UserRole::USER->value;
@@ -139,9 +139,9 @@ class User implements UserInterface, Stringable
         return \array_unique($roles);
     }
 
-    public function getRole(): string
+    public function getRole(): UserRole
     {
-        return $this->role->value;
+        return $this->role;
     }
 
     public function setRole(UserRole $role): self

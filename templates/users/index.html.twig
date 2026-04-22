@@ -11,20 +11,27 @@
 
     <h1>Clientes</h1>
 
+    <form method="post">
     <table class="table table-sm table-hover">
         <thead>
         <tr>
             <th>
-                <form method="post">
-                    <select class="form-control" name="user_active" onchange="form.submit()">
-                        <option value="">Estado...</option>
-                        <option value="0"{{ 0 == userActive ? ' selected="selected"' : '' }}>Inactivo</option>
-                        <option value="1"{{ 1 == userActive ? ' selected="selected"' : '' }}>Activo</option>
-                    </select>
-                </form>
+                <select class="form-select form-select-sm" name="user_active" onchange="this.form.submit()">
+                    <option value="">Estado...</option>
+                    <option value="0"{{ '0' == userActive ? ' selected' : '' }}>Inactivo</option>
+                    <option value="1"{{ '1' == userActive ? ' selected' : '' }}>Activo</option>
+                </select>
             </th>
             <th>Gen</th>
             <th>Nombre</th>
+            <th>
+                <select class="form-select form-select-sm" name="user_role" onchange="this.form.submit()">
+                    <option value="">Rol...</option>
+                    {% for role in roles %}
+                        <option value="{{ role.value }}"{{ role.value == userRole ? ' selected' : '' }}>{{ role.label() }}</option>
+                    {% endfor %}
+                </select>
+            </th>
             <th>Locales</th>
         </tr>
         </thead>
@@ -33,6 +40,7 @@
                 <td><span class="oi oi-{{ user.isActive ? 'check' : 'x' }}"></span></td>
                 <td>{{ user.gender.title }}</td>
                 <td><a href="{{ path('users_edit', {'id': user.id}) }}">{{ user.name }}</a></td>
+                <td><span class="{{ user.role.cssClass() }}">{{ user.role.label() }}</span></td>
                 <td>
                     {% for store in user.stores %}
                         <a href="{{ path('stores_transactions', {'id': store.id}) }}">
@@ -49,4 +57,5 @@
             </tr>
         {% endfor %}
     </table>
+    </form>
 {% endblock %}
