@@ -15,13 +15,16 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route(path: '/deposits/delete/{id}', name: 'deposits_delete', methods: ['GET'])]
 class Delete extends BaseController
 {
+    public function __construct(private readonly EntityManagerInterface $entityManager)
+    {
+    }
+
     public function __invoke(
         Deposit $deposit,
-        EntityManagerInterface $entityManager,
     ): RedirectResponse
     {
-        $entityManager->remove($deposit);
-        $entityManager->flush();
+        $this->entityManager->remove($deposit);
+        $this->entityManager->flush();
         $this->addFlash('success', 'Deposit method has been deleted');
 
         return $this->redirectToRoute('deposits_index');

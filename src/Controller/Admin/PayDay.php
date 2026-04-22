@@ -28,11 +28,11 @@ class PayDay extends BaseController
         private readonly PaymentMethodRepository $paymentMethodRepository,
         private readonly TransactionRepository $transactionRepository,
         private readonly TransactionFactory $transactionFactory,
+        private readonly EntityManagerInterface $entityManager,
     ) {}
 
     public function __invoke(
         Request $request,
-        EntityManagerInterface $entityManager,
     ): Response
     {
         $rawPayments = $request->request->all('payments');
@@ -87,10 +87,10 @@ class PayDay extends BaseController
                 $payments['comment'][$i],
             );
 
-            $entityManager->persist($transaction);
+            $this->entityManager->persist($transaction);
         }
 
-        $entityManager->flush();
+        $this->entityManager->flush();
         $this->addFlash('success', 'Sa ha pagado...');
 
         return $this->redirectToRoute('welcome');

@@ -6,13 +6,13 @@ namespace App\Service;
 
 final class MailBatchResult
 {
-    /** @var list<mixed> */
+    /** @var list<int> */
     private array $successes = [];
 
     /** @var list<string> */
     private array $failures = [];
 
-    public function addSuccess(mixed $storeId): void
+    public function addSuccess(int $storeId): void
     {
         $this->successes[] = $storeId;
     }
@@ -22,7 +22,7 @@ final class MailBatchResult
         $this->failures[] = $message;
     }
 
-    /** @return list<mixed> */
+    /** @return list<int> */
     public function getSuccesses(): array
     {
         return $this->successes;

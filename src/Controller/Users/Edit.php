@@ -17,17 +17,20 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route(path: '/users/edit/{id}', name: 'users_edit', methods: ['GET', 'POST'])]
 class Edit extends BaseController
 {
+    public function __construct(private readonly EntityManagerInterface $entityManager)
+    {
+    }
+
     public function __invoke(
         User $client,
         Request $request,
-        EntityManagerInterface $entityManager,
     ): Response
     {
         $form = $this->createForm(UserFullType::class, $client);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($client);
-            $entityManager->flush();
+            $this->entityManager->persist($client);
+            $this->entityManager->flush();
 
             $this->addFlash('success', 'El usuario ha sido guardado');
 

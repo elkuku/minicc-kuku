@@ -17,17 +17,20 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route(path: '/payment-methods/create', name: 'payment_methods_create', methods: ['GET', 'POST'])]
 class Create extends BaseController
 {
+    public function __construct(private readonly EntityManagerInterface $entityManager)
+    {
+    }
+
     public function __invoke(
         Request $request,
-        EntityManagerInterface $entityManager,
     ): Response
     {
         $paymentMethod = new PaymentMethod();
         $form = $this->createForm(PaymentMethodType::class, $paymentMethod);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($paymentMethod);
-            $entityManager->flush();
+            $this->entityManager->persist($paymentMethod);
+            $this->entityManager->flush();
 
             $this->addFlash('success', 'Payment method has been saved');
 

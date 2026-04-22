@@ -26,11 +26,11 @@ class CollectRent extends BaseController
         private readonly UserRepository $userRepository,
         private readonly PaymentMethodRepository $paymentMethodRepository,
         private readonly TransactionFactory $transactionFactory,
+        private readonly EntityManagerInterface $entityManager,
     ) {}
 
     public function __invoke(
         Request $request,
-        EntityManagerInterface $entityManager,
     ): Response
     {
         /** @var array<string, string> $values */
@@ -77,10 +77,10 @@ class CollectRent extends BaseController
                 $value,
             );
 
-            $entityManager->persist($transaction);
+            $this->entityManager->persist($transaction);
         }
 
-        $entityManager->flush();
+        $this->entityManager->flush();
 
         $this->addFlash('success', 'A cobrar...');
 

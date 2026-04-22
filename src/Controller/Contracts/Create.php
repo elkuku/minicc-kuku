@@ -27,12 +27,12 @@ class Create extends BaseController
         private readonly ContractRepository $contractRepo,
         private readonly TaxService $taxService,
         private readonly ContractFactory $contractFactory,
+        private readonly EntityManagerInterface $entityManager,
     ) {}
 
     #[Route(path: '/contracts/create', name: 'contracts_create', methods: ['POST'])]
     public function new(
         Request $request,
-        EntityManagerInterface $entityManager,
     ): Response {
         $store = $this->storeRepo->find($request->request->getInt('store'));
         $user = $this->userRepo->find($request->request->getInt('user'));
@@ -56,8 +56,8 @@ class Create extends BaseController
         $form = $this->createForm(ContractType::class, $contract);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($contract);
-            $entityManager->flush();
+            $this->entityManager->persist($contract);
+            $this->entityManager->flush();
 
             $this->addFlash('success', 'El contrato fue guardado.');
 

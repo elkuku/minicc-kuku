@@ -15,13 +15,16 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route(path: '/payment-methods/delete/{id}', name: 'payment_methods_delete', methods: ['GET'])]
 class Delete extends BaseController
 {
+    public function __construct(private readonly EntityManagerInterface $entityManager)
+    {
+    }
+
     public function __invoke(
         PaymentMethod $paymentMethod,
-        EntityManagerInterface $entityManager,
     ): RedirectResponse
     {
-        $entityManager->remove($paymentMethod);
-        $entityManager->flush();
+        $this->entityManager->remove($paymentMethod);
+        $this->entityManager->flush();
         $this->addFlash('success', 'Payment method has been deleted');
 
         return $this->redirectToRoute('payment_methods_index');

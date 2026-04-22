@@ -14,13 +14,16 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route(path: '/contracts/delete/{id}', name: 'contracts_delete', methods: ['GET'])]
 class Delete extends BaseController
 {
+    public function __construct(private readonly EntityManagerInterface $entityManager)
+    {
+    }
+
     public function __invoke(
         Contract $contract,
-        EntityManagerInterface $entityManager,
     ): RedirectResponse
     {
-        $entityManager->remove($contract);
-        $entityManager->flush();
+        $this->entityManager->remove($contract);
+        $this->entityManager->flush();
         $this->addFlash('success', 'Contract has been deleted');
 
         return $this->redirectToRoute('contracts_index');

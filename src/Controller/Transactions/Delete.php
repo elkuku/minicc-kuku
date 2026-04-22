@@ -16,14 +16,17 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route(path: '/transactions/delete/{id}', name: 'transactions_delete', methods: ['GET'])]
 class Delete extends BaseController
 {
+    public function __construct(private readonly EntityManagerInterface $entityManager)
+    {
+    }
+
     public function __invoke(
         Request $request,
         Transaction $transaction,
-        EntityManagerInterface $entityManager,
     ): RedirectResponse
     {
-        $entityManager->remove($transaction);
-        $entityManager->flush();
+        $this->entityManager->remove($transaction);
+        $this->entityManager->flush();
         $this->addFlash('success', 'Transaction has been deleted');
         $redirect = $request->query->get('view');
 

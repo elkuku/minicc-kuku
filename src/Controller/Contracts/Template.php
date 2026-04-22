@@ -20,12 +20,12 @@ class Template extends BaseController
 {
     public function __construct(
         private readonly ContractRepository $contractRepository,
-        private readonly TaxService $taxService
+        private readonly TaxService $taxService,
+        private readonly EntityManagerInterface $entityManager
     ) {}
 
     public function __invoke(
         Request $request,
-        EntityManagerInterface $entityManager,
     ): Response
     {
         $data = $this->contractRepository->findTemplate();
@@ -34,8 +34,8 @@ class Template extends BaseController
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var Contract $data */
             $data = $form->getData();
-            $entityManager->persist($data);
-            $entityManager->flush();
+            $this->entityManager->persist($data);
+            $this->entityManager->flush();
 
             $this->addFlash('success', 'Template has been saved');
 

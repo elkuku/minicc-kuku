@@ -31,7 +31,7 @@ class BulkMailService
 
             try {
                 $this->mailer->send($emailFactory($store));
-                $result->addSuccess($store->getId());
+                $result->addSuccess((int) $store->getId());
             } catch (TransportExceptionInterface $exception) {
                 $result->addFailure($exception->getMessage());
             }

@@ -21,9 +21,7 @@ final class RegenerateAppSecretCommandTest extends TestCase
             ->with(self::callback(function (string $msg): bool {
                 $this->assertStringContainsString('Your secret key', $msg);
                 $this->assertStringContainsString('APP_SECRET', $msg);
-                // Secret should be 32 hex characters
-                preg_match('/Your secret key (\w+)/', $msg, $matches);
-                $this->assertSame(32, strlen($matches[1]));
+                $this->assertMatchesRegularExpression('/Your secret key \w{32}\b/', $msg);
 
                 return true;
             }));

@@ -17,18 +17,21 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route(path: '/transactions/edit/{id}', name: 'transactions_edit', methods: ['GET', 'POST'])]
 class Edit extends BaseController
 {
+    public function __construct(private readonly EntityManagerInterface $entityManager)
+    {
+    }
+
     public function __invoke(
         Transaction $transaction,
         Request $request,
-        EntityManagerInterface $entityManager,
     ): Response
     {
         $view = $request->query->get('view');
         $form = $this->createForm(TransactionTypeType::class, $transaction);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($transaction);
-            $entityManager->flush();
+            $this->entityManager->persist($transaction);
+            $this->entityManager->flush();
 
             $this->addFlash('success', 'La Transaccion ha sido guardada.');
 

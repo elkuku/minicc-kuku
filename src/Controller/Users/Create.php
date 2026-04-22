@@ -17,17 +17,20 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route(path: '/users/create', name: 'users_create', methods: ['GET', 'POST'])]
 class Create extends BaseController
 {
+    public function __construct(private readonly EntityManagerInterface $entityManager)
+    {
+    }
+
     public function __invoke(
         Request $request,
-        EntityManagerInterface $entityManager,
     ): Response
     {
         $user = new User();
         $form = $this->createForm(UserFullType::class, $user);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($user);
-            $entityManager->flush();
+            $this->entityManager->persist($user);
+            $this->entityManager->flush();
 
             $this->addFlash('success', 'El usuario ha sido creado');
 

@@ -31,7 +31,7 @@ class StoreVoter extends Voter
     #[Override]
     protected function supports(string $attribute, mixed $subject): bool
     {
-        if (!in_array($attribute, [self::VIEW, self::EDIT, self::EXPORT])) {
+        if (!in_array($attribute, [self::VIEW, self::EDIT, self::EXPORT], true)) {
             return false;
         }
 
