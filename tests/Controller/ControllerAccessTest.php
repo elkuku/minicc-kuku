@@ -37,6 +37,11 @@ final class ControllerAccessTest extends ControllerBaseTest
                     'GET' => 200,
                 ],
             ],
+            'download_store_transactions' => [
+                'params' => [
+                    '{year}' => '2024',
+                ],
+            ],
         ];
 
     public function testAllRoutesAreProtected(): void
