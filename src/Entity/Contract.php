@@ -13,6 +13,9 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 
+/**
+ * @see \App\Tests\Entity\ContractTest
+ */
 #[Entity(repositoryClass: ContractRepository::class)]
 class Contract
 {

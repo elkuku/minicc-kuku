@@ -17,6 +17,9 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use UnexpectedValueException;
 
+/**
+ * @see \App\Tests\Service\DepositImporterTest
+ */
 readonly class DepositImporter
 {
     public function __construct(

@@ -21,6 +21,9 @@ use Symfony\Component\Security\Http\SecurityRequestAttributes;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 use UnexpectedValueException;
 
+/**
+ * @see \App\Tests\Security\LoginFormAuthenticatorTest
+ */
 class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
 {
     use TargetPathTrait;

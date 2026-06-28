@@ -9,6 +9,9 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 
+/**
+ * @see \App\Tests\Service\EmailHelperTest
+ */
 readonly class EmailHelper
 {
     private Address $from;

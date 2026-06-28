@@ -18,6 +18,9 @@ use Doctrine\ORM\Mapping\OneToOne;
 use JsonSerializable;
 use Override;
 
+/**
+ * @see \App\Tests\Entity\TransactionTest
+ */
 #[Entity(repositoryClass: TransactionRepository::class)]
 class Transaction implements JsonSerializable
 {

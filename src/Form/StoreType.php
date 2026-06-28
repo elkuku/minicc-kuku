@@ -12,6 +12,9 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
+/**
+ * @see \App\Tests\Form\StoreTypeTest
+ */
 class StoreType extends AbstractType
 {
     #[Override]

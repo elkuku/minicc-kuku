@@ -9,6 +9,9 @@ use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 
+/**
+ * @see \App\Tests\Service\BulkMailServiceTest
+ */
 class BulkMailService
 {
     public function __construct(private readonly MailerInterface $mailer) {}

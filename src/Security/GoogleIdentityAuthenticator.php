@@ -25,6 +25,9 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
+/**
+ * @see \App\Tests\Security\GoogleIdentityAuthenticatorTest
+ */
 class GoogleIdentityAuthenticator extends AbstractAuthenticator
 {
     use TargetPathTrait;

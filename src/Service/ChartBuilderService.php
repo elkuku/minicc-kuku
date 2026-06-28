@@ -7,6 +7,9 @@ namespace App\Service;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
 
+/**
+ * @see \App\Tests\Service\ChartBuilderServiceTest
+ */
 class ChartBuilderService
 {
     public function __construct(

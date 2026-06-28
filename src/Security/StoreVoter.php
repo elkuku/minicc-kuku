@@ -15,6 +15,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 /**
  * @extends Voter<string, string>
+ * @see \App\Tests\Security\StoreVoterTest
  */
 class StoreVoter extends Voter
 {

@@ -9,6 +9,9 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+/**
+ * @see \App\Tests\Command\RegenerateAppSecretCommandTest
+ */
 #[AsCommand(
     name: 'gen-secret',
     description: 'Generate a new secret key',

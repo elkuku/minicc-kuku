@@ -7,6 +7,9 @@ namespace App\Dto;
 use App\Entity\Deposit;
 use JsonSerializable;
 
+/**
+ * @see \App\Tests\Dto\DepositDtoTest
+ */
 final readonly class DepositDto implements JsonSerializable
 {
     public function __construct(

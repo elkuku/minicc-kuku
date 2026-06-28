@@ -11,6 +11,9 @@ use Knp\Snappy\Pdf;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Twig\Environment;
 
+/**
+ * @see \App\Tests\Service\PdfHelperTest
+ */
 readonly class PdfHelper
 {
     public function __construct(

@@ -11,6 +11,9 @@ use App\Entity\User;
 use App\Type\TransactionType;
 use DateTime;
 
+/**
+ * @see \App\Tests\Service\TransactionFactoryTest
+ */
 class TransactionFactory
 {
     public function createPayment(

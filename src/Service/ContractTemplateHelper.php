@@ -9,6 +9,9 @@ use App\Helper\IntlConverter;
 use App\Type\Gender;
 use IntlNumbersToWords\Numbers;
 
+/**
+ * @see \App\Tests\Service\ContractTemplateHelperTest
+ */
 class ContractTemplateHelper
 {
     /**

@@ -16,6 +16,9 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToOne;
 use UnexpectedValueException;
 
+/**
+ * @see \App\Tests\Entity\DepositTest
+ */
 #[Entity(repositoryClass: DepositRepository::class)]
 class Deposit
 {

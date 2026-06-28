@@ -15,6 +15,9 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Override;
 use Stringable;
 
+/**
+ * @see \App\Tests\Entity\StoreTest
+ */
 #[Entity(repositoryClass: StoreRepository::class)]
 class Store implements Stringable
 {

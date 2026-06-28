@@ -6,6 +6,9 @@ namespace App\Service;
 
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
+/**
+ * @see \App\Tests\Service\TaxServiceTest
+ */
 class TaxService
 {
     private readonly float $taxMultiplier;

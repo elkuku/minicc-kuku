@@ -76,7 +76,7 @@ final class ControllerNamingTest extends KernelTestCase
      */
     private function checkRouteNaming(array $routes, string $subPath, string $className, string $routerClass): int
     {
-        foreach ($routes as $name => $route) {
+        foreach (array_keys($routes) as $name) {
             $expected = strtolower((string) preg_replace('/(?<!^)[A-Z]/', '_$0', $subPath.$className));
             if ($name !== $expected) {
                 echo sprintf("Wrong name for '%s' should be '%s'.\n", $routerClass, $expected);

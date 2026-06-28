@@ -13,6 +13,9 @@ use Elkuku\SymfonyUtils\Command\UserAdminBaseCommand;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+/**
+ * @see \App\Tests\Command\UserAdminCommandTest
+ */
 #[AsCommand(
     name: 'user-admin',
     description: 'Administer user accounts',

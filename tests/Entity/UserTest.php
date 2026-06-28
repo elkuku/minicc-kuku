@@ -312,19 +312,7 @@ final class UserTest extends TestCase
     }
 
     #[IgnoreDeprecations]
-    public function testEraseCredentials(): void
-    {
-        $user = new User();
-        $user->setEmail('test@example.com');
-        $user->setGender(Gender::male);
-
-        // Should not throw - deprecated no-op method
-        $user->eraseCredentials();
-
-        $this->assertSame('test@example.com', $user->getEmail());
-    }
-
-    public function testToStringWithNullName(): void
+public function testToStringWithNullName(): void
     {
         $user = new User();
         $user->setEmail('test@example.com');

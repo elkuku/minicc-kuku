@@ -11,6 +11,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 use Throwable;
 
+/**
+ * @see \App\Tests\DataCollector\GitDataCollectorTest
+ */
 class GitDataCollector extends DataCollector
 {
     public function __construct(

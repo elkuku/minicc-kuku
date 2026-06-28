@@ -15,6 +15,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Contract[]    findBy(array<string, mixed> $criteria, ?array<string, string> $orderBy = null, $limit = null, $offset = null)
  *
  * @extends ServiceEntityRepository<Contract>
+ * @see \App\Tests\Repository\ContractRepositoryTest
  */
 class ContractRepository extends ServiceEntityRepository
 {

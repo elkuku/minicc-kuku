@@ -27,7 +27,7 @@ final class BulkMailServiceTest extends TestCase
         $recipients = [1 => true, 2 => true];
 
         $service = new BulkMailService($mailer);
-        $result = $service->sendToFilteredStores($stores, $recipients, fn() => new Email());
+        $result = $service->sendToFilteredStores($stores, $recipients, fn(): Email => new Email());
 
         self::assertCount(2, $result->getSuccesses());
         self::assertContains(1, $result->getSuccesses());
@@ -43,7 +43,7 @@ final class BulkMailServiceTest extends TestCase
         $stores = [$this->makeStore(1), $this->makeStore(2)];
 
         $service = new BulkMailService($mailer);
-        $result = $service->sendToFilteredStores($stores, [1 => true], fn() => new Email());
+        $result = $service->sendToFilteredStores($stores, [1 => true], fn(): Email => new Email());
 
         self::assertCount(1, $result->getSuccesses());
         self::assertSame([1], $result->getSuccesses());
@@ -57,7 +57,7 @@ final class BulkMailServiceTest extends TestCase
         $store = $this->makeStore(1, withUser: false);
 
         $service = new BulkMailService($mailer);
-        $result = $service->sendToFilteredStores([$store], [1 => true], fn() => new Email());
+        $result = $service->sendToFilteredStores([$store], [1 => true], fn(): Email => new Email());
 
         self::assertFalse($result->hasSuccesses());
         self::assertFalse($result->hasFailures());
@@ -71,7 +71,7 @@ final class BulkMailServiceTest extends TestCase
         $stores = [$this->makeStore(1), $this->makeStore(2)];
 
         $service = new BulkMailService($mailer);
-        $result = $service->sendToFilteredStores($stores, [1 => true, 2 => true], fn() => new Email());
+        $result = $service->sendToFilteredStores($stores, [1 => true, 2 => true], fn(): Email => new Email());
 
         self::assertFalse($result->hasSuccesses());
         self::assertTrue($result->hasFailures());
@@ -85,7 +85,7 @@ final class BulkMailServiceTest extends TestCase
         $mailer->expects(self::never())->method('send');
 
         $service = new BulkMailService($mailer);
-        $result = $service->sendToFilteredStores([], [1 => true], fn() => new Email());
+        $result = $service->sendToFilteredStores([], [1 => true], fn(): Email => new Email());
 
         self::assertFalse($result->hasSuccesses());
         self::assertFalse($result->hasFailures());
@@ -99,7 +99,7 @@ final class BulkMailServiceTest extends TestCase
         $stores = [$this->makeStore(1), $this->makeStore(2)];
 
         $service = new BulkMailService($mailer);
-        $result = $service->sendToFilteredStores($stores, [], fn() => new Email());
+        $result = $service->sendToFilteredStores($stores, [], fn(): Email => new Email());
 
         self::assertFalse($result->hasSuccesses());
         self::assertFalse($result->hasFailures());

@@ -6,6 +6,9 @@ namespace App\Service;
 
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
+/**
+ * @see \App\Tests\Service\ShaFinderTest
+ */
 class ShaFinder
 {
     private string $sha = 'n/a';

@@ -12,6 +12,9 @@ use stdClass;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
+/**
+ * @see \App\Tests\Controller\WelcomeTest
+ */
 #[Route(path: '/', name: 'welcome', methods: ['GET'])]
 class Welcome extends BaseController
 {

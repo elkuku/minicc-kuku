@@ -11,6 +11,9 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
+/**
+ * @see \App\Tests\Entity\PaymentMethodTest
+ */
 #[Entity(repositoryClass: PaymentMethodRepository::class)]
 class PaymentMethod
 {

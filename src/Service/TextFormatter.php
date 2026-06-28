@@ -6,6 +6,9 @@ namespace App\Service;
 
 use App\Entity\User;
 
+/**
+ * @see \App\Tests\Service\TextFormatterTest
+ */
 class TextFormatter
 {
 

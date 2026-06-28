@@ -7,6 +7,9 @@ namespace App\Service;
 use App\Entity\Contract;
 use App\Entity\Store;
 
+/**
+ * @see \App\Tests\Service\ContractFactoryTest
+ */
 class ContractFactory
 {
     public function createFromStore(Store $store, ?Contract $template = null): Contract

@@ -8,6 +8,9 @@ use DateTime;
 use IntlDateFormatter;
 use function is_object;
 
+/**
+ * @see \App\Tests\Helper\IntlConverterTest
+ */
 class IntlConverter
 {
     public static function formatDate(

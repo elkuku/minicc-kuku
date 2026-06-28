@@ -256,13 +256,13 @@ final class TransactionRepositoryTest extends KernelTestCase
     public function testFindByIdsReturnsMatchingTransactions(): void
     {
         $all = $this->repository->findBy([], limit: 3);
-        $ids = array_map(static fn($t) => $t->getId(), $all);
-        $ids = array_filter($ids, static fn($id) => $id !== null);
+        $ids = array_map(static fn(Transaction $t): ?int => $t->getId(), $all);
+        $ids = array_filter($ids, static fn(?int $id): bool => $id !== null);
 
         $result = $this->repository->findByIds(array_values($ids));
 
         self::assertCount(count($ids), $result);
-        $returnedIds = array_map(static fn($t) => $t->getId(), $result);
+        $returnedIds = array_map(static fn(Transaction $t): ?int => $t->getId(), $result);
         foreach ($ids as $id) {
             self::assertContains($id, $returnedIds);
         }

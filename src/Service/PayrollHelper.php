@@ -9,6 +9,9 @@ use App\Entity\Transaction;
 use App\Repository\StoreRepository;
 use App\Repository\TransactionRepository;
 
+/**
+ * @see \App\Tests\Service\PayrollHelperTest
+ */
 class PayrollHelper
 {
     public function __construct(

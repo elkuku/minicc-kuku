@@ -28,6 +28,7 @@ use Symfony\Component\Clock\ClockInterface;
  * @method Transaction[]    findBy(array<string, mixed> $criteria, ?array<string, string> $orderBy = null, $limit = null, $offset = null)
  *
  * @extends ServiceEntityRepository<Transaction>
+ * @see \App\Tests\Repository\TransactionRepositoryTest
  */
 class TransactionRepository extends ServiceEntityRepository
 {

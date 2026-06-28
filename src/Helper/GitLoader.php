@@ -8,6 +8,9 @@ use RuntimeException;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use function is_array;
 
+/**
+ * @see \App\Tests\Helper\GitLoaderTest
+ */
 class GitLoader
 {
     public function __construct(

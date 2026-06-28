@@ -12,6 +12,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @see \App\Tests\Form\UserTypeTest
+ */
 class UserType extends AbstractType
 {
     #[Override]

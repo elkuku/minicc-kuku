@@ -16,6 +16,9 @@ use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Translation\TranslatableMessage;
 
+/**
+ * @see \App\Tests\Form\TransactionTypeTypeTest
+ */
 class TransactionTypeType extends AbstractType
 {
     #[Override]

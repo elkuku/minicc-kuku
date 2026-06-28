@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Type;
 
+/**
+ * @see \App\Tests\Type\GoogleUserTest
+ */
 final class GoogleUser
 {
     /**

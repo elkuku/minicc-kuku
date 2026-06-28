@@ -7,7 +7,6 @@ namespace App\Entity;
 use App\Enum\UserRole;
 use App\Repository\UserRepository;
 use App\Type\Gender;
-use Deprecated;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -23,6 +22,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
+/**
+ * @see \App\Tests\Entity\UserTest
+ */
 #[UniqueEntity(fields: 'email', message: 'This email address is already in use')]
 #[Entity(repositoryClass: UserRepository::class)]
 class User implements UserInterface, Stringable
@@ -157,9 +159,6 @@ class User implements UserInterface, Stringable
 
         return $this;
     }
-
-    #[Deprecated]
-    public function eraseCredentials(): void {}
 
     /**
      * @param string[] $roles

@@ -152,7 +152,7 @@ final class PdfHelperTest extends TestCase
     public function testRenderTransactionsPdfUsesHeadersFootersAndLocalFileAccess(): void
     {
         $twig = $this->createStub(Environment::class);
-        $twig->method('render')->willReturnCallback(static fn(string $tpl) => match ($tpl) {
+        $twig->method('render')->willReturnCallback(static fn(string $tpl): string => match ($tpl) {
             '_header-pdf.html.twig' => '<header/>',
             '_footer-pdf.html.twig' => '<footer/>',
             default => '<html/>',

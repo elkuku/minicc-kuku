@@ -8,6 +8,9 @@ use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
+/**
+ * @see \App\Tests\Form\PaymentMethodTypeTest
+ */
 class PaymentMethodType extends AbstractType
 {
     #[Override]

@@ -12,6 +12,9 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Mailer\MailerInterface;
 
+/**
+ * @see \App\Tests\Command\BackupDbCommandTest
+ */
 #[AsCommand(name: 'app:backup:db', description: 'Backup the database')]
 class BackupDbCommand
 {
