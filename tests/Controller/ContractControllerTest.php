@@ -101,7 +101,7 @@ final class ContractControllerTest extends WebTestCase
     public function testContractGeneratePdf(): void
     {
         $binary = $_ENV['WKHTMLTOPDF_PATH'] ?? $_SERVER['WKHTMLTOPDF_PATH'] ?? getenv('WKHTMLTOPDF_PATH');
-        if (!$binary || !is_executable((string) $binary)) {
+        if (!$binary || !file_exists((string) $binary)) {
             self::markTestSkipped('wkhtmltopdf not available');
         }
 
