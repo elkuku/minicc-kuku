@@ -12,6 +12,9 @@ use Symfony\Component\Clock\ClockInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+/**
+ * @see \App\Tests\Controller\Contracts\GenerateTest
+ */
 #[IsGranted('ROLE_ADMIN')]
 #[Route(path: '/contracts/generate/{id}', name: 'contracts_generate', requirements: ['id' => '\d+',], methods: ['GET'])]
 class Generate extends BaseController
@@ -24,9 +27,12 @@ class Generate extends BaseController
 
     public function __invoke(Contract $contract): PdfResponse
     {
+        $html = '<style>table { width: 100% !important; min-width: unset !important; }</style>'
+            .$this->templateHelper->replaceContent($contract);
+
         return new PdfResponse(
             $this->pdf->getOutputFromHtml(
-                $this->templateHelper->replaceContent($contract),
+                $html,
                 ['encoding' => 'utf-8']
             ),
             sprintf(

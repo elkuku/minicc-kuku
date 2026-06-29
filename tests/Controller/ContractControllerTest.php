@@ -98,6 +98,40 @@ final class ContractControllerTest extends WebTestCase
         self::assertResponseStatusCodeSame(403);
     }
 
+    public function testContractGeneratePdf(): void
+    {
+        $contract = $this->ensureContractExists();
+
+        $this->client->request(Request::METHOD_GET, '/contracts/generate/' . $contract->getId());
+
+        self::assertResponseIsSuccessful();
+        self::assertResponseHeaderSame('content-type', 'application/pdf');
+
+        $content = $this->client->getResponse()->getContent();
+        self::assertNotFalse($content);
+        self::assertStringStartsWith('%PDF', $content);
+
+        file_put_contents(
+            dirname(__DIR__, 2) . '/var/test-contract.pdf',
+            $content
+        );
+    }
+
+    public function testContractGeneratePdfDeniedForRegularUser(): void
+    {
+        self::ensureKernelShutdown();
+        $client = self::createClient();
+        /** @var UserRepository $userRepository */
+        $userRepository = self::getContainer()->get(UserRepository::class);
+        $user = $userRepository->findOneBy(['email' => 'user1@example.com']);
+        $this->assertInstanceOf(User::class, $user);
+        $client->loginUser($user);
+
+        $client->request(Request::METHOD_GET, '/contracts/generate/1');
+
+        self::assertResponseStatusCodeSame(403);
+    }
+
     // Delete test last since it modifies the database
     public function testContractDelete(): void
     {
