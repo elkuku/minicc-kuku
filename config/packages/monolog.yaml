@@ -19,6 +19,7 @@ when@dev:
                 channels: [deprecation]
                 path: "%kernel.logs_dir%/%kernel.environment%.deprecations.json"
                 formatter: monolog.formatter.json
+                include_stacktraces: true
 
 when@test:
     monolog:
@@ -46,7 +47,7 @@ when@prod:
                 buffer_size: 50 # How many messages should be saved? Prevent memory leaks
             nested:
                 type: stream
-                path: "%kernel.logs_dir%/%kernel.environment%.log"
+                path: "%kernel.logs_dir%/%kernel.environment%.json"
                 level: debug
                 formatter: monolog.formatter.json
             console:
@@ -56,5 +57,6 @@ when@prod:
             deprecation:
                 type: stream
                 channels: [deprecation]
-                path: "%kernel.logs_dir%/%kernel.environment%.log"
+                path: "%kernel.logs_dir%/%kernel.environment%.deprecations.json"
                 formatter: monolog.formatter.json
+                include_stacktraces: true
