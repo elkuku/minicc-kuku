@@ -46,18 +46,28 @@
                                 <option value="50">
                                 <option value="100">
                                 <option value="150">
+                                <option value="200">
+                                <option value="250">
+                                <option value="500">
                             </datalist>
                         </div>
                     </div>
                     <div class="col-4">
-                        <div class="form-floating mb-3">
-                            <input
-                                    {{ stimulus_target('payday', 'modalRecipe') }}
-                                    class="form-control form-control-sm" type="text">
-                            <label>Factura</label>
+                        <div class="input-group mb-3">
+                            <div class="form-floating">
+                                <input
+                                        {{ stimulus_target('payday', 'modalRecipe') }}
+                                        class="form-control form-control-sm" type="text">
+                                <label>Factura</label>
+                            </div>
+                            <button
+                                    type="button"
+                                    class="btn btn-outline-secondary btn-sm d-inline-block"
+                                    data-action="payday#clearRecipe"
+                            >
+                                <span class="oi oi-x" aria-hidden="true"></span>
+                            </button>
                         </div>
-
-
                     </div>
                 </div>
 

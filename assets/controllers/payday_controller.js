@@ -54,6 +54,10 @@ export default class extends Controller {
         this.modal.show()
     }
 
+    clearRecipe() {
+        this.modalRecipeTarget.value = ''
+    }
+
     deletePayment(event) {
         event.preventDefault()
         console.log('Hello deleteElement')
