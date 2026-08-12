@@ -14,7 +14,7 @@ use function is_array;
 class GitLoader
 {
     public function __construct(
-        #[Autowire('%kernel.project_dir%')]
+        #[Autowire(param: 'kernel.project_dir')]
         private readonly string $rootDir
     ) {}
 

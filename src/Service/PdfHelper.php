@@ -17,7 +17,7 @@ use Twig\Environment;
 readonly class PdfHelper
 {
     public function __construct(
-        #[Autowire('%kernel.project_dir%')]
+        #[Autowire(param: 'kernel.project_dir')]
         private string $rootDir,
         private Environment $twig,
         private Pdf $pdfEngine,

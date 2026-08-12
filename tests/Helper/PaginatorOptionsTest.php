@@ -96,7 +96,7 @@ final class PaginatorOptionsTest extends TestCase
         $options = new PaginatorOptions();
 
         $this->expectException(UnexpectedValueException::class);
-        $this->expectExceptionMessage('Order dir must be ASC, DESC');
+        $this->expectExceptionMessageIsOrContains('Order dir must be ASC, DESC');
 
         $options->setOrderDir('INVALID');
     }

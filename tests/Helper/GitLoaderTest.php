@@ -142,7 +142,7 @@ final class GitLoaderTest extends TestCase
         $gitLoader = new FailingGitLoader($this->tempDir, 'Something went wrong');
 
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('Something went wrong');
+        $this->expectExceptionMessageIsOrContains('Something went wrong');
 
         $gitLoader->getLastCommitDetail();
     }
@@ -152,7 +152,7 @@ final class GitLoaderTest extends TestCase
         $gitLoader = new FailingGitLoader($this->tempDir, '');
 
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('An unknown error occurred');
+        $this->expectExceptionMessageIsOrContains('An unknown error occurred');
 
         $gitLoader->getLastCommitDetail();
     }

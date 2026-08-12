@@ -20,7 +20,7 @@ final class DepositTest extends TestCase
         $paymentMethod = $this->createPaymentMethodWithId(1);
 
         $this->expectException(UnexpectedValueException::class);
-        $this->expectExceptionMessage('The entity with ID "1" is supposed to be the BAR payment method!');
+        $this->expectExceptionMessageIsOrContains('The entity with ID "1" is supposed to be the BAR payment method!');
 
         $deposit->setEntity($paymentMethod);
     }

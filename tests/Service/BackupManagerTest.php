@@ -74,7 +74,7 @@ final class BackupManagerTest extends TestCase
         $manager = new BackupManager('');
 
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('No DATABASE_URL found in environment');
+        $this->expectExceptionMessageIsOrContains('No DATABASE_URL found in environment');
 
         $manager->getBackupCommand();
     }
@@ -84,7 +84,7 @@ final class BackupManagerTest extends TestCase
         $manager = new BackupManager('sqlite://localhost/mydb');
 
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('Invalid DB driver');
+        $this->expectExceptionMessageIsOrContains('Invalid DB driver');
 
         $manager->getBackupCommand();
     }
@@ -132,7 +132,7 @@ final class BackupManagerTest extends TestCase
         $manager = new BackupManager('https://host:99999999');
 
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('Invalid DATABASE_URL format');
+        $this->expectExceptionMessageIsOrContains('Invalid DATABASE_URL format');
 
         $manager->getBackupCommand();
     }

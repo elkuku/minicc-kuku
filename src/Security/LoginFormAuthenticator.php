@@ -30,7 +30,7 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
 
     public function __construct(
         private readonly RouterInterface $router,
-        #[Autowire('%env(APP_ENV)%')]
+        #[Autowire(env: 'APP_ENV')]
         private readonly string $appEnv
     ) {}
 

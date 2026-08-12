@@ -61,7 +61,7 @@ final class LoginFormAuthenticatorTest extends TestCase
         $request->setSession($session);
 
         $this->expectException(UnexpectedValueException::class);
-        $this->expectExceptionMessage('GTFO!');
+        $this->expectExceptionMessageIsOrContains('GTFO!');
 
         $authenticator->authenticate($request);
     }
@@ -77,7 +77,7 @@ final class LoginFormAuthenticatorTest extends TestCase
         $request->setSession($session);
 
         $this->expectException(AuthenticationException::class);
-        $this->expectExceptionMessage('User identifier cannot be empty.');
+        $this->expectExceptionMessageIsOrContains('User identifier cannot be empty.');
 
         $authenticator->authenticate($request);
     }

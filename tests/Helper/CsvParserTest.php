@@ -91,7 +91,7 @@ final class CsvParserTest extends TestCase
     public function testParseCSVThrowsOnEmptyContents(): void
     {
         $this->expectException(UnexpectedValueException::class);
-        $this->expectExceptionMessage('CSV file is empty');
+        $this->expectExceptionMessageIsOrContains('CSV file is empty');
 
         $this->parser->parseCSV([]);
     }
@@ -104,7 +104,7 @@ final class CsvParserTest extends TestCase
         ];
 
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('Malformed CSV file.');
+        $this->expectExceptionMessageIsOrContains('Malformed CSV file.');
 
         $this->parser->parseCSV($contents);
     }

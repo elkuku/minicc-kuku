@@ -60,7 +60,7 @@ final class GoogleIdentityAuthenticatorTest extends TestCase
         $request = Request::create('/connect/google/verify', Request::METHOD_POST);
 
         $this->expectException(AuthenticationException::class);
-        $this->expectExceptionMessage('Missing credentials :(');
+        $this->expectExceptionMessageIsOrContains('Missing credentials :(');
 
         $authenticator->authenticate($request);
     }
@@ -193,7 +193,7 @@ final class GoogleIdentityAuthenticatorTest extends TestCase
         ]);
 
         $this->expectException(UserNotFoundException::class);
-        $this->expectExceptionMessage('unknown@example.com');
+        $this->expectExceptionMessageIsOrContains('unknown@example.com');
 
         $this->callGetUser($authenticator, $googleUser);
     }

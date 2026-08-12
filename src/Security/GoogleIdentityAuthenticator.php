@@ -33,7 +33,7 @@ class GoogleIdentityAuthenticator extends AbstractAuthenticator
     use TargetPathTrait;
 
     public function __construct(
-        #[Autowire('%env(OAUTH_GOOGLE_ID)%')]
+        #[Autowire(env: 'OAUTH_GOOGLE_ID')]
         private readonly string $oauthGoogleId,
         private readonly UserRepository $userRepository,
         private readonly EntityManagerInterface $entityManager,

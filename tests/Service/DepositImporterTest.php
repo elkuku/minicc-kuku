@@ -122,7 +122,7 @@ final class DepositImporterTest extends TestCase
         $request = new Request();
 
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('No CSV file received.');
+        $this->expectExceptionMessageIsOrContains('No CSV file received.');
 
         $importer->importFromRequest($request);
     }
@@ -140,7 +140,7 @@ final class DepositImporterTest extends TestCase
         $importer = new DepositImporter($paymentMethodRepo, $depositRepo, $em);
 
         $this->expectException(UnexpectedValueException::class);
-        $this->expectExceptionMessage('Invalid entity');
+        $this->expectExceptionMessageIsOrContains('Invalid entity');
 
         $importer->importFromRequest($this->makeRequest());
     }

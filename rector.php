@@ -7,6 +7,8 @@ use Rector\Exception\Configuration\InvalidConfigurationException;
 use Rector\Symfony\Bridge\Symfony\Routing\SymfonyRoutesProvider;
 use Rector\Symfony\Contract\Bridge\Symfony\Routing\SymfonyRoutesProviderInterface;
 use Rector\Symfony\Symfony30\Rector\MethodCall\StringFormTypeToClassRector;
+use Rector\Symfony\Symfony34\Rector\Closure\ContainerGetNameToTypeInTestsRector;
+use Rector\PHPUnit\PHPUnit100\Rector\Class_\ParentTestClassConstructorRector;
 
 try {
     return RectorConfig::configure()
@@ -17,6 +19,14 @@ try {
         ->withSkip([
             __DIR__.'/src/Service/PhpXlsxGenerator.php',
             \Rector\PHPUnit\CodeQuality\Rector\Class_\PreferPHPUnitThisCallRector::class,
+            // 'routing.loader' has no public class-name alias in the container
+            ContainerGetNameToTypeInTestsRector::class => [
+                __DIR__.'/tests/Controller/ControllerNamingTest.php',
+            ],
+            // WebTestCase::__construct() is final; overriding it is a fatal error
+            ParentTestClassConstructorRector::class => [
+                __DIR__.'/tests/Twig/TwigExtension2Test.php',
+            ],
         ])
         //
         ->withSymfonyContainerXml(__DIR__.'/var/cache/dev/App_KernelDevDebugContainer.xml')
@@ -45,7 +55,7 @@ try {
         )
         ->withImportNames(removeUnusedImports: true)
         ->withRules([
-            StringFormTypeToClassRector::class,
+          //  StringFormTypeToClassRector::class,
         ]);
 } catch (InvalidConfigurationException $e) {
     echo($e->getMessage());

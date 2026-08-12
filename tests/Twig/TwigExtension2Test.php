@@ -9,7 +9,7 @@ use App\Service\TextFormatter;
 use App\Twig\Extension\TwigExtension;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-final class TwigExtensionTest2 extends WebTestCase
+final class TwigExtension2Test extends WebTestCase
 {
     private TwigExtension $twigExtension;
 
