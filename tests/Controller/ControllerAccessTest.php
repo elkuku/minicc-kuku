@@ -42,6 +42,12 @@ final class ControllerAccessTest extends ControllerBaseTest
                     '{year}' => '2024',
                 ],
             ],
+            'logout' => [
+                'statusCodes' => [
+                    // POSTing without a valid CSRF token is rejected before the auth check
+                    'POST' => 403,
+                ],
+            ],
         ];
 
     public function testAllRoutesAreProtected(): void

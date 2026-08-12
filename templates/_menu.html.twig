@@ -73,9 +73,12 @@
         </div>
         <div class="ms-auto">
             {% if app.user %}
-                <a href="{{ path('logout') }}" title="Logout">
-                    <span class="oi oi-account-logout"></span>
-                </a>
+                <form method="post" action="{{ path('logout') }}" class="d-inline">
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('logout') }}">
+                    <button type="submit" class="btn btn-link p-0 border-0" title="Logout">
+                        <span class="oi oi-account-logout"></span>
+                    </button>
+                </form>
             {% else %}
                 {% if 'dev' == app.environment %}
                     <a href="{{ path('login') }}" title="Login">

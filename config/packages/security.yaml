@@ -30,6 +30,7 @@ security:
             logout:
                 path: /logout
                 target: /
+                enable_csrf: true
 
             remember_me:
                 secret: '%kernel.secret%'

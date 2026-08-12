@@ -42,7 +42,10 @@ final class SecurityControllerTest extends WebTestCase
         $this->assertInstanceOf(User::class, $user);
         $client->loginUser($user);
 
-        $client->request(Request::METHOD_GET, '/logout');
+        $crawler = $client->request(Request::METHOD_GET, '/');
+        $form = $crawler->filter('form[action="/logout"]')->form();
+
+        $client->submit($form);
 
         self::assertResponseRedirects();
     }

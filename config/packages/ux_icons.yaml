@@ -14,6 +14,12 @@ ux_icons:
     # Throw an exception if an icon is not
     ignore_not_found: false
 
+when@dev:
+    ux_icons:
+        iconify:
+            # Persist on-demand (Iconify) icons to assets/icons/ so production doesn't depend on the Iconify API
+            auto_lock: true
+
 when@prod:
     ux_icons:
         # Suppress exceptions for missing icons in production

@@ -160,7 +160,9 @@ final class LoginFormTest extends WebTestCase
         self::assertResponseIsSuccessful();
 
         // Logout
-        $client->request(Request::METHOD_GET, '/logout');
+        $crawler = $client->getCrawler();
+        $logoutForm = $crawler->filter('form[action="/logout"]')->form();
+        $client->submit($logoutForm);
 
         self::assertResponseRedirects('/');
         $client->followRedirect();
