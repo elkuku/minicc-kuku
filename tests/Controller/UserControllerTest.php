@@ -80,7 +80,7 @@ final class UserControllerTest extends WebTestCase
     public function testUserCreatePostValidForm(): void
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/users/create');
-        $form = $crawler->filter('button[type="submit"]')->form([
+        $form = $crawler->filter('form[name="user_full"] button[type="submit"]')->form([
             'user_full[name]' => 'New Test User',
             'user_full[email]' => 'newuser@example.com',
             'user_full[gender]' => '1',
@@ -101,7 +101,7 @@ final class UserControllerTest extends WebTestCase
         $this->assertInstanceOf(User::class, $user);
 
         $crawler = $this->client->request(Request::METHOD_GET, '/users/edit/' . $user->getId());
-        $form = $crawler->filter('button[type="submit"]')->form([
+        $form = $crawler->filter('form[name="user_full"] button[type="submit"]')->form([
             'user_full[name]' => 'Updated User',
             'user_full[email]' => 'user2@example.com',
             'user_full[gender]' => '2',
