@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Helper\Paginator;
 
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\HttpFoundation\InputBag;
 use Symfony\Component\HttpFoundation\Request;
 
 trait PaginatorTrait
@@ -19,9 +20,7 @@ trait PaginatorTrait
     ): PaginatorOptions
     {
         /** @var array{page?: string, limit?: string, order?: string, orderDir?: string, criteria?: array<string, string>} $options */
-        $options = $request->isMethod('POST')
-            ? $request->request->all('paginatorOptions')
-            : $request->query->all('paginatorOptions');
+        $options = $this->getPaginatorOptionsBag($request)->all('paginatorOptions');
 
         return new PaginatorOptions()
             ->setPage(
@@ -41,5 +40,13 @@ trait PaginatorTrait
                     ? $options['orderDir'] : 'ASC'
             )
             ->setCriteria($options['criteria'] ?? []);
+    }
+
+    /**
+     * @return InputBag<string|int|float|bool|null>
+     */
+    private function getPaginatorOptionsBag(Request $request): InputBag
+    {
+        return $request->isMethod('POST') ? $request->request : $request->query;
     }
 }

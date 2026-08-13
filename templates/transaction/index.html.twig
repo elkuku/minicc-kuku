@@ -97,7 +97,10 @@
                     <td>{{ transaction.comment }}</td>
                     <td>
                         <a href="{{ path('transactions_edit', {'id': transaction.id, 'view': app.request.requesturi }) }}">Edit</a>
-                        <a href="{{ path('transactions_delete', {'id': transaction.id, 'view': app.request.requesturi }) }}">Delete</a>
+                        <button type="submit"
+                                formaction="{{ path('transactions_delete', {'id': transaction.id}) }}"
+                                formmethod="post"
+                                class="btn btn-link p-0 border-0 align-baseline">Delete</button>
                     </td>
                 </tr>
                 {% else %}
@@ -108,6 +111,8 @@
         </table>
 
         {{ paginator.formFields(paginatorOptions) }}
+        <input type="hidden" name="view" value="{{ app.request.requesturi }}">
+        <input type="hidden" name="_token" value="{{ csrf_token('transaction_delete') }}">
 
     </form>
 

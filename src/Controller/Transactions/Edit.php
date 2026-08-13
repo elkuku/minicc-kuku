@@ -26,7 +26,9 @@ class Edit extends BaseController
         Request $request,
     ): Response
     {
-        $view = $request->query->get('view');
+        $view = $this->sanitizeLocalRedirect($request->query->getString('view'))
+            ?? $this->generateUrl('stores_transactions', ['id' => $transaction->getStore()->getId()]);
+
         $form = $this->createForm(TransactionTypeType::class, $transaction);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -35,16 +37,7 @@ class Edit extends BaseController
 
             $this->addFlash('success', 'La Transaccion ha sido guardada.');
 
-            if ($view) {
-                return $this->redirect((string)$view);
-            }
-
-            return $this->redirectToRoute(
-                'stores_transactions',
-                [
-                    'id' => $transaction->getStore()->getId(),
-                ]
-            );
+            return $this->redirect($view);
         }
 
         return $this->render(

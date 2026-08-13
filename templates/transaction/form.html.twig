@@ -13,8 +13,10 @@
     <div class="float-end">
         <button type="submit" class="btn btn-outline-success">Guardar</button>
         <a class="btn btn-outline-secondary" href="{{ redirect }}">Cancelar</a>
-        <a class="btn btn-outline-danger"
-           href="{{ path('transactions_delete', {'id': form.vars.data.id, 'view': redirect}) }}">Delete</a>
+        <button type="submit"
+                formaction="{{ path('transactions_delete', {'id': form.vars.data.id}) }}"
+                formmethod="post"
+                class="btn btn-outline-danger">Delete</button>
     </div>
 
     <h3>Editar Transacion</h3>
@@ -76,7 +78,8 @@
 
     {{ form_widget(form) }}
 
-    <input type="hidden" name="redirect" value="{{ redirect }}"/>
+    <input type="hidden" name="view" value="{{ redirect }}"/>
+    <input type="hidden" name="_token" value="{{ csrf_token('transaction_delete') }}"/>
 
     {{ form_end(form) }}
 

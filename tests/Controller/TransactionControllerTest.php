@@ -103,7 +103,10 @@ final class TransactionControllerTest extends WebTestCase
         $transaction = $this->ensureTransactionExists();
         $transactionId = $transaction->getId();
 
-        $this->client->request(Request::METHOD_GET, '/transactions/delete/' . $transactionId . '?view=/transactions');
+        $this->client->request(Request::METHOD_POST, '/transactions/delete/' . $transactionId, [
+            'view' => '/transactions',
+            '_token' => $this->csrfToken(),
+        ]);
 
         self::assertResponseRedirects('/transactions');
     }
@@ -113,11 +116,54 @@ final class TransactionControllerTest extends WebTestCase
         $transaction = $this->ensureTransactionExists();
         $transactionId = $transaction->getId();
 
-        $this->client->request(Request::METHOD_GET, '/transactions/delete/' . $transactionId);
+        $this->client->request(Request::METHOD_POST, '/transactions/delete/' . $transactionId, [
+            '_token' => $this->csrfToken(),
+        ]);
 
         self::assertResponseRedirects();
         $this->client->followRedirect();
         self::assertRouteSame('transactions_index');
+    }
+
+    public function testTransactionDeleteRejectsExternalRedirect(): void
+    {
+        $transaction = $this->ensureTransactionExists();
+        $transactionId = $transaction->getId();
+
+        $this->client->request(Request::METHOD_POST, '/transactions/delete/' . $transactionId, [
+            'view' => 'https://evil.example.com/phish',
+            '_token' => $this->csrfToken(),
+        ]);
+
+        self::assertResponseRedirects('/transactions');
+    }
+
+    public function testTransactionDeleteRejectsInvalidCsrfToken(): void
+    {
+        $transaction = $this->ensureTransactionExists();
+        $transactionId = $transaction->getId();
+
+        // An invalid CSRF token throws InvalidCsrfTokenException, which extends
+        // AuthenticationException, so Symfony's security layer redirects to the
+        // login page rather than returning a 403 directly.
+        $this->client->request(Request::METHOD_POST, '/transactions/delete/' . $transactionId, [
+            '_token' => 'invalid-token',
+        ]);
+
+        self::assertResponseRedirects('/login');
+
+        /** @var TransactionRepository $transactionRepository */
+        $transactionRepository = self::getContainer()->get(TransactionRepository::class);
+        self::assertNotNull($transactionRepository->find($transactionId));
+    }
+
+    private function csrfToken(): string
+    {
+        $crawler = $this->client->request(Request::METHOD_GET, '/transactions');
+        $token = $crawler->filter('input[name="_token"]')->attr('value');
+        self::assertIsString($token);
+
+        return $token;
     }
 
     private function ensureTransactionExists(): Transaction

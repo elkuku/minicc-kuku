@@ -10,10 +10,12 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsCsrfTokenValid;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[IsGranted('ROLE_ADMIN')]
-#[Route(path: '/transactions/delete/{id}', name: 'transactions_delete', methods: ['GET'])]
+#[IsCsrfTokenValid('transaction_delete', tokenKey: '_token')]
+#[Route(path: '/transactions/delete/{id}', name: 'transactions_delete', methods: ['POST'])]
 class Delete extends BaseController
 {
     public function __construct(private readonly EntityManagerInterface $entityManager)
@@ -28,7 +30,8 @@ class Delete extends BaseController
         $this->entityManager->remove($transaction);
         $this->entityManager->flush();
         $this->addFlash('success', 'Transaction has been deleted');
-        $redirect = $request->query->get('view');
+
+        $redirect = $this->sanitizeLocalRedirect($request->request->getString('view'));
 
         if ($redirect) {
             return $this->redirect($redirect);
