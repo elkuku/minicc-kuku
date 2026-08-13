@@ -73,7 +73,10 @@
                     <td>{{ deposit.document }}</td>
                     <td>{{ deposit.amount }}</td>
                     <td>
-                        <a href="{{ path('deposits_delete', {'id': deposit.id}) }}">Delete</a>
+                        <button type="submit"
+                                formaction="{{ path('deposits_delete', {'id': deposit.id}) }}"
+                                formmethod="post"
+                                class="btn btn-link p-0 border-0 align-baseline">Delete</button>
                     </td>
                 </tr>
             {% else %}
@@ -85,6 +88,7 @@
         </table>
 
         {{ paginator.formFields(paginatorOptions) }}
+        <input type="hidden" name="_token" value="{{ csrf_token('deposit_delete') }}">
 
     </form>
 

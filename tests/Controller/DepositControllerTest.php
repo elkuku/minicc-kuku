@@ -98,11 +98,38 @@ final class DepositControllerTest extends WebTestCase
         $deposit = $this->getDeposit();
         $depositId = $deposit->getId();
 
-        $this->client->request(Request::METHOD_GET, '/deposits/delete/' . $depositId);
+        $this->client->request(Request::METHOD_POST, '/deposits/delete/' . $depositId, [
+            '_token' => $this->csrfToken(),
+        ]);
 
         self::assertResponseRedirects();
         $this->client->followRedirect();
         self::assertRouteSame('deposits_index');
+    }
+
+    public function testDepositDeleteRejectsInvalidCsrfToken(): void
+    {
+        $deposit = $this->getDeposit();
+        $depositId = $deposit->getId();
+
+        $this->client->request(Request::METHOD_POST, '/deposits/delete/' . $depositId, [
+            '_token' => 'invalid-token',
+        ]);
+
+        self::assertResponseRedirects('/login');
+
+        /** @var DepositRepository $depositRepository */
+        $depositRepository = self::getContainer()->get(DepositRepository::class);
+        self::assertNotNull($depositRepository->find($depositId));
+    }
+
+    private function csrfToken(): string
+    {
+        $crawler = $this->client->request(Request::METHOD_GET, '/deposits');
+        $token = $crawler->filter('input[name="_token"]')->attr('value');
+        self::assertIsString($token);
+
+        return $token;
     }
 
     private function getDeposit(): Deposit
