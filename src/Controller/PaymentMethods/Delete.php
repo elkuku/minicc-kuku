@@ -9,10 +9,12 @@ use App\Entity\PaymentMethod;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsCsrfTokenValid;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[IsGranted('ROLE_ADMIN')]
-#[Route(path: '/payment-methods/delete/{id}', name: 'payment_methods_delete', methods: ['GET'])]
+#[IsCsrfTokenValid('payment_method_delete', tokenKey: '_token')]
+#[Route(path: '/payment-methods/delete/{id}', name: 'payment_methods_delete', methods: ['POST'])]
 class Delete extends BaseController
 {
     public function __construct(private readonly EntityManagerInterface $entityManager)

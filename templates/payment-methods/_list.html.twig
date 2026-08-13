@@ -24,8 +24,10 @@
                     </button>
                     {{ include('_modal.html.twig', { modalTitle: 'Editar metodo de pago' }) }}
                 </span>
-                <a class="btn btn-warning btn-sm"
-                   href="{{ path('payment_methods_delete', {'id': method.id}) }}">Delete</a>
+                <form method="post" action="{{ path('payment_methods_delete', {'id': method.id}) }}" class="d-inline">
+                    <input type="hidden" name="_token" value="{{ csrf_token('payment_method_delete') }}">
+                    <button type="submit" class="btn btn-warning btn-sm">Delete</button>
+                </form>
             </td>
         </tr>
     {% else %}

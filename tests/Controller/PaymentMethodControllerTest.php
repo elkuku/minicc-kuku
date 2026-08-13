@@ -116,11 +116,38 @@ final class PaymentMethodControllerTest extends WebTestCase
         $method = $this->ensurePaymentMethodForDelete();
         $methodId = $method->getId();
 
-        $this->client->request(Request::METHOD_GET, '/payment-methods/delete/' . $methodId);
+        $this->client->request(Request::METHOD_POST, '/payment-methods/delete/' . $methodId, [
+            '_token' => $this->csrfToken(),
+        ]);
 
         self::assertResponseRedirects();
         $this->client->followRedirect();
         self::assertRouteSame('payment_methods_index');
+    }
+
+    public function testPaymentMethodDeleteRejectsInvalidCsrfToken(): void
+    {
+        $method = $this->ensurePaymentMethodForDelete();
+        $methodId = $method->getId();
+
+        $this->client->request(Request::METHOD_POST, '/payment-methods/delete/' . $methodId, [
+            '_token' => 'invalid-token',
+        ]);
+
+        self::assertResponseRedirects('/login');
+
+        /** @var PaymentMethodRepository $paymentMethodRepository */
+        $paymentMethodRepository = self::getContainer()->get(PaymentMethodRepository::class);
+        self::assertNotNull($paymentMethodRepository->find($methodId));
+    }
+
+    private function csrfToken(): string
+    {
+        $crawler = $this->client->request(Request::METHOD_GET, '/payment-methods');
+        $token = $crawler->filter('input[name="_token"]')->attr('value');
+        self::assertIsString($token);
+
+        return $token;
     }
 
     private function ensurePaymentMethodForDelete(): PaymentMethod

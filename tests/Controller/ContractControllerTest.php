@@ -143,11 +143,38 @@ final class ContractControllerTest extends WebTestCase
         $contract = $this->ensureContractExists();
         $contractId = $contract->getId();
 
-        $this->client->request(Request::METHOD_GET, '/contracts/delete/' . $contractId);
+        $this->client->request(Request::METHOD_POST, '/contracts/delete/' . $contractId, [
+            '_token' => $this->csrfToken(),
+        ]);
 
         self::assertResponseRedirects();
         $this->client->followRedirect();
         self::assertRouteSame('contracts_index');
+    }
+
+    public function testContractDeleteRejectsInvalidCsrfToken(): void
+    {
+        $contract = $this->ensureContractExists();
+        $contractId = $contract->getId();
+
+        $this->client->request(Request::METHOD_POST, '/contracts/delete/' . $contractId, [
+            '_token' => 'invalid-token',
+        ]);
+
+        self::assertResponseRedirects('/login');
+
+        /** @var ContractRepository $contractRepository */
+        $contractRepository = self::getContainer()->get(ContractRepository::class);
+        self::assertNotNull($contractRepository->find($contractId));
+    }
+
+    private function csrfToken(): string
+    {
+        $crawler = $this->client->request(Request::METHOD_GET, '/contracts');
+        $token = $crawler->filter('input[name="_token"]')->attr('value');
+        self::assertIsString($token);
+
+        return $token;
     }
 
     private function ensureContractExists(): Contract

@@ -8,10 +8,12 @@ use App\Entity\Contract;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsCsrfTokenValid;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[IsGranted('ROLE_ADMIN')]
-#[Route(path: '/contracts/delete/{id}', name: 'contracts_delete', methods: ['GET'])]
+#[IsCsrfTokenValid('contract_delete', tokenKey: '_token')]
+#[Route(path: '/contracts/delete/{id}', name: 'contracts_delete', methods: ['POST'])]
 class Delete extends BaseController
 {
     public function __construct(private readonly EntityManagerInterface $entityManager)

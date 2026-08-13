@@ -65,7 +65,10 @@
                     <td>
                         <a href="{{ path('contracts_edit', {'id': contract.id}) }}">Edit</a>
                         <a href="{{ path('contracts_generate', {'id': contract.id}) }}">Generate</a>
-                        <a href="{{ path('contracts_delete', {'id': contract.id}) }}">Delete</a>
+                        <button type="submit"
+                                formaction="{{ path('contracts_delete', {'id': contract.id}) }}"
+                                formmethod="post"
+                                class="btn btn-link p-0 border-0 align-baseline">Delete</button>
                     </td>
                 </tr>
             {% else %}
@@ -75,5 +78,6 @@
             {% endfor %}
             </tbody>
         </table>
+        <input type="hidden" name="_token" value="{{ csrf_token('contract_delete') }}">
     </form>
 {% endblock %}
