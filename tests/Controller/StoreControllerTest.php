@@ -71,6 +71,25 @@ final class StoreControllerTest extends WebTestCase
         self::assertRouteSame('stores_index');
     }
 
+    public function testStoreCreateWithBlankNumericFieldsDoesNotCrash(): void
+    {
+        $this->client->request(Request::METHOD_GET, '/stores/create');
+        $this->client->submitForm('Guardar', [
+            'store[destination]' => 'BLANK-FIELDS-TEST',
+            'store[valAlq]' => '',
+            'store[cntLanfort]' => '',
+            'store[medElectrico]' => '',
+            'store[medAgua]' => '',
+        ]);
+
+        // Blank required fields must save with their sensible defaults ('' or 0),
+        // not crash with a 500 - Store's setters take non-nullable string/int/
+        // float and Symfony's default empty_data for those types is null.
+        self::assertResponseRedirects();
+        $this->client->followRedirect();
+        self::assertRouteSame('stores_index');
+    }
+
     public function testStoreEditPostValidForm(): void
     {
         /** @var StoreRepository $storeRepository */
