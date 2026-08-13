@@ -35,9 +35,15 @@ class UserFullType extends AbstractType
             ->add('gender', EnumType::class, [
                 'class' => Gender::class,
             ])
-            ->add('name', TextType::class)
-            ->add('email', EmailType::class)
-            ->add('inqCi')
+            ->add('name', TextType::class, [
+                'empty_data' => '',
+            ])
+            ->add('email', EmailType::class, [
+                'empty_data' => '',
+            ])
+            ->add('inqCi', null, [
+                'empty_data' => '',
+            ])
             ->add('inqRuc', null, [
                 'required' => false,
             ])

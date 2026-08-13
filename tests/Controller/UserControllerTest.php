@@ -114,6 +114,27 @@ final class UserControllerTest extends WebTestCase
         self::assertRouteSame('users_index');
     }
 
+    public function testUserEditWithBlankInqCiFailsValidationInsteadOfCrashing(): void
+    {
+        /** @var UserRepository $userRepository */
+        $userRepository = self::getContainer()->get(UserRepository::class);
+        $user = $userRepository->findOneBy(['email' => 'user1@example.com']);
+        $this->assertInstanceOf(User::class, $user);
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/users/edit/' . $user->getId());
+        $form = $crawler->filter('form[name="user_full"] button[type="submit"]')->form([
+            'user_full[name]' => 'Some Name',
+            'user_full[email]' => $user->getEmail(),
+            'user_full[gender]' => '1',
+            'user_full[inqCi]' => '',
+        ]);
+        $this->client->submit($form);
+
+        // Blank inqCi must fail NotBlank validation and re-render the form (422),
+        // not crash with a 500 (User::setInqCi() takes a non-nullable string).
+        self::assertResponseStatusCodeSame(422);
+    }
+
     public function testUserIndexDeniedForRegularUser(): void
     {
         self::ensureKernelShutdown();
