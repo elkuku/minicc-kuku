@@ -19,7 +19,9 @@ trait PaginatorTrait
     ): PaginatorOptions
     {
         /** @var array{page?: string, limit?: string, order?: string, orderDir?: string, criteria?: array<string, string>} $options */
-        $options = $request->query->all('paginatorOptions');
+        $options = $request->isMethod('POST')
+            ? $request->request->all('paginatorOptions')
+            : $request->query->all('paginatorOptions');
 
         return new PaginatorOptions()
             ->setPage(

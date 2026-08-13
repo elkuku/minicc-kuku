@@ -77,4 +77,20 @@ final class PaginatorTraitTest extends TestCase
 
         $this->assertSame(42, $options->getLimit());
     }
+
+    public function testPostValuesAreRead(): void
+    {
+        $request = Request::create('/test', Request::METHOD_POST, [
+            'paginatorOptions' => [
+                'page' => '3',
+                'order' => 'date',
+                'criteria' => ['store' => '5'],
+            ],
+        ]);
+        $options = $this->getPaginatorOptions($request, 25);
+
+        $this->assertSame(3, $options->getPage());
+        $this->assertSame('date', $options->getOrder());
+        $this->assertSame(['store' => '5'], $options->getCriteria());
+    }
 }
