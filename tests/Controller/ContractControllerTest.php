@@ -74,6 +74,31 @@ final class ContractControllerTest extends WebTestCase
         self::assertRouteSame('contracts_index');
     }
 
+    public function testContractEditWithBlankFieldsDoesNotCrash(): void
+    {
+        $contract = $this->ensureContractExists();
+        $contractId = $contract->getId();
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/contracts/edit/' . $contractId);
+        $form = $crawler->selectButton('Guardar')->form();
+        // Every one of these has a non-nullable setter (setDestination(string),
+        // setValAlq(float), setDate(DateTime), ...); leaving them blank must
+        // fall back to a sensible default and save, not crash with a 500.
+        $form['contract[destination]'] = '';
+        $form['contract[valAlq]'] = '';
+        $form['contract[valGarantia]'] = '';
+        $form['contract[storeNumber]'] = '';
+        $form['contract[inqCi]'] = '';
+        $form['contract[cntLanfort]'] = '';
+        $form['contract[text]'] = '';
+        $form['contract[date]'] = '';
+        $this->client->submit($form);
+
+        self::assertResponseRedirects();
+        $this->client->followRedirect();
+        self::assertRouteSame('contracts_index');
+    }
+
     public function testContractTemplateStringsReturnsJson(): void
     {
         $this->client->request(Request::METHOD_GET, '/contracts/template-strings');
