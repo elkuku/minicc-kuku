@@ -138,7 +138,9 @@
             "echo '**************************'",
             "echo ''",
             "echo 'Check for outdated Recipes:'",
-            "composer recipes:update"
+            "composer recipes:update",
+            "echo '**************************'",
+            "echo ''"
         ]
     },
     "conflict": {
