@@ -135,6 +135,40 @@ final class UserControllerTest extends WebTestCase
         self::assertResponseStatusCodeSame(422);
     }
 
+    public function testUserEditWithRoleFieldOmittedDoesNotCrashOrEscalate(): void
+    {
+        /** @var UserRepository $userRepository */
+        $userRepository = self::getContainer()->get(UserRepository::class);
+        $user = $userRepository->findOneBy(['email' => 'user1@example.com']);
+        $this->assertInstanceOf(User::class, $user);
+        $userId = $user->getId();
+
+        $crawler = $this->client->request(Request::METHOD_GET, '/users/edit/' . $userId);
+        $token = $crawler->filter('input[name="user_full[_token]"]')->attr('value');
+        $this->assertIsString($token);
+
+        // A raw POST that omits the 'role' key entirely (as a non-browser
+        // client could easily send, bypassing the <select>'s UI constraints)
+        // must not crash (User::setRole() takes a non-nullable UserRole) or
+        // silently escalate privilege - it should fall back to ROLE_USER.
+        $this->client->request(Request::METHOD_POST, '/users/edit/' . $userId, [
+            'user_full' => [
+                'isActive' => '1',
+                'gender' => '1',
+                'name' => 'X',
+                'email' => $user->getEmail(),
+                'inqCi' => '123',
+                '_token' => $token,
+            ],
+        ]);
+
+        self::assertResponseRedirects();
+
+        $reloaded = $userRepository->find($userId);
+        $this->assertInstanceOf(User::class, $reloaded);
+        self::assertSame('ROLE_USER', $reloaded->getRole()->value);
+    }
+
     public function testUserIndexDeniedForRegularUser(): void
     {
         self::ensureKernelShutdown();

@@ -31,9 +31,14 @@ class UserFullType extends AbstractType
             ->add('role', EnumType::class, [
                 'class' => UserRole::class,
                 'choice_label' => fn(UserRole $role): string => $role->label(),
+                // A missing/unmatched submission must not silently escalate
+                // privilege - fall back to the least-privileged role rather
+                // than crashing (setRole() takes a non-nullable UserRole).
+                'empty_data' => UserRole::USER->value,
             ])
             ->add('gender', EnumType::class, [
                 'class' => Gender::class,
+                'empty_data' => Gender::other->value,
             ])
             ->add('name', TextType::class, [
                 'empty_data' => '',
