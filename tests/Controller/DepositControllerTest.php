@@ -10,6 +10,7 @@ use App\Repository\DepositRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 
 final class DepositControllerTest extends WebTestCase
@@ -86,11 +87,60 @@ final class DepositControllerTest extends WebTestCase
         self::assertResponseStatusCodeSame(403);
     }
 
-    public function testDepositUploadWithoutFile(): void
+    public function testDepositUploadWithoutFileShowsErrorInsteadOfCrashing(): void
     {
-        $this->client->request(Request::METHOD_POST, '/deposits/upload');
+        $this->client->request(Request::METHOD_POST, '/deposits/upload', [
+            '_token' => $this->uploadCsrfToken(),
+        ]);
 
-        self::assertResponseStatusCodeSame(500);
+        // No file selected must show a friendly error and redirect, not 500.
+        self::assertResponseRedirects('/deposits');
+        $crawler = $this->client->followRedirect();
+        self::assertStringContainsString(
+            'No se pudo importar el archivo',
+            $crawler->filterXPath('//div[contains(@class, "alert-danger")]')->text()
+        );
+    }
+
+    public function testDepositUploadRejectsInvalidCsrfToken(): void
+    {
+        $this->client->request(Request::METHOD_POST, '/deposits/upload', [
+            '_token' => 'invalid-token',
+        ]);
+
+        self::assertResponseRedirects('/login');
+    }
+
+    public function testDepositUploadWithMalformedCsvShowsErrorInsteadOfCrashing(): void
+    {
+        $path = tempnam(sys_get_temp_dir(), 'deposit_csv_');
+        self::assertIsString($path);
+        file_put_contents($path, "Descripcion,Fecha,Numero de documento,Credito\nTRANSFERENCIA DIRECTA DE X,not-a-date,111,50.00");
+        $file = new UploadedFile($path, 'test.csv', 'text/csv', null, true);
+
+        $this->client->request(
+            Request::METHOD_POST,
+            '/deposits/upload',
+            ['_token' => $this->uploadCsrfToken()],
+            ['csv_file' => $file]
+        );
+        unlink($path);
+
+        self::assertResponseRedirects('/deposits');
+        $crawler = $this->client->followRedirect();
+        self::assertStringContainsString(
+            'No se pudo importar el archivo',
+            $crawler->filterXPath('//div[contains(@class, "alert-danger")]')->text()
+        );
+    }
+
+    private function uploadCsrfToken(): string
+    {
+        $crawler = $this->client->request(Request::METHOD_GET, '/deposits');
+        $token = $crawler->filter('#collapseExample input[name="_token"]')->attr('value');
+        self::assertIsString($token);
+
+        return $token;
     }
 
     public function testDepositDelete(): void
@@ -126,7 +176,10 @@ final class DepositControllerTest extends WebTestCase
     private function csrfToken(): string
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/deposits');
-        $token = $crawler->filter('input[name="_token"]')->attr('value');
+        // Excludes the separate CSV-upload form's own _token field.
+        $token = $crawler->filterXPath(
+            '//input[@name="_token" and not(ancestor::div[@id="collapseExample"])]'
+        )->attr('value');
         self::assertIsString($token);
 
         return $token;

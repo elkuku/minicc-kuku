@@ -2,6 +2,7 @@
       action="{{ path('deposits_upload') }}">
     <div class="form-group">
         <input name="csv_file" type="file" class="form-control"/>
+        <input type="hidden" name="_token" value="{{ csrf_token('deposit_upload') }}">
         <button type="submit" class="btn btn-outline-primary">Upload</button>
     </div>
 </form>
