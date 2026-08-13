@@ -95,6 +95,27 @@ final class PaymentMethodControllerTest extends WebTestCase
         self::assertRouteSame('payment_methods_index');
     }
 
+    public function testPaymentMethodEditWithBlankNameFailsValidationInsteadOfCrashing(): void
+    {
+        /** @var PaymentMethodRepository $paymentMethodRepository */
+        $paymentMethodRepository = self::getContainer()->get(PaymentMethodRepository::class);
+        $method = $paymentMethodRepository->findOneBy(['name' => 'gye-1005345']);
+        $this->assertInstanceOf(PaymentMethod::class, $method);
+        $methodId = $method->getId();
+
+        $this->client->request(Request::METHOD_GET, '/payment-methods/edit/' . $methodId);
+        $this->client->submitForm('Guardar', [
+            'payment_method[name]' => '',
+        ]);
+
+        // Editing an *existing* record (non-null current name) with a blank
+        // submission must fail NotBlank validation (422), not crash with a 500 -
+        // PaymentMethod::setName() takes a non-nullable string. A brand new
+        // entity wouldn't reproduce this: its name starts as null already, so
+        // Symfony's "unchanged value" optimization skips calling the setter.
+        self::assertResponseStatusCodeSame(422);
+    }
+
     public function testPaymentMethodDeniedForRegularUser(): void
     {
         self::ensureKernelShutdown();

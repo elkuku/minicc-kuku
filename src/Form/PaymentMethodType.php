@@ -19,6 +19,8 @@ class PaymentMethodType extends AbstractType
         array $options
     ): void
     {
-        $builder->add('name');
+        $builder->add('name', null, [
+            'empty_data' => '',
+        ]);
     }
 }
