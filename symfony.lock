@@ -203,9 +203,6 @@
     "psr/log": {
         "version": "3.0.0"
     },
-    "ralouphie/getallheaders": {
-        "version": "3.0.3"
-    },
     "rector/rector": {
         "version": "0.12.13"
     },
