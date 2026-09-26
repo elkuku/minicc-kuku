@@ -15,7 +15,8 @@ security:
             security: false
         main:
             lazy: true
-            switch_user: true
+            switch_user:
+                target_route: welcome
             user_checker: App\Security\AppUserChecker
 
             entry_point: App\Security\LoginFormAuthenticator
