@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Controller\BaseController;
+use App\Entity\PaymentMethod;
+use App\Entity\Transaction;
 use App\Enum\PaymentMethodId;
 use App\Repository\PaymentMethodRepository;
 use App\Repository\StoreRepository;
@@ -52,32 +54,16 @@ class CollectRent extends BaseController
             throw new UnexpectedValueException('Invalid payment method.');
         }
 
+        $date = (string) $request->request->get('date_cobro');
+
         foreach ($values as $storeId => $value) {
             if (!$value) {
                 continue;
             }
 
-            $user = $this->userRepository->find((int)$users[$storeId]);
-
-            if (!$user) {
-                throw new UnexpectedValueException('Store has no user.');
-            }
-
-            $store = $this->storeRepository->find((int)$storeId);
-
-            if (!$store) {
-                throw new UnexpectedValueException('Store does not exist.');
-            }
-
-            $transaction = $this->transactionFactory->createRent(
-                $store,
-                $user,
-                $method,
-                (string) $request->request->get('date_cobro'),
-                $value,
+            $this->entityManager->persist(
+                $this->createRentTransaction((int) $storeId, (int) $users[$storeId], $method, $date, $value)
             );
-
-            $this->entityManager->persist($transaction);
         }
 
         $this->entityManager->flush();
@@ -85,5 +71,28 @@ class CollectRent extends BaseController
         $this->addFlash('success', 'A cobrar...');
 
         return $this->redirectToRoute('welcome');
+    }
+
+    private function createRentTransaction(
+        int $storeId,
+        int $userId,
+        PaymentMethod $method,
+        string $date,
+        string $value,
+    ): Transaction
+    {
+        $user = $this->userRepository->find($userId);
+
+        if (!$user) {
+            throw new UnexpectedValueException('Store has no user.');
+        }
+
+        $store = $this->storeRepository->find($storeId);
+
+        if (!$store) {
+            throw new UnexpectedValueException('Store does not exist.');
+        }
+
+        return $this->transactionFactory->createRent($store, $user, $method, $date, $value);
     }
 }

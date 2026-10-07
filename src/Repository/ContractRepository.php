@@ -7,6 +7,7 @@ namespace App\Repository;
 use App\Entity\Contract;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use SortDirection;
 
 /**
  * @method Contract|null find($id, $lockMode = null, $lockVersion = null)
@@ -43,8 +44,8 @@ class ContractRepository extends ServiceEntityRepository
                 ->setParameter('year', $year);
         }
 
-        $query->addOrderBy('c.date', 'DESC');
-        $query->addOrderBy('c.storeNumber', 'ASC');
+        $query->addOrderBy('c.date', SortDirection::Descending);
+        $query->addOrderBy('c.storeNumber', SortDirection::Ascending);
 
         /** @var Contract[] $result */
         $result = $query

@@ -20,6 +20,7 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 use Exception;
 use Symfony\Component\Clock\ClockInterface;
+use SortDirection;
 
 /**
  * @method Transaction|null find($id, $lockMode = null, $lockVersion = null)
@@ -50,7 +51,7 @@ class TransactionRepository extends ServiceEntityRepository
             ->andWhere('YEAR(p.date) = :year')
             ->setParameter('store', $store->getId())
             ->setParameter('year', $year)
-            ->orderBy('p.date, p.type', 'ASC')
+            ->orderBy('p.date, p.type', SortDirection::Ascending)
             ->getQuery()
             ->getResult();
 
@@ -74,7 +75,7 @@ class TransactionRepository extends ServiceEntityRepository
             ->setParameter('store', $store->getId())
             ->setParameter('year', $year)
             ->setParameter('user', $user)
-            ->orderBy('p.date, p.type', 'ASC')
+            ->orderBy('p.date, p.type', SortDirection::Ascending)
             ->getQuery()
             ->getResult();
 
@@ -192,7 +193,7 @@ class TransactionRepository extends ServiceEntityRepository
             ->setParameter('year', $year)
             ->setParameter('type1', TransactionType::payment)
             ->setParameter('type2', TransactionType::adjustment)
-            ->orderBy('p.date', 'ASC')
+            ->orderBy('p.date', SortDirection::Ascending)
             ->getQuery()
             ->getResult();
 
@@ -220,7 +221,7 @@ class TransactionRepository extends ServiceEntityRepository
             ->setParameter('year', $year)
             ->setParameter('type1', TransactionType::payment)
             ->setParameter('type2', TransactionType::adjustment)
-            ->orderBy('p.date', 'ASC')
+            ->orderBy('p.date', SortDirection::Ascending)
             ->getQuery()
             ->getResult();
 
@@ -308,7 +309,7 @@ class TransactionRepository extends ServiceEntityRepository
         $criteria = $options->getCriteria();
 
         $query = $this->createQueryBuilder('t')
-            ->orderBy('t.'.$options->getOrder(), $options->getOrderDir());
+            ->orderBy('t.'.$options->getOrder(), $options->getSortDirection());
 
         if (isset($criteria['type']) && $criteria['type']) {
             $query->where('t.type = :type')

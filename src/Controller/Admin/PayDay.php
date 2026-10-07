@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Controller\BaseController;
+use App\Entity\Transaction;
 use App\Repository\PaymentMethodRepository;
 use App\Repository\StoreRepository;
 use App\Repository\TransactionRepository;
@@ -57,42 +58,52 @@ class PayDay extends BaseController
                 continue;
             }
 
-            $store = $this->storeRepository->find((int)$payments['store'][$i]);
+            $transaction = $this->createPaymentTransaction($payments, $i, $dateCobro);
 
-            if (!$store) {
-                continue;
+            if ($transaction instanceof Transaction) {
+                $this->entityManager->persist($transaction);
             }
-
-            $method = $this->paymentMethodRepository->find((int)$payments['method'][$i]);
-
-            if (!$method) {
-                throw new UnexpectedValueException('Invalid payment method.');
-            }
-
-            $user = $store->getUser();
-
-            if (!$user) {
-                throw new UnexpectedValueException('Store has no user.');
-            }
-
-            $transaction = $this->transactionFactory->createPayment(
-                $store,
-                $user,
-                $method,
-                $dateCobro,
-                (int) $payments['recipe'][$i],
-                (int) $payments['document'][$i],
-                (int) $payments['deposit'][$i],
-                $payments['amount'][$i],
-                $payments['comment'][$i],
-            );
-
-            $this->entityManager->persist($transaction);
         }
 
         $this->entityManager->flush();
         $this->addFlash('success', 'Sa ha pagado...');
 
         return $this->redirectToRoute('welcome');
+    }
+
+    /**
+     * @param array{date: list<string>, store: list<string>, method: list<string>, recipe: list<string>, document: list<string>, deposit: list<string>, amount: list<string>, comment: list<string>} $payments
+     */
+    private function createPaymentTransaction(array $payments, int $i, string $dateCobro): ?Transaction
+    {
+        $store = $this->storeRepository->find((int)$payments['store'][$i]);
+
+        if (!$store) {
+            return null;
+        }
+
+        $method = $this->paymentMethodRepository->find((int)$payments['method'][$i]);
+
+        if (!$method) {
+            throw new UnexpectedValueException('Invalid payment method.');
+        }
+
+        $user = $store->getUser();
+
+        if (!$user) {
+            throw new UnexpectedValueException('Store has no user.');
+        }
+
+        return $this->transactionFactory->createPayment(
+            $store,
+            $user,
+            $method,
+            $dateCobro,
+            (int) $payments['recipe'][$i],
+            (int) $payments['document'][$i],
+            (int) $payments['deposit'][$i],
+            $payments['amount'][$i],
+            $payments['comment'][$i],
+        );
     }
 }

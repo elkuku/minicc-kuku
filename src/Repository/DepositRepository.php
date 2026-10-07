@@ -48,7 +48,7 @@ class DepositRepository extends ServiceEntityRepository
     public function getPaginatedList(PaginatorOptions $options): Paginator
     {
         $query = $this->createQueryBuilder('d')
-            ->orderBy('d.'.$options->getOrder(), $options->getOrderDir());
+            ->orderBy('d.'.$options->getOrder(), $options->getSortDirection());
 
         if ($options->searchCriteria('amount') !== '' && $options->searchCriteria('amount') !== '0') {
             $query->andWhere('d.amount = :amount')

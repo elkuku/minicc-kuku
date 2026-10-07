@@ -6,6 +6,7 @@ namespace App\Tests\Helper;
 
 use App\Helper\Paginator\PaginatorOptions;
 use PHPUnit\Framework\TestCase;
+use SortDirection;
 use UnexpectedValueException;
 
 final class PaginatorOptionsTest extends TestCase
@@ -89,6 +90,17 @@ final class PaginatorOptionsTest extends TestCase
         $options->setOrderDir('desc');
 
         $this->assertSame('desc', $options->getOrderDir());
+    }
+
+    public function testGetSortDirection(): void
+    {
+        $options = new PaginatorOptions();
+
+        $this->assertSame(SortDirection::Ascending, $options->getSortDirection());
+
+        $options->setOrderDir('desc');
+
+        $this->assertSame(SortDirection::Descending, $options->getSortDirection());
     }
 
     public function testSetOrderDirThrowsOnInvalidValue(): void

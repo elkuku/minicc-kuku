@@ -7,6 +7,7 @@ namespace App\Repository;
 use App\Entity\Store;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use SortDirection;
 
 /**
  * @method Store|null find($id, $lockMode = null, $lockVersion = null)
@@ -31,7 +32,7 @@ class StoreRepository extends ServiceEntityRepository
         /** @var Store[] $result */
         $result = $this->createQueryBuilder('s')
             ->where('s.user IS NOT NULL')
-            ->orderBy('s.id', 'ASC')
+            ->orderBy('s.id', SortDirection::Ascending)
             ->getQuery()
             ->getResult();
 

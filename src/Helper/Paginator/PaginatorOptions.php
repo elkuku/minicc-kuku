@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Helper\Paginator;
 
+use SortDirection;
 use UnexpectedValueException;
 use function in_array;
 
@@ -51,6 +52,13 @@ class PaginatorOptions
     public function getOrderDir(): string
     {
         return $this->orderDir;
+    }
+
+    public function getSortDirection(): SortDirection
+    {
+        return strtoupper($this->orderDir) === 'DESC'
+            ? SortDirection::Descending
+            : SortDirection::Ascending;
     }
 
     public function setOrderDir(string $orderDir): static
