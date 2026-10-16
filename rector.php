@@ -18,6 +18,7 @@ try {
         ])
         ->withSkip([
             __DIR__.'/src/Service/PhpXlsxGenerator.php',
+            __DIR__.'/tests/bootstrap.php',
             Rector\PHPUnit\CodeQuality\Rector\Class_\PreferPHPUnitThisCallRector::class,
             // 'routing.loader' has no public class-name alias in the container
             ContainerGetNameToTypeInTestsRector::class => [
