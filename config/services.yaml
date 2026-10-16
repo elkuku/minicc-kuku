@@ -19,11 +19,5 @@ services:
     App\:
         resource: '../src/'
 
-    App\DataCollector\GitDataCollector:
-        tags:
-            -   name: data_collector
-                template: 'data_collector/git_data.html.twig'
-                id: 'app.git_data_collector'
-        public: false
     monolog.processor.web:
         class: Symfony\Bridge\Monolog\Processor\WebProcessor

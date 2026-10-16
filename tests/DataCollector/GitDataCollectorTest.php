@@ -18,7 +18,7 @@ final class GitDataCollectorTest extends TestCase
         $gitLoader = $this->createStub(GitLoader::class);
         $collector = new GitDataCollector($gitLoader);
 
-        $this->assertSame('app.git_data_collector', $collector->getName());
+        self::assertSame(GitDataCollector::class, $collector->getName());
     }
 
     public function testCollectStoresGitData(): void

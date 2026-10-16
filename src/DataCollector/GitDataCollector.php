@@ -6,15 +6,15 @@ namespace App\DataCollector;
 
 use App\Helper\GitLoader;
 use Override;
+use Symfony\Bundle\FrameworkBundle\DataCollector\AbstractDataCollector;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 use Throwable;
 
 /**
  * @see \App\Tests\DataCollector\GitDataCollectorTest
  */
-class GitDataCollector extends DataCollector
+class GitDataCollector extends AbstractDataCollector
 {
     public function __construct(
         private readonly GitLoader $gitLoader
@@ -40,9 +40,9 @@ class GitDataCollector extends DataCollector
     }
 
     #[Override]
-    public function getName(): string
+    public static function getTemplate(): string
     {
-        return 'app.git_data_collector';
+        return 'data_collector/git_data.html.twig';
     }
 
     #[Override]
