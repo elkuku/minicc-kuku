@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Tests\Type;
 
-use Iterator;
 use App\Type\Gender;
+use Iterator;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 

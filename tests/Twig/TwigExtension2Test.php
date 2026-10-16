@@ -54,6 +54,4 @@ final class TwigExtension2Test extends WebTestCase
 
         $this->assertSame('INVALID', $this->twigExtension->intlDate('INVALID'));
     }
-
-
 }

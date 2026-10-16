@@ -10,8 +10,8 @@ use App\Security\AppUserChecker;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\Security\Core\Exception\DisabledException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Exception\DisabledException;
 
 final class AppUserCheckerTest extends WebTestCase
 {

@@ -31,9 +31,8 @@ class ContractType extends AbstractType
     #[Override]
     public function buildForm(
         FormBuilderInterface $builder,
-        array $options
-    ): void
-    {
+        array $options,
+    ): void {
         $builder
             ->add('date', null, [
                 // A blank date has no neutral fallback like '' or 0; default

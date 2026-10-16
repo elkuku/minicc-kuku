@@ -89,7 +89,7 @@ class User implements UserInterface, Stringable
 
     /**
      * @return array{
-     *     id: integer|null,
+     *     id: int|null,
      *     email: string|null
      * }
      */
@@ -116,13 +116,13 @@ class User implements UserInterface, Stringable
     #[Override]
     public function __toString(): string
     {
-        return (string)$this->name;
+        return (string) $this->name;
     }
 
     #[Override]
     public function getUserIdentifier(): string
     {
-        assert($this->email !== '');
+        assert('' !== $this->email);
 
         return $this->email;
     }

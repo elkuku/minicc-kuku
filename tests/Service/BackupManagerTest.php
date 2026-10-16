@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Tests\Service;
 
-use Iterator;
 use App\Service\BackupManager;
+use Iterator;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;

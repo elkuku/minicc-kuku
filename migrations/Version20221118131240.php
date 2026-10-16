@@ -23,12 +23,10 @@ final class Version20221118131240 extends AbstractMigration
         $this->addSql('UPDATE transaction SET transaction_type = 2 WHERE type_id = 2');
         $this->addSql('UPDATE transaction SET transaction_type = 3 WHERE type_id = 3');
         $this->addSql('UPDATE transaction SET transaction_type = 4 WHERE type_id = 4');
-
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-
     }
 }

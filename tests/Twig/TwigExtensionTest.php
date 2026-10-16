@@ -18,7 +18,6 @@ final class TwigExtensionTest extends WebTestCase
         $this->twigExtension = new AppExtension(new MockClock('2024-06-15'));
     }
 
-
     public function testShortName(): void
     {
         $this->assertSame('Juan Perez', $this->twigExtension->shortName('Juan Perez'));

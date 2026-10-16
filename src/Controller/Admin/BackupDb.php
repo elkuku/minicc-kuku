@@ -21,7 +21,8 @@ class BackupDb extends AbstractController
         private readonly EmailHelper $emailHelper,
         private readonly MailerInterface $mailer,
         private readonly ClockInterface $clock,
-    ) {}
+    ) {
+    }
 
     #[IsGranted('ROLE_ADMIN')]
     #[Route(path: '/admin/backup-db', name: 'admin_backup_db', methods: ['GET'])]

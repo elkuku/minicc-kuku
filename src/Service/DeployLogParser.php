@@ -19,7 +19,7 @@ class DeployLogParser
 
         foreach (explode("\n", $contents) as $line) {
             $line = trim($line);
-            if ($line === '' || $line === '0') {
+            if ('' === $line || '0' === $line) {
                 continue;
             }
 
@@ -71,6 +71,7 @@ class DeployLogParser
 
     /**
      * @param array<string, string> $entries
+     *
      * @param-out null $entry
      */
     private function handleEntryEnd(?string &$entry, ?string $dateTime, array &$entries): void

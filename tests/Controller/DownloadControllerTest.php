@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use App\Entity\User;
 use App\Entity\Store;
+use App\Entity\User;
 use App\Repository\StoreRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 
 final class DownloadControllerTest extends WebTestCase
 {
@@ -68,7 +68,7 @@ final class DownloadControllerTest extends WebTestCase
         $this->assertInstanceOf(Store::class, $store);
         $storeId = $store->getId();
 
-        $client->request(Request::METHOD_GET, '/download/store-transactions/' . $storeId . '/2024');
+        $client->request(Request::METHOD_GET, '/download/store-transactions/'.$storeId.'/2024');
 
         // May fail due to wkhtmltopdf not being available, but should not be 403
         $statusCode = $client->getResponse()->getStatusCode();
@@ -90,7 +90,7 @@ final class DownloadControllerTest extends WebTestCase
         $this->assertInstanceOf(Store::class, $store);
         $storeId = $store->getId();
 
-        $client->request(Request::METHOD_GET, '/download/store-transactions/' . $storeId . '/2024');
+        $client->request(Request::METHOD_GET, '/download/store-transactions/'.$storeId.'/2024');
 
         self::assertResponseStatusCodeSame(403);
     }

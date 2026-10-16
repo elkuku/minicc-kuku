@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use App\Entity\User;
 use App\Entity\PaymentMethod;
+use App\Entity\User;
 use App\Repository\PaymentMethodRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 
 final class PaymentMethodControllerTest extends WebTestCase
 {
@@ -59,7 +59,7 @@ final class PaymentMethodControllerTest extends WebTestCase
         $this->assertInstanceOf(PaymentMethod::class, $method);
         $methodId = $method->getId();
 
-        $this->client->request(Request::METHOD_GET, '/payment-methods/edit/' . $methodId);
+        $this->client->request(Request::METHOD_GET, '/payment-methods/edit/'.$methodId);
 
         self::assertResponseIsSuccessful();
         self::assertRouteSame('payment_methods_edit');
@@ -85,7 +85,7 @@ final class PaymentMethodControllerTest extends WebTestCase
         $this->assertInstanceOf(PaymentMethod::class, $method);
         $methodId = $method->getId();
 
-        $this->client->request(Request::METHOD_GET, '/payment-methods/edit/' . $methodId);
+        $this->client->request(Request::METHOD_GET, '/payment-methods/edit/'.$methodId);
         $this->client->submitForm('Guardar', [
             'payment_method[name]' => 'gye-1005345-updated',
         ]);
@@ -103,7 +103,7 @@ final class PaymentMethodControllerTest extends WebTestCase
         $this->assertInstanceOf(PaymentMethod::class, $method);
         $methodId = $method->getId();
 
-        $this->client->request(Request::METHOD_GET, '/payment-methods/edit/' . $methodId);
+        $this->client->request(Request::METHOD_GET, '/payment-methods/edit/'.$methodId);
         $this->client->submitForm('Guardar', [
             'payment_method[name]' => '',
         ]);
@@ -137,7 +137,7 @@ final class PaymentMethodControllerTest extends WebTestCase
         $method = $this->ensurePaymentMethodForDelete();
         $methodId = $method->getId();
 
-        $this->client->request(Request::METHOD_POST, '/payment-methods/delete/' . $methodId, [
+        $this->client->request(Request::METHOD_POST, '/payment-methods/delete/'.$methodId, [
             '_token' => $this->csrfToken(),
         ]);
 
@@ -151,7 +151,7 @@ final class PaymentMethodControllerTest extends WebTestCase
         $method = $this->ensurePaymentMethodForDelete();
         $methodId = $method->getId();
 
-        $this->client->request(Request::METHOD_POST, '/payment-methods/delete/' . $methodId, [
+        $this->client->request(Request::METHOD_POST, '/payment-methods/delete/'.$methodId, [
             '_token' => 'invalid-token',
         ]);
 

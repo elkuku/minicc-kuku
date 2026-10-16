@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 
 final class WelcomeTest extends WebTestCase
 {

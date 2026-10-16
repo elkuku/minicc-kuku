@@ -17,12 +17,13 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route(path: '/users', name: 'users_index', methods: ['GET', 'POST'])]
 class Index extends BaseController
 {
-    public function __construct(private readonly UserRepository $userRepo) {}
+    public function __construct(private readonly UserRepository $userRepo)
+    {
+    }
 
     public function __invoke(
         #[MapRequestPayload] UserFilterPayload $filter = new UserFilterPayload(),
-    ): Response
-    {
+    ): Response {
         $userActive = '' === $filter->userActive ? null : $filter->userActive;
         $userRole = $filter->userRole->value ?? '';
         $criteria = [];
@@ -38,10 +39,10 @@ class Index extends BaseController
         return $this->render(
             'users/index.html.twig',
             [
-                'users'      => $this->userRepo->findBy($criteria),
+                'users' => $this->userRepo->findBy($criteria),
                 'userActive' => $userActive,
-                'userRole'   => $userRole,
-                'roles'      => UserRole::cases(),
+                'userRole' => $userRole,
+                'roles' => UserRole::cases(),
             ]
         );
     }

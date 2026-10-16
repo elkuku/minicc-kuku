@@ -16,20 +16,19 @@ trait PaginatorTrait
     protected function getPaginatorOptions(
         Request $request,
         #[Autowire('%env(LIST_LIMIT)%')]
-        int $listLimit
-    ): PaginatorOptions
-    {
+        int $listLimit,
+    ): PaginatorOptions {
         /** @var array{page?: string, limit?: string, order?: string, orderDir?: string, criteria?: array<string, string>} $options */
         $options = $this->getPaginatorOptionsBag($request)->all('paginatorOptions');
 
         return new PaginatorOptions()
             ->setPage(
                 isset($options['page']) && $options['page']
-                    ? (int)$options['page'] : 1
+                    ? (int) $options['page'] : 1
             )
             ->setLimit(
                 isset($options['limit']) && $options['limit']
-                    ? (int)$options['limit'] : $listLimit
+                    ? (int) $options['limit'] : $listLimit
             )
             ->setOrder(
                 isset($options['order']) && $options['order']

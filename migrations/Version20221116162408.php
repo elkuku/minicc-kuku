@@ -21,12 +21,10 @@ final class Version20221116162408 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('UPDATE contract SET gender = 1');
-
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-
     }
 }

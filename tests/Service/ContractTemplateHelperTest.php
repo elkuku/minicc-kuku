@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Tests\Service;
 
-use Iterator;
 use App\Entity\Contract;
 use App\Service\ContractTemplateHelper;
 use App\Type\Gender;
 use DateTime;
+use Iterator;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
@@ -159,7 +159,7 @@ final class ContractTemplateHelperTest extends TestCase
         $contract = $this->createContract();
         $contract->setText(
             '[cnt_lanfort] [cnt_neon] [cnt_switch] [cnt_toma] '
-            . '[cnt_ventana] [cnt_llaves] [cnt_med_agua] [cnt_med_elec]'
+            .'[cnt_ventana] [cnt_llaves] [cnt_med_agua] [cnt_med_elec]'
         );
 
         $result = $this->helper->replaceContent($contract);

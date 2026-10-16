@@ -29,14 +29,14 @@ class Transactions extends BaseController
         private readonly TaxService $taxService,
         private readonly ChartBuilderService $chartBuilder,
         private readonly ClockInterface $clock,
-    ) {}
+    ) {
+    }
 
-    #[Route(path: '/stores/{id}', name: 'stores_transactions', requirements: ['id' => '\d+',], methods: ['GET', 'POST',])]
+    #[Route(path: '/stores/{id}', name: 'stores_transactions', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function show(
         Store $store,
         #[MapRequestPayload] YearPayload $payload = new YearPayload(),
-    ): Response
-    {
+    ): Response {
         $this->denyAccessUnlessGranted('view', $store);
         $year = $payload->year ?? (int) $this->clock->now()->format('Y');
         $this->addBreadcrumb('Stores', 'stores_index')
@@ -56,7 +56,7 @@ class Transactions extends BaseController
         foreach ($transactions as $transaction) {
             if (TransactionType::payment === $transaction->getType()) {
                 $monthPayments[$transaction->getDate()->format('n')]
-                    += (float)$transaction->getAmount();
+                    += (float) $transaction->getAmount();
             }
         }
 

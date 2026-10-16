@@ -26,8 +26,7 @@ class Edit extends BaseController
         Transaction $transaction,
         Request $request,
         #[MapQueryParameter] string $view = '',
-    ): Response
-    {
+    ): Response {
         $view = $this->sanitizeLocalRedirect($view)
             ?? $this->generateUrl('stores_transactions', ['id' => $transaction->getStore()->getId()]);
 

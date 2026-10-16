@@ -15,12 +15,13 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route(path: '/deposits/search', name: 'deposits_search', methods: ['GET'])]
 class Search extends BaseController
 {
-    public function __construct(private readonly DepositRepository $depositRepository) {}
+    public function __construct(private readonly DepositRepository $depositRepository)
+    {
+    }
 
     public function __invoke(
         #[MapQueryParameter(flags: FILTER_NULL_ON_FAILURE)] ?int $q = null,
-    ): Response
-    {
+    ): Response {
         $ids = $this->depositRepository->search($q ?? 0);
 
         return $this->render(

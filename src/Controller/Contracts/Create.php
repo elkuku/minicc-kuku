@@ -30,7 +30,8 @@ class Create extends BaseController
         private readonly TaxService $taxService,
         private readonly ContractFactory $contractFactory,
         private readonly EntityManagerInterface $entityManager,
-    ) {}
+    ) {
+    }
 
     #[Route(path: '/contracts/create', name: 'contracts_create', methods: ['POST'])]
     public function new(
@@ -42,15 +43,15 @@ class Create extends BaseController
         $template = $this->contractRepo->findTemplate();
         $template = $template instanceof Contract ? $template : null;
 
-        $contract = $store !== null
+        $contract = null !== $store
             ? $this->contractFactory->createFromStore($store, $template)
             : new Contract();
 
-        if ($store === null && $template instanceof Contract) {
+        if (null === $store && $template instanceof Contract) {
             $contract->setText($template->getText());
         }
 
-        if ($user !== null) {
+        if (null !== $user) {
             $contract
                 ->setInqNombreapellido((string) $user->getName())
                 ->setInqCi($user->getInqCi());

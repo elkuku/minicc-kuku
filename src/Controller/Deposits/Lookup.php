@@ -16,14 +16,15 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route(path: '/deposits/lookup', name: 'deposits_lookup', methods: ['GET'])]
 class Lookup extends BaseController
 {
-    public function __construct(private readonly DepositRepository $depositRepository) {}
+    public function __construct(private readonly DepositRepository $depositRepository)
+    {
+    }
 
     public function __invoke(
         #[MapQueryParameter(flags: FILTER_NULL_ON_FAILURE)] ?int $id = null,
-    ): JsonResponse
-    {
-        $deposit = $id !== null ? $this->depositRepository->find($id) : null;
+    ): JsonResponse {
+        $deposit = null !== $id ? $this->depositRepository->find($id) : null;
 
-        return $this->json($deposit !== null ? DepositDto::fromDeposit($deposit) : null);
+        return $this->json(null !== $deposit ? DepositDto::fromDeposit($deposit) : null);
     }
 }

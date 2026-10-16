@@ -20,5 +20,6 @@ final readonly class CollectRentPayload
         #[SerializedName('date_cobro')]
         #[Assert\Date]
         public string $date = '',
-    ) {}
+    ) {
+    }
 }

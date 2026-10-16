@@ -15,6 +15,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 /**
  * @extends Voter<string, string>
+ *
  * @see \App\Tests\Security\StoreVoterTest
  */
 class StoreVoter extends Voter
@@ -26,8 +27,9 @@ class StoreVoter extends Voter
     final public const string EXPORT = 'export';
 
     public function __construct(
-        private readonly Security $security
-    ) {}
+        private readonly Security $security,
+    ) {
+    }
 
     #[Override]
     protected function supports(string $attribute, mixed $subject): bool
@@ -44,9 +46,8 @@ class StoreVoter extends Voter
         string $attribute,
         mixed $subject,
         TokenInterface $token,
-        ?Vote $vote = null
-    ): bool
-    {
+        ?Vote $vote = null,
+    ): bool {
         if ($this->security->isGranted('ROLE_ADMIN')) {
             return true;
         }

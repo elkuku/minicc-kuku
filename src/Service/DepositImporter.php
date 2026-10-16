@@ -26,7 +26,8 @@ readonly class DepositImporter
         private PaymentMethodRepository $paymentMethodRepository,
         private DepositRepository $depositRepository,
         private EntityManagerInterface $entityManager,
-    ) {}
+    ) {
+    }
 
     public function importFromRequest(Request $request): int
     {

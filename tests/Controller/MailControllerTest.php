@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace App\Tests\Controller;
 
 use App\Entity\Store;
-use App\Repository\StoreRepository;
-use Knp\Snappy\Pdf;
-use Symfony\Component\HttpFoundation\Request;
 use App\Entity\User;
+use App\Repository\StoreRepository;
 use App\Repository\UserRepository;
+use Knp\Snappy\Pdf;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 
 final class MailControllerTest extends WebTestCase
 {
@@ -207,7 +207,7 @@ final class MailControllerTest extends WebTestCase
         $storeRepository = self::getContainer()->get(StoreRepository::class);
 
         foreach ($storeRepository->getActive() as $store) {
-            if ($store->getUser() !== null) {
+            if (null !== $store->getUser()) {
                 return $store;
             }
         }

@@ -14,10 +14,10 @@ use App\Service\MailBatchResult;
 use App\Service\PayrollHelper;
 use App\Service\PdfHelper;
 use Symfony\Component\Clock\ClockInterface;
-use Symfony\Component\Mime\Email;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -32,15 +32,15 @@ class PlanillasClients extends BaseController
         private readonly PayrollHelper $payrollHelper,
         private readonly BulkMailService $bulkMailService,
         private readonly ClockInterface $clock,
-    ) {}
+    ) {
+    }
 
     public function __invoke(
         #[MapRequestPayload] MailRecipientsPayload $payload = new MailRecipientsPayload(),
-    ): Response
-    {
+    ): Response {
         $recipients = $payload->recipients;
 
-        if ($recipients === []) {
+        if ([] === $recipients) {
             return $this->render('mail/planillas-clients.html.twig', [
                 'stores' => $this->storeRepository->getActive(),
             ]);

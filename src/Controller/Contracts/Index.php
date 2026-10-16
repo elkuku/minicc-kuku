@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Controller\Contracts;
@@ -20,13 +21,13 @@ class Index extends BaseController
     public function __construct(
         private readonly StoreRepository $storeRepository,
         private readonly UserRepository $userRepository,
-        private readonly ContractRepository $contractRepository
-    ) {}
+        private readonly ContractRepository $contractRepository,
+    ) {
+    }
 
     public function __invoke(
         #[MapRequestPayload] ContractFilterPayload $filter = new ContractFilterPayload(),
-    ): Response
-    {
+    ): Response {
         $storeId = $filter->storeId;
         $year = $filter->year;
 

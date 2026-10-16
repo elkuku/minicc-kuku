@@ -22,7 +22,8 @@ class Transactions extends BaseController
         private readonly StoreRepository $storeRepository,
         private readonly PdfHelper $pdfHelper,
         private readonly ClockInterface $clock,
-    ) {}
+    ) {
+    }
 
     public function __invoke(): PdfResponse
     {

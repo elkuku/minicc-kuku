@@ -21,12 +21,10 @@ final class Version20221115132313 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('UPDATE user SET status = "inactive"');
-
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-
     }
 }

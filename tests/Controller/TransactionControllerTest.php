@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use App\Entity\User;
-use App\Entity\Store;
 use App\Entity\PaymentMethod;
-use DateTime;
+use App\Entity\Store;
 use App\Entity\Transaction;
+use App\Entity\User;
 use App\Repository\PaymentMethodRepository;
 use App\Repository\StoreRepository;
 use App\Repository\TransactionRepository;
 use App\Repository\UserRepository;
 use App\Type\TransactionType;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 
 final class TransactionControllerTest extends WebTestCase
 {
@@ -46,7 +46,7 @@ final class TransactionControllerTest extends WebTestCase
         $transaction = $this->ensureTransactionExists();
         $transactionId = $transaction->getId();
 
-        $this->client->request(Request::METHOD_GET, '/transactions/edit/' . $transactionId);
+        $this->client->request(Request::METHOD_GET, '/transactions/edit/'.$transactionId);
 
         self::assertResponseIsSuccessful();
         self::assertRouteSame('transactions_edit');
@@ -74,7 +74,7 @@ final class TransactionControllerTest extends WebTestCase
 
         $this->client->request(
             Request::METHOD_GET,
-            '/transactions/edit/' . $transactionId . '?view=/transactions'
+            '/transactions/edit/'.$transactionId.'?view=/transactions'
         );
         $this->client->submitForm('Guardar', [
             'transaction_type[amount]' => '99.99',
@@ -89,7 +89,7 @@ final class TransactionControllerTest extends WebTestCase
         $transaction = $this->ensureTransactionExists();
         $transactionId = $transaction->getId();
 
-        $this->client->request(Request::METHOD_GET, '/transactions/edit/' . $transactionId);
+        $this->client->request(Request::METHOD_GET, '/transactions/edit/'.$transactionId);
         $this->client->submitForm('Guardar', [
             'transaction_type[amount]' => '88.88',
             'transaction_type[comment]' => 'Default redirect test',
@@ -103,7 +103,7 @@ final class TransactionControllerTest extends WebTestCase
         $transaction = $this->ensureTransactionExists();
         $transactionId = $transaction->getId();
 
-        $this->client->request(Request::METHOD_POST, '/transactions/delete/' . $transactionId, [
+        $this->client->request(Request::METHOD_POST, '/transactions/delete/'.$transactionId, [
             'view' => '/transactions',
             '_token' => $this->csrfToken(),
         ]);
@@ -116,7 +116,7 @@ final class TransactionControllerTest extends WebTestCase
         $transaction = $this->ensureTransactionExists();
         $transactionId = $transaction->getId();
 
-        $this->client->request(Request::METHOD_POST, '/transactions/delete/' . $transactionId, [
+        $this->client->request(Request::METHOD_POST, '/transactions/delete/'.$transactionId, [
             '_token' => $this->csrfToken(),
         ]);
 
@@ -130,7 +130,7 @@ final class TransactionControllerTest extends WebTestCase
         $transaction = $this->ensureTransactionExists();
         $transactionId = $transaction->getId();
 
-        $this->client->request(Request::METHOD_POST, '/transactions/delete/' . $transactionId, [
+        $this->client->request(Request::METHOD_POST, '/transactions/delete/'.$transactionId, [
             'view' => 'https://evil.example.com/phish',
             '_token' => $this->csrfToken(),
         ]);
@@ -146,7 +146,7 @@ final class TransactionControllerTest extends WebTestCase
         // An invalid CSRF token throws InvalidCsrfTokenException, which extends
         // AuthenticationException, so Symfony's security layer redirects to the
         // login page rather than returning a 403 directly.
-        $this->client->request(Request::METHOD_POST, '/transactions/delete/' . $transactionId, [
+        $this->client->request(Request::METHOD_POST, '/transactions/delete/'.$transactionId, [
             '_token' => 'invalid-token',
         ]);
 

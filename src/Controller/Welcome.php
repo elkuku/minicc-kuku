@@ -18,7 +18,9 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route(path: '/', name: 'welcome', methods: ['GET'])]
 class Welcome extends BaseController
 {
-    public function __construct(private readonly StoreRepository $storeRepository, private readonly TransactionRepository $transactionRepository, private readonly TaxService $taxService, private readonly ChartBuilderService $chartBuilderService) {}
+    public function __construct(private readonly StoreRepository $storeRepository, private readonly TransactionRepository $transactionRepository, private readonly TaxService $taxService, private readonly ChartBuilderService $chartBuilderService)
+    {
+    }
 
     public function __invoke(): Response
     {
@@ -35,7 +37,7 @@ class Welcome extends BaseController
                 $chartData['headers'][] = 'Local '.$store->getId();
                 $valAlq = $this->taxService->addTax($store->getValAlq());
 
-                $chartData['monthsDebt'][] = $valAlq !== 0.0
+                $chartData['monthsDebt'][] = 0.0 !== $valAlq
                     ? round(-$balance / $valAlq, 1)
                     : 0;
                 $chartData['balances'][] = -$balance;

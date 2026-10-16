@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Tests\Security;
 
-use ReflectionMethod;
 use App\Security\LoginFormAuthenticator;
 use PHPUnit\Framework\TestCase;
+use ReflectionMethod;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\RouterInterface;
@@ -21,7 +21,7 @@ final class LoginFormAuthenticatorTest extends TestCase
     {
         $router = $this->createStub(RouterInterface::class);
         $router->method('generate')
-            ->willReturnCallback(fn(string $route): string => '/' . $route);
+            ->willReturnCallback(fn (string $route): string => '/'.$route);
 
         return $router;
     }

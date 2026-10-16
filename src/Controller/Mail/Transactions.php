@@ -31,12 +31,12 @@ class Transactions extends BaseController
         private readonly MailerInterface $mailer,
         private readonly EmailHelper $emailHelper,
         private readonly ClockInterface $clock,
-    ) {}
+    ) {
+    }
 
     public function __invoke(
         #[MapRequestPayload] YearPayload $payload = new YearPayload(),
-    ): RedirectResponse
-    {
+    ): RedirectResponse {
         $now = $this->clock->now();
         $year = $payload->year ?? (int) $now->format('Y');
         $htmlPages = [];
@@ -75,5 +75,4 @@ class Transactions extends BaseController
 
         return $this->redirectToRoute('welcome');
     }
-
 }

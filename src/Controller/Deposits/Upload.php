@@ -30,14 +30,14 @@ class Upload extends BaseController
         try {
             $insertCount = $this->importer->importFromRequest($request);
         } catch (RuntimeException|UnexpectedValueException|DateMalformedStringException $e) {
-            $this->addFlash('danger', 'No se pudo importar el archivo: ' . $e->getMessage());
+            $this->addFlash('danger', 'No se pudo importar el archivo: '.$e->getMessage());
 
             return $this->redirectToRoute('deposits_index');
         }
 
         $this->addFlash(
-            $insertCount !== 0 ? 'success' : 'warning',
-            'Depositos insertados: ' . $insertCount
+            0 !== $insertCount ? 'success' : 'warning',
+            'Depositos insertados: '.$insertCount
         );
 
         return $this->redirectToRoute('deposits_index');

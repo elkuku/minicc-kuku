@@ -23,8 +23,7 @@ class Create extends BaseController
 
     public function __invoke(
         Request $request,
-    ): Response
-    {
+    ): Response {
         $user = new User();
         $form = $this->createForm(UserFullType::class, $user);
         $form->handleRequest($request);

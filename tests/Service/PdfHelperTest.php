@@ -46,9 +46,9 @@ final class PdfHelperTest extends TestCase
             ->method('render')
             ->with(
                 '_pdf/transactions-pdf.html.twig',
-                self::callback(static fn(array $params): bool => $params['store'] === $store
-                    && $params['year'] === 2024
-                    && $params['saldoAnterior'] === 0
+                self::callback(static fn (array $params): bool => $params['store'] === $store
+                    && 2024 === $params['year']
+                    && 0 === $params['saldoAnterior']
                     && \is_array($params['transactions'])),
             )
             ->willReturn('<html>transactions</html>');
@@ -75,8 +75,8 @@ final class PdfHelperTest extends TestCase
             ->method('render')
             ->with(
                 '_pdf/payrolls-pdf.html.twig',
-                self::callback(static fn(array $params): bool => $params['factDate'] === '2024-3-1'
-                    && $params['prevDate'] === '2024-2-01'),
+                self::callback(static fn (array $params): bool => '2024-3-1' === $params['factDate']
+                    && '2024-2-01' === $params['prevDate']),
             )
             ->willReturn('<html>payrolls</html>');
 
@@ -138,7 +138,7 @@ final class PdfHelperTest extends TestCase
             ->method('getOutputFromHtml')
             ->with(
                 '<html>payrolls</html>',
-                self::callback(static fn(array $opts): bool => ($opts['enable-local-file-access'] ?? false) === true)
+                self::callback(static fn (array $opts): bool => ($opts['enable-local-file-access'] ?? false) === true)
             )
             ->willReturn('%PDF-payroll');
 
@@ -152,7 +152,7 @@ final class PdfHelperTest extends TestCase
     public function testRenderTransactionsPdfUsesHeadersFootersAndLocalFileAccess(): void
     {
         $twig = $this->createStub(Environment::class);
-        $twig->method('render')->willReturnCallback(static fn(string $tpl): string => match ($tpl) {
+        $twig->method('render')->willReturnCallback(static fn (string $tpl): string => match ($tpl) {
             '_header-pdf.html.twig' => '<header/>',
             '_footer-pdf.html.twig' => '<footer/>',
             default => '<html/>',
@@ -163,8 +163,7 @@ final class PdfHelperTest extends TestCase
             ->method('getOutputFromHtml')
             ->with(
                 ['<html>page1</html>'],
-                self::callback(static fn(array $opts): bool =>
-                    ($opts['enable-local-file-access'] ?? false) === true
+                self::callback(static fn (array $opts): bool => ($opts['enable-local-file-access'] ?? false) === true
                     && isset($opts['header-html'])
                     && isset($opts['footer-html'])
                 )

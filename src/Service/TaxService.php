@@ -16,8 +16,7 @@ class TaxService
     public function __construct(
         #[Autowire('%env(float:VALUE_IVA)%')]
         private readonly float $taxRate,
-    )
-    {
+    ) {
         $this->taxMultiplier = 1 + $this->taxRate / 100;
     }
 
@@ -28,7 +27,7 @@ class TaxService
 
     /**
      * Calculate total with tax from base value.
-     * Example: 100 with 12% tax = 112
+     * Example: 100 with 12% tax = 112.
      */
     public function addTax(float $baseValue): float
     {
@@ -37,7 +36,7 @@ class TaxService
 
     /**
      * Extract tax amount from total value.
-     * Example: 112 total with 12% tax = 12 tax
+     * Example: 112 total with 12% tax = 12 tax.
      */
     public function getTaxFromTotal(float $total): float
     {
@@ -46,7 +45,7 @@ class TaxService
 
     /**
      * Extract base value from total with tax.
-     * Example: 112 total with 12% tax = 100 base
+     * Example: 112 total with 12% tax = 100 base.
      */
     public function getBaseFromTotal(float $total): float
     {

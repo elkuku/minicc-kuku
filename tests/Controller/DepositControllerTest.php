@@ -48,7 +48,7 @@ final class DepositControllerTest extends WebTestCase
         $deposit = $this->getDeposit();
         $depositId = $deposit->getId();
 
-        $this->client->request(Request::METHOD_GET, '/deposits/lookup?id=' . $depositId);
+        $this->client->request(Request::METHOD_GET, '/deposits/lookup?id='.$depositId);
 
         self::assertResponseIsSuccessful();
         $response = $this->client->getResponse();
@@ -76,7 +76,7 @@ final class DepositControllerTest extends WebTestCase
     #[DataProvider('invalidLookupIdProvider')]
     public function testDepositLookupReturnsNullForMissingOrInvalidId(string $query): void
     {
-        $this->client->request(Request::METHOD_GET, '/deposits/lookup' . $query);
+        $this->client->request(Request::METHOD_GET, '/deposits/lookup'.$query);
 
         self::assertResponseIsSuccessful();
         self::assertSame('null', $this->client->getResponse()->getContent());
@@ -176,7 +176,7 @@ final class DepositControllerTest extends WebTestCase
         $deposit = $this->getDeposit();
         $depositId = $deposit->getId();
 
-        $this->client->request(Request::METHOD_POST, '/deposits/delete/' . $depositId, [
+        $this->client->request(Request::METHOD_POST, '/deposits/delete/'.$depositId, [
             '_token' => $this->csrfToken(),
         ]);
 
@@ -190,7 +190,7 @@ final class DepositControllerTest extends WebTestCase
         $deposit = $this->getDeposit();
         $depositId = $deposit->getId();
 
-        $this->client->request(Request::METHOD_POST, '/deposits/delete/' . $depositId, [
+        $this->client->request(Request::METHOD_POST, '/deposits/delete/'.$depositId, [
             '_token' => 'invalid-token',
         ]);
 

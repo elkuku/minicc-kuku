@@ -16,9 +16,8 @@ class PaymentMethodType extends AbstractType
     #[Override]
     public function buildForm(
         FormBuilderInterface $builder,
-        array $options
-    ): void
-    {
+        array $options,
+    ): void {
         $builder->add('name', null, [
             'empty_data' => '',
         ]);

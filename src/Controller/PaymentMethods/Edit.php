@@ -26,8 +26,7 @@ class Edit extends BaseController
         PaymentMethod $data,
         Request $request,
         #[MapQueryParameter] bool $ajax = false,
-    ): Response
-    {
+    ): Response {
         $form = $this->createForm(PaymentMethodType::class, $data);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

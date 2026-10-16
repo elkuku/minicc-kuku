@@ -17,16 +17,16 @@ use Throwable;
 class GitDataCollector extends AbstractDataCollector
 {
     public function __construct(
-        private readonly GitLoader $gitLoader
-    ) {}
+        private readonly GitLoader $gitLoader,
+    ) {
+    }
 
     #[Override]
     public function collect(
         Request $request,
         Response $response,
-        ?Throwable $exception = null
-    ): void
-    {
+        ?Throwable $exception = null,
+    ): void {
         $this->data = [
             'git_branch' => $this->gitLoader->getBranchName(),
             'last_commit_message' => $this->gitLoader->getLastCommitMessage(),

@@ -6,7 +6,6 @@ namespace App\Helper;
 
 use RuntimeException;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
-use function is_array;
 
 /**
  * @see \App\Tests\Helper\GitLoaderTest
@@ -15,8 +14,9 @@ class GitLoader
 {
     public function __construct(
         #[Autowire(param: 'kernel.project_dir')]
-        private readonly string $rootDir
-    ) {}
+        private readonly string $rootDir,
+    ) {
+    }
 
     public function getBranchName(): string
     {
@@ -26,7 +26,7 @@ class GitLoader
         $stringFromFile = file_exists($gitHeadFile)
             ? file($gitHeadFile, FILE_USE_INCLUDE_PATH) : '';
 
-        if (is_array($stringFromFile)) {
+        if (\is_array($stringFromFile)) {
             // Get the string from the array
             $firstLine = $stringFromFile[0];
 
@@ -45,7 +45,7 @@ class GitLoader
         $commitMessage = file_exists($gitCommitMessageFile)
             ? file($gitCommitMessageFile, FILE_USE_INCLUDE_PATH) : '';
 
-        return is_array($commitMessage) ? trim($commitMessage[0]) : '';
+        return \is_array($commitMessage) ? trim($commitMessage[0]) : '';
     }
 
     /**
@@ -58,7 +58,7 @@ class GitLoader
         $gitLogs = file_exists($gitLogFile)
             ? file($gitLogFile, FILE_USE_INCLUDE_PATH) : [];
         $sha = trim(
-            (string)$this->execCommand(
+            (string) $this->execCommand(
                 'cd '.$this->rootDir.' && git rev-parse --short HEAD'
             )
         );
@@ -74,7 +74,7 @@ class GitLoader
         $logs = [];
 
         $logs['author'] = $matches[3] ?? 'not defined';
-        $logs['date'] = isset($matches[5]) ? date('Y/m/d H:i', (int)$matches[5])
+        $logs['date'] = isset($matches[5]) ? date('Y/m/d H:i', (int) $matches[5])
             : 'not defined';
         $logs['sha'] = $sha;
 
@@ -86,7 +86,7 @@ class GitLoader
         ob_start();
         $lastLine = system($command, $status);
 
-        if ($status !== 0) {
+        if (0 !== $status) {
             // Command exited with a status != 0
             if ($lastLine) {
                 throw new RuntimeException($lastLine);

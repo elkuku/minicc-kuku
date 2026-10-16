@@ -161,7 +161,7 @@ final class DepositTest extends TestCase
     private function createPaymentMethodWithId(int $id): PaymentMethod
     {
         $paymentMethod = new PaymentMethod();
-        $paymentMethod->setName('Test Payment ' . $id);
+        $paymentMethod->setName('Test Payment '.$id);
 
         $reflection = new ReflectionProperty(PaymentMethod::class, 'id');
         $reflection->setValue($paymentMethod, $id);

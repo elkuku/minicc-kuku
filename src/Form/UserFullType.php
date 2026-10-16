@@ -23,14 +23,13 @@ class UserFullType extends AbstractType
     #[Override]
     public function buildForm(
         FormBuilderInterface $builder,
-        array $options
-    ): void
-    {
+        array $options,
+    ): void {
         $builder
             ->add('isActive')
             ->add('role', EnumType::class, [
                 'class' => UserRole::class,
-                'choice_label' => fn(UserRole $role): string => $role->label(),
+                'choice_label' => fn (UserRole $role): string => $role->label(),
                 // A missing/unmatched submission must not silently escalate
                 // privilege - fall back to the least-privileged role rather
                 // than crashing (setRole() takes a non-nullable UserRole).

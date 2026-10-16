@@ -37,7 +37,7 @@ final class UserRepositoryTest extends KernelTestCase
     {
         $users = $this->repository->findActiveUsers();
 
-        $names = array_map(static fn(User $u): ?string => $u->getName(), $users);
+        $names = array_map(static fn (User $u): ?string => $u->getName(), $users);
         $sorted = $names;
         sort($sorted);
 

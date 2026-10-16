@@ -11,5 +11,6 @@ final readonly class YearPayload
 {
     public function __construct(
         public ?int $year = null,
-    ) {}
+    ) {
+    }
 }

@@ -24,7 +24,8 @@ class Planillas extends BaseController
         private readonly EmailHelper $emailHelper,
         private readonly PayrollHelper $payrollHelper,
         private readonly ClockInterface $clock,
-    ) {}
+    ) {
+    }
 
     #[Route(path: '/mail/planillas', name: 'mail_planillas', methods: ['GET'])]
     public function planillas(): Response

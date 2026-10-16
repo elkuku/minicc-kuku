@@ -140,8 +140,6 @@ final class UserTest extends TestCase
         $this->assertSame(UserRole::USER, $user->getRole());
     }
 
-
-
     public function testGetPasswordReturnsNull(): void
     {
         $user = new User();
@@ -312,7 +310,7 @@ final class UserTest extends TestCase
     }
 
     #[IgnoreDeprecations]
-public function testToStringWithNullName(): void
+    public function testToStringWithNullName(): void
     {
         $user = new User();
         $user->setEmail('test@example.com');

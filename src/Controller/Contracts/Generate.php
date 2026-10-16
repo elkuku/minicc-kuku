@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Controller\Contracts;
@@ -16,14 +17,15 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
  * @see \App\Tests\Controller\Contracts\GenerateTest
  */
 #[IsGranted('ROLE_ADMIN')]
-#[Route(path: '/contracts/generate/{id}', name: 'contracts_generate', requirements: ['id' => '\d+',], methods: ['GET'])]
+#[Route(path: '/contracts/generate/{id}', name: 'contracts_generate', requirements: ['id' => '\d+'], methods: ['GET'])]
 class Generate extends BaseController
 {
     public function __construct(
         private readonly Pdf $pdf,
         private readonly ContractTemplateHelper $templateHelper,
         private readonly ClockInterface $clock,
-    ) {}
+    ) {
+    }
 
     public function __invoke(Contract $contract): PdfResponse
     {

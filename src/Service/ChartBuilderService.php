@@ -13,19 +13,19 @@ use Symfony\UX\Chartjs\Model\Chart;
 class ChartBuilderService
 {
     public function __construct(
-        private readonly ChartBuilderInterface $chartBuilder
-    ) {}
+        private readonly ChartBuilderInterface $chartBuilder,
+    ) {
+    }
 
     /**
      * @param array<int, string> $labels
-     * @param array<int, float> $data
+     * @param array<int, float>  $data
      */
     public function getDashboardChart(
         string $title,
         array $labels,
-        array $data
-    ): Chart
-    {
+        array $data,
+    ): Chart {
         $bgColors = [
             'rgba(255, 99, 132, 0.2)',
             'rgba(54, 162, 235, 0.2)',
@@ -70,16 +70,15 @@ class ChartBuilderService
     }
 
     /**
-     * @param array<string> $labels
+     * @param array<string>     $labels
      * @param array<int, float> $dataPayments
      * @param array<int, float> $dataRent
      */
     public function getStoreChart(
         array $labels,
         array $dataPayments,
-        array $dataRent
-    ): Chart
-    {
+        array $dataRent,
+    ): Chart {
         $chart = $this->chartBuilder->createChart(Chart::TYPE_LINE);
         $chart->setData(
             [

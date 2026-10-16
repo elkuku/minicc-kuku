@@ -19,8 +19,8 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 use Exception;
-use Symfony\Component\Clock\ClockInterface;
 use SortDirection;
+use Symfony\Component\Clock\ClockInterface;
 
 /**
  * @method Transaction|null find($id, $lockMode = null, $lockVersion = null)
@@ -29,6 +29,7 @@ use SortDirection;
  * @method Transaction[]    findBy(array<string, mixed> $criteria, ?array<string, string> $orderBy = null, $limit = null, $offset = null)
  *
  * @extends ServiceEntityRepository<Transaction>
+ *
  * @see \App\Tests\Repository\TransactionRepositoryTest
  */
 class TransactionRepository extends ServiceEntityRepository
@@ -64,9 +65,8 @@ class TransactionRepository extends ServiceEntityRepository
     public function findByStoreYearAndUser(
         Store $store,
         int $year,
-        User $user
-    ): array
-    {
+        User $user,
+    ): array {
         /** @var Transaction[] $result */
         $result = $this->createQueryBuilder('p')
             ->where('p.store = :store')
@@ -103,7 +103,7 @@ class TransactionRepository extends ServiceEntityRepository
      */
     public function getSaldo(Store $store): ?float
     {
-        return (float)$this->createQueryBuilder('t')
+        return (float) $this->createQueryBuilder('t')
             ->select('SUM(t.amount) AS amount')
             ->where('t.store = :store')
             ->setParameter('store', $store->getId())
@@ -146,11 +146,12 @@ class TransactionRepository extends ServiceEntityRepository
 
     /**
      * @param array<int> $storeIds
+     *
      * @return array<int, mixed>
      */
     public function getSaldoALaFechaByStores(array $storeIds, string $date): array
     {
-        if ($storeIds === []) {
+        if ([] === $storeIds) {
             return [];
         }
 
@@ -179,9 +180,8 @@ class TransactionRepository extends ServiceEntityRepository
     public function findMonthPayments(
         Store $store,
         int $month,
-        int $year
-    ): array
-    {
+        int $year,
+    ): array {
         /** @var array<float> $result */
         $result = $this->createQueryBuilder('p')
             ->where('p.store = :store')
@@ -202,11 +202,12 @@ class TransactionRepository extends ServiceEntityRepository
 
     /**
      * @param array<int> $storeIds
+     *
      * @return array<int, Transaction[]>
      */
     public function findMonthPaymentsByStores(array $storeIds, int $month, int $year): array
     {
-        if ($storeIds === []) {
+        if ([] === $storeIds) {
             return [];
         }
 
@@ -254,11 +255,12 @@ class TransactionRepository extends ServiceEntityRepository
 
     /**
      * @param array<int> $ids
+     *
      * @return Transaction[]
      */
     public function findByIds(array $ids): array
     {
-        if ($ids === []) {
+        if ([] === $ids) {
             return [];
         }
 
@@ -291,10 +293,10 @@ class TransactionRepository extends ServiceEntityRepository
         $payments = [];
 
         foreach ($transactions as $transaction) {
-            $mes = (int)$transaction->getDate()->format('m');
-            $day = (int)$transaction->getDate()->format('d');
+            $mes = (int) $transaction->getDate()->format('m');
+            $day = (int) $transaction->getDate()->format('d');
 
-            $payments[(int)$transaction->getStore()->getId()][$mes][$day][]
+            $payments[(int) $transaction->getStore()->getId()][$mes][$day][]
                 = $transaction;
         }
 
@@ -313,7 +315,7 @@ class TransactionRepository extends ServiceEntityRepository
 
         if (isset($criteria['type']) && $criteria['type']) {
             $query->where('t.type = :type')
-                ->setParameter('type', (int)$criteria['type']);
+                ->setParameter('type', (int) $criteria['type']);
         }
 
         $this->applySearchFilters($query, $options);
@@ -329,19 +331,19 @@ class TransactionRepository extends ServiceEntityRepository
     {
         $value = $options->searchCriteria($key);
 
-        return $value !== '' && $value !== '0';
+        return '' !== $value && '0' !== $value;
     }
 
     private function applySearchFilters(QueryBuilder $query, PaginatorOptions $options): void
     {
         if ($this->hasCriteria($options, 'amount')) {
             $query->andWhere('t.amount = :amount')
-                ->setParameter('amount', (float)$options->searchCriteria('amount'));
+                ->setParameter('amount', (float) $options->searchCriteria('amount'));
         }
 
         if ($this->hasCriteria($options, 'store')) {
             $query->andWhere('t.store = :store')
-                ->setParameter('store', (int)$options->searchCriteria('store'));
+                ->setParameter('store', (int) $options->searchCriteria('store'));
         }
 
         if ($this->hasCriteria($options, 'date_from')) {
@@ -356,7 +358,7 @@ class TransactionRepository extends ServiceEntityRepository
 
         if ($this->hasCriteria($options, 'recipe')) {
             $query->andWhere('t.recipeNo = :recipe')
-                ->setParameter('recipe', (int)$options->searchCriteria('recipe'));
+                ->setParameter('recipe', (int) $options->searchCriteria('recipe'));
         }
 
         if ($this->hasCriteria($options, 'comment')) {
@@ -368,7 +370,7 @@ class TransactionRepository extends ServiceEntityRepository
     public function getLastRecipeNo(): int
     {
         try {
-            $number = (int)$this->createQueryBuilder('t')
+            $number = (int) $this->createQueryBuilder('t')
                 ->select('MAX(t.recipeNo)')
                 ->getQuery()
                 ->getSingleScalarResult();
@@ -383,14 +385,14 @@ class TransactionRepository extends ServiceEntityRepository
     {
         $now = $this->clock->now();
         $currentYear = (int) $now->format('Y');
-        $lastChargedYear = (int)$this->getLastChargementDate()->format('Y');
+        $lastChargedYear = (int) $this->getLastChargementDate()->format('Y');
 
         if ($lastChargedYear < $currentYear) {
             return true;
         }
 
         $currentMonth = (int) $now->format('m');
-        $lastChargedMonth = (int)$this->getLastChargementDate()->format('m');
+        $lastChargedMonth = (int) $this->getLastChargementDate()->format('m');
 
         if (12 === $currentMonth && 1 === $lastChargedMonth) {
             return true;
@@ -408,6 +410,6 @@ class TransactionRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
 
-        return new DateTime((string)$date);
+        return new DateTime((string) $date);
     }
 }

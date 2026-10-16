@@ -12,12 +12,12 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20210219142458 extends AbstractMigration
 {
-    public function getDescription() : string
+    public function getDescription(): string
     {
         return '';
     }
 
-    public function up(Schema $schema) : void
+    public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE TABLE contract (id INT AUTO_INCREMENT NOT NULL, gender_id INT DEFAULT NULL, store_number INT NOT NULL, inq_nombreapellido VARCHAR(150) NOT NULL, inq_ci VARCHAR(11) NOT NULL, destination VARCHAR(50) NOT NULL, val_alq DOUBLE PRECISION NOT NULL, val_garantia DOUBLE PRECISION NOT NULL, date DATE NOT NULL, cnt_lanfort INT NOT NULL, cnt_neon INT NOT NULL, cnt_switch INT NOT NULL, cnt_toma INT NOT NULL, cnt_ventana INT NOT NULL, cnt_llaves INT NOT NULL, cnt_med_agua INT NOT NULL, cnt_med_elec INT NOT NULL, med_electrico VARCHAR(50) NOT NULL, med_agua VARCHAR(50) NOT NULL, text TEXT NOT NULL, INDEX IDX_E98F2859708A0E0 (gender_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
@@ -40,7 +40,7 @@ final class Version20210219142458 extends AbstractMigration
         $this->addSql('ALTER TABLE user ADD CONSTRAINT FK_8D93D6495D83CC1 FOREIGN KEY (state_id) REFERENCES user_state (id)');
     }
 
-    public function down(Schema $schema) : void
+    public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE deposit DROP FOREIGN KEY FK_95DB9D3981257D5D');

@@ -16,7 +16,8 @@ class AppExtensionRuntime implements RuntimeExtensionInterface
         private readonly UserRepository $userRepository,
         private readonly ShaFinder $shaFinder,
         private readonly TaxService $taxService,
-    ) {}
+    ) {
+    }
 
     /**
      * @return User[]

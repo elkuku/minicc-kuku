@@ -21,7 +21,8 @@ class ClientsToExcel extends BaseController
         private readonly UserRepository $userRepository,
         private readonly TextFormatter $textFormatter,
         private readonly ClockInterface $clock,
-    ) {}
+    ) {
+    }
 
     public function __invoke(): RedirectResponse
     {
@@ -34,6 +35,7 @@ class ClientsToExcel extends BaseController
 
         $xlsx = PhpXlsxGenerator::fromArray($rows);
         $xlsx->downloadAs('clientes-'.$this->clock->now()->format('Y-m-d').'.xlsx');
+
         return $this->redirectToRoute('admin_tasks');
     }
 }

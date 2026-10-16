@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use App\Entity\User;
 use App\Entity\Contract;
+use App\Entity\User;
 use App\Repository\ContractRepository;
 use App\Repository\UserRepository;
 use App\Type\Gender;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 
 final class ContractControllerTest extends WebTestCase
 {
@@ -52,7 +52,7 @@ final class ContractControllerTest extends WebTestCase
         $contract = $this->ensureContractExists();
         $contractId = $contract->getId();
 
-        $this->client->request(Request::METHOD_GET, '/contracts/edit/' . $contractId);
+        $this->client->request(Request::METHOD_GET, '/contracts/edit/'.$contractId);
 
         self::assertResponseIsSuccessful();
         self::assertRouteSame('contracts_edit');
@@ -63,7 +63,7 @@ final class ContractControllerTest extends WebTestCase
         $contract = $this->ensureContractExists();
         $contractId = $contract->getId();
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/contracts/edit/' . $contractId);
+        $crawler = $this->client->request(Request::METHOD_GET, '/contracts/edit/'.$contractId);
         $form = $crawler->selectButton('Guardar')->form();
         $form['contract[inqNombreApellido]'] = 'Updated Tester';
         $form['contract[destination]'] = 'Updated Destination';
@@ -79,7 +79,7 @@ final class ContractControllerTest extends WebTestCase
         $contract = $this->ensureContractExists();
         $contractId = $contract->getId();
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/contracts/edit/' . $contractId);
+        $crawler = $this->client->request(Request::METHOD_GET, '/contracts/edit/'.$contractId);
         $form = $crawler->selectButton('Guardar')->form();
         // Every one of these has a non-nullable setter (setDestination(string),
         // setValAlq(float), setDate(DateTime), ...); leaving them blank must
@@ -132,7 +132,7 @@ final class ContractControllerTest extends WebTestCase
 
         $contract = $this->ensureContractExists();
 
-        $this->client->request(Request::METHOD_GET, '/contracts/generate/' . $contract->getId());
+        $this->client->request(Request::METHOD_GET, '/contracts/generate/'.$contract->getId());
 
         self::assertResponseIsSuccessful();
         self::assertResponseHeaderSame('content-type', 'application/pdf');
@@ -142,7 +142,7 @@ final class ContractControllerTest extends WebTestCase
         self::assertStringStartsWith('%PDF', $content);
 
         file_put_contents(
-            dirname(__DIR__, 2) . '/var/test-contract.pdf',
+            dirname(__DIR__, 2).'/var/test-contract.pdf',
             $content
         );
     }
@@ -168,7 +168,7 @@ final class ContractControllerTest extends WebTestCase
         $contract = $this->ensureContractExists();
         $contractId = $contract->getId();
 
-        $this->client->request(Request::METHOD_POST, '/contracts/delete/' . $contractId, [
+        $this->client->request(Request::METHOD_POST, '/contracts/delete/'.$contractId, [
             '_token' => $this->csrfToken(),
         ]);
 
@@ -182,7 +182,7 @@ final class ContractControllerTest extends WebTestCase
         $contract = $this->ensureContractExists();
         $contractId = $contract->getId();
 
-        $this->client->request(Request::METHOD_POST, '/contracts/delete/' . $contractId, [
+        $this->client->request(Request::METHOD_POST, '/contracts/delete/'.$contractId, [
             '_token' => 'invalid-token',
         ]);
 

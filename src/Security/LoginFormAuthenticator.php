@@ -31,8 +31,9 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
     public function __construct(
         private readonly RouterInterface $router,
         #[Autowire(env: 'APP_ENV')]
-        private readonly string $appEnv
-    ) {}
+        private readonly string $appEnv,
+    ) {
+    }
 
     #[Override]
     public function supports(Request $request): bool
@@ -78,12 +79,11 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
      * @return array{identifier: string, csrf_token: string}
      */
     private function getCredentials(
-        Request $request
-    ): array
-    {
+        Request $request,
+    ): array {
         $credentials = [
-            'identifier' => (string)$request->request->get('identifier'),
-            'csrf_token' => (string)$request->request->get('_csrf_token'),
+            'identifier' => (string) $request->request->get('identifier'),
+            'csrf_token' => (string) $request->request->get('_csrf_token'),
         ];
 
         $request->getSession()->set(
@@ -98,9 +98,8 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
     public function onAuthenticationSuccess(
         Request $request,
         TokenInterface $token,
-        string $firewallName
-    ): RedirectResponse
-    {
+        string $firewallName,
+    ): RedirectResponse {
         if ($targetPath = $this->getTargetPath(
             $request->getSession(),
             $firewallName

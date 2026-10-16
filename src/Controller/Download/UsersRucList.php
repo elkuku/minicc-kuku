@@ -20,7 +20,8 @@ class UsersRucList extends BaseController
         private readonly UserRepository $userRepository,
         private readonly PdfHelper $pdfHelper,
         private readonly ClockInterface $clock,
-    ) {}
+    ) {
+    }
 
     public function __invoke(): PdfResponse
     {
@@ -30,6 +31,7 @@ class UsersRucList extends BaseController
                 'users' => $this->userRepository->getSortedByStore(),
             ]
         );
+
         return new PdfResponse(
             $this->pdfHelper->getOutputFromHtml(
                 $html,

@@ -21,7 +21,8 @@ readonly class PdfHelper
         private string $rootDir,
         private Environment $twig,
         private Pdf $pdfEngine,
-    ) {}
+    ) {
+    }
 
     public function getRoot(): string
     {
@@ -32,15 +33,14 @@ readonly class PdfHelper
         TransactionRepository $transactionRepository,
         Store $store,
         int $year,
-        int $transactionsPerPage = 42
-    ): string
-    {
+        int $transactionsPerPage = 42,
+    ): string {
         $transactions = $transactionRepository->findByStoreAndYear(
             $store,
             $year
         );
 
-        $pages = (int)(count($transactions) / $transactionsPerPage) + 1;
+        $pages = (int) (count($transactions) / $transactionsPerPage) + 1;
         $fillers = $transactionsPerPage - (count($transactions) - ($pages - 1)
                 * $transactionsPerPage);
 
@@ -67,9 +67,8 @@ readonly class PdfHelper
         int $year,
         int $month,
         PayrollHelper $payrollHelper,
-        int $storeId = 0
-    ): string
-    {
+        int $storeId = 0,
+    ): string {
         return $this->twig->render(
             '_pdf/payrolls-pdf.html.twig',
             $payrollHelper->getData($year, $month, $storeId)
@@ -77,14 +76,13 @@ readonly class PdfHelper
     }
 
     /**
-     * @param array<string>|string $htmlPages
+     * @param array<string>|string       $htmlPages
      * @param array<string, string|bool> $options
      */
     public function getOutputFromHtml(
         array|string $htmlPages,
-        array $options = []
-    ): string
-    {
+        array $options = [],
+    ): string {
         return $this->pdfEngine->getOutputFromHtml($htmlPages, $options);
     }
 

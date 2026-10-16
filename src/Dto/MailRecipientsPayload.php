@@ -12,5 +12,6 @@ final readonly class MailRecipientsPayload
     public function __construct(
         public array $recipients = [],
         public ?int $year = null,
-    ) {}
+    ) {
+    }
 }

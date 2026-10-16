@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Tests\Helper;
 
-use Iterator;
 use App\Helper\IntlConverter;
 use DateTime;
+use Iterator;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
@@ -46,7 +46,7 @@ final class IntlConverterTest extends TestCase
     {
         $date = new DateTime('2024-03-15');
 
-        $result = IntlConverter::formatDate($date, "d. MMMM YYYY", 'de_DE');
+        $result = IntlConverter::formatDate($date, 'd. MMMM YYYY', 'de_DE');
 
         $this->assertStringContainsString('15', $result);
         $this->assertStringContainsString('März', $result);

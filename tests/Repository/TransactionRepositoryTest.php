@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Tests\Repository;
 
-use DateTime;
 use App\Entity\Store;
 use App\Entity\Transaction;
 use App\Entity\User;
@@ -12,6 +11,7 @@ use App\Helper\Paginator\PaginatorOptions;
 use App\Repository\StoreRepository;
 use App\Repository\TransactionRepository;
 use App\Repository\UserRepository;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 final class TransactionRepositoryTest extends KernelTestCase
@@ -56,7 +56,7 @@ final class TransactionRepositoryTest extends KernelTestCase
 
         $result = $this->repository->getSaldoAnterior($store, $year);
 
-        $this->assertTrue(is_numeric($result) || $result === null);
+        $this->assertTrue(is_numeric($result) || null === $result);
     }
 
     public function testGetSaldoALaFecha(): void
@@ -65,7 +65,7 @@ final class TransactionRepositoryTest extends KernelTestCase
 
         $result = $this->repository->getSaldoALaFecha($store, date('Y-m-d'));
 
-        $this->assertTrue(is_numeric($result) || $result === null);
+        $this->assertTrue(is_numeric($result) || null === $result);
     }
 
     public function testFindMonthPayments(): void
@@ -256,13 +256,13 @@ final class TransactionRepositoryTest extends KernelTestCase
     public function testFindByIdsReturnsMatchingTransactions(): void
     {
         $all = $this->repository->findBy([], limit: 3);
-        $ids = array_map(static fn(Transaction $t): ?int => $t->getId(), $all);
-        $ids = array_filter($ids, static fn(?int $id): bool => $id !== null);
+        $ids = array_map(static fn (Transaction $t): ?int => $t->getId(), $all);
+        $ids = array_filter($ids, static fn (?int $id): bool => null !== $id);
 
         $result = $this->repository->findByIds(array_values($ids));
 
         self::assertCount(count($ids), $result);
-        $returnedIds = array_map(static fn(Transaction $t): ?int => $t->getId(), $result);
+        $returnedIds = array_map(static fn (Transaction $t): ?int => $t->getId(), $result);
         foreach ($ids as $id) {
             self::assertContains($id, $returnedIds);
         }
@@ -313,9 +313,9 @@ final class TransactionRepositoryTest extends KernelTestCase
 
         $result = $this->repository->getSaldoALaFechaByStores([$storeId], date('Y-m-d'));
 
-        if ($result !== []) {
+        if ([] !== $result) {
             self::assertArrayHasKey($storeId, $result);
-            self::assertTrue(is_numeric($result[$storeId]) || $result[$storeId] === null);
+            self::assertTrue(is_numeric($result[$storeId]) || null === $result[$storeId]);
         }
     }
 

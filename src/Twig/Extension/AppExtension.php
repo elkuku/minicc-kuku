@@ -10,12 +10,12 @@ use Symfony\Component\Clock\ClockInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
-use function count;
 
 class AppExtension extends AbstractExtension
 {
-    public function __construct(private readonly ClockInterface $clock) {}
-
+    public function __construct(private readonly ClockInterface $clock)
+    {
+    }
 
     /**
      * @return TwigFilter[]
@@ -54,7 +54,6 @@ class AppExtension extends AbstractExtension
         return $value ? -$value : 0;
     }
 
-
     /**
      * Convert object to array for Twig usage...
      *
@@ -62,7 +61,7 @@ class AppExtension extends AbstractExtension
      */
     public function objectFilter(object $classObject): array
     {
-        $array = (array)$classObject;
+        $array = (array) $classObject;
         $response = [];
 
         $className = $classObject::class;
@@ -82,24 +81,23 @@ class AppExtension extends AbstractExtension
         // E.g. Juan José Perez Pillo
         $parts = explode(' ', $longName);
 
-        if (2 === count($parts)) {
+        if (2 === \count($parts)) {
             // Juan Perez => Juan Perez
             return $longName;
         }
 
-        if (3 === count($parts)) {
+        if (3 === \count($parts)) {
             // Juan José Perez => Juan Perez
             return $parts[0].' '.$parts[2];
         }
 
-        if (4 === count($parts)) {
+        if (4 === \count($parts)) {
             // Juan José Perez Pillo => Juan Perez
             return $parts[0].' '.$parts[2];
         }
 
         return $longName;
     }
-
 
     public function getCurrentYear(): int
     {

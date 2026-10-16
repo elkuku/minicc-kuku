@@ -36,11 +36,11 @@ final class MailBatchResult
 
     public function hasSuccesses(): bool
     {
-        return $this->successes !== [];
+        return [] !== $this->successes;
     }
 
     public function hasFailures(): bool
     {
-        return $this->failures !== [];
+        return [] !== $this->failures;
     }
 }

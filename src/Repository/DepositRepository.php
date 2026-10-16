@@ -21,6 +21,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Deposit[]    findBy(array<string, mixed> $criteria, ?array<string, string> $orderBy = null, $limit = null, $offset = null)
  *
  * @extends ServiceEntityRepository<Deposit>
+ *
  * @see \App\Tests\Repository\DepositRepositoryTest
  */
 class DepositRepository extends ServiceEntityRepository
@@ -34,7 +35,7 @@ class DepositRepository extends ServiceEntityRepository
 
     public function has(Deposit $deposit): bool
     {
-        return (bool)$this->findOneBy(
+        return (bool) $this->findOneBy(
             [
                 'date' => $deposit->getDate(),
                 'document' => $deposit->getDocument(),
@@ -50,24 +51,24 @@ class DepositRepository extends ServiceEntityRepository
         $query = $this->createQueryBuilder('d')
             ->orderBy('d.'.$options->getOrder(), $options->getSortDirection());
 
-        if ($options->searchCriteria('amount') !== '' && $options->searchCriteria('amount') !== '0') {
+        if ('' !== $options->searchCriteria('amount') && '0' !== $options->searchCriteria('amount')) {
             $query->andWhere('d.amount = :amount')
                 ->setParameter(
                     'amount',
-                    (float)$options->searchCriteria('amount')
+                    (float) $options->searchCriteria('amount')
                 );
         }
 
-        if ($options->searchCriteria('document') !== '' && $options->searchCriteria('document') !== '0') {
+        if ('' !== $options->searchCriteria('document') && '0' !== $options->searchCriteria('document')) {
             $query->andWhere('d.document LIKE :document')
                 ->setParameter(
                     'document',
-                    '%'.(int)$options->searchCriteria('document')
+                    '%'.(int) $options->searchCriteria('document')
                     .'%'
                 );
         }
 
-        if ($options->searchCriteria('date_from') !== '' && $options->searchCriteria('date_from') !== '0') {
+        if ('' !== $options->searchCriteria('date_from') && '0' !== $options->searchCriteria('date_from')) {
             $query->andWhere('d.date >= :date_from')
                 ->setParameter(
                     'date_from',
@@ -75,7 +76,7 @@ class DepositRepository extends ServiceEntityRepository
                 );
         }
 
-        if ($options->searchCriteria('date_to') !== '' && $options->searchCriteria('date_to') !== '0') {
+        if ('' !== $options->searchCriteria('date_to') && '0' !== $options->searchCriteria('date_to')) {
             $query->andWhere('d.date <= :date_to')
                 ->setParameter('date_to', $options->searchCriteria('date_to'));
         }

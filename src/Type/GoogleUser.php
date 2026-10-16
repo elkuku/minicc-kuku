@@ -13,8 +13,9 @@ final class GoogleUser
      * @param array<string> $response
      */
     public function __construct(
-        private array $response
-    ) {}
+        private array $response,
+    ) {
+    }
 
     public function getId(): string
     {
@@ -31,7 +32,7 @@ final class GoogleUser
         return $this->getResponseValue('given_name');
     }
 
-    private function getResponseValue(string $key): string|null
+    private function getResponseValue(string $key): ?string
     {
         return $this->response[$key] ?? null;
     }

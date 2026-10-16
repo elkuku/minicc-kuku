@@ -1,10 +1,11 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Controller\Contracts;
 
-use App\Entity\Contract;
 use App\Controller\BaseController;
+use App\Entity\Contract;
 use App\Form\ContractType;
 use App\Repository\ContractRepository;
 use App\Service\TaxService;
@@ -15,19 +16,19 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[IsGranted('ROLE_ADMIN')]
-#[Route(path: '/contracts/template', name: 'contracts_template', methods: ['GET', 'POST',])]
+#[Route(path: '/contracts/template', name: 'contracts_template', methods: ['GET', 'POST'])]
 class Template extends BaseController
 {
     public function __construct(
         private readonly ContractRepository $contractRepository,
         private readonly TaxService $taxService,
-        private readonly EntityManagerInterface $entityManager
-    ) {}
+        private readonly EntityManagerInterface $entityManager,
+    ) {
+    }
 
     public function __invoke(
         Request $request,
-    ): Response
-    {
+    ): Response {
         $data = $this->contractRepository->findTemplate();
         $form = $this->createForm(ContractType::class, $data);
         $form->handleRequest($request);

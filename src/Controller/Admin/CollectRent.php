@@ -30,13 +30,13 @@ class CollectRent extends BaseController
         private readonly PaymentMethodRepository $paymentMethodRepository,
         private readonly TransactionFactory $transactionFactory,
         private readonly EntityManagerInterface $entityManager,
-    ) {}
+    ) {
+    }
 
     public function __invoke(
         #[MapRequestPayload] CollectRentPayload $payload = new CollectRentPayload(),
-    ): Response
-    {
-        if ($payload->values === []) {
+    ): Response {
+        if ([] === $payload->values) {
             return $this->render(
                 'admin/collect-rent.html.twig',
                 [
@@ -74,8 +74,7 @@ class CollectRent extends BaseController
         PaymentMethod $method,
         string $date,
         string $value,
-    ): Transaction
-    {
+    ): Transaction {
         $user = $this->userRepository->find($userId);
 
         if (!$user) {

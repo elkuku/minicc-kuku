@@ -20,7 +20,8 @@ class Planillas extends BaseController
         private readonly PdfHelper $pdfHelper,
         private readonly PayrollHelper $payrollHelper,
         private readonly ClockInterface $clock,
-    ) {}
+    ) {
+    }
 
     public function __invoke(): PdfResponse
     {

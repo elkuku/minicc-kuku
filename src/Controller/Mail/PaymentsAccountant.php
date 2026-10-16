@@ -27,19 +27,19 @@ class PaymentsAccountant extends BaseController
         private readonly EmailHelper $emailHelper,
         private readonly MailerInterface $mailer,
         private readonly ClockInterface $clock,
-    ) {}
+    ) {
+    }
 
     public function __invoke(
         #[Autowire('%env(EMAIL_ACCOUNTANT)%')] string $emailAccountant,
         #[MapRequestPayload] PaymentsAccountantPayload $payload = new PaymentsAccountantPayload(),
-    ): Response
-    {
+    ): Response {
         $now = $this->clock->now();
         $year = $payload->year ?? (int) $now->format('Y');
         $month = $payload->month ?? (int) $now->format('m');
         $ids = $payload->getIds();
 
-        if ($ids !== []) {
+        if ([] !== $ids) {
             $email = $this->emailHelper->createTemplatedEmail(
                 to: Address::create($emailAccountant),
                 subject: sprintf('Pagos del MiniCC KuKu - %d / %d', $month, $year)
@@ -49,7 +49,7 @@ class PaymentsAccountant extends BaseController
                     'year' => $year,
                     'month' => $month,
                     'payments' => $this->repository->findByIds($ids),
-                    'fileName' => '@todo$fileName',//@todo ->attach($document, $fileName)
+                    'fileName' => '@todo$fileName', // @todo ->attach($document, $fileName)
                 ]);
 
             try {
@@ -59,8 +59,8 @@ class PaymentsAccountant extends BaseController
                 $this->addFlash('danger', 'Payments have NOT been mailed! - '.$exception->getMessage());
             }
 
-            //@todo redirect elsewhere
-            //return $this->redirectToRoute('mail_cobros_contador');
+            // @todo redirect elsewhere
+            // return $this->redirectToRoute('mail_cobros_contador');
         }
 
         return $this->render('mail/cobros-contador.html.twig',

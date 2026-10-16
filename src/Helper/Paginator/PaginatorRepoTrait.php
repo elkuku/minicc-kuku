@@ -15,9 +15,8 @@ trait PaginatorRepoTrait
     public function paginate(
         Query $dql,
         int $page = 1,
-        int $limit = 5
-    ): Paginator
-    {
+        int $limit = 5,
+    ): Paginator {
         /** @var Paginator<Query> $paginator */
         $paginator = new Paginator($dql);
 

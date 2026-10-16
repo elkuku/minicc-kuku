@@ -20,6 +20,7 @@ class ContractTemplateHelper
     public function getReplacementStrings(): array
     {
         $replacements = $this->getReplacements(new Contract()->setGender(Gender::other));
+
         return array_keys($replacements);
     }
 
@@ -29,41 +30,42 @@ class ContractTemplateHelper
     private function getReplacements(Contract $contract): array
     {
         $numberToWord = new Numbers();
+
         return [
-            'local_no' => (string)$contract->getStoreNumber(),
-            'destination' => (string)$contract->getDestination(),
-            'val_alq' => number_format((float)$contract->getValAlq(), 2),
+            'local_no' => (string) $contract->getStoreNumber(),
+            'destination' => (string) $contract->getDestination(),
+            'val_alq' => number_format((float) $contract->getValAlq(), 2),
             'txt_alq' => $numberToWord->toCurrency(
-                (float)$contract->getValAlq(),
+                (float) $contract->getValAlq(),
                 'es_EC',
                 'USD'
             ),
             'val_garantia' => number_format(
-                (float)$contract->getValGarantia(),
+                (float) $contract->getValGarantia(),
                 2
             ),
             'txt_garantia' => $numberToWord->toCurrency(
-                (float)$contract->getValGarantia(),
+                (float) $contract->getValGarantia(),
                 'es_EC',
                 'USD'
             ),
             'fecha_long' => IntlConverter::formatDate($contract->getDate()),
 
-            'inq_nombreapellido' => (string)$contract->getInqNombreapellido(),
+            'inq_nombreapellido' => (string) $contract->getInqNombreapellido(),
             'inq_ci' => $contract->getInqCi(),
 
             'senor_a' => $contract->getGender()->titleLong(),
             'el_la' => $contract->getGender()->text_1(),
             'del_la' => $contract->getGender()->text_2(),
 
-            'cnt_lanfort' => (string)$contract->getCntLanfort(),
-            'cnt_neon' => (string)$contract->getCntNeon(),
-            'cnt_switch' => (string)$contract->getCntSwitch(),
-            'cnt_toma' => (string)$contract->getCntToma(),
-            'cnt_ventana' => (string)$contract->getCntVentana(),
-            'cnt_llaves' => (string)$contract->getCntLlaves(),
-            'cnt_med_agua' => (string)$contract->getCntMedAgua(),
-            'cnt_med_elec' => (string)$contract->getCntMedElec(),
+            'cnt_lanfort' => (string) $contract->getCntLanfort(),
+            'cnt_neon' => (string) $contract->getCntNeon(),
+            'cnt_switch' => (string) $contract->getCntSwitch(),
+            'cnt_toma' => (string) $contract->getCntToma(),
+            'cnt_ventana' => (string) $contract->getCntVentana(),
+            'cnt_llaves' => (string) $contract->getCntLlaves(),
+            'cnt_med_agua' => (string) $contract->getCntMedAgua(),
+            'cnt_med_elec' => (string) $contract->getCntMedElec(),
 
             'med_electrico' => $contract->getMedElectrico(),
             'med_agua' => $contract->getMedAgua(),
@@ -75,7 +77,8 @@ class ContractTemplateHelper
         $replacements = $this->getReplacements($contract);
         $start = '[';
         $end = ']';
-        $search = array_map(static fn(string $item): string => $start.$item.$end, array_keys($replacements));
+        $search = array_map(static fn (string $item): string => $start.$item.$end, array_keys($replacements));
+
         return str_replace(
             $search,
             $replacements,

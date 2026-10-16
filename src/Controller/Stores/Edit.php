@@ -18,13 +18,14 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route(path: '/stores/edit/{id}', name: 'stores_edit', methods: ['GET', 'POST'])]
 class Edit extends BaseController
 {
-    public function __construct(private readonly TaxService $taxService, private readonly EntityManagerInterface $entityManager) {}
+    public function __construct(private readonly TaxService $taxService, private readonly EntityManagerInterface $entityManager)
+    {
+    }
 
     public function __invoke(
         Store $store,
         Request $request,
-    ): Response
-    {
+    ): Response {
         $form = $this->createForm(StoreType::class, $store);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

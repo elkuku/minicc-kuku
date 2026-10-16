@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace App\Tests\Security;
 
 use App\Entity\User;
+use App\Repository\UserRepository;
 use App\Security\GoogleIdentityAuthenticator;
 use App\Type\Gender;
 use App\Type\GoogleUser;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
-use App\Repository\UserRepository;
 use ReflectionMethod;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,7 +28,7 @@ final class GoogleIdentityAuthenticatorTest extends TestCase
     {
         $urlGenerator = $this->createStub(UrlGeneratorInterface::class);
         $urlGenerator->method('generate')
-            ->willReturnCallback(fn(string $route): string => '/' . $route);
+            ->willReturnCallback(fn (string $route): string => '/'.$route);
 
         return new GoogleIdentityAuthenticator(
             'fake-google-client-id',
@@ -129,7 +129,7 @@ final class GoogleIdentityAuthenticatorTest extends TestCase
         $userRepository = $this->createStub(UserRepository::class);
         $userRepository->method('findOneBy')
             ->willReturnCallback(function (array $criteria) use ($user): ?User {
-                if (isset($criteria['googleId']) && $criteria['googleId'] === 'google-123') {
+                if (isset($criteria['googleId']) && 'google-123' === $criteria['googleId']) {
                     return $user;
                 }
 
@@ -158,7 +158,7 @@ final class GoogleIdentityAuthenticatorTest extends TestCase
                     return null;
                 }
 
-                if (isset($criteria['email']) && $criteria['email'] === 'test@example.com') {
+                if (isset($criteria['email']) && 'test@example.com' === $criteria['email']) {
                     return $user;
                 }
 
@@ -216,7 +216,7 @@ final class GoogleIdentityAuthenticatorTest extends TestCase
     ): GoogleIdentityAuthenticator {
         $urlGenerator = $this->createStub(UrlGeneratorInterface::class);
         $urlGenerator->method('generate')
-            ->willReturnCallback(fn(string $route): string => '/' . $route);
+            ->willReturnCallback(fn (string $route): string => '/'.$route);
 
         return new GoogleIdentityAuthenticator(
             'fake-google-client-id',

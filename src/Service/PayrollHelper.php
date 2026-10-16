@@ -17,7 +17,8 @@ class PayrollHelper
     public function __construct(
         private readonly StoreRepository $storeRepository,
         private readonly TransactionRepository $transactionRepository,
-    ) {}
+    ) {
+    }
 
     /**
      * @return array{factDate: string, prevDate: string, stores: Store[], storeData: array<int, array{saldoIni: mixed, transactions: Transaction[]}>}
@@ -25,9 +26,8 @@ class PayrollHelper
     public function getData(
         int $year,
         int $month,
-        int $storeId = 0
-    ): array
-    {
+        int $storeId = 0,
+    ): array {
         $stores = $this->storeRepository->findAll();
 
         $factDate = $year.'-'.$month.'-1';

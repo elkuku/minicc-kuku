@@ -18,7 +18,8 @@ final readonly class DepositDto implements JsonSerializable
         public string $document,
         public string $date,
         public ?int $entity,
-    ) {}
+    ) {
+    }
 
     public static function fromDeposit(Deposit $deposit): self
     {

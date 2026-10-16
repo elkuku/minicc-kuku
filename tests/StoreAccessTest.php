@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Tests;
 
-use Symfony\Component\HttpFoundation\Request;
-use UnexpectedValueException;
 use App\Repository\UserRepository;
 use PHPUnit\Framework\ExpectationFailedException;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Request;
+use UnexpectedValueException;
 
 final class StoreAccessTest extends WebTestCase
 {
@@ -40,7 +40,7 @@ final class StoreAccessTest extends WebTestCase
             ->findOneBy([
                 'email' => 'user2@example.com',
             ]);
-        if (! $testUser) {
+        if (!$testUser) {
             throw new UnexpectedValueException('User not found.');
         }
 
@@ -49,7 +49,7 @@ final class StoreAccessTest extends WebTestCase
         $crawler = $client->request(Request::METHOD_GET, '/stores/1');
         try {
             //  self::assertSelectorTextContains('small', 'Forbidden');
-            $this->assertStringContainsString("The user doesn't have ROLE_ADMIN", (string)$client->getResponse()->getContent());
+            $this->assertStringContainsString("The user doesn't have ROLE_ADMIN", (string) $client->getResponse()->getContent());
         } catch (ExpectationFailedException $expectationFailedException) {
             file_put_contents('guguxx1a.html', $crawler->html());
             file_put_contents('guguxx1a.html', $client->getResponse()->getContent());
@@ -69,7 +69,7 @@ final class StoreAccessTest extends WebTestCase
             ->findOneBy([
                 'email' => 'user1@example.com',
             ]);
-        if (! $testUser) {
+        if (!$testUser) {
             throw new UnexpectedValueException('User not found.');
         }
 

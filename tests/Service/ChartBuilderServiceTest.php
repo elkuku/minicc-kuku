@@ -15,7 +15,7 @@ final class ChartBuilderServiceTest extends TestCase
     {
         $chartBuilder = $this->createStub(ChartBuilderInterface::class);
         $chartBuilder->method('createChart')
-            ->willReturnCallback(fn(string $type): Chart => new Chart($type));
+            ->willReturnCallback(fn (string $type): Chart => new Chart($type));
 
         $service = new ChartBuilderService($chartBuilder);
         $labels = ['Jan', 'Feb', 'Mar'];
@@ -36,7 +36,7 @@ final class ChartBuilderServiceTest extends TestCase
     {
         $chartBuilder = $this->createStub(ChartBuilderInterface::class);
         $chartBuilder->method('createChart')
-            ->willReturnCallback(fn(string $type): Chart => new Chart($type));
+            ->willReturnCallback(fn (string $type): Chart => new Chart($type));
 
         $service = new ChartBuilderService($chartBuilder);
         $labels = ['Week 1', 'Week 2'];

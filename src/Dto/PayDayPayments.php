@@ -31,5 +31,6 @@ final readonly class PayDayPayments
         public array $deposit = [],
         public array $amount = [],
         public array $comment = [],
-    ) {}
+    ) {
+    }
 }

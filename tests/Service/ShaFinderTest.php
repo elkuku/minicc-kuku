@@ -13,7 +13,7 @@ final class ShaFinderTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->tempDir = sys_get_temp_dir() . '/sha_finder_test_' . uniqid();
+        $this->tempDir = sys_get_temp_dir().'/sha_finder_test_'.uniqid();
         mkdir($this->tempDir);
     }
 
@@ -31,7 +31,7 @@ final class ShaFinderTest extends TestCase
 
     public function testGetShaReadsFromShaTxt(): void
     {
-        file_put_contents($this->tempDir . '/sha.txt', 'abc123def');
+        file_put_contents($this->tempDir.'/sha.txt', 'abc123def');
 
         $shaFinder = new ShaFinder($this->tempDir);
 
@@ -40,8 +40,8 @@ final class ShaFinderTest extends TestCase
 
     public function testGetShaReadsFromGitHeadWhenNoShaTxt(): void
     {
-        mkdir($this->tempDir . '/.git/refs/heads', 0777, true);
-        file_put_contents($this->tempDir . '/.git/refs/heads/master', 'git-sha-456');
+        mkdir($this->tempDir.'/.git/refs/heads', 0777, true);
+        file_put_contents($this->tempDir.'/.git/refs/heads/master', 'git-sha-456');
 
         $shaFinder = new ShaFinder($this->tempDir);
 
@@ -50,9 +50,9 @@ final class ShaFinderTest extends TestCase
 
     public function testGetShaPrefersShaTxtOverGitHead(): void
     {
-        file_put_contents($this->tempDir . '/sha.txt', 'sha-txt-value');
-        mkdir($this->tempDir . '/.git/refs/heads', 0777, true);
-        file_put_contents($this->tempDir . '/.git/refs/heads/master', 'git-value');
+        file_put_contents($this->tempDir.'/sha.txt', 'sha-txt-value');
+        mkdir($this->tempDir.'/.git/refs/heads', 0777, true);
+        file_put_contents($this->tempDir.'/.git/refs/heads/master', 'git-value');
 
         $shaFinder = new ShaFinder($this->tempDir);
 
@@ -61,7 +61,7 @@ final class ShaFinderTest extends TestCase
 
     public function testGetShaReturnsNaForEmptyShaTxt(): void
     {
-        file_put_contents($this->tempDir . '/sha.txt', '');
+        file_put_contents($this->tempDir.'/sha.txt', '');
 
         $shaFinder = new ShaFinder($this->tempDir);
 
@@ -70,8 +70,8 @@ final class ShaFinderTest extends TestCase
 
     public function testGetShaReturnsNaForEmptyGitHead(): void
     {
-        mkdir($this->tempDir . '/.git/refs/heads', 0777, true);
-        file_put_contents($this->tempDir . '/.git/refs/heads/master', '');
+        mkdir($this->tempDir.'/.git/refs/heads', 0777, true);
+        file_put_contents($this->tempDir.'/.git/refs/heads/master', '');
 
         $shaFinder = new ShaFinder($this->tempDir);
 
@@ -80,7 +80,7 @@ final class ShaFinderTest extends TestCase
 
     public function testGetShaWithWhitespace(): void
     {
-        file_put_contents($this->tempDir . '/sha.txt', "  abc123  \n");
+        file_put_contents($this->tempDir.'/sha.txt', "  abc123  \n");
 
         $shaFinder = new ShaFinder($this->tempDir);
 
@@ -97,7 +97,7 @@ final class ShaFinderTest extends TestCase
         $files = array_diff(scandir($dir) ?: [], ['.', '..']);
 
         foreach ($files as $file) {
-            $path = $dir . '/' . $file;
+            $path = $dir.'/'.$file;
             is_dir($path) ? $this->removeDirectory($path) : unlink($path);
         }
 

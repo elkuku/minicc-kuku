@@ -18,12 +18,13 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route(path: 'stores/create', name: 'stores_create', methods: ['GET', 'POST'])]
 class Create extends BaseController
 {
-    public function __construct(private readonly TaxService $taxService, private readonly EntityManagerInterface $entityManager) {}
+    public function __construct(private readonly TaxService $taxService, private readonly EntityManagerInterface $entityManager)
+    {
+    }
 
     public function __invoke(
         Request $request,
-    ): Response
-    {
+    ): Response {
         $store = new Store();
         $form = $this->createForm(StoreType::class, $store);
         $form->handleRequest($request);

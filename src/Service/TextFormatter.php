@@ -11,7 +11,6 @@ use App\Entity\User;
  */
 class TextFormatter
 {
-
     public function formatRUC(User $user): string
     {
         $ruc = '?';
@@ -26,7 +25,7 @@ class TextFormatter
             } else {
                 $ruc = chunk_split($ruc, 3, ' ');
             }
-        } elseif ($user->getInqCi() !== '' && $user->getInqCi() !== '0') {
+        } elseif ('' !== $user->getInqCi() && '0' !== $user->getInqCi()) {
             $ruc = str_replace('-', '', $user->getInqCi());
             $ruc = chunk_split($ruc, 3, ' ');
         }

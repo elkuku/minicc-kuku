@@ -21,13 +21,13 @@ class StoreTransactions extends BaseController
         private readonly TransactionRepository $transactionRepository,
         private readonly PdfHelper $pdfHelper,
         private readonly ClockInterface $clock,
-    ) {}
+    ) {
+    }
 
     public function __invoke(
         Store $store,
-        int $year
-    ): PdfResponse
-    {
+        int $year,
+    ): PdfResponse {
         $this->denyAccessUnlessGranted('export', $store);
         $html = $this->pdfHelper->renderTransactionHtml(
             $this->transactionRepository,

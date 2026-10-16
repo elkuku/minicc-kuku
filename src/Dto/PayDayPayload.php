@@ -11,5 +11,6 @@ final readonly class PayDayPayload
     public function __construct(
         #[Assert\Valid]
         public ?PayDayPayments $payments = null,
-    ) {}
+    ) {
+    }
 }

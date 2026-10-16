@@ -32,15 +32,15 @@ class TransactionsClients extends BaseController
         private readonly EmailHelper $emailHelper,
         private readonly BulkMailService $bulkMailService,
         private readonly ClockInterface $clock,
-    ) {}
+    ) {
+    }
 
     public function __invoke(
         #[MapRequestPayload] MailRecipientsPayload $payload = new MailRecipientsPayload(),
-    ): Response
-    {
+    ): Response {
         $recipients = $payload->recipients;
 
-        if ($recipients === []) {
+        if ([] === $recipients) {
             return $this->render('mail/transactions-clients.html.twig', [
                 'stores' => $this->storeRepository->getActive(),
                 'years' => range((int) $this->clock->now()->format('Y'), (int) $this->clock->now()->modify('-5 years')->format('Y')),

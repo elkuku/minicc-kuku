@@ -16,6 +16,7 @@ use SortDirection;
  * @method Contract[]    findBy(array<string, mixed> $criteria, ?array<string, string> $orderBy = null, $limit = null, $offset = null)
  *
  * @extends ServiceEntityRepository<Contract>
+ *
  * @see \App\Tests\Repository\ContractRepositoryTest
  */
 class ContractRepository extends ServiceEntityRepository
@@ -34,12 +35,12 @@ class ContractRepository extends ServiceEntityRepository
 
         $query->where('c.id > 1');
 
-        if ($storeId !== 0) {
+        if (0 !== $storeId) {
             $query->andWhere('c.storeNumber = :storeId')
                 ->setParameter('storeId', $storeId);
         }
 
-        if ($year !== 0) {
+        if (0 !== $year) {
             $query->andWhere('YEAR(c.date) = :year')
                 ->setParameter('year', $year);
         }

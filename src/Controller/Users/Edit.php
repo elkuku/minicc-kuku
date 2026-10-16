@@ -24,8 +24,7 @@ class Edit extends BaseController
     public function __invoke(
         User $client,
         Request $request,
-    ): Response
-    {
+    ): Response {
         $form = $this->createForm(UserFullType::class, $client);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

@@ -32,16 +32,17 @@ class PayDay extends BaseController
         private readonly TransactionRepository $transactionRepository,
         private readonly TransactionFactory $transactionFactory,
         private readonly EntityManagerInterface $entityManager,
-    ) {}
+    ) {
+    }
 
     public function __invoke(
         #[MapRequestPayload] PayDayPayload $payload = new PayDayPayload(),
-    ): Response
-    {
+    ): Response {
         $payments = $payload->payments;
         if (!$payments instanceof PayDayPayments) {
             $paymentMethods = $this->paymentMethodRepository->findAll();
             $serializer = new Serializer([new GetSetMethodNormalizer()], ['json' => new JsonEncoder()]);
+
             return $this->render(
                 'admin/payday.html.twig',
                 [

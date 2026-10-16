@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Controller\Contracts;
@@ -22,8 +23,7 @@ class Delete extends BaseController
 
     public function __invoke(
         Contract $contract,
-    ): RedirectResponse
-    {
+    ): RedirectResponse {
         $this->entityManager->remove($contract);
         $this->entityManager->flush();
         $this->addFlash('success', 'Contract has been deleted');

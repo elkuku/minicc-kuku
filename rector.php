@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 use Rector\Config\RectorConfig;
 use Rector\Exception\Configuration\InvalidConfigurationException;
+use Rector\PHPUnit\PHPUnit100\Rector\Class_\ParentTestClassConstructorRector;
 use Rector\Symfony\Bridge\Symfony\Routing\SymfonyRoutesProvider;
 use Rector\Symfony\Contract\Bridge\Symfony\Routing\SymfonyRoutesProviderInterface;
 use Rector\Symfony\Symfony30\Rector\MethodCall\StringFormTypeToClassRector;
 use Rector\Symfony\Symfony34\Rector\Closure\ContainerGetNameToTypeInTestsRector;
-use Rector\PHPUnit\PHPUnit100\Rector\Class_\ParentTestClassConstructorRector;
 
 try {
     return RectorConfig::configure()
@@ -18,7 +18,7 @@ try {
         ])
         ->withSkip([
             __DIR__.'/src/Service/PhpXlsxGenerator.php',
-            \Rector\PHPUnit\CodeQuality\Rector\Class_\PreferPHPUnitThisCallRector::class,
+            Rector\PHPUnit\CodeQuality\Rector\Class_\PreferPHPUnitThisCallRector::class,
             // 'routing.loader' has no public class-name alias in the container
             ContainerGetNameToTypeInTestsRector::class => [
                 __DIR__.'/tests/Controller/ControllerNamingTest.php',
@@ -28,7 +28,7 @@ try {
                 __DIR__.'/tests/Twig/TwigExtension2Test.php',
             ],
         ])
-        //
+
         ->withSymfonyContainerXml(__DIR__.'/var/cache/dev/App_KernelDevDebugContainer.xml')
         ->withSymfonyContainerPhp(__DIR__.'/tests/symfony-container.php')
         ->registerService(SymfonyRoutesProvider::class, SymfonyRoutesProviderInterface::class)
@@ -55,8 +55,8 @@ try {
         )
         ->withImportNames(removeUnusedImports: true)
         ->withRules([
-          //  StringFormTypeToClassRector::class,
+            //  StringFormTypeToClassRector::class,
         ]);
 } catch (InvalidConfigurationException $e) {
-    echo($e->getMessage());
+    echo $e->getMessage();
 }

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Tests\DataCollector;
 
-use Exception;
 use App\DataCollector\GitDataCollector;
 use App\Helper\GitLoader;
+use Exception;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

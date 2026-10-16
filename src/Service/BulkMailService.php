@@ -14,13 +14,15 @@ use Symfony\Component\Mime\Email;
  */
 class BulkMailService
 {
-    public function __construct(private readonly MailerInterface $mailer) {}
+    public function __construct(private readonly MailerInterface $mailer)
+    {
+    }
 
     /**
      * Send one email per store, filtered to those present in $recipients.
      *
-     * @param Store[]          $stores
-     * @param array<int, mixed> $recipients  Keys are store IDs
+     * @param Store[]                $stores
+     * @param array<int, mixed>      $recipients   Keys are store IDs
      * @param callable(Store): Email $emailFactory
      */
     public function sendToFilteredStores(array $stores, array $recipients, callable $emailFactory): MailBatchResult

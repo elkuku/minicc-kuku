@@ -14,16 +14,17 @@ use Twig\Attribute\AsTwigFunction;
 
 class TwigExtension
 {
-    public function __construct(private readonly TextFormatter $textFormatter) {}
+    public function __construct(private readonly TextFormatter $textFormatter)
+    {
+    }
 
     #[AsTwigFilter('price')]
     public function priceFilter(
-        float|null $number,
+        ?float $number,
         int $decimals = 2,
         string $decPoint = '.',
-        string $thousandsSep = ','
-    ): string
-    {
+        string $thousandsSep = ',',
+    ): string {
         $price = $number ? number_format(
             $number,
             $decimals,
@@ -51,9 +52,8 @@ class TwigExtension
     public function intlDate(
         string|DateTime $date,
         string $format = "d 'de' MMMM YYYY",
-        string $lang = 'es_ES'
-    ): string
-    {
+        string $lang = 'es_ES',
+    ): string {
         $formatter = new IntlDateFormatter(
             'es_ES',
             IntlDateFormatter::LONG,

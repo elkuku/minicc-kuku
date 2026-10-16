@@ -17,7 +17,8 @@ final readonly class PaymentsAccountantPayload
         public ?int $month = null,
         #[Assert\All(constraints: [new Assert\Type(type: 'numeric')])]
         public array $ids = [],
-    ) {}
+    ) {
+    }
 
     /**
      * @return list<int>

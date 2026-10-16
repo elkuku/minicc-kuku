@@ -12,5 +12,6 @@ final readonly class ContractFilterPayload
         #[SerializedName('store_id')]
         public int $storeId = 0,
         public int $year = 0,
-    ) {}
+    ) {
+    }
 }

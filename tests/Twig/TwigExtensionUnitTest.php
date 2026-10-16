@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Tests\Twig;
 
-use Iterator;
 use App\Entity\User;
 use App\Service\TextFormatter;
 use App\Twig\Extension\TwigExtension;
 use App\Type\Gender;
 use DateTime;
+use Iterator;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
@@ -93,7 +93,7 @@ final class TwigExtensionUnitTest extends TestCase
     {
         $date = new DateTime('2024-03-15');
 
-        $result = $this->extension->intlDate($date, "d. MMMM YYYY", 'de_DE');
+        $result = $this->extension->intlDate($date, 'd. MMMM YYYY', 'de_DE');
 
         $this->assertStringContainsString('März', $result);
     }

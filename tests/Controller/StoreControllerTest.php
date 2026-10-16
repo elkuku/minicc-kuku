@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use App\Entity\User;
 use App\Entity\Store;
+use App\Entity\User;
 use App\Repository\StoreRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 
 final class StoreControllerTest extends WebTestCase
 {
@@ -50,7 +50,7 @@ final class StoreControllerTest extends WebTestCase
         $this->assertInstanceOf(Store::class, $store);
         $storeId = $store->getId();
 
-        $this->client->request(Request::METHOD_GET, '/stores/edit/' . $storeId);
+        $this->client->request(Request::METHOD_GET, '/stores/edit/'.$storeId);
 
         self::assertResponseIsSuccessful();
         self::assertRouteSame('stores_edit');
@@ -98,7 +98,7 @@ final class StoreControllerTest extends WebTestCase
         $this->assertInstanceOf(Store::class, $store);
         $storeId = $store->getId();
 
-        $this->client->request(Request::METHOD_GET, '/stores/edit/' . $storeId);
+        $this->client->request(Request::METHOD_GET, '/stores/edit/'.$storeId);
         $this->client->submitForm('Guardar', [
             'store[destination]' => 'TEST',
             'store[valAlq]' => '200',
@@ -126,7 +126,7 @@ final class StoreControllerTest extends WebTestCase
         $this->assertInstanceOf(Store::class, $store);
         $storeId = $store->getId();
 
-        $client->request(Request::METHOD_GET, '/stores/' . $storeId);
+        $client->request(Request::METHOD_GET, '/stores/'.$storeId);
 
         self::assertResponseIsSuccessful();
         self::assertRouteSame('stores_transactions');
@@ -140,7 +140,7 @@ final class StoreControllerTest extends WebTestCase
         $this->assertInstanceOf(Store::class, $store);
         $storeId = $store->getId();
 
-        $this->client->request(Request::METHOD_GET, '/stores/' . $storeId);
+        $this->client->request(Request::METHOD_GET, '/stores/'.$storeId);
 
         self::assertResponseIsSuccessful();
         self::assertRouteSame('stores_transactions');
@@ -161,7 +161,7 @@ final class StoreControllerTest extends WebTestCase
         $this->assertInstanceOf(Store::class, $store);
         $storeId = $store->getId();
 
-        $client->request(Request::METHOD_GET, '/stores/' . $storeId);
+        $client->request(Request::METHOD_GET, '/stores/'.$storeId);
 
         self::assertResponseStatusCodeSame(403);
     }
@@ -174,7 +174,7 @@ final class StoreControllerTest extends WebTestCase
         $this->assertInstanceOf(Store::class, $store);
         $storeId = $store->getId();
 
-        $this->client->request(Request::METHOD_POST, '/stores/' . $storeId, ['year' => '2024']);
+        $this->client->request(Request::METHOD_POST, '/stores/'.$storeId, ['year' => '2024']);
 
         self::assertResponseIsSuccessful();
         self::assertRouteSame('stores_transactions');

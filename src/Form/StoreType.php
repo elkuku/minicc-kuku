@@ -20,9 +20,8 @@ class StoreType extends AbstractType
     #[Override]
     public function buildForm(
         FormBuilderInterface $builder,
-        array $options
-    ): void
-    {
+        array $options,
+    ): void {
         $builder
             ->add(
                 'user',
@@ -33,8 +32,8 @@ class StoreType extends AbstractType
                     'placeholder' => '-Desocupado-',
                     'required' => false,
                     'label' => 'Inquilino',
-                    'query_builder' => static fn(
-                        EntityRepository $er
+                    'query_builder' => static fn (
+                        EntityRepository $er,
                     ): QueryBuilder => $er->createQueryBuilder('u')
                         ->where('u.role = :role')
                         ->andWhere('u.isActive = :state')

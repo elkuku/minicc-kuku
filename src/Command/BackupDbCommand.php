@@ -23,7 +23,8 @@ class BackupDbCommand
         private readonly EmailHelper $emailHelper,
         private readonly MailerInterface $mailer,
         private readonly ClockInterface $clock,
-    ) {}
+    ) {
+    }
 
     public function __invoke(OutputInterface $output): int
     {
@@ -34,8 +35,9 @@ class BackupDbCommand
 
         system($command, $result);
 
-        if ($result !== 0) {
+        if (0 !== $result) {
             $output->writeln('<error>Database backup failed</error>');
+
             return Command::FAILURE;
         }
 

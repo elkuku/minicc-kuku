@@ -18,8 +18,7 @@ readonly class EmailHelper
 
     public function __construct(
         #[Autowire(env: 'EMAIL_FROM')] string $from,
-    )
-    {
+    ) {
         $this->from = Address::create($from);
     }
 

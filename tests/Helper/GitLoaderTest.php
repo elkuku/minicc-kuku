@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Tests\Helper;
 
-use RuntimeException;
-use Override;
 use App\Helper\GitLoader;
+use Override;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 
 final class GitLoaderTest extends TestCase
 {
@@ -15,7 +15,7 @@ final class GitLoaderTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->tempDir = sys_get_temp_dir() . '/git_loader_test_' . uniqid();
+        $this->tempDir = sys_get_temp_dir().'/git_loader_test_'.uniqid();
         mkdir($this->tempDir);
     }
 
@@ -35,8 +35,8 @@ final class GitLoaderTest extends TestCase
 
     public function testGetBranchNameReadsBranchFromHead(): void
     {
-        mkdir($this->tempDir . '/.git', 0777, true);
-        file_put_contents($this->tempDir . '/.git/HEAD', "ref: refs/heads/main\n");
+        mkdir($this->tempDir.'/.git', 0777, true);
+        file_put_contents($this->tempDir.'/.git/HEAD', "ref: refs/heads/main\n");
 
         $gitLoader = new GitLoader($this->tempDir);
 
@@ -47,8 +47,8 @@ final class GitLoaderTest extends TestCase
 
     public function testGetBranchNameHandlesFeatureBranch(): void
     {
-        mkdir($this->tempDir . '/.git', 0777, true);
-        file_put_contents($this->tempDir . '/.git/HEAD', "ref: refs/heads/feature/my-feature\n");
+        mkdir($this->tempDir.'/.git', 0777, true);
+        file_put_contents($this->tempDir.'/.git/HEAD', "ref: refs/heads/feature/my-feature\n");
 
         $gitLoader = new GitLoader($this->tempDir);
 
@@ -68,9 +68,9 @@ final class GitLoaderTest extends TestCase
 
     public function testGetLastCommitMessageReadsFirstLine(): void
     {
-        mkdir($this->tempDir . '/.git', 0777, true);
+        mkdir($this->tempDir.'/.git', 0777, true);
         file_put_contents(
-            $this->tempDir . '/.git/COMMIT_EDITMSG',
+            $this->tempDir.'/.git/COMMIT_EDITMSG',
             "Initial commit\n\nThis is the body of the commit message."
         );
 
@@ -83,8 +83,8 @@ final class GitLoaderTest extends TestCase
 
     public function testGetLastCommitMessageTrimsWhitespace(): void
     {
-        mkdir($this->tempDir . '/.git', 0777, true);
-        file_put_contents($this->tempDir . '/.git/COMMIT_EDITMSG', "  Fix bug  \n");
+        mkdir($this->tempDir.'/.git', 0777, true);
+        file_put_contents($this->tempDir.'/.git/COMMIT_EDITMSG', "  Fix bug  \n");
 
         $gitLoader = new GitLoader($this->tempDir);
 
@@ -95,7 +95,7 @@ final class GitLoaderTest extends TestCase
 
     public function testGetLastCommitDetailReturnsDefaultsWhenNoLogs(): void
     {
-        mkdir($this->tempDir . '/.git', 0777, true);
+        mkdir($this->tempDir.'/.git', 0777, true);
 
         $gitLoader = new TestableGitLoader($this->tempDir);
 
@@ -110,9 +110,9 @@ final class GitLoaderTest extends TestCase
 
     public function testGetLastCommitDetailParsesLogData(): void
     {
-        mkdir($this->tempDir . '/.git/logs', 0777, true);
+        mkdir($this->tempDir.'/.git/logs', 0777, true);
         $logLine = "0000000 abc1234 John Doe <john@example.com> 1700000000 -0100\tcommit: Initial commit\n";
-        file_put_contents($this->tempDir . '/.git/logs/HEAD', $logLine);
+        file_put_contents($this->tempDir.'/.git/logs/HEAD', $logLine);
 
         $gitLoader = new TestableGitLoader($this->tempDir);
 
@@ -125,8 +125,8 @@ final class GitLoaderTest extends TestCase
 
     public function testGetLastCommitDetailWithNoMatchingLogFormat(): void
     {
-        mkdir($this->tempDir . '/.git/logs', 0777, true);
-        file_put_contents($this->tempDir . '/.git/logs/HEAD', "some random text\n");
+        mkdir($this->tempDir.'/.git/logs', 0777, true);
+        file_put_contents($this->tempDir.'/.git/logs/HEAD', "some random text\n");
 
         $gitLoader = new TestableGitLoader($this->tempDir);
 
@@ -166,7 +166,7 @@ final class GitLoaderTest extends TestCase
         $files = array_diff(scandir($dir) ?: [], ['.', '..']);
 
         foreach ($files as $file) {
-            $path = $dir . '/' . $file;
+            $path = $dir.'/'.$file;
             is_dir($path) ? $this->removeDirectory($path) : unlink($path);
         }
 
@@ -201,7 +201,7 @@ class FailingGitLoader extends GitLoader
     #[Override]
     protected function execCommand(string $command): bool|string
     {
-        if ($this->lastLine !== '' && $this->lastLine !== '0') {
+        if ('' !== $this->lastLine && '0' !== $this->lastLine) {
             throw new RuntimeException($this->lastLine);
         }
 

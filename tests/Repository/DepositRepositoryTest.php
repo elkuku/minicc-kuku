@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Tests\Repository;
 
-use DateTime;
 use App\Entity\Deposit;
 use App\Helper\Paginator\PaginatorOptions;
 use App\Repository\DepositRepository;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 

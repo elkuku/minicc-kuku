@@ -11,5 +11,6 @@ final readonly class RedirectPayload
 {
     public function __construct(
         public string $view = '',
-    ) {}
+    ) {
+    }
 }

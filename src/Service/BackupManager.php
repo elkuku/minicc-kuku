@@ -18,7 +18,8 @@ readonly class BackupManager
 {
     public function __construct(
         #[Autowire(env: 'DATABASE_URL')] private string $databaseUrl,
-    ) {}
+    ) {
+    }
 
     public function getDbUrl(): string
     {
@@ -39,12 +40,12 @@ readonly class BackupManager
 
     public function getBackupCommand(): string
     {
-        if ($this->databaseUrl === '' || $this->databaseUrl === '0') {
+        if ('' === $this->databaseUrl || '0' === $this->databaseUrl) {
             throw new RuntimeException('No DATABASE_URL found in environment');
         }
 
         $parts = parse_url($this->databaseUrl);
-        if ($parts === false) {
+        if (false === $parts) {
             throw new RuntimeException('Invalid DATABASE_URL format');
         }
 

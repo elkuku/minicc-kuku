@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Tests\Security;
 
-use ReflectionMethod;
 use App\Entity\Store;
 use App\Entity\User;
 use App\Security\StoreVoter;
 use App\Type\Gender;
 use PHPUnit\Framework\TestCase;
+use ReflectionMethod;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
@@ -97,7 +97,7 @@ final class StoreVoterTest extends TestCase
     {
         $security = $this->createStub(Security::class);
         $security->method('isGranted')
-            ->willReturnCallback(fn(string $role): bool => match ($role) {
+            ->willReturnCallback(fn (string $role): bool => match ($role) {
                 'ROLE_ADMIN' => false,
                 User::ROLES['cashier'] => true,
                 default => false,

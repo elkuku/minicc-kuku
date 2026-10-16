@@ -24,9 +24,8 @@ class TransactionTypeType extends AbstractType
     #[Override]
     public function buildForm(
         FormBuilderInterface $builder,
-        array $options
-    ): void
-    {
+        array $options,
+    ): void {
         $builder
             ->add(
                 'date',
@@ -41,8 +40,8 @@ class TransactionTypeType extends AbstractType
                 EnumType::class,
                 [
                     'class' => TransactionType::class,
-                    'choice_label' => fn(
-                        TransactionType $choice
+                    'choice_label' => fn (
+                        TransactionType $choice,
                     ): TranslatableMessage => new TranslatableMessage(
                         $choice->translationKey()
                     ),
@@ -53,7 +52,7 @@ class TransactionTypeType extends AbstractType
                 EntityType::class,
                 [
                     'class' => Store::class,
-                    'choice_label' => fn(Store $store): string => $store->getId().' - '.$store->getDestination(),
+                    'choice_label' => fn (Store $store): string => $store->getId().' - '.$store->getDestination(),
                 ]
             )
             ->add(

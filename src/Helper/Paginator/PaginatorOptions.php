@@ -6,7 +6,6 @@ namespace App\Helper\Paginator;
 
 use SortDirection;
 use UnexpectedValueException;
-use function in_array;
 
 class PaginatorOptions
 {
@@ -56,7 +55,7 @@ class PaginatorOptions
 
     public function getSortDirection(): SortDirection
     {
-        return strtoupper($this->orderDir) === 'DESC'
+        return 'DESC' === strtoupper($this->orderDir)
             ? SortDirection::Descending
             : SortDirection::Ascending;
     }
@@ -66,7 +65,7 @@ class PaginatorOptions
         $dirs = ['ASC', 'DESC'];
         $dir = strtoupper($orderDir);
 
-        if (false === in_array($dir, $dirs, true)) {
+        if (false === \in_array($dir, $dirs, true)) {
             throw new UnexpectedValueException(sprintf('Order dir must be %s', implode(', ', $dirs)));
         }
 

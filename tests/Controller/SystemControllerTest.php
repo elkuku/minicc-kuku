@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 
 final class SystemControllerTest extends WebTestCase
 {
@@ -59,8 +59,8 @@ final class SystemControllerTest extends WebTestCase
     {
         /** @var string $projectDir */
         $projectDir = self::getContainer()->getParameter('kernel.project_dir');
-        $logDir = $projectDir . '/var/log';
-        $logFile = $logDir . '/deploy.log';
+        $logDir = $projectDir.'/var/log';
+        $logFile = $logDir.'/deploy.log';
 
         if (!is_dir($logDir)) {
             mkdir($logDir, 0777, true);

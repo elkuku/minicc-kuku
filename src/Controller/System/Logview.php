@@ -24,10 +24,11 @@ class Logview extends BaseController
     public function __construct(
         private readonly KernelInterface $kernel,
         private readonly DeployLogParser $logParser,
-    ) {}
+    ) {
+    }
 
     public function __invoke(
-        #[Autowire('%kernel.project_dir%')] string $projectDir
+        #[Autowire('%kernel.project_dir%')] string $projectDir,
     ): Response {
         $filesystem = new Filesystem();
         $filename = $projectDir.'/var/log/deploy.log';

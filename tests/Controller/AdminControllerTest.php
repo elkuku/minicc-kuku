@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use App\Entity\User;
-use App\Entity\Store;
 use App\Entity\PaymentMethod;
+use App\Entity\Store;
+use App\Entity\User;
 use App\Repository\PaymentMethodRepository;
 use App\Repository\StoreRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 
 final class AdminControllerTest extends WebTestCase
 {
@@ -72,7 +72,7 @@ final class AdminControllerTest extends WebTestCase
         $this->client->request(Request::METHOD_GET, '/admin/payments?year=abc');
 
         self::assertResponseIsSuccessful();
-        self::assertAnySelectorTextContains('h1', 'Pagos del año ' . date('Y'));
+        self::assertAnySelectorTextContains('h1', 'Pagos del año '.date('Y'));
     }
 
     public function testBackupDbPage(): void

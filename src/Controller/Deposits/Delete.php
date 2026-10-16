@@ -23,8 +23,7 @@ class Delete extends BaseController
 
     public function __invoke(
         Deposit $deposit,
-    ): RedirectResponse
-    {
+    ): RedirectResponse {
         $this->entityManager->remove($deposit);
         $this->entityManager->flush();
         $this->addFlash('success', 'Deposit method has been deleted');

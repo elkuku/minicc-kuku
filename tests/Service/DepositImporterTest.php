@@ -28,7 +28,7 @@ final class DepositImporterTest extends TestCase
 
     protected function tearDown(): void
     {
-        if ($this->tmpFile !== '' && file_exists($this->tmpFile)) {
+        if ('' !== $this->tmpFile && file_exists($this->tmpFile)) {
             unlink($this->tmpFile);
         }
     }

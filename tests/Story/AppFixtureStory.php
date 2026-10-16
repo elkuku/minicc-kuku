@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace App\Tests\Story;
 
 use App\Enum\UserRole;
-use App\Type\Gender;
-use App\Type\TransactionType;
 use App\Tests\Factory\ContractFactory;
 use App\Tests\Factory\DepositFactory;
 use App\Tests\Factory\PaymentMethodFactory;
 use App\Tests\Factory\StoreFactory;
 use App\Tests\Factory\TransactionFactory;
 use App\Tests\Factory\UserFactory;
+use App\Type\Gender;
+use App\Type\TransactionType;
 use DateTime;
 use Zenstruck\Foundry\Story;
 

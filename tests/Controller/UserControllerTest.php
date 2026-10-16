@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller;
 
-use PHPUnit\Framework\Attributes\DataProvider;
-use Symfony\Component\HttpFoundation\Request;
 use App\Entity\User;
 use App\Repository\UserRepository;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 
 final class UserControllerTest extends WebTestCase
 {
@@ -109,7 +109,7 @@ final class UserControllerTest extends WebTestCase
         $user = $userRepository->findOneBy(['email' => 'user1@example.com']);
         $this->assertInstanceOf(User::class, $user);
 
-        $this->client->request(Request::METHOD_GET, '/users/edit/' . $user->getId());
+        $this->client->request(Request::METHOD_GET, '/users/edit/'.$user->getId());
 
         self::assertResponseIsSuccessful();
         self::assertRouteSame('users_edit');
@@ -138,7 +138,7 @@ final class UserControllerTest extends WebTestCase
         $user = $userRepository->findOneBy(['email' => 'user2@example.com']);
         $this->assertInstanceOf(User::class, $user);
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/users/edit/' . $user->getId());
+        $crawler = $this->client->request(Request::METHOD_GET, '/users/edit/'.$user->getId());
         $form = $crawler->filter('form[name="user_full"] button[type="submit"]')->form([
             'user_full[name]' => 'Updated User',
             'user_full[email]' => 'user2@example.com',
@@ -159,7 +159,7 @@ final class UserControllerTest extends WebTestCase
         $user = $userRepository->findOneBy(['email' => 'user1@example.com']);
         $this->assertInstanceOf(User::class, $user);
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/users/edit/' . $user->getId());
+        $crawler = $this->client->request(Request::METHOD_GET, '/users/edit/'.$user->getId());
         $form = $crawler->filter('form[name="user_full"] button[type="submit"]')->form([
             'user_full[name]' => 'Some Name',
             'user_full[email]' => $user->getEmail(),
@@ -181,7 +181,7 @@ final class UserControllerTest extends WebTestCase
         $this->assertInstanceOf(User::class, $user);
         $userId = $user->getId();
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/users/edit/' . $userId);
+        $crawler = $this->client->request(Request::METHOD_GET, '/users/edit/'.$userId);
         $token = $crawler->filter('input[name="user_full[_token]"]')->attr('value');
         $this->assertIsString($token);
 
@@ -189,7 +189,7 @@ final class UserControllerTest extends WebTestCase
         // client could easily send, bypassing the <select>'s UI constraints)
         // must not crash (User::setRole() takes a non-nullable UserRole) or
         // silently escalate privilege - it should fall back to ROLE_USER.
-        $this->client->request(Request::METHOD_POST, '/users/edit/' . $userId, [
+        $this->client->request(Request::METHOD_POST, '/users/edit/'.$userId, [
             'user_full' => [
                 'isActive' => '1',
                 'gender' => '1',

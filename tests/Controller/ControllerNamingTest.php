@@ -11,7 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 final class ControllerNamingTest extends KernelTestCase
 {
-    private string $controllerRoot = __DIR__ . '/../../src/Controller';
+    private string $controllerRoot = __DIR__.'/../../src/Controller';
 
     /**
      * @var array<int, string>
@@ -54,7 +54,7 @@ final class ControllerNamingTest extends KernelTestCase
      */
     private function checkController(RecursiveIteratorIterator $it, DelegatingLoader $routeLoader): int
     {
-        $sub = $it->getSubPath() !== '' && $it->getSubPath() !== '0' ? $it->getSubPath().'\\' : '';
+        $sub = '' !== $it->getSubPath() && '0' !== $it->getSubPath() ? $it->getSubPath().'\\' : '';
 
         $key = $it->key();
         self::assertIsString($key);

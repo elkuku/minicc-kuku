@@ -188,5 +188,4 @@ final class ContractTest extends TestCase
         $this->assertSame($contract, $result);
         $this->assertSame('AGUA-2024-001', $contract->getMedAgua());
     }
-
 }

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Tests\Twig;
 
-use Iterator;
 use App\Twig\Extension\AppExtension;
+use Iterator;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use stdClass;
@@ -28,7 +28,7 @@ final class AppExtensionTest extends TestCase
 
         $this->assertNotEmpty($filters);
 
-        $filterNames = array_map(fn(TwigFilter $f): string => $f->getName(), $filters);
+        $filterNames = array_map(fn (TwigFilter $f): string => $f->getName(), $filters);
         $this->assertContains('invert', $filterNames);
         $this->assertContains('cast_to_array', $filterNames);
         $this->assertContains('short_name', $filterNames);
@@ -42,7 +42,7 @@ final class AppExtensionTest extends TestCase
 
         $this->assertNotEmpty($functions);
 
-        $functionNames = array_map(fn(TwigFunction $f): string => $f->getName(), $functions);
+        $functionNames = array_map(fn (TwigFunction $f): string => $f->getName(), $functions);
         $this->assertContains('getSHA', $functionNames);
         $this->assertContains('findSystemUsers', $functionNames);
         $this->assertContains('getCurrentYear', $functionNames);

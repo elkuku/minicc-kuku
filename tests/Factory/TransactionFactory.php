@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Tests\Factory;
 
-use DateTime;
 use App\Entity\Transaction;
 use App\Type\TransactionType;
+use DateTime;
 use Zenstruck\Foundry\Persistence\PersistentObjectFactory;
 
 /**

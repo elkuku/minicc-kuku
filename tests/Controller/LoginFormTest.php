@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\BrowserKit\Cookie;
+use Symfony\Component\HttpFoundation\Request;
 
 final class LoginFormTest extends WebTestCase
 {

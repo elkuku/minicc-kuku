@@ -19,12 +19,12 @@ class Payments extends BaseController
     public function __construct(
         private readonly TransactionRepository $repository,
         private readonly ClockInterface $clock,
-    ) {}
+    ) {
+    }
 
     public function __invoke(
         #[MapQueryParameter(flags: FILTER_NULL_ON_FAILURE)] ?int $year = null,
-    ): Response
-    {
+    ): Response {
         $now = $this->clock->now();
         $currentYear = (int) $now->format('Y');
         $year ??= $currentYear;

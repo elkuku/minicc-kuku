@@ -18,7 +18,8 @@ class UsersList extends BaseController
         private readonly UserRepository $userRepository,
         private readonly PdfHelper $PdfHelper,
         private readonly ClockInterface $clock,
-    ) {}
+    ) {
+    }
 
     #[IsGranted('ROLE_ADMIN')]
     #[Route(path: '/download/users-list', name: 'download_users_list', methods: ['GET'])]
@@ -30,6 +31,7 @@ class UsersList extends BaseController
                 'users' => $this->userRepository->getSortedByStore(),
             ]
         );
+
         return new PdfResponse(
             $this->PdfHelper->getOutputFromHtml($html),
             sprintf('user-list-%s.pdf', $this->clock->now()->format('Y-m-d'))

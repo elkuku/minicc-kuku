@@ -16,5 +16,6 @@ final readonly class UserFilterPayload
         public string $userActive = '1',
         #[SerializedName('user_role')]
         public ?UserRole $userRole = null,
-    ) {}
+    ) {
+    }
 }
