@@ -176,4 +176,41 @@ final class AdminControllerTest extends WebTestCase
         $this->client->followRedirect();
         self::assertRouteSame('welcome');
     }
+
+    public function testCollectRentRejectsInvalidDate(): void
+    {
+        $this->client->request(Request::METHOD_POST, '/admin/collect-rent', [
+            'values' => [1 => '100'],
+            'users' => [1 => '1'],
+            'date_cobro' => 'not-a-date',
+        ]);
+
+        self::assertResponseStatusCodeSame(422);
+    }
+
+    public function testPayDayRejectsInvalidDate(): void
+    {
+        $this->client->request(Request::METHOD_POST, '/admin/pay-day', [
+            'payments' => [
+                'date' => ['not-a-date'],
+                'store' => ['1'],
+            ],
+        ]);
+
+        self::assertResponseStatusCodeSame(422);
+    }
+
+    public function testPayDaySkipsRowsWithoutDate(): void
+    {
+        $this->client->request(Request::METHOD_POST, '/admin/pay-day', [
+            'payments' => [
+                'date' => [''],
+                'store' => ['1'],
+            ],
+        ]);
+
+        self::assertResponseRedirects();
+        $this->client->followRedirect();
+        self::assertRouteSame('welcome');
+    }
 }

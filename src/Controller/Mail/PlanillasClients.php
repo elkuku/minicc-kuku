@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Mail;
 
 use App\Controller\BaseController;
+use App\Dto\MailRecipientsPayload;
 use App\Entity\Store;
 use App\Repository\StoreRepository;
 use App\Service\BulkMailService;
@@ -14,8 +15,8 @@ use App\Service\PayrollHelper;
 use App\Service\PdfHelper;
 use Symfony\Component\Clock\ClockInterface;
 use Symfony\Component\Mime\Email;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -33,9 +34,11 @@ class PlanillasClients extends BaseController
         private readonly ClockInterface $clock,
     ) {}
 
-    public function __invoke(Request $request): Response
+    public function __invoke(
+        #[MapRequestPayload] MailRecipientsPayload $payload = new MailRecipientsPayload(),
+    ): Response
     {
-        $recipients = $request->request->all('recipients');
+        $recipients = $payload->recipients;
 
         if ($recipients === []) {
             return $this->render('mail/planillas-clients.html.twig', [

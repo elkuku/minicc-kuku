@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Controller\BaseController;
+use App\Dto\CollectRentPayload;
 use App\Entity\PaymentMethod;
 use App\Entity\Transaction;
 use App\Enum\PaymentMethodId;
@@ -13,8 +14,8 @@ use App\Repository\StoreRepository;
 use App\Repository\UserRepository;
 use App\Service\TransactionFactory;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use UnexpectedValueException;
@@ -32,12 +33,10 @@ class CollectRent extends BaseController
     ) {}
 
     public function __invoke(
-        Request $request,
+        #[MapRequestPayload] CollectRentPayload $payload = new CollectRentPayload(),
     ): Response
     {
-        /** @var array<string, string> $values */
-        $values = $request->request->all('values');
-        if ($values === []) {
+        if ($payload->values === []) {
             return $this->render(
                 'admin/collect-rent.html.twig',
                 [
@@ -46,23 +45,19 @@ class CollectRent extends BaseController
             );
         }
 
-        /** @var array<string, string> $users */
-        $users = $request->request->all('users');
         $method = $this->paymentMethodRepository->find(PaymentMethodId::BAR->value);
 
         if (!$method) {
             throw new UnexpectedValueException('Invalid payment method.');
         }
 
-        $date = (string) $request->request->get('date_cobro');
-
-        foreach ($values as $storeId => $value) {
+        foreach ($payload->values as $storeId => $value) {
             if (!$value) {
                 continue;
             }
 
             $this->entityManager->persist(
-                $this->createRentTransaction((int) $storeId, (int) $users[$storeId], $method, $date, $value)
+                $this->createRentTransaction((int) $storeId, (int) ($payload->users[$storeId] ?? 0), $method, $payload->date, $value)
             );
         }
 

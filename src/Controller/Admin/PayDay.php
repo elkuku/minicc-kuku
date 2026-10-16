@@ -5,14 +5,16 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Controller\BaseController;
+use App\Dto\PayDayPayload;
+use App\Dto\PayDayPayments;
 use App\Entity\Transaction;
 use App\Repository\PaymentMethodRepository;
 use App\Repository\StoreRepository;
 use App\Repository\TransactionRepository;
 use App\Service\TransactionFactory;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
@@ -33,11 +35,11 @@ class PayDay extends BaseController
     ) {}
 
     public function __invoke(
-        Request $request,
+        #[MapRequestPayload] PayDayPayload $payload = new PayDayPayload(),
     ): Response
     {
-        $rawPayments = $request->request->all('payments');
-        if ($rawPayments === []) {
+        $payments = $payload->payments;
+        if (!$payments instanceof PayDayPayments) {
             $paymentMethods = $this->paymentMethodRepository->findAll();
             $serializer = new Serializer([new GetSetMethodNormalizer()], ['json' => new JsonEncoder()]);
             return $this->render(
@@ -51,9 +53,7 @@ class PayDay extends BaseController
             );
         }
 
-        /** @var array{date: list<string>, store: list<string>, method: list<string>, recipe: list<string>, document: list<string>, deposit: list<string>, amount: list<string>, comment: list<string>} $payments */
-        $payments = $rawPayments;
-        foreach ($payments['date'] as $i => $dateCobro) {
+        foreach ($payments->date as $i => $dateCobro) {
             if (!$dateCobro) {
                 continue;
             }
@@ -71,18 +71,15 @@ class PayDay extends BaseController
         return $this->redirectToRoute('welcome');
     }
 
-    /**
-     * @param array{date: list<string>, store: list<string>, method: list<string>, recipe: list<string>, document: list<string>, deposit: list<string>, amount: list<string>, comment: list<string>} $payments
-     */
-    private function createPaymentTransaction(array $payments, int $i, string $dateCobro): ?Transaction
+    private function createPaymentTransaction(PayDayPayments $payments, int $i, string $dateCobro): ?Transaction
     {
-        $store = $this->storeRepository->find((int)$payments['store'][$i]);
+        $store = $this->storeRepository->find((int) ($payments->store[$i] ?? 0));
 
         if (!$store) {
             return null;
         }
 
-        $method = $this->paymentMethodRepository->find((int)$payments['method'][$i]);
+        $method = $this->paymentMethodRepository->find((int) ($payments->method[$i] ?? 0));
 
         if (!$method) {
             throw new UnexpectedValueException('Invalid payment method.');
@@ -99,11 +96,11 @@ class PayDay extends BaseController
             $user,
             $method,
             $dateCobro,
-            (int) $payments['recipe'][$i],
-            (int) $payments['document'][$i],
-            (int) $payments['deposit'][$i],
-            $payments['amount'][$i],
-            $payments['comment'][$i],
+            (int) ($payments->recipe[$i] ?? 0),
+            (int) ($payments->document[$i] ?? 0),
+            (int) ($payments->deposit[$i] ?? 0),
+            $payments->amount[$i] ?? '',
+            $payments->comment[$i] ?? '',
         );
     }
 }
