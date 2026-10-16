@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\User;
 use App\Repository\UserRepository;
@@ -32,28 +33,65 @@ final class UserControllerTest extends WebTestCase
         self::assertRouteSame('users_index');
     }
 
-    public function testUserIndexFilterActive(): void
+    public function testUserIndexDefaultsToActiveUsers(): void
     {
-        $this->client->request(Request::METHOD_GET, '/users?user_active=1');
+        $this->client->request(Request::METHOD_GET, '/users');
 
         self::assertResponseIsSuccessful();
-        self::assertRouteSame('users_index');
+        self::assertSelectorExists('select[name="user_active"] option[value="1"][selected]');
     }
 
-    public function testUserIndexFilterInactive(): void
+    #[DataProvider('activeFilterProvider')]
+    public function testUserIndexFilterActive(string $value): void
     {
-        $this->client->request(Request::METHOD_GET, '/users?user_active=0');
+        $this->client->request(Request::METHOD_POST, '/users', ['user_active' => $value]);
 
         self::assertResponseIsSuccessful();
         self::assertRouteSame('users_index');
+        self::assertSelectorExists(sprintf('select[name="user_active"] option[value="%s"][selected]', $value));
+    }
+
+    /**
+     * @return iterable<string, array{string}>
+     */
+    public static function activeFilterProvider(): iterable
+    {
+        yield 'active' => ['1'];
+        yield 'inactive' => ['0'];
     }
 
     public function testUserIndexFilterAll(): void
     {
-        $this->client->request(Request::METHOD_GET, '/users?user_active=all');
+        $this->client->request(Request::METHOD_POST, '/users', ['user_active' => '']);
 
         self::assertResponseIsSuccessful();
-        self::assertRouteSame('users_index');
+        self::assertSelectorNotExists('select[name="user_active"] option[selected]');
+    }
+
+    public function testUserIndexFilterRole(): void
+    {
+        $this->client->request(Request::METHOD_POST, '/users', ['user_active' => '', 'user_role' => 'ROLE_ADMIN']);
+
+        self::assertResponseIsSuccessful();
+        self::assertSelectorExists('select[name="user_role"] option[value="ROLE_ADMIN"][selected]');
+        self::assertSelectorTextContains('table', 'admin');
+    }
+
+    #[DataProvider('invalidFilterProvider')]
+    public function testUserIndexRejectsInvalidFilter(string $field, string $value): void
+    {
+        $this->client->request(Request::METHOD_POST, '/users', [$field => $value]);
+
+        self::assertResponseStatusCodeSame(422);
+    }
+
+    /**
+     * @return iterable<string, array{string, string}>
+     */
+    public static function invalidFilterProvider(): iterable
+    {
+        yield 'unknown active state' => ['user_active', 'all'];
+        yield 'unknown role' => ['user_role', 'ROLE_BOGUS'];
     }
 
     public function testUserCreateGetForm(): void

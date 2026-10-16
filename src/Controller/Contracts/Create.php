@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Contracts;
 
 use App\Controller\BaseController;
+use App\Dto\ContractCreatePayload;
 use App\Entity\Contract;
 use App\Form\ContractType;
 use App\Repository\ContractRepository;
@@ -15,6 +16,7 @@ use App\Service\TaxService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -33,9 +35,10 @@ class Create extends BaseController
     #[Route(path: '/contracts/create', name: 'contracts_create', methods: ['POST'])]
     public function new(
         Request $request,
+        #[MapRequestPayload] ContractCreatePayload $payload = new ContractCreatePayload(),
     ): Response {
-        $store = $this->storeRepo->find($request->request->getInt('store'));
-        $user = $this->userRepo->find($request->request->getInt('user'));
+        $store = $this->storeRepo->find($payload->store ?? 0);
+        $user = $this->userRepo->find($payload->user ?? 0);
         $template = $this->contractRepo->findTemplate();
         $template = $template instanceof Contract ? $template : null;
 

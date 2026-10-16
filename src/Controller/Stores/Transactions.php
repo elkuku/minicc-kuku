@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Stores;
 
 use App\Controller\BaseController;
+use App\Dto\YearPayload;
 use App\Entity\Store;
 use App\Helper\BreadcrumbTrait;
 use App\Helper\IntlConverter;
@@ -14,8 +15,8 @@ use App\Service\ChartBuilderService;
 use App\Service\TaxService;
 use App\Type\TransactionType;
 use Symfony\Component\Clock\ClockInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 
 class Transactions extends BaseController
@@ -33,11 +34,11 @@ class Transactions extends BaseController
     #[Route(path: '/stores/{id}', name: 'stores_transactions', requirements: ['id' => '\d+',], methods: ['GET', 'POST',])]
     public function show(
         Store $store,
-        Request $request
+        #[MapRequestPayload] YearPayload $payload = new YearPayload(),
     ): Response
     {
         $this->denyAccessUnlessGranted('view', $store);
-        $year = $request->request->getInt('year', (int) $this->clock->now()->format('Y'));
+        $year = $payload->year ?? (int) $this->clock->now()->format('Y');
         $this->addBreadcrumb('Stores', 'stores_index')
             ->addBreadcrumb('Store '.$store->getId());
         $transactions = $this->transactionRepository->findByStoreAndYear($store, $year);

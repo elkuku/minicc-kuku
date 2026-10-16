@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace App\Controller\Mail;
 
 use App\Controller\BaseController;
+use App\Dto\PaymentsAccountantPayload;
 use App\Repository\TransactionRepository;
 use App\Service\EmailHelper;
 use Symfony\Component\Clock\ClockInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
@@ -29,14 +30,14 @@ class PaymentsAccountant extends BaseController
     ) {}
 
     public function __invoke(
-        Request $request,
         #[Autowire('%env(EMAIL_ACCOUNTANT)%')] string $emailAccountant,
+        #[MapRequestPayload] PaymentsAccountantPayload $payload = new PaymentsAccountantPayload(),
     ): Response
     {
         $now = $this->clock->now();
-        $year = $request->request->getInt('year', (int) $now->format('Y'));
-        $month = $request->request->getInt('month', (int) $now->format('m'));
-        $ids = array_map(intval(...), array_filter($request->request->all('ids'), is_numeric(...)));
+        $year = $payload->year ?? (int) $now->format('Y');
+        $month = $payload->month ?? (int) $now->format('m');
+        $ids = $payload->getIds();
 
         if ($ids !== []) {
             $email = $this->emailHelper->createTemplatedEmail(

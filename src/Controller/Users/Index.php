@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace App\Controller\Users;
 
 use App\Controller\BaseController;
+use App\Dto\UserFilterPayload;
 use App\Enum\UserRole;
 use App\Repository\UserRepository;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -19,26 +20,19 @@ class Index extends BaseController
     public function __construct(private readonly UserRepository $userRepo) {}
 
     public function __invoke(
-        Request $request
+        #[MapRequestPayload] UserFilterPayload $filter = new UserFilterPayload(),
     ): Response
     {
-        $userActive = $request->request->get('user_active', '1');
-        $userRole = (string) $request->request->get('user_role', '');
+        $userActive = '' === $filter->userActive ? null : $filter->userActive;
+        $userRole = $filter->userRole->value ?? '';
         $criteria = [];
 
-        if ('0' === $userActive || '1' === $userActive) {
+        if (null !== $userActive) {
             $criteria['isActive'] = $userActive;
-        } else {
-            $userActive = null;
         }
 
-        if ('' !== $userRole) {
-            $role = UserRole::tryFrom($userRole);
-            if ($role !== null) {
-                $criteria['role'] = $role;
-            } else {
-                $userRole = '';
-            }
+        if ($filter->userRole instanceof UserRole) {
+            $criteria['role'] = $filter->userRole;
         }
 
         return $this->render(

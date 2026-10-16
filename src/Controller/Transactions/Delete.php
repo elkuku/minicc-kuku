@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace App\Controller\Transactions;
 
 use App\Controller\BaseController;
+use App\Dto\RedirectPayload;
 use App\Entity\Transaction;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsCsrfTokenValid;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -23,15 +24,15 @@ class Delete extends BaseController
     }
 
     public function __invoke(
-        Request $request,
         Transaction $transaction,
+        #[MapRequestPayload] RedirectPayload $payload = new RedirectPayload(),
     ): RedirectResponse
     {
         $this->entityManager->remove($transaction);
         $this->entityManager->flush();
         $this->addFlash('success', 'Transaction has been deleted');
 
-        $redirect = $this->sanitizeLocalRedirect($request->request->getString('view'));
+        $redirect = $this->sanitizeLocalRedirect($payload->view);
 
         if ($redirect) {
             return $this->redirect($redirect);

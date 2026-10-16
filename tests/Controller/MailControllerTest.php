@@ -61,6 +61,17 @@ final class MailControllerTest extends WebTestCase
         self::assertRouteSame('mail_payments_accountant');
     }
 
+    public function testPaymentsAccountantRejectsInvalidMonth(): void
+    {
+        $this->client->request(Request::METHOD_POST, '/mail/payments-accountant', [
+            'year' => 2024,
+            'month' => 13,
+        ]);
+
+        self::assertResponseStatusCodeSame(422);
+        self::assertEmailCount(0);
+    }
+
     public function testTransactionsClientsDeniedForRegularUser(): void
     {
         self::ensureKernelShutdown();

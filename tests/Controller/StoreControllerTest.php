@@ -174,10 +174,11 @@ final class StoreControllerTest extends WebTestCase
         $this->assertInstanceOf(Store::class, $store);
         $storeId = $store->getId();
 
-        $this->client->request(Request::METHOD_GET, '/stores/' . $storeId . '?year=2024');
+        $this->client->request(Request::METHOD_POST, '/stores/' . $storeId, ['year' => '2024']);
 
         self::assertResponseIsSuccessful();
         self::assertRouteSame('stores_transactions');
+        self::assertSelectorTextSame('select[name="year"] option[selected]', '2024');
     }
 
     public function testStoreIndexDeniedForRegularUser(): void

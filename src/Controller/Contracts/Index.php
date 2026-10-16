@@ -4,11 +4,12 @@ declare(strict_types=1);
 namespace App\Controller\Contracts;
 
 use App\Controller\BaseController;
+use App\Dto\ContractFilterPayload;
 use App\Repository\ContractRepository;
 use App\Repository\StoreRepository;
 use App\Repository\UserRepository;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -22,10 +23,12 @@ class Index extends BaseController
         private readonly ContractRepository $contractRepository
     ) {}
 
-    public function __invoke(Request $request): Response
+    public function __invoke(
+        #[MapRequestPayload] ContractFilterPayload $filter = new ContractFilterPayload(),
+    ): Response
     {
-        $storeId = $request->request->getInt('store_id');
-        $year = $request->request->getInt('year');
+        $storeId = $filter->storeId;
+        $year = $filter->year;
 
         return $this->render(
             'contracts/index.html.twig',

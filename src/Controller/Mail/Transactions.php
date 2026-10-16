@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Mail;
 
 use App\Controller\BaseController;
+use App\Dto\YearPayload;
 use App\Repository\StoreRepository;
 use App\Repository\TransactionRepository;
 use App\Service\EmailHelper;
@@ -13,7 +14,7 @@ use Exception;
 use Knp\Snappy\Pdf;
 use Symfony\Component\Clock\ClockInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Part\DataPart;
@@ -33,11 +34,11 @@ class Transactions extends BaseController
     ) {}
 
     public function __invoke(
-        Request $request,
+        #[MapRequestPayload] YearPayload $payload = new YearPayload(),
     ): RedirectResponse
     {
         $now = $this->clock->now();
-        $year = $request->request->getInt('year', (int) $now->format('Y'));
+        $year = $payload->year ?? (int) $now->format('Y');
         $htmlPages = [];
         $stores = $this->storeRepository->findAll();
         foreach ($stores as $store) {
