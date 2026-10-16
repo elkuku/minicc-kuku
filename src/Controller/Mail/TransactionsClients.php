@@ -36,7 +36,8 @@ class TransactionsClients extends BaseController
     }
 
     public function __invoke(
-        #[MapRequestPayload] MailRecipientsPayload $payload = new MailRecipientsPayload(),
+        #[MapRequestPayload]
+        MailRecipientsPayload $payload = new MailRecipientsPayload(),
     ): Response {
         $recipients = $payload->recipients;
 

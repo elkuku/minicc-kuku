@@ -26,7 +26,8 @@ class Index extends BaseController
     }
 
     public function __invoke(
-        #[MapRequestPayload] ContractFilterPayload $filter = new ContractFilterPayload(),
+        #[MapRequestPayload]
+        ContractFilterPayload $filter = new ContractFilterPayload(),
     ): Response {
         $storeId = $filter->storeId;
         $year = $filter->year;

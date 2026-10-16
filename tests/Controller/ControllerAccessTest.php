@@ -5,17 +5,20 @@ declare(strict_types=1);
 namespace App\Tests\Controller;
 
 use Elkuku\SymfonyUtils\Test\ControllerBaseTest;
+use Override;
 
 /**
  * Controller "smoke" test.
  */
 final class ControllerAccessTest extends ControllerBaseTest
 {
+    #[Override]
     protected string $controllerRoot = __DIR__.'/../../src/Controller';
 
     /**
      * @var array<int, string>
      */
+    #[Override]
     protected array $ignoredFiles
         = [
             '.gitignore',
@@ -25,6 +28,7 @@ final class ControllerAccessTest extends ControllerBaseTest
     /**
      * @var array<string, array<string, array<string, int|string>>>
      */
+    #[Override]
     protected array $exceptions
         = [
             'welcome' => [

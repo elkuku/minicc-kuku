@@ -25,7 +25,8 @@ class Index extends BaseController
 
     public function __invoke(
         Request $request,
-        #[Autowire('%env(LIST_LIMIT)%')] int $listLimit,
+        #[Autowire('%env(LIST_LIMIT)%')]
+        int $listLimit,
     ): Response {
         $paginatorOptions = $this->getPaginatorOptions($request, $listLimit);
         $deposits = $this->depositRepository->getPaginatedList($paginatorOptions);

@@ -28,7 +28,8 @@ class Logview extends BaseController
     }
 
     public function __invoke(
-        #[Autowire('%kernel.project_dir%')] string $projectDir,
+        #[Autowire('%kernel.project_dir%')]
+        string $projectDir,
     ): Response {
         $filesystem = new Filesystem();
         $filename = $projectDir.'/var/log/deploy.log';

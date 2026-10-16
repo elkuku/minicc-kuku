@@ -34,7 +34,8 @@ class CollectRent extends BaseController
     }
 
     public function __invoke(
-        #[MapRequestPayload] CollectRentPayload $payload = new CollectRentPayload(),
+        #[MapRequestPayload]
+        CollectRentPayload $payload = new CollectRentPayload(),
     ): Response {
         if ([] === $payload->values) {
             return $this->render(

@@ -163,7 +163,8 @@ final class PdfHelperTest extends TestCase
             ->method('getOutputFromHtml')
             ->with(
                 ['<html>page1</html>'],
-                self::callback(static fn (array $opts): bool => ($opts['enable-local-file-access'] ?? false) === true
+                self::callback(
+                    static fn (array $opts): bool => ($opts['enable-local-file-access'] ?? false) === true
                     && isset($opts['header-html'])
                     && isset($opts['footer-html'])
                 )

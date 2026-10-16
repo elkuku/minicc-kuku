@@ -27,7 +27,7 @@ class TransactionFactory
         string $amount,
         string $comment,
     ): Transaction {
-        return (new Transaction())
+        return new Transaction()
             ->setDate(new DateTime($date))
             ->setStore($store)
             ->setUser($user)
@@ -47,7 +47,7 @@ class TransactionFactory
         string $date,
         string $amount,
     ): Transaction {
-        return (new Transaction())
+        return new Transaction()
             ->setDate(new DateTime($date))
             ->setStore($store)
             ->setUser($user)

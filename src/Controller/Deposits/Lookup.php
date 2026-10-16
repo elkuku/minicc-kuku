@@ -21,7 +21,8 @@ class Lookup extends BaseController
     }
 
     public function __invoke(
-        #[MapQueryParameter(flags: FILTER_NULL_ON_FAILURE)] ?int $id = null,
+        #[MapQueryParameter(flags: FILTER_NULL_ON_FAILURE)]
+        ?int $id = null,
     ): JsonResponse {
         $deposit = null !== $id ? $this->depositRepository->find($id) : null;
 

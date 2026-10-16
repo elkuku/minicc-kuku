@@ -22,7 +22,8 @@ class Index extends BaseController
     }
 
     public function __invoke(
-        #[MapRequestPayload] UserFilterPayload $filter = new UserFilterPayload(),
+        #[MapRequestPayload]
+        UserFilterPayload $filter = new UserFilterPayload(),
     ): Response {
         $userActive = '' === $filter->userActive ? null : $filter->userActive;
         $userRole = $filter->userRole->value ?? '';

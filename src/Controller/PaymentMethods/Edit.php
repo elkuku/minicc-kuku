@@ -25,7 +25,8 @@ class Edit extends BaseController
     public function __invoke(
         PaymentMethod $data,
         Request $request,
-        #[MapQueryParameter] bool $ajax = false,
+        #[MapQueryParameter]
+        bool $ajax = false,
     ): Response {
         $form = $this->createForm(PaymentMethodType::class, $data);
         $form->handleRequest($request);

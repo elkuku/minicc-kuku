@@ -40,7 +40,7 @@ final class ShaFinderTest extends TestCase
 
     public function testGetShaReadsFromGitHeadWhenNoShaTxt(): void
     {
-        mkdir($this->tempDir.'/.git/refs/heads', 0777, true);
+        mkdir($this->tempDir.'/.git/refs/heads', 0o777, true);
         file_put_contents($this->tempDir.'/.git/refs/heads/master', 'git-sha-456');
 
         $shaFinder = new ShaFinder($this->tempDir);
@@ -51,7 +51,7 @@ final class ShaFinderTest extends TestCase
     public function testGetShaPrefersShaTxtOverGitHead(): void
     {
         file_put_contents($this->tempDir.'/sha.txt', 'sha-txt-value');
-        mkdir($this->tempDir.'/.git/refs/heads', 0777, true);
+        mkdir($this->tempDir.'/.git/refs/heads', 0o777, true);
         file_put_contents($this->tempDir.'/.git/refs/heads/master', 'git-value');
 
         $shaFinder = new ShaFinder($this->tempDir);
@@ -70,7 +70,7 @@ final class ShaFinderTest extends TestCase
 
     public function testGetShaReturnsNaForEmptyGitHead(): void
     {
-        mkdir($this->tempDir.'/.git/refs/heads', 0777, true);
+        mkdir($this->tempDir.'/.git/refs/heads', 0o777, true);
         file_put_contents($this->tempDir.'/.git/refs/heads/master', '');
 
         $shaFinder = new ShaFinder($this->tempDir);

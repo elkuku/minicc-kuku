@@ -23,7 +23,8 @@ class About extends BaseController
     }
 
     public function __invoke(
-        #[Autowire('%kernel.project_dir%')] string $projectDir,
+        #[Autowire('%kernel.project_dir%')]
+        string $projectDir,
     ): Response {
         $output = new BufferedOutput();
 

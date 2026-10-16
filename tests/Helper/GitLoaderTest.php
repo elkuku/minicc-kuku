@@ -35,7 +35,7 @@ final class GitLoaderTest extends TestCase
 
     public function testGetBranchNameReadsBranchFromHead(): void
     {
-        mkdir($this->tempDir.'/.git', 0777, true);
+        mkdir($this->tempDir.'/.git', 0o777, true);
         file_put_contents($this->tempDir.'/.git/HEAD', "ref: refs/heads/main\n");
 
         $gitLoader = new GitLoader($this->tempDir);
@@ -47,7 +47,7 @@ final class GitLoaderTest extends TestCase
 
     public function testGetBranchNameHandlesFeatureBranch(): void
     {
-        mkdir($this->tempDir.'/.git', 0777, true);
+        mkdir($this->tempDir.'/.git', 0o777, true);
         file_put_contents($this->tempDir.'/.git/HEAD', "ref: refs/heads/feature/my-feature\n");
 
         $gitLoader = new GitLoader($this->tempDir);
@@ -68,7 +68,7 @@ final class GitLoaderTest extends TestCase
 
     public function testGetLastCommitMessageReadsFirstLine(): void
     {
-        mkdir($this->tempDir.'/.git', 0777, true);
+        mkdir($this->tempDir.'/.git', 0o777, true);
         file_put_contents(
             $this->tempDir.'/.git/COMMIT_EDITMSG',
             "Initial commit\n\nThis is the body of the commit message."
@@ -83,7 +83,7 @@ final class GitLoaderTest extends TestCase
 
     public function testGetLastCommitMessageTrimsWhitespace(): void
     {
-        mkdir($this->tempDir.'/.git', 0777, true);
+        mkdir($this->tempDir.'/.git', 0o777, true);
         file_put_contents($this->tempDir.'/.git/COMMIT_EDITMSG', "  Fix bug  \n");
 
         $gitLoader = new GitLoader($this->tempDir);
@@ -95,7 +95,7 @@ final class GitLoaderTest extends TestCase
 
     public function testGetLastCommitDetailReturnsDefaultsWhenNoLogs(): void
     {
-        mkdir($this->tempDir.'/.git', 0777, true);
+        mkdir($this->tempDir.'/.git', 0o777, true);
 
         $gitLoader = new TestableGitLoader($this->tempDir);
 
@@ -110,7 +110,7 @@ final class GitLoaderTest extends TestCase
 
     public function testGetLastCommitDetailParsesLogData(): void
     {
-        mkdir($this->tempDir.'/.git/logs', 0777, true);
+        mkdir($this->tempDir.'/.git/logs', 0o777, true);
         $logLine = "0000000 abc1234 John Doe <john@example.com> 1700000000 -0100\tcommit: Initial commit\n";
         file_put_contents($this->tempDir.'/.git/logs/HEAD', $logLine);
 
@@ -125,7 +125,7 @@ final class GitLoaderTest extends TestCase
 
     public function testGetLastCommitDetailWithNoMatchingLogFormat(): void
     {
-        mkdir($this->tempDir.'/.git/logs', 0777, true);
+        mkdir($this->tempDir.'/.git/logs', 0o777, true);
         file_put_contents($this->tempDir.'/.git/logs/HEAD', "some random text\n");
 
         $gitLoader = new TestableGitLoader($this->tempDir);

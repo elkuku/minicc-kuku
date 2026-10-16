@@ -20,7 +20,8 @@ class Search extends BaseController
     }
 
     public function __invoke(
-        #[MapQueryParameter(flags: FILTER_NULL_ON_FAILURE)] ?int $q = null,
+        #[MapQueryParameter(flags: FILTER_NULL_ON_FAILURE)]
+        ?int $q = null,
     ): Response {
         $ids = $this->depositRepository->search($q ?? 0);
 

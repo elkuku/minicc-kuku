@@ -31,8 +31,10 @@ class PaymentsAccountant extends BaseController
     }
 
     public function __invoke(
-        #[Autowire('%env(EMAIL_ACCOUNTANT)%')] string $emailAccountant,
-        #[MapRequestPayload] PaymentsAccountantPayload $payload = new PaymentsAccountantPayload(),
+        #[Autowire('%env(EMAIL_ACCOUNTANT)%')]
+        string $emailAccountant,
+        #[MapRequestPayload]
+        PaymentsAccountantPayload $payload = new PaymentsAccountantPayload(),
     ): Response {
         $now = $this->clock->now();
         $year = $payload->year ?? (int) $now->format('Y');
@@ -63,7 +65,8 @@ class PaymentsAccountant extends BaseController
             // return $this->redirectToRoute('mail_cobros_contador');
         }
 
-        return $this->render('mail/cobros-contador.html.twig',
+        return $this->render(
+            'mail/cobros-contador.html.twig',
             [
                 'month' => $month,
                 'year' => $year,

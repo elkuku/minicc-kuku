@@ -20,7 +20,8 @@ class Index extends BaseController
     }
 
     public function __invoke(
-        #[MapQueryParameter] bool $ajax = false,
+        #[MapQueryParameter]
+        bool $ajax = false,
     ): Response {
         $template = $ajax
             ? '_list.html.twig'

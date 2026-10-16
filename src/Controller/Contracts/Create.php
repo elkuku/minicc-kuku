@@ -36,7 +36,8 @@ class Create extends BaseController
     #[Route(path: '/contracts/create', name: 'contracts_create', methods: ['POST'])]
     public function new(
         Request $request,
-        #[MapRequestPayload] ContractCreatePayload $payload = new ContractCreatePayload(),
+        #[MapRequestPayload]
+        ContractCreatePayload $payload = new ContractCreatePayload(),
     ): Response {
         $store = $this->storeRepo->find($payload->store ?? 0);
         $user = $this->userRepo->find($payload->user ?? 0);

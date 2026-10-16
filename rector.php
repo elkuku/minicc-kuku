@@ -54,6 +54,7 @@ try {
             phpunit: true,
             symfony: true
         )
+        ->withPhpSets()
         ->withImportNames(removeUnusedImports: true)
         ->withRules([
             //  StringFormTypeToClassRector::class,

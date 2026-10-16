@@ -63,20 +63,20 @@ final class SystemControllerTest extends WebTestCase
         $logFile = $logDir.'/deploy.log';
 
         if (!is_dir($logDir)) {
-            mkdir($logDir, 0777, true);
+            mkdir($logDir, 0o777, true);
         }
 
         $logContent = <<<'LOG'
->>>==============
-2024-01-15 10:30:00 Deploy started
-Updated files
-<<<===========
+            >>>==============
+            2024-01-15 10:30:00 Deploy started
+            Updated files
+            <<<===========
 
->>>==============
-2024-02-20 14:45:00 Deploy v2
-Fixed bugs
-<<<===========
-LOG;
+            >>>==============
+            2024-02-20 14:45:00 Deploy v2
+            Fixed bugs
+            <<<===========
+            LOG;
 
         file_put_contents($logFile, $logContent);
 

@@ -17,7 +17,8 @@ use ValueError;
 readonly class BackupManager
 {
     public function __construct(
-        #[Autowire(env: 'DATABASE_URL')] private string $databaseUrl,
+        #[Autowire(env: 'DATABASE_URL')]
+        private string $databaseUrl,
     ) {
     }
 

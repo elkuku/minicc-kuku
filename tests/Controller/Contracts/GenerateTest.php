@@ -128,7 +128,7 @@ final class GenerateTest extends TestCase
 
     private function createContract(int $storeNumber = 1): Contract
     {
-        return (new Contract())
+        return new Contract()
             ->setStoreNumber($storeNumber)
             ->setGender(Gender::other)
             ->setInqNombreapellido('Test User')

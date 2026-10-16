@@ -14,6 +14,7 @@ $finder = (new PhpCsFixer\Finder())
 return (new PhpCsFixer\Config())
     ->setRules([
         '@Symfony' => true,
+        '@PHP8x5Migration' => true,
         // Import classes like Rector's withImportNames() does, so both tools agree
         'global_namespace_import' => [
             'import_classes' => true,

@@ -36,7 +36,8 @@ class PayDay extends BaseController
     }
 
     public function __invoke(
-        #[MapRequestPayload] PayDayPayload $payload = new PayDayPayload(),
+        #[MapRequestPayload]
+        PayDayPayload $payload = new PayDayPayload(),
     ): Response {
         $payments = $payload->payments;
         if (!$payments instanceof PayDayPayments) {

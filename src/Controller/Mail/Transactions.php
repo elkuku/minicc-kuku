@@ -35,7 +35,8 @@ class Transactions extends BaseController
     }
 
     public function __invoke(
-        #[MapRequestPayload] YearPayload $payload = new YearPayload(),
+        #[MapRequestPayload]
+        YearPayload $payload = new YearPayload(),
     ): RedirectResponse {
         $now = $this->clock->now();
         $year = $payload->year ?? (int) $now->format('Y');

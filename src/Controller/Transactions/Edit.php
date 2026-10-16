@@ -25,7 +25,8 @@ class Edit extends BaseController
     public function __invoke(
         Transaction $transaction,
         Request $request,
-        #[MapQueryParameter] string $view = '',
+        #[MapQueryParameter]
+        string $view = '',
     ): Response {
         $view = $this->sanitizeLocalRedirect($view)
             ?? $this->generateUrl('stores_transactions', ['id' => $transaction->getStore()->getId()]);

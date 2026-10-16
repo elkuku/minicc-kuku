@@ -35,7 +35,8 @@ class Transactions extends BaseController
     #[Route(path: '/stores/{id}', name: 'stores_transactions', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function show(
         Store $store,
-        #[MapRequestPayload] YearPayload $payload = new YearPayload(),
+        #[MapRequestPayload]
+        YearPayload $payload = new YearPayload(),
     ): Response {
         $this->denyAccessUnlessGranted('view', $store);
         $year = $payload->year ?? (int) $this->clock->now()->format('Y');

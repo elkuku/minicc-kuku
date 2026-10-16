@@ -25,7 +25,8 @@ class Delete extends BaseController
 
     public function __invoke(
         Transaction $transaction,
-        #[MapRequestPayload] RedirectPayload $payload = new RedirectPayload(),
+        #[MapRequestPayload]
+        RedirectPayload $payload = new RedirectPayload(),
     ): RedirectResponse {
         $this->entityManager->remove($transaction);
         $this->entityManager->flush();

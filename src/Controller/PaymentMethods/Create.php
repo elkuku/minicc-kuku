@@ -24,7 +24,8 @@ class Create extends BaseController
 
     public function __invoke(
         Request $request,
-        #[MapQueryParameter] bool $ajax = false,
+        #[MapQueryParameter]
+        bool $ajax = false,
     ): Response {
         $paymentMethod = new PaymentMethod();
         $form = $this->createForm(PaymentMethodType::class, $paymentMethod);

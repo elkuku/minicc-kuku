@@ -73,7 +73,7 @@ jobs:
           <hr>
           <h5>Tech Stack</h5>
           <ul>
-          <li>PHP 8.4+ with Symfony 8.x</li>
+          <li>PHP 8.5+ with Symfony 8.x</li>
           <li>Doctrine ORM with PostgreSQL</li>
           <li>Twig 3.x with Bootstrap 5.3</li>
           <li>Stimulus.js</li>
