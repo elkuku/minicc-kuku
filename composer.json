@@ -58,6 +58,7 @@
     },
     "require-dev": {
         "elkuku/symfony-utils": "dev-master",
+        "friendsofphp/php-cs-fixer": "^3.95",
         "jawira/doctrine-diagram-bundle": "dev-main",
         "phpstan/extension-installer": "^1.2",
         "phpstan/phpstan": "^2",
