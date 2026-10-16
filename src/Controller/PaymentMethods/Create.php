@@ -10,6 +10,7 @@ use App\Form\PaymentMethodType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -23,6 +24,7 @@ class Create extends BaseController
 
     public function __invoke(
         Request $request,
+        #[MapQueryParameter] bool $ajax = false,
     ): Response
     {
         $paymentMethod = new PaymentMethod();
@@ -37,7 +39,7 @@ class Create extends BaseController
             return $this->redirectToRoute('payment_methods_index');
         }
 
-        $template = $request->query->get('ajax')
+        $template = $ajax
             ? '_form.html.twig'
             : 'form.html.twig';
 

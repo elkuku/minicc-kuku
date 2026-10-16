@@ -67,6 +67,14 @@ final class AdminControllerTest extends WebTestCase
         self::assertRouteSame('admin_payments');
     }
 
+    public function testPaymentsWithInvalidYearFallsBackToCurrentYear(): void
+    {
+        $this->client->request(Request::METHOD_GET, '/admin/payments?year=abc');
+
+        self::assertResponseIsSuccessful();
+        self::assertAnySelectorTextContains('h1', 'Pagos del año ' . date('Y'));
+    }
+
     public function testBackupDbPage(): void
     {
         $this->client->request(Request::METHOD_GET, '/admin/backup-db');

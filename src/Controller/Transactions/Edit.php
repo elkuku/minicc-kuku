@@ -10,6 +10,7 @@ use App\Form\TransactionTypeType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -24,9 +25,10 @@ class Edit extends BaseController
     public function __invoke(
         Transaction $transaction,
         Request $request,
+        #[MapQueryParameter] string $view = '',
     ): Response
     {
-        $view = $this->sanitizeLocalRedirect($request->query->getString('view'))
+        $view = $this->sanitizeLocalRedirect($view)
             ?? $this->generateUrl('stores_transactions', ['id' => $transaction->getStore()->getId()]);
 
         $form = $this->createForm(TransactionTypeType::class, $transaction);

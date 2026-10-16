@@ -8,6 +8,7 @@ use App\Entity\Deposit;
 use App\Entity\User;
 use App\Repository\DepositRepository;
 use App\Repository\UserRepository;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -70,6 +71,33 @@ final class DepositControllerTest extends WebTestCase
         $response = $this->client->getResponse();
         self::assertSame('application/json', $response->headers->get('Content-Type'));
         self::assertSame('null', $response->getContent());
+    }
+
+    #[DataProvider('invalidLookupIdProvider')]
+    public function testDepositLookupReturnsNullForMissingOrInvalidId(string $query): void
+    {
+        $this->client->request(Request::METHOD_GET, '/deposits/lookup' . $query);
+
+        self::assertResponseIsSuccessful();
+        self::assertSame('null', $this->client->getResponse()->getContent());
+    }
+
+    /**
+     * @return iterable<string, array{string}>
+     */
+    public static function invalidLookupIdProvider(): iterable
+    {
+        yield 'missing' => [''];
+        yield 'empty' => ['?id='];
+        yield 'non numeric' => ['?id=abc'];
+    }
+
+    public function testDepositSearchWithNonNumericQueryReturnsEmptyResult(): void
+    {
+        $this->client->request(Request::METHOD_GET, '/deposits/search?q=abc');
+
+        self::assertResponseIsSuccessful();
+        self::assertRouteSame('deposits_search');
     }
 
     public function testDepositDeniedForRegularUser(): void

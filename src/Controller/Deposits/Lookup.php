@@ -8,7 +8,7 @@ use App\Controller\BaseController;
 use App\Dto\DepositDto;
 use App\Repository\DepositRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -18,10 +18,11 @@ class Lookup extends BaseController
 {
     public function __construct(private readonly DepositRepository $depositRepository) {}
 
-    public function __invoke(Request $request): JsonResponse
+    public function __invoke(
+        #[MapQueryParameter(flags: FILTER_NULL_ON_FAILURE)] ?int $id = null,
+    ): JsonResponse
     {
-        $id = $request->query->get('id');
-        $deposit = $this->depositRepository->find($id);
+        $deposit = $id !== null ? $this->depositRepository->find($id) : null;
 
         return $this->json($deposit !== null ? DepositDto::fromDeposit($deposit) : null);
     }

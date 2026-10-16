@@ -7,8 +7,8 @@ namespace App\Controller\Admin;
 use App\Controller\BaseController;
 use App\Repository\TransactionRepository;
 use Symfony\Component\Clock\ClockInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -21,11 +21,13 @@ class Payments extends BaseController
         private readonly ClockInterface $clock,
     ) {}
 
-    public function __invoke(Request $request): Response
+    public function __invoke(
+        #[MapQueryParameter(flags: FILTER_NULL_ON_FAILURE)] ?int $year = null,
+    ): Response
     {
         $now = $this->clock->now();
         $currentYear = (int) $now->format('Y');
-        $year = $request->query->getInt('year', $currentYear);
+        $year ??= $currentYear;
         $month = $year === $currentYear ? (int) $now->format('m') : 1;
 
         return $this->render(

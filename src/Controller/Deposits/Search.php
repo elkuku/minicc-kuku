@@ -6,8 +6,8 @@ namespace App\Controller\Deposits;
 
 use App\Controller\BaseController;
 use App\Repository\DepositRepository;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -18,11 +18,10 @@ class Search extends BaseController
     public function __construct(private readonly DepositRepository $depositRepository) {}
 
     public function __invoke(
-        Request $request
+        #[MapQueryParameter(flags: FILTER_NULL_ON_FAILURE)] ?int $q = null,
     ): Response
     {
-        $documentId = $request->query->getInt('q');
-        $ids = $this->depositRepository->search($documentId);
+        $ids = $this->depositRepository->search($q ?? 0);
 
         return $this->render(
             'deposit/_search_result.html.twig',
