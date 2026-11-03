@@ -3,6 +3,10 @@ when@dev: &dev
         enable_auto_refresh_with_lazy_objects: true
         persistence:
             flush_once: true
+        orm:
+            reset:
+                # Reset the database with migrations if the app has any, otherwise with the schema
+                mode: auto
 
 when@test:
     <<: *dev
@@ -10,5 +14,9 @@ when@test:
         enable_auto_refresh_with_lazy_objects: true
         persistence:
             flush_once: true
+        orm:
+            reset:
+                # The suite relies on a schema reset; "auto" (migrations) breaks it.
+                mode: schema
         global_state:
             - App\Tests\Story\AppFixtureStory
