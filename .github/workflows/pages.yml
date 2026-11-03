@@ -1,8 +1,16 @@
 name: GitHub Pages
 
+# Publish the coverage report only after CI has passed on master.
 on:
-  push:
-    branches: [ "master" ]
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [master]
+  workflow_dispatch:
+
+env:
+  APP_ENV: test
+  DATABASE_URL: 'mysql://root:password@127.0.0.1:3306/app?serverVersion=8.0&charset=utf8mb4'
 
 permissions:
   contents: read
@@ -15,39 +23,44 @@ concurrency:
 
 jobs:
   build:
+    if: ${{ github.event_name == 'workflow_dispatch' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push') }}
     runs-on: ubuntu-latest
     services:
       mysql:
         image: mysql:8.0
         env:
-          MYSQL_ALLOW_EMPTY_PASSWORD: yes
-          MYSQL_DATABASE: symfony_test
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: app
         ports:
           - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+        options: >-
+          --health-cmd "mysqladmin ping -h 127.0.0.1 -uroot -ppassword"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # Build exactly the commit that CI tested.
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
 
-      - uses: shivammathur/setup-php@v2
+      - uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # 2.40.0
         with:
           php-version: '8.5'
-          extensions: pdo_mysql, xdebug
+          extensions: intl, pdo_mysql
           coverage: xdebug
-          tools: composer:v2
 
       - name: Install Dependencies
-        run: composer install --no-ansi --no-interaction --prefer-dist
+        uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda # 4.0.0
+        with:
+          require-lock-file: true
 
       - name: Setup Database
-        env:
-          DATABASE_URL: mysql://root:@127.0.0.1:3306/symfony?serverVersion=8.0.0
-        run: |
-          bin/console doctrine:database:create --env=test --if-not-exists
+        run: php bin/console doctrine:database:create --if-not-exists
 
       - name: Run Tests with Coverage
         env:
-          DATABASE_URL: mysql://root:@127.0.0.1:3306/symfony?serverVersion=8.0.0
           XDEBUG_MODE: coverage
         run: vendor/bin/phpunit --coverage-html coverage
 
@@ -95,10 +108,10 @@ jobs:
           sed -i "s/TIMESTAMP_PLACEHOLDER/$(date -u '+%Y-%m-%d %H:%M:%S UTC')/" _site/index.html
 
       - name: Setup Pages
-        uses: actions/configure-pages@v6
+        uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v5
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
 
   deploy:
     environment:
@@ -109,4 +122,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v5
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
