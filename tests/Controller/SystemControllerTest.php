@@ -29,7 +29,7 @@ final class SystemControllerTest extends WebTestCase
         $this->client->request(Request::METHOD_GET, '/system/about');
 
         self::assertResponseIsSuccessful();
-        self::assertRouteSame('system_about');
+        self::assertRouteSame('kuku_sf_system_about');
     }
 
     public function testAboutPageDeniedForRegularUser(): void
@@ -52,7 +52,7 @@ final class SystemControllerTest extends WebTestCase
         $this->client->request(Request::METHOD_GET, '/system/logview');
 
         self::assertResponseIsSuccessful();
-        self::assertRouteSame('system_logview');
+        self::assertRouteSame('kuku_sf_system_logview');
     }
 
     public function testLogviewPageWithLogFile(): void
@@ -84,7 +84,7 @@ final class SystemControllerTest extends WebTestCase
             $this->client->request(Request::METHOD_GET, '/system/logview');
 
             self::assertResponseIsSuccessful();
-            self::assertRouteSame('system_logview');
+            self::assertRouteSame('kuku_sf_system_logview');
         } finally {
             unlink($logFile);
         }
