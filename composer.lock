@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "37ea5221c182f07852d9c17f577bad67",
+    "content-hash": "724bc0e147b8e962a875a19c21131a5a",
     "packages": [
         {
             "name": "composer/semver",
@@ -9754,32 +9754,49 @@
         },
         {
             "name": "elkuku/symfony-utils",
-            "version": "dev-master",
+            "version": "0.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/elkuku/symfony-utils.git",
-                "reference": "d18c1fee024564d5d02cbda713579936c2296b52"
+                "reference": "89a1322714d8f9792e6d22ea5de7adc0306a04a5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/elkuku/symfony-utils/zipball/d18c1fee024564d5d02cbda713579936c2296b52",
-                "reference": "d18c1fee024564d5d02cbda713579936c2296b52",
+                "url": "https://api.github.com/repos/elkuku/symfony-utils/zipball/89a1322714d8f9792e6d22ea5de7adc0306a04a5",
+                "reference": "89a1322714d8f9792e6d22ea5de7adc0306a04a5",
                 "shasum": ""
             },
             "require": {
-                "doctrine/doctrine-bundle": "^2.5|^3.0",
-                "doctrine/orm": "^2.11|^3.1",
-                "php": ">=8.1",
-                "symfony/browser-kit": "^6.0|^7.0|^8.0",
-                "symfony/console": "^6.0|^7.0|^8.0",
-                "symfony/framework-bundle": "^6.0|^7.0|^8.0",
-                "symfony/security-core": "^6.0|^7.0|^8.0"
+                "php": ">=8.1"
+            },
+            "conflict": {
+                "doctrine/doctrine-bundle": "<2.5 || >=4.0",
+                "doctrine/orm": "<2.11 || >=3.0 <3.1 || >=4.0",
+                "symfony/browser-kit": "<6.0 || >=9.0",
+                "symfony/console": "<6.0 || >=9.0",
+                "symfony/framework-bundle": "<6.0 || >=9.0",
+                "symfony/security-core": "<6.0 || >=9.0"
             },
             "require-dev": {
-                "phpstan/phpstan": "^1.4",
-                "phpunit/phpunit": "^9.5"
+                "doctrine/doctrine-bundle": "^3.0",
+                "doctrine/orm": "^3.1",
+                "php-cs-fixer/shim": "^3.88",
+                "phpstan/phpstan": "^2.0",
+                "phpstan/phpstan-phpunit": "^2.0",
+                "phpunit/phpunit": "^13.0",
+                "symfony/browser-kit": "^8.0",
+                "symfony/console": "^8.0",
+                "symfony/framework-bundle": "^8.0",
+                "symfony/security-core": "^8.0"
             },
-            "default-branch": true,
+            "suggest": {
+                "doctrine/doctrine-bundle": "For UserAdminBaseCommand",
+                "doctrine/orm": "For UserAdminBaseCommand",
+                "symfony/browser-kit": "For ControllerBaseTest",
+                "symfony/console": "For UserAdminBaseCommand",
+                "symfony/framework-bundle": "For ControllerBaseTest",
+                "symfony/security-core": "For UserAdminBaseCommand"
+            },
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -9799,10 +9816,10 @@
             "description": "Various Symfony Utilities",
             "support": {
                 "issues": "https://github.com/elkuku/symfony-utils/issues",
-                "source": "https://github.com/elkuku/symfony-utils/tree/0.4.1"
+                "source": "https://github.com/elkuku/symfony-utils/tree/0.6.1"
             },
-            "time": "2026-10-20T13:22:10+00:00",
-            "published-time": "2026-10-20T13:22:21+00:00"
+            "time": "2026-11-18T16:14:42+00:00",
+            "published-time": "2026-11-18T16:51:09+00:00"
         },
         {
             "name": "ergebnis/agent-detector",
@@ -15137,7 +15154,6 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "elkuku/symfony-utils": 20,
         "jawira/doctrine-diagram-bundle": 20,
         "knplabs/knp-snappy-bundle": 20,
         "oro/doctrine-extensions": 10,

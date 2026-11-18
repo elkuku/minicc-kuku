@@ -57,7 +57,7 @@
         "twig/twig": "^2.12|^3.0"
     },
     "require-dev": {
-        "elkuku/symfony-utils": "dev-master",
+        "elkuku/symfony-utils": "^0.6",
         "friendsofphp/php-cs-fixer": "^3.95",
         "jawira/doctrine-diagram-bundle": "dev-main",
         "phpstan/extension-installer": "^1.2",
@@ -151,7 +151,11 @@
         "symfony": {
             "allow-contrib": true,
             "require": "8.*",
-            "docker": true
+            "docker": true,
+            "endpoint": [
+                "https://api.github.com/repos/elkuku/recipes/contents/index.json?ref=flex/main",
+                "flex://defaults"
+            ]
         }
     }
 }

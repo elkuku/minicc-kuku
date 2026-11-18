@@ -1,48 +1,29 @@
 #!/bin/bash
 #
-# Startup script
+# Start script: Docker services and the Symfony server.
+#
+# Installed by the elkuku/symfony-utils Flex recipe.
+#
+# License: WTFPL
+# Author: Nikolai Plath
 #
 
-check() {
-if ! command -v "$1" &> /dev/null
-then
-    echo "ERROR: Command '$1' could not be found on your system :("
-    exit 1
-fi
-}
-
-function getContainerHealth {
-  docker inspect --format "{{.State.Health.Status}}" $1
-}
-
-function waitContainer {
-  while STATUS=$(getContainerHealth $1); [ $STATUS != "healthy" ]; do
-    if [ $STATUS == "unhealthy" ]; then
-      echo "Failed!"
-      exit 1
-    fi
-    printf .
-    lf=$'\n'
-    sleep 1
-  done
-  printf "$lf"
-}
-
-check "docker-compose"
-check "symfony"
-
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && cd .. && pwd )"
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && cd .. && pwd)"
 cd "$DIR" || exit 1
 
-echo "Starting dev env in $DIR ..."
+# In a project, functions.sh sits next to this script in bin/.
+# shellcheck source=functions.sh
+. ./bin/functions.sh
 
-docker-compose up -d
+checkIsInstalled symfony
 
-printf "Waiting for DB to get ready "
-waitContainer minicc-kuku-database-1
-echo OK
+echo "🚀 Starting dev env in $DIR ..."
+
+startServices
+
+echo "Starting the server ... "
 symfony server:start -d
 
 symfony open:local
 
-echo "hF =;)"
+echo "✨  hF =;) 🤪"
