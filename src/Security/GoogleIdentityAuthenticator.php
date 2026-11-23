@@ -110,7 +110,7 @@ class GoogleIdentityAuthenticator extends AbstractAuthenticator
             return $user;
         }
 
-        // @todo remove: Fetch user by email
+        // Fall back to the email for users that have not signed in with Google yet
         $user = $this->userRepository->findOneBy(
             [
                 'email' => $googleUser->getEmail(),
@@ -118,7 +118,7 @@ class GoogleIdentityAuthenticator extends AbstractAuthenticator
         );
 
         if ($user) {
-            // @todo remove: Update existing users google id
+            // Store the Google ID so the next sign-in finds the user by it
             $user->setGoogleId($googleUser->getId());
             $this->entityManager->persist($user);
             $this->entityManager->flush();
