@@ -11,7 +11,7 @@ MiniCC KuKu is a Symfony 8.x financial management application for handling credi
 ## Tech Stack
 
 - **PHP 8.5+** with Symfony 8.x
-- **Doctrine ORM 3.3+** with PostgreSQL (configurable)
+- **Doctrine ORM 3.3+** with MariaDB 12.3 (local Docker and production)
 - **Twig 3.x** templating with Bootstrap 5.3
 - **Stimulus.js** for frontend interactivity
 - **wkhtmltopdf** via KnpSnappy for PDF generation
@@ -92,15 +92,17 @@ Dual authentication via `LoginFormAuthenticator` and `GoogleIdentityAuthenticato
 
 ## Docker Development
 
+The local database is MariaDB 12.3, matching production (Plesk).
+
 ```bash
-# Start MySQL and PhpMyAdmin
-docker-compose up -d
+# Start MariaDB and PhpMyAdmin
+docker compose up -d
 
 # Database backup
-docker exec CONTAINER /usr/bin/mysqldump -u main -pmain main > backup.sql
+docker exec minicc-kuku-database-1 mariadb-dump -u main -pmain main > backup.sql
 
 # Database restore
-cat backup.sql | docker exec -i CONTAINER /usr/bin/mysql -u main -pmain main
+docker exec -i minicc-kuku-database-1 mariadb -u main -pmain main < backup.sql
 ```
 
 PhpMyAdmin available at port 6080.

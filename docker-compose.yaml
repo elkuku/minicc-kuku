@@ -1,20 +1,21 @@
 services:
   database:
     ###> doctrine/doctrine-bundle ###
-    image: mysql:8.0
+    # Matches the production server (Plesk, MariaDB 12.3)
+    image: mariadb:12.3
     environment:
-      MYSQL_DATABASE: 'main'
-      MYSQL_USER: 'main'
-      MYSQL_PASSWORD: 'main'
-      MYSQL_ROOT_PASSWORD: 'main'
+      MARIADB_DATABASE: 'main'
+      MARIADB_USER: 'main'
+      MARIADB_PASSWORD: 'main'
+      MARIADB_ROOT_PASSWORD: 'main'
     ports:
       - '3306'
     expose:
       - '3306'
     volumes:
-      - my-db:/var/lib/mysql
+      - mariadb-data:/var/lib/mysql
     healthcheck:
-      test: [ "CMD-SHELL", "mysqladmin ping --silent" ]
+      test: [ "CMD", "healthcheck.sh", "--connect", "--innodb_initialized" ]
       timeout: 20s
       retries: 5
     ulimits:
@@ -33,7 +34,7 @@ services:
       - database
 
 volumes:
-  my-db:
+  mariadb-data:
 
 
 ###> doctrine/doctrine-bundle ###
