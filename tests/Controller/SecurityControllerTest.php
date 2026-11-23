@@ -33,6 +33,20 @@ final class SecurityControllerTest extends WebTestCase
         self::assertRouteSame('login');
     }
 
+    public function testLoginPageRedirectsLoggedInUserToWelcome(): void
+    {
+        $client = self::createClient();
+        /** @var UserRepository $userRepository */
+        $userRepository = self::getContainer()->get(UserRepository::class);
+        $user = $userRepository->findOneBy(['email' => 'user1@example.com']);
+        $this->assertInstanceOf(User::class, $user);
+        $client->loginUser($user);
+
+        $client->request(Request::METHOD_GET, '/login');
+
+        self::assertResponseRedirects('/');
+    }
+
     public function testLogoutRedirects(): void
     {
         $client = self::createClient();

@@ -46,9 +46,10 @@ export default class extends Controller {
         window.google.accounts.id.renderButton(this.element, {
             type: 'standard',
             size: this.sizeValue,
-            theme: dark ? 'filled_black' : 'outline',
+            // filled_black blends into the dark cards, the blue button stands out.
+            theme: dark ? 'filled_blue' : 'outline',
             text: 'signin_with',
-            shape: 'rectangular',
+            shape: 'pill',
             logo_alignment: 'left',
             locale: 'es',
         });
