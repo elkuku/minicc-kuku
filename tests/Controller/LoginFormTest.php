@@ -16,7 +16,9 @@ final class LoginFormTest extends WebTestCase
         $client->request(Request::METHOD_GET, '/login');
 
         self::assertResponseIsSuccessful();
-        self::assertSelectorTextContains('h2', 'Login');
+        self::assertSelectorTextContains('h2', 'Ingresar');
+        self::assertSelectorCount(1, '#g_id_onload');
+        self::assertSelectorExists('[data-controller="google-signin"]');
         self::assertSelectorExists('form[action="/login"]');
         self::assertSelectorExists('input[name="identifier"]');
         self::assertSelectorExists('input[name="_csrf_token"]');

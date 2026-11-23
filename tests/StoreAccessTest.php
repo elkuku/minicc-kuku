@@ -21,7 +21,7 @@ final class StoreAccessTest extends WebTestCase
         $crawler = $client->followRedirect();
 
         try {
-            self::assertSelectorTextContains('h2', 'Login');
+            self::assertSelectorTextContains('h2', 'Ingresar');
         } catch (ExpectationFailedException $expectationFailedException) {
             file_put_contents('gugu.html', $crawler->html());
 

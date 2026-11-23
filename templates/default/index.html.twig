@@ -9,12 +9,9 @@
                 <p class="lead">This site is for the clients of the "MiniCC KuKu" - Atacames - Ecuador</p>
                 <p class="lead">Este sitio es para los clientes del "MiniCC KuKu" - Atacames - Ecuador</p>
 
-                <div class="row">
-                    <div class="col-lg-9">Si usted es cliente por favor <a href="{{ path('login') }}">ingrese.</a></div>
-                    <div class="col-lg-3">
-
-                        {% include '_google_signin_button.html.twig' %}
-                    </div>
+                <div class="d-flex flex-wrap align-items-center gap-3 mt-4">
+                    <span>Si usted es cliente, ingrese con su cuenta de Google:</span>
+                    {% include '_google_signin_button.html.twig' %}
                 </div>
             </div>
         </div>

@@ -19,8 +19,8 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
-use Symfony\Component\Security\Core\Exception\UserNotFoundException;
-use UnexpectedValueException;
+use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class GoogleIdentityAuthenticatorTest extends TestCase
 {
@@ -35,6 +35,7 @@ final class GoogleIdentityAuthenticatorTest extends TestCase
             $this->createStub(UserRepository::class),
             $this->createStub(EntityManagerInterface::class),
             $urlGenerator,
+            $this->createTranslator(),
         );
     }
 
@@ -57,10 +58,40 @@ final class GoogleIdentityAuthenticatorTest extends TestCase
     public function testAuthenticateThrowsExceptionWhenNoCredentials(): void
     {
         $authenticator = $this->createAuthenticator();
-        $request = Request::create('/connect/google/verify', Request::METHOD_POST);
+        $request = $this->createVerifyRequest([]);
 
-        $this->expectException(AuthenticationException::class);
-        $this->expectExceptionMessageIsOrContains('Missing credentials :(');
+        $this->expectException(CustomUserMessageAuthenticationException::class);
+        $this->expectExceptionMessageIsOrContains('No se recibieron las credenciales de Google');
+
+        $authenticator->authenticate($request);
+    }
+
+    public function testAuthenticateThrowsWhenCsrfCookieIsMissing(): void
+    {
+        $authenticator = $this->createAuthenticator();
+        $request = Request::create('/connect/google/verify', Request::METHOD_POST, [
+            'credential' => 'some-token',
+            'g_csrf_token' => 'csrf-123',
+        ]);
+
+        $this->expectException(CustomUserMessageAuthenticationException::class);
+        $this->expectExceptionMessageIsOrContains('La solicitud de inicio de sesión no es válida');
+
+        $authenticator->authenticate($request);
+    }
+
+    public function testAuthenticateThrowsWhenCsrfTokensDoNotMatch(): void
+    {
+        $authenticator = $this->createAuthenticator();
+        $request = Request::create(
+            '/connect/google/verify',
+            Request::METHOD_POST,
+            ['credential' => 'some-token', 'g_csrf_token' => 'csrf-123'],
+            ['g_csrf_token' => 'other-token'],
+        );
+
+        $this->expectException(CustomUserMessageAuthenticationException::class);
+        $this->expectExceptionMessageIsOrContains('La solicitud de inicio de sesión no es válida');
 
         $authenticator->authenticate($request);
     }
@@ -106,7 +137,7 @@ final class GoogleIdentityAuthenticatorTest extends TestCase
         $flashBag = $this->createMock(FlashBagInterface::class);
         $flashBag->expects($this->once())
             ->method('add')
-            ->with('danger', 'Auth failed');
+            ->with('danger', 'La cuenta a@b.ec no tiene acceso.');
 
         $session = $this->createStub(Session::class);
         $session->method('getFlashBag')->willReturn($flashBag);
@@ -114,7 +145,7 @@ final class GoogleIdentityAuthenticatorTest extends TestCase
         $request = Request::create('/connect/google/verify');
         $request->setSession($session);
 
-        $exception = new AuthenticationException('Auth failed');
+        $exception = new CustomUserMessageAuthenticationException('La cuenta {{ email }} no tiene acceso.', ['{{ email }}' => 'a@b.ec']);
 
         $response = $authenticator->onAuthenticationFailure($request, $exception);
 
@@ -192,22 +223,78 @@ final class GoogleIdentityAuthenticatorTest extends TestCase
             'email' => 'unknown@example.com',
         ]);
 
-        $this->expectException(UserNotFoundException::class);
-        $this->expectExceptionMessageIsOrContains('unknown@example.com');
+        try {
+            $this->callGetUser($authenticator, $googleUser);
+            self::fail('Expected an authentication exception.');
+        } catch (CustomUserMessageAuthenticationException $customUserMessageAuthenticationException) {
+            self::assertSame(['{{ email }}' => 'unknown@example.com'], $customUserMessageAuthenticationException->getMessageData());
+        }
+    }
 
-        $this->callGetUser($authenticator, $googleUser);
+    public function testOnAuthenticationFailureTranslatesGenericException(): void
+    {
+        $translator = $this->createMock(TranslatorInterface::class);
+        $translator->expects($this->once())
+            ->method('trans')
+            ->with('An authentication exception occurred.', [], 'security')
+            ->willReturn('Ocurrió un error de autenticación.');
+
+        $urlGenerator = $this->createStub(UrlGeneratorInterface::class);
+        $urlGenerator->method('generate')->willReturn('/login');
+
+        $authenticator = new GoogleIdentityAuthenticator(
+            'fake-google-client-id',
+            $this->createStub(UserRepository::class),
+            $this->createStub(EntityManagerInterface::class),
+            $urlGenerator,
+            $translator,
+        );
+
+        $flashBag = $this->createMock(FlashBagInterface::class);
+        $flashBag->expects($this->once())
+            ->method('add')
+            ->with('danger', 'Ocurrió un error de autenticación.');
+
+        $session = $this->createStub(Session::class);
+        $session->method('getFlashBag')->willReturn($flashBag);
+
+        $request = Request::create('/connect/google/verify');
+        $request->setSession($session);
+
+        $authenticator->onAuthenticationFailure($request, new AuthenticationException('internal details'));
     }
 
     public function testAuthenticateThrowsOnInvalidToken(): void
     {
         $authenticator = $this->createAuthenticator();
-        $request = Request::create('/connect/google/verify', Request::METHOD_POST, [
-            'credential' => 'invalid-token',
-        ]);
+        $request = $this->createVerifyRequest(['credential' => 'invalid-token']);
 
-        $this->expectException(UnexpectedValueException::class);
+        $this->expectException(CustomUserMessageAuthenticationException::class);
+        $this->expectExceptionMessageIsOrContains('No se pudo verificar su cuenta de Google');
 
         $authenticator->authenticate($request);
+    }
+
+    /**
+     * @param array<string, string> $parameters
+     */
+    private function createVerifyRequest(array $parameters): Request
+    {
+        return Request::create(
+            '/connect/google/verify',
+            Request::METHOD_POST,
+            $parameters + ['g_csrf_token' => 'csrf-123'],
+            ['g_csrf_token' => 'csrf-123'],
+        );
+    }
+
+    private function createTranslator(): TranslatorInterface
+    {
+        $translator = $this->createStub(TranslatorInterface::class);
+        $translator->method('trans')
+            ->willReturnCallback(fn (string $id, array $parameters = []): string => strtr($id, $parameters));
+
+        return $translator;
     }
 
     private function createAuthenticatorWith(
@@ -223,6 +310,7 @@ final class GoogleIdentityAuthenticatorTest extends TestCase
             $userRepository,
             $entityManager ?? $this->createStub(EntityManagerInterface::class),
             $urlGenerator,
+            $this->createTranslator(),
         );
     }
 

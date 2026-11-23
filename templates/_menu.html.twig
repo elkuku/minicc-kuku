@@ -84,7 +84,7 @@
                     <a href="{{ path('login') }}" title="Login">
                         <span class="oi oi-account-login"></span>
                     </a>
-                {% elseif app.current_route != 'login' %}
+                {% elseif app.current_route not in ['login', 'welcome'] %}
                     {% include '_google_signin_button.html.twig' with {size: 'medium'} %}
                 {% endif %}
             {% endif %}
