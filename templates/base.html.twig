@@ -21,6 +21,13 @@
     {% endif %}
 </head>
 <body id="app-layout">
+{% if not app.user %}
+    <div id="g_id_onload"
+         data-client_id="{{ oauthGoogleId }}"
+         data-login_uri="{{ url('connect_google_verify') }}"
+         data-auto_prompt="false">
+    </div>
+{% endif %}
 
 
 {% include('_menu.html.twig') %}

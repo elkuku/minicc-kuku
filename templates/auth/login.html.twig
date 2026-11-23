@@ -7,19 +7,7 @@
         <div class="row">
             <div class="col">
                 <h2>Login</h2>
-                <div id="g_id_onload"
-                     data-client_id="{{ oauthGoogleId }}"
-                     data-login_uri="{{ url('connect_google_verify') }}"
-                     data-auto_prompt="false">
-                </div>
-                <div class="g_id_signin"
-                     data-type="standard"
-                     data-size="large"
-                     data-theme="outline"
-                     data-text="sign_in_with"
-                     data-shape="rectangular"
-                     data-logo_alignment="left">
-                </div>
+                {% include '_google_signin_button.html.twig' %}
             </div>
             {% if app.environment in ['dev', 'test'] %}
                 <div class="col">
