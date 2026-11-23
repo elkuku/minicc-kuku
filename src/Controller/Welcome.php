@@ -11,11 +11,13 @@ use App\Service\TaxService;
 use stdClass;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 /**
  * @see \App\Tests\Controller\WelcomeTest
  */
 #[Route(path: '/', name: 'welcome', methods: ['GET'])]
+#[IsGranted('ROLE_USER')]
 class Welcome extends BaseController
 {
     public function __construct(private readonly StoreRepository $storeRepository, private readonly TransactionRepository $transactionRepository, private readonly TaxService $taxService, private readonly ChartBuilderService $chartBuilderService)

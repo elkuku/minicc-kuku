@@ -32,8 +32,7 @@ final class WelcomeTest extends WebTestCase
 
         $client->request(Request::METHOD_GET, '/');
 
-        self::assertResponseIsSuccessful();
-        self::assertRouteSame('welcome');
+        self::assertResponseRedirects('/login');
     }
 
     public function testWelcomeForRegularUser(): void

@@ -1,25 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    {% if not app.user %}
-        <span {{ stimulus_controller('background') }}></span>
-        <div class="col-12">
-            <div class="h-100 p-5 bg-light bg-opacity-50 text-on-image">
-                <h1>Atacames - Ecuador</h1>
-                <p class="lead">This site is for the clients of the "MiniCC KuKu" - Atacames - Ecuador</p>
-                <p class="lead">Este sitio es para los clientes del "MiniCC KuKu" - Atacames - Ecuador</p>
-
-                <div class="d-flex flex-wrap align-items-center gap-3 mt-4">
-                    <span>Si usted es cliente, ingrese con su cuenta de Google:</span>
-                    {% include '_google_signin_button.html.twig' %}
-                </div>
-            </div>
-        </div>
+    {% if is_granted('ROLE_CASHIER') %}
+        {% include 'default/_admin-dashboard.html.twig' %}
     {% else %}
-        {% if is_granted('ROLE_CASHIER') %}
-            {% include'default/_admin-dashboard.html.twig' %}
-        {% elseif app.user %}
-            {% include'default/_user-dashboard.html.twig' %}
-        {% endif %}
+        {% include 'default/_user-dashboard.html.twig' %}
     {% endif %}
 {% endblock %}

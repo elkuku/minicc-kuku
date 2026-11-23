@@ -73,11 +73,16 @@ tr.tr-underlined {
     display: none;
 }
 
-.text-on-image {
-    color: #3a3333;
-}
-
 .icon24{
     height: 24px;
     width: 24px;
+}
+
+/*
+ * Google renders the sign-in button in a light iframe. In dark mode the page's
+ * color-scheme differs from the iframe's, so the browser paints an opaque white
+ * backdrop behind it. Matching the scheme keeps the iframe transparent.
+ */
+[data-controller~="google-signin"] {
+    color-scheme: light;
 }

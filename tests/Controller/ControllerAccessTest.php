@@ -31,11 +31,6 @@ final class ControllerAccessTest extends ControllerBaseTest
     #[Override]
     protected array $exceptions
         = [
-            'welcome' => [
-                'statusCodes' => [
-                    'GET' => 200,
-                ],
-            ],
             'login' => [
                 'statusCodes' => [
                     'GET' => 200,
