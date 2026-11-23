@@ -10,7 +10,7 @@ use App\Helper\CsvParser\CsvObject;
 use App\Helper\CsvParser\CsvParser;
 use App\Repository\DepositRepository;
 use App\Repository\PaymentMethodRepository;
-use DateTime;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use RuntimeException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -56,7 +56,7 @@ readonly class DepositImporter
 
             $deposit = new Deposit();
             $deposit->setEntity($entity)
-                ->setDate(new DateTime(str_replace('/', '-', (string) $line->fecha)))
+                ->setDate(new DateTimeImmutable(str_replace('/', '-', (string) $line->fecha)))
                 ->setDocument($line->{'numero de documento'})
                 ->setAmount($line->credito);
 

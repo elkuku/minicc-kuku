@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Factory;
 
 use App\Entity\Deposit;
-use DateTime;
+use DateTimeImmutable;
 use Zenstruck\Foundry\Persistence\PersistentObjectFactory;
 
 /**
@@ -24,7 +24,7 @@ final class DepositFactory extends PersistentObjectFactory
     protected function defaults(): array
     {
         return [
-            'date' => new DateTime(),
+            'date' => new DateTimeImmutable(),
             'document' => self::faker()->numerify('###'),
             'amount' => '0',
             'entity' => PaymentMethodFactory::new(),

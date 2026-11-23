@@ -7,6 +7,7 @@ namespace App\Twig\Extension;
 use App\Entity\User;
 use App\Service\TextFormatter;
 use DateTime;
+use DateTimeInterface;
 use Exception;
 use IntlDateFormatter;
 use Twig\Attribute\AsTwigFilter;
@@ -50,7 +51,7 @@ class TwigExtension
 
     #[AsTwigFunction('intlDate')]
     public function intlDate(
-        string|DateTime $date,
+        string|DateTimeInterface $date,
         string $format = "d 'de' MMMM YYYY",
         string $lang = 'es_ES',
     ): string {
@@ -60,7 +61,7 @@ class TwigExtension
             IntlDateFormatter::NONE
         );
 
-        if ($date instanceof DateTime) {
+        if ($date instanceof DateTimeInterface) {
             $dateTime = $date;
         } else {
             try {

@@ -7,7 +7,7 @@ namespace App\Tests\Dto;
 use App\Dto\DepositDto;
 use App\Entity\Deposit;
 use App\Entity\PaymentMethod;
-use DateTime;
+use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 use ReflectionProperty;
 
@@ -18,7 +18,7 @@ final class DepositDtoTest extends TestCase
         $paymentMethod = $this->createPaymentMethodWithId(2);
         $deposit = new Deposit();
         $deposit->setEntity($paymentMethod);
-        $deposit->setDate(new DateTime('2024-03-15'));
+        $deposit->setDate(new DateTimeImmutable('2024-03-15'));
         $deposit->setDocument('DOC-123');
         $deposit->setAmount('1500.50');
 
@@ -65,7 +65,7 @@ final class DepositDtoTest extends TestCase
         $paymentMethod = $this->createPaymentMethodWithId(2);
         $deposit = new Deposit();
         $deposit->setEntity($paymentMethod);
-        $deposit->setDate(new DateTime('2024-01-01'));
+        $deposit->setDate(new DateTimeImmutable('2024-01-01'));
         $deposit->setDocument('DOC');
         $deposit->setAmount('10.00');
 

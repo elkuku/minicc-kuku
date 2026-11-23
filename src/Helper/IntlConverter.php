@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Helper;
 
 use DateTime;
+use DateTimeInterface;
 use IntlDateFormatter;
 
 /**
@@ -13,7 +14,7 @@ use IntlDateFormatter;
 class IntlConverter
 {
     public static function formatDate(
-        string|DateTime $date,
+        string|DateTimeInterface $date,
         string $format = "d 'de' MMMM YYYY",
         string $lang = 'es_ES',
     ): string {

@@ -6,7 +6,7 @@ namespace App\Entity;
 
 use App\Enum\PaymentMethodId;
 use App\Repository\DepositRepository;
-use DateTime;
+use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -28,8 +28,8 @@ class Deposit
     #[ManyToOne]
     private PaymentMethod $entity;
 
-    #[Column(type: Types::DATE_MUTABLE, nullable: false)]
-    private DateTime $date;
+    #[Column(type: Types::DATE_IMMUTABLE, nullable: false)]
+    private DateTimeImmutable $date;
 
     #[Column(length: 150, nullable: false)]
     private string $document;
@@ -64,12 +64,12 @@ class Deposit
         return $this->id;
     }
 
-    public function getDate(): DateTime
+    public function getDate(): DateTimeImmutable
     {
         return $this->date;
     }
 
-    public function setDate(DateTime $date): static
+    public function setDate(DateTimeImmutable $date): static
     {
         $this->date = $date;
 

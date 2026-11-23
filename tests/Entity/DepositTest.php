@@ -7,7 +7,7 @@ namespace App\Tests\Entity;
 use App\Entity\Deposit;
 use App\Entity\PaymentMethod;
 use App\Entity\Transaction;
-use DateTime;
+use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 use ReflectionProperty;
 use UnexpectedValueException;
@@ -50,7 +50,7 @@ final class DepositTest extends TestCase
     public function testDateGetterSetter(): void
     {
         $deposit = new Deposit();
-        $date = new DateTime('2024-06-15');
+        $date = new DateTimeImmutable('2024-06-15');
 
         $result = $deposit->setDate($date);
 

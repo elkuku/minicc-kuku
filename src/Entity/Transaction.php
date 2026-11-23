@@ -6,7 +6,7 @@ namespace App\Entity;
 
 use App\Repository\TransactionRepository;
 use App\Type\TransactionType;
-use DateTime;
+use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -46,8 +46,8 @@ class Transaction implements JsonSerializable
     #[JoinColumn(name: 'method_id', referencedColumnName: 'id', nullable: false)]
     private PaymentMethod $method;
 
-    #[Column(type: Types::DATE_MUTABLE, nullable: false)]
-    private DateTime $date;
+    #[Column(type: Types::DATE_IMMUTABLE, nullable: false)]
+    private DateTimeImmutable $date;
 
     #[Column(type: Types::DECIMAL, precision: 13, scale: 2, nullable: false)]
     private string $amount = '0';
@@ -73,12 +73,12 @@ class Transaction implements JsonSerializable
     #[Column(length: 255, nullable: true)]
     private ?string $comment = null;
 
-    public function getDate(): DateTime
+    public function getDate(): DateTimeImmutable
     {
         return $this->date;
     }
 
-    public function setDate(DateTime $date): self
+    public function setDate(DateTimeImmutable $date): self
     {
         $this->date = $date;
 

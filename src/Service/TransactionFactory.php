@@ -9,7 +9,7 @@ use App\Entity\Store;
 use App\Entity\Transaction;
 use App\Entity\User;
 use App\Type\TransactionType;
-use DateTime;
+use DateTimeImmutable;
 
 /**
  * @see \App\Tests\Service\TransactionFactoryTest
@@ -28,7 +28,7 @@ class TransactionFactory
         string $comment,
     ): Transaction {
         return new Transaction()
-            ->setDate(new DateTime($date))
+            ->setDate(new DateTimeImmutable($date))
             ->setStore($store)
             ->setUser($user)
             ->setType(TransactionType::payment)
@@ -48,7 +48,7 @@ class TransactionFactory
         string $amount,
     ): Transaction {
         return new Transaction()
-            ->setDate(new DateTime($date))
+            ->setDate(new DateTimeImmutable($date))
             ->setStore($store)
             ->setUser($user)
             ->setType(TransactionType::rent)

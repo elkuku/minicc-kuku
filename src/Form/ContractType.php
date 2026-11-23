@@ -37,7 +37,7 @@ class ContractType extends AbstractType
             ->add('date', null, [
                 // A blank date has no neutral fallback like '' or 0; default
                 // to "today" rather than crashing (Contract::setDate() takes
-                // a non-nullable DateTime).
+                // a non-nullable DateTimeImmutable).
                 'empty_data' => static fn (): string => new DateTime()->format('Y-m-d'),
             ])
             // Store

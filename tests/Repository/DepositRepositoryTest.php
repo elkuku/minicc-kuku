@@ -7,7 +7,7 @@ namespace App\Tests\Repository;
 use App\Entity\Deposit;
 use App\Helper\Paginator\PaginatorOptions;
 use App\Repository\DepositRepository;
-use DateTime;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
@@ -74,7 +74,7 @@ final class DepositRepositoryTest extends KernelTestCase
     public function testHasReturnsFalseForNonExistentDeposit(): void
     {
         $deposit = new Deposit();
-        $deposit->setDate(new DateTime('1900-01-01'));
+        $deposit->setDate(new DateTimeImmutable('1900-01-01'));
         $deposit->setDocument('999999');
 
         $result = $this->repository->has($deposit);
@@ -90,7 +90,7 @@ final class DepositRepositoryTest extends KernelTestCase
         }
 
         $deposit = new Deposit();
-        $deposit->setDate(new DateTime());
+        $deposit->setDate(new DateTimeImmutable());
         $deposit->setDocument('test-123');
         $deposit->setAmount('100');
 

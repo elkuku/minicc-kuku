@@ -6,7 +6,7 @@ namespace App\Entity;
 
 use App\Repository\ContractRepository;
 use App\Type\Gender;
-use DateTime;
+use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -43,8 +43,8 @@ class Contract
     #[Column]
     private ?float $valGarantia = null;
 
-    #[Column(type: Types::DATE_MUTABLE)]
-    private DateTime $date;
+    #[Column(type: Types::DATE_IMMUTABLE)]
+    private DateTimeImmutable $date;
 
     #[Column]
     private int $cntLanfort = 0;
@@ -81,7 +81,7 @@ class Contract
 
     public function __construct()
     {
-        $this->date = new DateTime();
+        $this->date = new DateTimeImmutable();
     }
 
     public function getInqNombreapellido(): ?string
@@ -120,12 +120,12 @@ class Contract
         return $this;
     }
 
-    public function getDate(): DateTime
+    public function getDate(): DateTimeImmutable
     {
         return $this->date;
     }
 
-    public function setDate(DateTime $date): static
+    public function setDate(DateTimeImmutable $date): static
     {
         $this->date = $date;
 

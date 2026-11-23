@@ -13,7 +13,7 @@ use App\Repository\StoreRepository;
 use App\Repository\TransactionRepository;
 use App\Repository\UserRepository;
 use App\Type\TransactionType;
-use DateTime;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -196,7 +196,7 @@ final class TransactionControllerTest extends WebTestCase
         $transaction->setUser($user);
         $transaction->setType(TransactionType::payment);
         $transaction->setMethod($paymentMethod);
-        $transaction->setDate(new DateTime());
+        $transaction->setDate(new DateTimeImmutable());
         $transaction->setAmount('50.00');
 
         /** @var EntityManagerInterface $em */

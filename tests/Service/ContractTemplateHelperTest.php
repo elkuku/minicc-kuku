@@ -7,7 +7,7 @@ namespace App\Tests\Service;
 use App\Entity\Contract;
 use App\Service\ContractTemplateHelper;
 use App\Type\Gender;
-use DateTime;
+use DateTimeImmutable;
 use Iterator;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -190,7 +190,7 @@ final class ContractTemplateHelperTest extends TestCase
     public function testReplaceContentWithDateField(): void
     {
         $contract = $this->createContract();
-        $contract->setDate(new DateTime('2024-03-15'));
+        $contract->setDate(new DateTimeImmutable('2024-03-15'));
         $contract->setText('Fecha: [fecha_long]');
 
         $result = $this->helper->replaceContent($contract);

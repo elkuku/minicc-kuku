@@ -6,7 +6,7 @@ namespace App\Tests\Factory;
 
 use App\Entity\Transaction;
 use App\Type\TransactionType;
-use DateTime;
+use DateTimeImmutable;
 use Zenstruck\Foundry\Persistence\PersistentObjectFactory;
 
 /**
@@ -27,7 +27,7 @@ final class TransactionFactory extends PersistentObjectFactory
         return [
             'store' => StoreFactory::new(),
             'user' => UserFactory::new(),
-            'date' => new DateTime(),
+            'date' => new DateTimeImmutable(),
             'type' => TransactionType::payment,
             'method' => PaymentMethodFactory::new(),
             'amount' => '0',

@@ -9,6 +9,7 @@ doctrine:
         profiling_collect_backtrace: '%kernel.debug%'
     orm:
         validate_xml_mapping: true
+        use_schema_editor_api: true
         naming_strategy: doctrine.orm.naming_strategy.underscore
         identity_generation_preferences:
             Doctrine\DBAL\Platforms\PostgreSQLPlatform: identity

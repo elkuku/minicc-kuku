@@ -6,16 +6,16 @@ namespace App\Tests\Entity;
 
 use App\Entity\Contract;
 use App\Type\Gender;
-use DateTime;
+use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
 final class ContractTest extends TestCase
 {
     public function testConstructorSetsDefaultDate(): void
     {
-        $before = new DateTime();
+        $before = new DateTimeImmutable();
         $contract = new Contract();
-        $after = new DateTime();
+        $after = new DateTimeImmutable();
 
         $date = $contract->getDate();
 
@@ -92,7 +92,7 @@ final class ContractTest extends TestCase
         $contract = new Contract();
         $contract->setGender(Gender::male);
 
-        $date = new DateTime('2024-06-15');
+        $date = new DateTimeImmutable('2024-06-15');
 
         $result = $contract->setDate($date);
 

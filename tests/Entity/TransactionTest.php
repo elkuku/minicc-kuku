@@ -11,7 +11,7 @@ use App\Entity\Transaction;
 use App\Entity\User;
 use App\Type\Gender;
 use App\Type\TransactionType;
-use DateTime;
+use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 use ReflectionProperty;
 
@@ -37,7 +37,7 @@ final class TransactionTest extends TestCase
     public function testDateGetterSetter(): void
     {
         $transaction = new Transaction();
-        $date = new DateTime('2024-06-15');
+        $date = new DateTimeImmutable('2024-06-15');
 
         $result = $transaction->setDate($date);
 
@@ -203,7 +203,7 @@ final class TransactionTest extends TestCase
         $transaction->setStore($store);
         $transaction->setType(TransactionType::payment);
         $transaction->setMethod($paymentMethod);
-        $transaction->setDate(new DateTime('2024-03-15'));
+        $transaction->setDate(new DateTimeImmutable('2024-03-15'));
         $transaction->setAmount('500.00');
         $transaction->setDocument(789);
         $transaction->setDepId(100);
@@ -236,7 +236,7 @@ final class TransactionTest extends TestCase
         $transaction->setStore($store);
         $transaction->setType(TransactionType::rent);
         $transaction->setMethod($paymentMethod);
-        $transaction->setDate(new DateTime('2024-01-01'));
+        $transaction->setDate(new DateTimeImmutable('2024-01-01'));
         $transaction->setDocument(1);
 
         $json = $transaction->jsonSerialize();
@@ -257,7 +257,7 @@ final class TransactionTest extends TestCase
         $transaction->setStore($store);
         $transaction->setType(TransactionType::rent);
         $transaction->setMethod($paymentMethod);
-        $transaction->setDate(new DateTime('2024-01-01'));
+        $transaction->setDate(new DateTimeImmutable('2024-01-01'));
         $transaction->setDocument(1);
 
         $json = $transaction->jsonSerialize();
